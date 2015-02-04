@@ -85,6 +85,7 @@ case $fullname in
 	machine_type="$machine_type:ndn"
 	;;
 esac
+
 if [[ $machine_type != ':ndn' ]]; then
 
 # source perlbrew
@@ -107,68 +108,6 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias yakko='ssh rmiller@yakko.sd.dreamhost.com -t tmux a'
-alias fubar='ssh rmiller@fubar.dreamhost.com -t tmux a'
-alias vi='vim'
-alias gg='git grep -E'
-ggm() { gg $* -- '*.pm' }
-ggt() { gg $* -- '*.t' }
-alias tstag='perl ~/ndn/dh/bin/leads/tstag.pl'
-alias apachemove='/home/tngo/apachemove.sh'
-alias dhe='sudo /dh/bin/dh-email'
-alias rs='sudo /dh/bin/rsynctool'
-alias siteperf='sudo /dh/bin/siteperformance -vv'
-alias restorecheck='/home/anthonys/restore-check.sh'
-alias procwatch='/home/anthonys/procwatch.sh'
-alias hurtlocker='/home/anthonys/hurtlocker.sh'
-alias dh-cluster='sudo /dh/bin/dh-cluster'
-alias dh-db='sudo /dh/bin/dh-db'
-alias dh-domain='sudo /dh/bin/dh-domain'
-alias dh-ip='sudo /dh/bin/dh-ip'
-alias dh-machine='sudo /dh/bin/dh-machine'
-alias dh-watcher.pl='sudo /dh/bin/dh-watcher.pl'
-alias dhd='sudo /dh/bin/dh-domain'
-alias dhm='sudo /dh/bin/dh-machine'
-alias dhsh.pl='sudo /dh/bin/dhsh.pl'
-alias dip="sudo /dh/bin/dh-ip"
-alias enableactt='sc yakko reenabler reenable'
-alias epasswd.pl='sudo /dh/bin/epasswd.pl'
-alias expedite='/home/brandon/homiemove.sh'
-alias firewall.pl='sudo /dh/bin/firewall.pl'
-alias ftptst='sudo /dh/bin/test_ftp'
-alias loady.pl='sudo /dh/bin/loady.pl'
-alias location-fix.pl='sudo /dh/bin/location-fix.pl'
-alias mail_log_jumper='sudo /dh/bin/mail_log_jumper'
-alias mlj='sudo /dh/bin/mail_log_jumper -t'
-alias mljt='sudo /dh/bin/mail_log_jumper -t'
-alias move.pl='sudo /dh/bin/move.pl'
-alias movedata.pl='sudo /dh/bin/movedata.pl'
-alias movemysql.pl='sudo /dh/bin/movemysql.pl'
-alias movemysql_service.pl='sudo /dh/bin/movemysql_service.pl'
-alias ndn-password='sudo /dh/bin/ndn-password'
-alias ns='sudo /dh/bin/nsconfig'
-alias nsconfig='sudo /dh/bin/nsconfig'
-alias oc-up='sudo /dh/bin/servicectl yakko installer upgradenew'
-alias pass='sudo /dh/bin/epasswd.pl -d'
-alias reboot='/usr/local/ndn/dh/bin/reboot.pl'
-alias rebooty.pl='sudo /dh/bin/rebooty.pl'
-alias rsh='sudo rsh'
-alias rssh='sudo /dh/bin/rssh'
-alias sc='sudo /dh/bin/servicectl'
-alias sctl='sudo /dh/bin/servicectl'
-alias servicectl='sudo /dh/bin/servicectl'
-alias sp='sudo /dh/bin/siteperformance -vv'
-alias ssh='ssh -l root'
-alias test-mail='sudo /dh/bin/test-mail'
-alias getpass='sudo /dh/bin/test_password'
-alias getusid='sudo /dh/bin/dh-email'
-alias what-mounts='sudo /dh/bin/what-mounts'
-alias wildcard-dns.pl='sudo /dh/bin/wildcard-dns.pl'
-#Dev Aliases
-DEV_ENV="/usr/bin/sudo /usr/bin/env DH_TEMPLATE_PREFIX=${HOME}/ndn PERL5LIB=${HOME}/ndn/perl "
-alias mysc="${DEV_ENV} ${HOME}/ndn/dh/bin/servicectl"
-alias scdb="${DEV_ENV} perl -d ${HOME}/ndn/dh/bin/servicectl"
-alias domy="${DEV_ENV}"
-alias scdb="/usr/bin/sudo /usr/bin/env PERL5DB='BEGIN { require \"perl5db.pl\"; push @DB::typeahead, \"b 813\"; }' DH_TEMPLATE_PREFIX=/home/rmiller/ndn PERLLIB=/home/rmiller/ndn/perl/ perl -d /home/rmiller/ndn/dh/bin/servicectl"
+source .aliases
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
