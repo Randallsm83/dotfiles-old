@@ -8,6 +8,7 @@
 
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
+vundledir=~/dotfiles/.vim/bundle/Vundle.vim
 files="vimrc vim zshrc oh-my-zsh tmux.conf aliases"    # list of files/folders to symlink in homedir
 
 ##########
@@ -30,5 +31,8 @@ for file in $files; do
     ln -s $dir/.$file ~/.$file
 done
 
+# check if vundle directory exists so git doesn't fail
 cd $dir/.vim/bundle
-git clone https://github.com/gmarik/Vundle.vim.git
+if [ ! -d "$vundledir" ]; then
+	git clone https://github.com/gmarik/Vundle.vim.git
+fi
