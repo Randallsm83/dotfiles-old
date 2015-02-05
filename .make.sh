@@ -9,7 +9,7 @@
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
 vundledir=~/dotfiles/.vim/bundle/Vundle.vim
-files="vimrc vim zshrc oh-my-zsh tmux.conf aliases"    # list of files/folders to symlink in homedir
+files="vimrc vim zshrc oh-my-zsh tmux.conf aliases bashrc"    # list of files/folders to symlink in homedir
 
 ##########
 
@@ -23,12 +23,14 @@ echo "Changing to the $dir directory"
 cd $dir
 echo "...done"
 
-# move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks 
+# move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks
 for file in $files; do
-    echo "Moving any existing dotfiles from ~ to $olddir"
-    mv ~/.$file ~/dotfiles_old/
-    echo "Creating symlink to $file in home directory."
-    ln -s $dir/.$file ~/.$file
+	if [ -f ~/.$file ] && [ -f $dir/.$file ]; then
+		echo "Moving any existing dotfiles from ~ to $olddir"
+		mv ~/.$file $olddir
+		echo "Creating symlink to $file in home directory."
+		ln -s $dir/.$file ~/.$file
+	fi
 done
 
 # check if vundle directory exists so git doesn't fail
