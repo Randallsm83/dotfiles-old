@@ -9,7 +9,7 @@ export LANG=en_US.UTF-8
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+ZSH_THEME="amuse"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -27,15 +27,15 @@ ZSH_THEME="robbyrussell"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -49,14 +49,11 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git perl tmux vagrant)
+plugins=(brew brew-cask colored-man colorize extract git github go osx perl pip python tmux vagrant web-search)
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-
-export PATH=$HOME/ndn/dh/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
-# export MANPATH="/usr/local/man:$MANPATH"
+## User configuration
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -92,7 +89,7 @@ if [[ $machine_type != ':ndn' ]]; then
 source ~/perl5/perlbrew/etc/bashrc
 
 # local::lib
-#eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)
+# eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)
 
 # virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
@@ -107,7 +104,15 @@ fi
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# alias ohmyzsh="mate ~/.oh-my-zsh
 source ~/.aliases
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+# Paths
+export PATH=$HOME/ndn/dh/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
+# export MANPATH="/usr/local/man:$MANPATH"
+export PATH="$PATH:$HOME/.rvm/bin" # RVM
+export GOPATH=$HOME/go # Golang
+export GOROOT=/usr/local/opt/go/libexec # Golang
+export PATH=$PATH:$GOPATH/bin # Golang
+export PATH=$PATH:$GOROOT/bin # Golang
+

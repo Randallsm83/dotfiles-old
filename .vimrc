@@ -1,20 +1,14 @@
-" When started as "evim", evim.vim will already have done these settings.
-if v:progname =~? "evim"
-  finish
-endif
-
-" Use Vim settings, rather then Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
 set nocompatible
 
-" Vundle Start
-filetype off                  " required
+filetype off
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
-"call vundle#begin()
+
+" call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
-call vundle#begin('~/vimplugins/')
+let path='~/vimplugins/'
+call vundle#begin(path)
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
@@ -30,7 +24,9 @@ Plugin 'scrooloose/syntastic'
 Plugin 'ervandew/supertab'
 Plugin 'Raimondi/delimitMate'
 Plugin 'majutsushi/tagbar'
-Plugin 'tomasr/molokai'
+Plugin 'vim-perl/vim-perl'
+Plugin 'tmux-plugins/vim-tmux'
+Plugin 'bling/vim-airline'
 
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
@@ -64,9 +60,8 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 " Vundle End
 
-" Start pathogen (disabled, using Vundle now)
-" call pathogen#infect()
-" call pathogen#helptags() " generate helptags for everything in ‘runtimepath’
+" Always show status bar
+set laststatus=2
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -86,6 +81,9 @@ colorscheme molokai
 let g:molokai_original = 1
 let g:rehash256 = 1
 
+" Set vim-airline theme
+let g:airline_theme='wombat'
+
 if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
 else
@@ -102,10 +100,10 @@ set incsearch		" do incremental searching'
 set number
 set showmatch
 set wrap 			" Wrap lines
-set tabstop=4 shiftwidth=4 softtabstop=0 noexpandtab autoindent
 set cindent
 set showmatch
 set showfulltag
+set tabstop=4 shiftwidth=4 softtabstop=0 noexpandtab autoindent
 
 au BufEnter *.py set ai sw=4 ts=4 tw=76 sta et fo=croql
 au BufEnter *.pm,*.pl,*.tp set tw=0
@@ -129,8 +127,8 @@ map <F2> :SyntasticCheck<CR>
 nnoremap <silent> <F3> :TagbarToggle <CR>
 
 " Set F4 to toggle NERDTree, auto open, auto close and focus on prev window
-autocmd vimenter * NERDTree
-autocmd VimEnter * wincmd p
+" autocmd vimenter * NERDTree
+" autocmd VimEnter * wincmd p
 let NERDTreeShowHidden=1
 map <F4> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
@@ -238,3 +236,4 @@ endif " has("autocmd")
 " file it was loaded from, thus the changes you made.
 " command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 "	 	\ | wincmd p | diffthis
+
