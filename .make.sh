@@ -28,6 +28,8 @@ for file in $files; do
 	if [ -f ~/.$file ] && [ -f $dir/.$file ]; then
 		echo "Moving any existing dotfiles from ~ to $olddir"
 		mv ~/.$file $olddir
+	fi
+	if [ -f $dir/.$file ]; then
 		echo "Creating symlink to $file in home directory."
 		ln -s $dir/.$file ~/.$file
 	fi
