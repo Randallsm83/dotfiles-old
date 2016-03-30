@@ -173,16 +173,23 @@ function! RunFennecLine()
     exe "!FENNEC_TEST='" . cur_line . "' prove -v -Ilib -I. -I/home/rmiller/ndn/perl %"
 endfunction
 
+function! RunFennecWholeFile()
+    let cur_line = line(".")
+    exe "!prove -v -Ilib -I. -I/home/rmiller/ndn/perl %"
+endfunction
+
 function! RunFennecLineLess()
     let cur_line = line(".")
     exe "!FENNEC_TEST='" . cur_line . "' prove -v -Ilib -I. -I/home/rmiller/ndn/perl % 2>&1 | less"
 endfunction
 
-:map <F12> :w<cr>:call RunFennecLineLess()<cr>
 :map <F8> :w<cr>:call RunFennecLine()<cr>
+:map <F9> :w<cr>:call RunFennecWholeFile()<cr>
+:map <F10> :w<cr>:call RunFennecLineLess()<cr>
 
-:imap <F12> <ESC>:w<cr>:call RunFennecLineLess()<cr>
 :imap <F8> <ESC>:w<cr>:call RunFennecLine()<cr>
+:imap <F9> <ESC>:w<cr>:call RunFennecWholeFile()<cr>
+:imap <F10> <ESC>:w<cr>:call RunFennecLineLess()<cr>
 " End Vim-Helper plugin: Fennec
 
 " Run perltidy on selection with \dt

@@ -29,10 +29,10 @@ for file in $files; do
 		echo "Moving any existing dotfiles from ~ to $olddir"
 		mv ~/.$file $olddir
 	fi
-	if [ -f $dir/.$file ]; then
+	#if [ -f $dir/.$file ]; then
 		echo "Creating symlink to $file in home directory."
 		ln -s $dir/.$file ~/.$file
-	fi
+	#fi
 done
 
 # check if vundle directory exists so git doesn't fail
