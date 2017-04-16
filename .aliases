@@ -1,4 +1,6 @@
 alias cleanupDS="find . -type f -name '*.DS_Store' -ls -delete"
+alias tmux='~/local/bin/tmux'
+alias vim='~/bin/vim'
 
 alias yakko='ssh rmiller@yakko.sd.dreamhost.com -t tmux a'
 alias fubar='ssh rmiller@fubar.dreamhost.com -t tmux a'
@@ -50,7 +52,7 @@ alias pass='sudo /dh/bin/epasswd.pl -d'
 alias reboot='/usr/local/ndn/dh/bin/reboot.pl'
 alias rebooty.pl='sudo /dh/bin/rebooty.pl'
 alias rsh='sudo rsh'
-alias rssh='sudo /dh/bin/rssh'
+alias rssh='ssh -l root'
 alias sc='sudo /dh/bin/servicectl'
 alias sctl='sudo /dh/bin/servicectl'
 alias servicectl='sudo /dh/bin/servicectl'

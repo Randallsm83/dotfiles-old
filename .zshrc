@@ -162,3 +162,5 @@ else
 		start_agent
 	fi
 fi
+
+source $HOME/ndn/etc/ndnperl.rc
