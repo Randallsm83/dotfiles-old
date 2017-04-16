@@ -34,9 +34,3 @@ for file in $files; do
 		ln -s $dir/.$file ~/.$file
 	#fi
 done
-
-# check if vundle directory exists so git doesn't fail
-cd $dir/.vim/bundle
-if [ ! -d "$vundledir" ]; then
-	git clone https://github.com/gmarik/Vundle.vim.git
-fi
