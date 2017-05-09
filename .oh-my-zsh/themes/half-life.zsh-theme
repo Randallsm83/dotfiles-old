@@ -13,13 +13,11 @@ function virtualenv_info {
 PR_GIT_UPDATE=1
 
 setopt prompt_subst
-autoload colors
-colors
 
 autoload -U add-zsh-hook
 autoload -Uz vcs_info
 
-#use extended color pallete if available
+#use extended color palette if available
 if [[ $TERM = *256color* || $TERM = *rxvt* ]]; then
     turquoise="%F{81}"
     orange="%F{166}"

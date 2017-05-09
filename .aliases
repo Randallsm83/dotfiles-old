@@ -2,8 +2,8 @@ alias cleanupDS="find . -type f -name '*.DS_Store' -ls -delete"
 alias tmux='~/local/bin/tmux'
 alias vim='~/bin/vim'
 
-alias yakko='ssh rmiller@yakko.sd.dreamhost.com -t tmux a'
-alias fubar='ssh rmiller@fubar.dreamhost.com -t tmux a'
+alias yakko='ssh rmiller@yakko.sd.dreamhost.com -t /home/rmiller/local/bin/tmux a'
+alias fubar='ssh rmiller@fubar.dreamhost.com -t /home/rmiller/local/bin/tmux a'
 alias nubar='ssh rmiller@10.3.67.201 -t tmux a'
 alias porky='ssh rmiller@porky.sd.dreamhost.com -t tmux a'
 alias zrc='vi ~/.zshrc'

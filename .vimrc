@@ -46,6 +46,8 @@ Plug 'Raimondi/delimitMate'
 Plug 'majutsushi/tagbar'
 " Seamless vim and tmux nav
 Plug 'christoomey/vim-tmux-navigator'
+" Fuzzy finder
+Plug 'ctrlpvim/ctrlp.vim'
 " Edit .tmux.conf sanely
 Plug 'tmux-plugins/vim-tmux'
 " Vim status line and themes
@@ -66,6 +68,8 @@ call plug#end()
 let mapleader=","
 
 " Set backup, undo and swap directories.
+call system('mkdir ~/.vim/backup')
+call system('mkdir ~/.vim/swp')
 set backupdir=~/.vim/.backup//
 set directory=~/.vim/.swp//
 
@@ -78,6 +82,8 @@ endif
 set nocompatible
 set showcmd			" display incomplete commands
 set number
+set relativenumber
+set numberwidth=2
 set showmatch
 set wrap 			" Wrap lines
 set cindent

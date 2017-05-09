@@ -23,7 +23,7 @@ COMPLETION_WAITING_DOTS="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Plugins
-plugins=(git)
+plugins=(brew cask git history npm osx perl pip python tmux vagrant)
 #(brew brew-cask colored-man colorize extract git github go osx perl pip python tmux vagrant web-search)
 
 source $ZSH/oh-my-zsh.sh
@@ -74,13 +74,11 @@ if [[ $machine_type != ':ndn' ]]; then
 	# source perlbrew
 	source ~/perl5/perlbrew/etc/bashrc
 
+	 export NVM_DIR="$HOME/.nvm"
+  . "/usr/local/opt/nvm/nvm.sh"
+
 	# local::lib
 	# eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)
-
-	# virtualenvwrapper
-	export WORKON_HOME=$HOME/.virtualenvs
-	source /usr/local/bin/virtualenvwrapper.sh
-
 fi
 
 # perl
@@ -164,3 +162,4 @@ else
 fi
 
 source $HOME/ndn/etc/ndnperl.rc
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
