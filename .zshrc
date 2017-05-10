@@ -23,7 +23,7 @@ COMPLETION_WAITING_DOTS="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Plugins
-plugins=(brew cask git history npm osx perl pip python tmux vagrant)
+plugins=(brew cask git npm osx perl pip python tmux vagrant)
 #(brew brew-cask colored-man colorize extract git github go osx perl pip python tmux vagrant web-search)
 
 source $ZSH/oh-my-zsh.sh
