@@ -65,7 +65,7 @@ call plug#end()
 """""""""""
 
 " Set mapleader
-let mapleader=","
+let mapleader=','
 
 " Set backup, undo and swap directories.
 call system('mkdir ~/.vim/backup')
@@ -73,13 +73,12 @@ call system('mkdir ~/.vim/swp')
 set backupdir=~/.vim/.backup//
 set directory=~/.vim/.swp//
 
-if has("vms")
+if has('vms')
   set nobackup		" do not keep a backup file, use versions instead
 else
   set backup		" keep a backup file
 endif
 
-set nocompatible
 set showcmd			" display incomplete commands
 set number
 set relativenumber
@@ -126,7 +125,7 @@ set mouse=a
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
-if &t_Co > 2 || has("gui_running")
+if &t_Co > 2 || has('gui_running')
   syntax on
   set hlsearch
 endif
@@ -218,10 +217,20 @@ autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
 " Syntastic "
 """""""""""""
 
+" Defaults
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
 let g:syntastic_mode_map = {
-	\ "mode": "passive",
-    \ "active_filetypes": ['html', 'php', 'js', 'javascript'],
-    \ "passive_filetypes": [], }
+	\ 'mode': 'passive',
+    \ 'active_filetypes': ['html', 'css', 'php', 'js', 'javascript'],
+    \ 'passive_filetypes': [], }
 
 " Perl
 let g:syntastic_perl_checkers = ['perl']
@@ -229,6 +238,15 @@ let g:syntastic_enable_perl_checker = 1
 
 " JS
 let g:syntastic_javascript_checkers = ['eslint']
+
+" HTML
+let g:syntastic_html_checkers = ['htmlhint']
+
+" CSS
+let g:syntastic_css_checkers = ['stylelint']
+
+" VIM
+let g:syntastic_vim_checkers = ['vint']
 
 " Set F2 to SyntasticCheck
 map <F2> :SyntasticCheck<CR>
@@ -286,12 +304,12 @@ let g:NERDTrimTrailingWhitespace = 1
 """""""""""
 
 function! RunFennecLine()
-    let cur_line = line(".")
+    let cur_line = line('.')
     exe "!FENNEC_TEST='" . cur_line . "' prove -v -Ilib -I. -I/home/rmiller/ndn/perl %"
 endfunction
 
 function! RunFennecWholeFile()
-    let cur_line = line(".")
+    let cur_line = line('.')
     exe "!prove -v -Ilib -I. -I/home/rmiller/ndn/perl %"
 endfunction
 
