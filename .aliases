@@ -1,6 +1,4 @@
 alias cleanupDS="find . -type f -name '*.DS_Store' -ls -delete"
-alias tmux='~/local/bin/tmux'
-alias vim='~/bin/vim'
 alias jsbin="nvm use 0.10.48 && ~/jsbin/bin/jsbin"
 
 alias yakko='ssh rmiller@yakko.sd.dreamhost.com -t /home/rmiller/local/bin/tmux a'
