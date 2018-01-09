@@ -2,7 +2,7 @@ alias cleanupDS="find . -type f -name '*.DS_Store' -ls -delete"
 alias jsbin="nvm use 0.10.48 && ~/jsbin/bin/jsbin"
 
 alias yakko='ssh rmiller@yakko.sd.dreamhost.com -t /home/rmiller/local/bin/tmux a'
-alias tarfu='ssh rmiller@tarfu.dreamhost.com -t tmux a'
+alias tarfu='ssh rmiller@tarfu.dreamhost.com -t /home/rmiller/local/bin/tmux a'
 alias porky='ssh rmiller@porky.sd.dreamhost.com -t tmux a'
 alias lde='~/ndn/bin/ndn-lde'
 alias zrc='vi ~/.zshrc'
