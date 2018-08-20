@@ -70,7 +70,7 @@ COMPLETION_WAITING_DOTS="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Plugins
-plugins=(brew cask git npm osx perl perlbrew pip python tmux vagrant)
+plugins=(alias-tips brew git osx perl perlbrew pip python tmux vagrant)
 #(brew brew-cask colored-man colorize extract git github go osx perl pip python tmux vagrant web-search)
 
 source $ZSH/oh-my-zsh.sh
@@ -86,27 +86,12 @@ export LANG=en_US.UTF-8
 # Set local preferred editor
 export EDITOR='vim'
 
-## Vi mode, preserve some emacs bindings
-#bindkey -v
-#bindkey '^P' up-history
-#bindkey '^N' down-history
-#bindkey '^a' beginning-of-line
-#bindkey '^e' end-of-line
-#bindkey '^?' backward-delete-char
-#bindkey '^h' backward-delete-char
-#bindkey '^u' kill-region
-#bindkey '^w' backward-kill-word
-#bindkey '^r' history-incremental-search-backward
-#
-#function zle-line-init zle-keymap-select {
-#    VIM_PROMPT="%{$fg_bold[yellow]%} [% NORMAL]%  %{$reset_color%}"
-#    RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/}$EPS1"
-#    zle reset-prompt
-#}
-#
-#zle -N zle-line-init
-#zle -N zle-keymap-select
-#export KEYTIMEOUT=1
+# Aliases
+source ~/.aliases
+
+# Paths
+export PATH=$HOME/local:$HOME/ndn/dh/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
+export PATH="$PATH:$HOME/.rvm/bin" # RVM
 
 # Do following only if not SSH session
 fullname=`hostname -f 2>/dev/null || hostname`
@@ -121,28 +106,15 @@ if [[ $machine_type != ':ndn' ]]; then
 	# source perlbrew
 	source ~/perl5/perlbrew/etc/bashrc
 
-	 export NVM_DIR="$HOME/.nvm"
-  . "/usr/local/opt/nvm/nvm.sh"
+	 # export NVM_DIR="$HOME/.nvm"
+  # . "/usr/local/opt/nvm/nvm.sh"
 
 	# local::lib
 	# eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)
 fi
 
 # perl
-export PERL5LIB="$HOME/ndn/perl/"
-
-# Aliases
-source ~/.aliases
-
-# Paths
-export PATH=$HOME/local:$HOME/ndn/dh/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
-export PATH="$PATH:$HOME/.rvm/bin" # RVM
-export GOPATH=$HOME/go # Golang
-export GOROOT=/usr/local/opt/go/libexec # Golang
-export PATH=$PATH:$GOPATH/bin # Golang
-export PATH=$PATH:$GOROOT/bin # Golang
-# export MANPATH="/usr/local/man:$MANPATH"
-
+#export PERL5LIB="$HOME/ndn/perl/"
 
 ################
 # SSH-y things #
@@ -208,5 +180,7 @@ else
 	fi
 fi
 
-source $HOME/ndn/etc/ndnperl.rc
+# source $HOME/ndn/etc/ndnperl.rc
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+eval $(thefuck --alias)

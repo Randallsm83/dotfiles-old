@@ -140,13 +140,15 @@ endif
 set tabstop=4 shiftwidth=4 softtabstop=0 textwidth=78 noexpandtab nosta autoindent
 
 " HTML
-" au BufEnter *.html set
+au BufEnter *.html set ts=2 sw=2 sts=2 expandtab sta
+
 
 " CSS
 au BufEnter *.css set ts=2 sw=2 sts=2 expandtab sta
 
 " JS
-" au BufEnter *.js,*.jsx set
+au BufEnter *.js,*.jsx set ts=2 sw=2 sts=2 expandtab sta
+
 
 " Perl
 " au BufEnter *.pm,*.pl,*.tp set
