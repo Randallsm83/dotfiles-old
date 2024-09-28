@@ -1,21 +1,20 @@
 #!/bin/bash
 
+# Function to get the latest GNU Stow version number
+STOW_URL_BASE="https://ftp.gnu.org/gnu/stow"
+get_latest_stow_version() {
+    # Fetch the index page of the FTP directory and find the latest version
+    wget -qO- "$STOW_URL_BASE/" | grep -oP 'stow-\K[0-9.]+(?=.tar.gz)' | sort -V | tail -1
+}
+
 # Define variables
 DOTFILES_REPO="https://github.com/Randallsm83/dotfiles.git"
 DOTFILES_DIR="$HOME/dotfiles"
 STOW_DIR="$HOME/.local/bin"
 STOW_INSTALL_DIR="$HOME/.local"
-STOW_URL_BASE="https://ftp.gnu.org/gnu/stow"
 STOW_VERSION=$(get_latest_stow_version)
 STOW_TAR="stow-$STOW_VERSION.tar.gz"
 STOW_URL="$STOW_URL_BASE/$STOW_TAR"
-
-
-# Function to get the latest GNU Stow version number
-get_latest_stow_version() {
-    # Fetch the index page of the FTP directory and find the latest version
-    wget -qO- "$STOW_URL_BASE/" | grep -oP 'stow-\K[0-9.]+(?=.tar.gz)' | sort -V | tail -1
-}
 
 # Function to install GNU Stow locally
 install_stow() {
