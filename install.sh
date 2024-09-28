@@ -74,7 +74,7 @@ stow_dotfiles() {
 
     # Use stow to create symlinks for each directory
     for dir in */; do
-        stow -v -t ~ "$dir"
+        stow --override=~ -v -t ~ "$dir"
     done
 
     echo "Symlinks created successfully."
