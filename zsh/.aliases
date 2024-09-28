@@ -3,6 +3,9 @@ alias aliases="alias | sed 's/=.*//'"
 alias functions="declare -f | grep '^[a-z].* ()' | sed 's/{$//'"
 alias paths='echo -e ${PATH//:/\\n}'
 
+# Install dotfiles
+alias dotinstall = "bash <(wget -qO- https://raw.githubusercontent.com/Randallsm83/dotfiles/refs/heads/master/install.sh)"
+
 # Update
 alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup;'
 
