@@ -3,7 +3,7 @@
 # Define variables
 DOTFILES_REPO="https://github.com/Randallsm83/dotfiles.git"
 DOTFILES_DIR="$HOME/dotfiles"
-STOW_VERSION="2.3.1"
+STOW_VERSION="2.4.1"
 STOW_DIR="$HOME/.local/bin"
 STOW_TAR="stow-$STOW_VERSION.tar.gz"
 STOW_URL="https://ftp.gnu.org/gnu/stow/$STOW_TAR"
