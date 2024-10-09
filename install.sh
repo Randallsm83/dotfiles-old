@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Enable error handling
+# Enable error handling, but allow the script to continue on errors for stow
 set -euo pipefail
 
 # Define variables
@@ -91,7 +91,7 @@ clone_dotfiles() {
             esac
         fi
 
-        # Pull latest changes
+        # Pull latest changes from the main branch
         echo "Pulling latest changes from repository..."
         git pull --rebase origin main
     else
@@ -114,7 +114,7 @@ restore_stashed_changes() {
 # Function to back up conflicting files during stow operation
 backup_conflicting_files() {
     local conflicting_dir="$1"
-    local backup_dir="$HOME/dotfiles_backup"
+    local backup_dir="$HOME/dotfiles_backup/$conflicting_dir"
     mkdir -p "$backup_dir"
     echo "Backing up existing dotfiles from $HOME to $backup_dir"
 
@@ -147,15 +147,18 @@ stow_dotfiles() {
     for dir in */; do
         echo "Stowing $dir"
 
-        # Check if there are conflicting files before stowing
-        if stow --override=~ -n -v -t ~ "$dir" 2>&1 | grep -q "would cause conflicts"; then
+        # Capture stow output and error
+        stow_output=$(stow --override=~ -n -v -t ~ "$dir" 2>&1) || stow_exit_code=$?
+
+        # Check if stow detected any conflicts
+        if [[ $stow_output == *"conflicts"* || $stow_exit_code -ne 0 ]]; then
             echo "Conflicts detected for $dir:"
-            stow --override=~ -n -v -t ~ "$dir"
+            echo "$stow_output"
 
             # Print what each option will do
             echo "Options:"
             echo "  (s)kip: Do not stow $dir."
-            echo "  (b)ackup: Move conflicting files in $HOME to $HOME/dotfiles_backup and then stow $dir."
+            echo "  (b)ackup: Move conflicting files in $HOME to $HOME/dotfiles_backup/$dir and then stow $dir."
             echo "  (a)dopt: Make stow take control of existing conflicting files."
             echo "  (o)verwrite: Forcefully replace conflicting files with symlinks from $dir."
             read -r -p "Choose an option: [s/b/a/o]: " choice
