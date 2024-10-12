@@ -145,6 +145,8 @@ stow_dotfiles() {
 
     # Use stow to create symlinks for each directory
     for dir in */; do
+       stow_exit_code=0
+
         # Special case for the 'bin' directory to stow to ~/.local/bin
         if [[ "$dir" == "bin/" ]]; then
             echo "Stowing $dir to ~/.local/bin"
