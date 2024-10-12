@@ -145,10 +145,14 @@ stow_dotfiles() {
 
     # Use stow to create symlinks for each directory
     for dir in */; do
-        echo "Stowing $dir"
-
-        # Capture stow output and error
-        stow_output=$(stow --override=~ -n -v -t ~ "$dir" 2>&1) || stow_exit_code=$?
+        # Special case for the 'bin' directory to stow to ~/.local/bin
+        if [[ "$dir" == "bin/" ]]; then
+            echo "Stowing $dir to ~/.local/bin"
+            stow_output=$(stow --override=~ -n -v -t ~/.local/bin "$dir" 2>&1) || stow_exit_code=$?
+        else
+            echo "Stowing $dir"
+            stow_output=$(stow --override=~ -n -v -t ~ "$dir" 2>&1) || stow_exit_code=$?
+        fi
 
         # Check if stow detected any conflicts
         if [[ $stow_output == *"conflicts"* || $stow_exit_code -ne 0 ]]; then
@@ -170,27 +174,44 @@ stow_dotfiles() {
                 b|B)
                     echo "Backing up conflicting files for $dir..."
                     backup_conflicting_files "$dir"
-                    stow --override=~ -v -t ~ "$dir"
+                    if [[ "$dir" == "bin/" ]]; then
+                        stow --override=~ -v -t ~/.local/bin "$dir"
+                    else
+                        stow --override=~ -v -t ~ "$dir"
+                    fi
                     ;;
                 a|A)
                     echo "Adopting existing files for $dir..."
-                    stow --override=~ --adopt -v -t ~ "$dir"
+                    if [[ "$dir" == "bin/" ]]; then
+                        stow --override=~ --adopt -v -t ~/.local/bin "$dir"
+                    else
+                        stow --override=~ --adopt -v -t ~ "$dir"
+                    fi
                     ;;
                 o|O)
                     echo "Overwriting existing files for $dir..."
-                    stow --override=~ --force -v -t ~ "$dir"
+                    if [[ "$dir" == "bin/" ]]; then
+                        stow --override=~ --force -v -t ~/.local/bin "$dir"
+                    else
+                        stow --override=~ --force -v -t ~ "$dir"
+                    fi
                     ;;
                 *)
                     echo "Invalid choice. Skipping $dir..."
                     ;;
             esac
         else
-            stow --override=~ -v -t ~ "$dir"
+            if [[ "$dir" == "bin/" ]]; then
+                stow --override=~ -v -t ~/.local/bin "$dir"
+            else
+                stow --override=~ -v -t ~ "$dir"
+            fi
         fi
     done
 
     echo "Symlinks created successfully."
 }
+
 
 # Function to check if GNU Stow is installed
 check_stow_installation() {

@@ -290,6 +290,7 @@ let g:ale_fixers = {
 \   'typescript': ['prettier', 'eslint'],
 \   'pug': ['puglint', 'eslint'],
 \   'perl': ['perltidy'],
+\   'sh': ['shfmt'],
 \}
 let g:ale_linters = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
@@ -297,9 +298,14 @@ let g:ale_linters = {
 \   'typescript': ['prettier', 'eslint'],
 \   'pug': ['puglint', 'eslint'],
 \   'perl': ['perlcritic'],
+\   'sh': ['shellcheck'],
 \}
+
 " \   'vim': ['vint'],
 " let g:ale_vim_vint_executable = expand('$HOME/.vim/plugged/vint/bin/vint')
+
+" Set shfmt options
+let g:ale_sh_shfmt_options = '-i 4 -ci -sr'  " Indent with 4 spaces, switch-case indentation, simplify redirects
 
 let g:ale_fix_on_save = 0        " Auto-fix on save
 let g:ale_completion_enabled = 1 " Enable completion via ALE
