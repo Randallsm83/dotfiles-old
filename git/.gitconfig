@@ -4,12 +4,13 @@
 [core]
     editor = vim
 [color]
-    ui = true
-    diff = true
+    ui = auto
+    diff = auto
 [init]
     defaultBranch = master
 [push]
-    autoSetupRemote = true
+    default = current
+    autoSetupRemote = simple
 [grep]
     lineNumber = true
 [color "diff-highlight"]

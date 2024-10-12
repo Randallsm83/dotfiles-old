@@ -21,6 +21,9 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 # ---- Before Plugins -------
 [[ -f ~/.zsh-syntax-theme ]] && source ~/.zsh-syntax-theme
 
+# ---- Language Plugins ----
+zplug "mattberther/zsh-pyenv"
+
 # ---- Oh-My-Zsh Plugins ----
 zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/npm", from:oh-my-zsh
