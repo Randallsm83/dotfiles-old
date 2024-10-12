@@ -21,6 +21,9 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 # ---- Before Plugins -------
 [[ -f ~/.zsh-syntax-theme ]] && source ~/.zsh-syntax-theme
 
+# ---- Language Plugins ----
+zplug "mattberther/zsh-pyenv"
+
 # ---- Oh-My-Zsh Plugins ----
 zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/npm", from:oh-my-zsh
@@ -33,7 +36,7 @@ zplug "plugins/common-aliases", from:oh-my-zsh
 zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-history-substring-search"
+zplug "zsh-users/zsh-history-substring-search", defer:2
 
 # ---- Supercrab Tree ---------
 zplug "supercrabtree/k"
