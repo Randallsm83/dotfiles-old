@@ -8,6 +8,8 @@
     diff = auto
 [init]
     defaultBranch = master
+[pull]
+    rebase = true
 [push]
     default = simple
     autoSetupRemote = true
