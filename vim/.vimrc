@@ -1,3 +1,5 @@
+" vim:filetype=vim
+"
 " ============================================
 "                 Vim-Plug Setup
 " ============================================
@@ -16,7 +18,7 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 " Define plugin installation location
 call plug#begin('~/.vim/plugged')
 
-" ----- Language Support Plugins -----
+" ----- Language Support -----
 Plug 'othree/html5.vim'
 Plug 'othree/html5-syntax.vim'
 Plug 'pangloss/vim-javascript'
@@ -25,31 +27,31 @@ Plug 'leafgarland/typescript-vim'
 Plug 'vim-perl/vim-perl'
 Plug 'digitaltoad/vim-pug'
 
-" ----- Code Styling and Formatting Plugins -----
+" ----- Code Styling and Formatting -----
 Plug 'dense-analysis/ale'
 Plug 'prettier/vim-prettier'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ntpeters/vim-better-whitespace'
 
-" ----- Editor Enhancements Plugins -----
+" ----- Editor Enhancements -----
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdcommenter'
 Plug 'Raimondi/delimitMate'
 
-" ----- File Navigation and Management Plugins -----
+" ----- File Navigation and Management -----
 Plug 'scrooloose/nerdtree'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'majutsushi/tagbar'
 
-" ----- Git Integration Plugins -----
+" ----- Git Integration -----
 Plug 'tpope/vim-fugitive'
 
-" ----- Tmux Integration Plugins -----
+" ----- Tmux Integration -----
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tmux-plugins/vim-tmux'
 
-" ----- Visual Enhancements Plugins -----
+" ----- Visual Enhancements -----
 Plug 'bling/vim-airline'
 Plug 'edkolev/tmuxline.vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -300,9 +302,6 @@ let g:ale_linters = {
 \   'perl': ['perlcritic'],
 \   'sh': ['shellcheck'],
 \}
-
-" \   'vim': ['vint'],
-" let g:ale_vim_vint_executable = expand('$HOME/.vim/plugged/vint/bin/vint')
 
 " Set shfmt options
 let g:ale_sh_shfmt_options = '-i 4 -ci -sr'  " Indent with 4 spaces, switch-case indentation, simplify redirects

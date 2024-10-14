@@ -591,6 +591,18 @@ projects:
       - DEBUG_DB_SQL: 'false'
       - DEBUG: '*'
       - LINK_LOCAL_PACKAGES: 'false'
+  search-service:
+    enable: true
+    repo: git@git.dreamhost.com:dreamhost/microservices/search-service.git
+    path: 'search-service'
+    env_vars:
+      - ENABLE_DEBUGGER: 'false'
+      - PROD_DATABASES: 'true'
+      - EXECUTE_TYPESCRIPT: 'false'
+      - DEBUG_COMMAND_SYSTEM: 'false'
+      - DEBUG_DB_SQL: 'false'
+      - DEBUG: '*'
+      - LINK_LOCAL_PACKAGES: 'false'
 # END of API3 services
 
 # API3 package watcher

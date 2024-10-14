@@ -23,6 +23,14 @@ alias zrc="vim ~/.zshrc"
 alias vrc="vim ~/.vimrc"
 alias zpui="zplug update && zplug install"
 
+# SSH
+alias rotatekeys="source $HOME/ssh-key-manager.sh && rotate_keys"
+alias displaykeys="source $HOME/ssh-key-manager.sh && display_public_keys"
+
+# Arduino
+alias ard="arduino-cli"
+alias ardc="arduino-cloud-cli"
+
 # Functions
 lscolors() {
     for i in {0..255}; do print -Pn “%K{$i} %k%F{$i}${(l:3::0:)i}%f “ ${${(M)$((i%6)):#3}:+$’\n’}; done
@@ -32,5 +40,5 @@ sshkeygen() {
 }
 # Install dotfiles
 dotinstall() {
-    bash <(wget -qO- https://raw.githubusercontent.com/Randallsm83/dotfiles/refs/heads/master/install.sh)
+    bash <(wget -qO- https://raw.githubusercontent.com/Randallsm83/dotfiles/refs/heads/main/install.sh)
 }
