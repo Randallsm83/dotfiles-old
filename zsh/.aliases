@@ -7,13 +7,7 @@ alias paths='echo -e ${PATH//:/\\n}'
 alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup;'
 
 # Set ls color
-if ls --color > /dev/null 2>&1; then
-# GNU `ls`
-	alias ls="ls --color=auto"
-else
-# macOS `ls`
-	alias ls="ls -G"
-fi
+alias ls="ls --color=auto"
 
 
 # TODO
