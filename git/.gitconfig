@@ -9,8 +9,8 @@
 [init]
     defaultBranch = master
 [push]
-    default = current
-    autoSetupRemote = simple
+    default = simple
+    autoSetupRemote = true
 [grep]
     lineNumber = true
 [color "diff-highlight"]
