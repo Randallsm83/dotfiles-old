@@ -9,13 +9,12 @@ alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup
 # Set ls color
 if ls --color > /dev/null 2>&1; then
 # GNU `ls`
-	colorflag="--color"
+	alias ls="ls --color=auto"
 else
 # macOS `ls`
-	colorflag="-G"
+	alias ls="ls -G"
 fi
 
-alias ls='command ls ${colorflag}'
 
 # TODO
 alias gg='git grep -E'
