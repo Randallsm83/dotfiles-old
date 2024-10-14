@@ -267,19 +267,24 @@ augroup END
 " ============================================
 
 " Set terminal colors
-set t_Co=256             " Use 256 colors
-if has("termguicolors")
-    set termguicolors    " Enable true color support
-endif
+if &term =~ '256color'
+  " Enable true (24-bit) colors instead of (8-bit) 256 colors.
+  " :h true-color
+  if has('termguicolors')
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    set termguicolors
+  endif
 
-" Dracula theme settings
-let g:dracula_bold = 1
-let g:dracula_italic = 1
-let g:dracula_italic_comment = 1
-let g:dracula_underline = 1
-let g:dracula_high_contrast = 1
-let g:dracula_colorterm = 1
-colorscheme dracula
+  " Dracula theme settings
+  let g:dracula_bold = 1
+  let g:dracula_italic = 1
+  let g:dracula_italic_comment = 1
+  let g:dracula_underline = 1
+  let g:dracula_high_contrast = 1
+  let g:dracula_colorterm = 1
+  colorscheme dracula
+endif
 
 " ============================================
 "             Plugin Configurations
