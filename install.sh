@@ -76,7 +76,7 @@ install_vim() {
         echo "Installing Vim from source on Linux..."
         git clone "$VIM_URL"
         cd vim || exit
-        ./configure --prefix="$LOCAL_DIR"
+        ./configure --with-tlib=ncurses CPPFLAGS="-I/usr/include/ncurses" LDFLAGS="-L/usr/lib/x86_64-linux-gnu" --prefix="$LOCAL_DIR" -v
         make -j"$(nproc)"
         make install
         cd ..
