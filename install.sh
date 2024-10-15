@@ -213,11 +213,13 @@ stow_dotfiles() {
     cd "$DOTFILES_DIR" || exit
 
     # Base list of directories to stow
-    STOW_DIRS=("dir1" "dir2" "bin")  # General directories
+    STOW_DIRS=("bin" "git" "iterm2" "vim" "zsh")  # General directories
 
     # Add specific directories if hostname contains "dreamhost"
     if [[ "$FULL_HOSTNAME" == *"dreamhost"* ]]; then
-        STOW_DIRS+=("dreamhost_specific_dir")
+        STOW_DIRS+=("ndnhost")
+    else
+        STOW_DIRS+=("localhost")
     fi
 
     # Use stow to create symlinks for each selected directory
