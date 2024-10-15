@@ -6,8 +6,8 @@
 
 " Install vim-plug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
 " Automatically run PlugInstall if there are missing plugins
@@ -17,6 +17,9 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 
 " Define plugin installation location
 call plug#begin('~/.vim/plugged')
+
+" ---------- CoC -------------
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " ----- Language Support -----
 Plug 'othree/html5.vim'
@@ -62,73 +65,84 @@ call plug#end()
 "              Custom Functions
 " ============================================
 
+" CoC show documentation in preview window
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
 " Function to check for file existence in multiple locations
 function! FileReadableInPaths(filename)
-    let s:base_paths = ['/ndn', expand('~/ndn'), expand('~/projects/ndn')]
-    let s:subdirs = ['', 'etc', 'perl/bin']
+  let s:base_paths = ['/ndn', expand('~/ndn'), expand('~/projects/ndn')]
+  let s:subdirs = ['', 'etc', 'perl/bin']
 
-    for base in s:base_paths
-        for subdir in s:subdirs
-            let l:full_path = expand(base . (empty(subdir) ? '' : '/' . subdir) . '/' . a:filename)
-            if filereadable(l:full_path)
-                return l:full_path
-            endif
-        endfor
+  for base in s:base_paths
+    for subdir in s:subdirs
+      let l:full_path = expand(base . (empty(subdir) ? '' : '/' . subdir) . '/' . a:filename)
+      if filereadable(l:full_path)
+        return l:full_path
+      endif
     endfor
-    return ''
+  endfor
+  return ''
 endfunction
 
 " Function to run ALEFix on a selection range using a temporary buffer
 function! ALEFixRange() range
-    try
-        " Save current window view and position
-        let l:winview = winsaveview()
+  try
+    " Save current window view and position
+    let l:winview = winsaveview()
 
-        " Yank selected text to register a
-        silent execute a:firstline.','.a:lastline.'yank a'
+    " Yank selected text to register a
+    silent execute a:firstline.','.a:lastline.'yank a'
 
-        " Open a new temporary buffer
-        new
-        setlocal buftype=nofile bufhidden=hide noswapfile
+    " Open a new temporary buffer
+    new
+    setlocal buftype=nofile bufhidden=hide noswapfile
 
-        " Set filetype same as original buffer
-        let &filetype = getbufvar(bufnr('#'), '&filetype')
+    " Set filetype same as original buffer
+    let &filetype = getbufvar(bufnr('#'), '&filetype')
 
-        " Paste the yanked text
-        silent put a
+    " Paste the yanked text
+    silent put a
 
-        " Remove the first blank line
-        silent 1delete _
+    " Remove the first blank line
+    silent 1delete _
 
-        " Run ALEFix on temporary buffer
-        ALEFix
+    " Run ALEFix on temporary buffer
+    ALEFix
 
-        " Wait for ALE to finish
-        while ale#engine#IsCheckingBuffer(bufnr('%'))
-            sleep 100m
-        endwhile
+    " Wait for ALE to finish
+    while ale#engine#IsCheckingBuffer(bufnr('%'))
+      sleep 100m
+    endwhile
 
-        " Extra wait time for final processing
-        sleep 500m
+    " Extra wait time for final processing
+    sleep 500m
 
-        " Yank the fixed text
-        silent %yank a
+    " Yank the fixed text
+    silent %yank a
 
-        " Close temporary buffer and replace selected text
-        bdelete!
-        silent execute a:firstline.','.a:lastline.'delete _'
-        silent execute a:firstline - 1 . 'put a'
+    " Close temporary buffer and replace selected text
+    bdelete!
+    silent execute a:firstline.','.a:lastline.'delete _'
+    silent execute a:firstline - 1 . 'put a'
 
-        " Restore window view
-        call winrestview(l:winview)
+    " Restore window view
+    call winrestview(l:winview)
 
-    catch
-        " Display error if it occurs
-        let l:error_message = "Error: " . v:exception
-        echohl ErrorMsg
-        echom l:error_message
-        echohl None
-    endtry
+  catch
+    " Display error if it occurs
+    let l:error_message = "Error: " . v:exception
+    echohl ErrorMsg
+    echom l:error_message
+    echohl None
+  endtry
 endfunction
 
 " ============================================
@@ -141,10 +155,10 @@ let s:vim_swp = expand('$HOME/.vim/swp')
 let s:vim_cache = expand('$HOME/.vim/backup')
 
 if filewritable(s:vim_swp) == 0 && exists("*mkdir")
-    call mkdir(s:vim_swp, "p", 0700)
+  call mkdir(s:vim_swp, "p", 0700)
 endif
 if filewritable(s:vim_cache) == 0 && exists("*mkdir")
-    call mkdir(s:vim_cache, "p", 0700)
+  call mkdir(s:vim_cache, "p", 0700)
 endif
 
 execute 'set backupdir=' . s:vim_cache . '//'
@@ -202,13 +216,59 @@ nnoremap <F1> <ESC>
 " Q for formatting instead of Ex mode
 map Q gq
 
-" ,af ALE mapping for fixing
-nnoremap <Leader>af :ALEFix<CR>
-vnoremap <Leader>af :call ALEFixRange()<CR>
-
 " Disable shift+arrow keys in insert mode
 inoremap <S-Up> <nop>
 inoremap <S-Down> <nop>
+
+" F4 NERDTree toggle
+map <F4> :NERDTreeToggle<CR>
+
+" F3 Tagbar toggle
+nnoremap <silent> <F3> :TagbarToggle<CR>
+
+" ,af ALE mapping for fixing
+nnoremap <leader>af <Plug>(ale_fix)
+vnoremap <Leader>af :call ALEFixRange()<CR>
+
+" ----- CoC Mappings -----
+"
+" Highlight the symbol and its references when holding the cursor
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Use tab for trigger completion with characters ahead and navigate
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Use <c-space> to trigger completion
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" Symbol renaming
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
 
 " ============================================
 "               Language Settings
@@ -292,35 +352,64 @@ endif
 
 " ALE Configuration
 let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['prettier', 'eslint'],
-\   'typescript': ['prettier', 'eslint'],
-\   'pug': ['puglint', 'eslint'],
-\   'perl': ['perltidy'],
-\   'sh': ['shfmt'],
-\}
+  \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+  \ 'sh': ['shfmt'],
+  \ 'css': ['prettier'],
+  \ 'html': ['prettier'],
+  \ 'python': ['black'],
+  \ 'perl': ['perltidy'],
+  \ 'pug': ['puglint', 'eslint'],
+  \ 'javascript': ['prettier', 'eslint'],
+  \ 'typescript': ['prettier', 'eslint'],
+\ }
+
 let g:ale_linters = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['prettier', 'eslint'],
-\   'typescript': ['prettier', 'eslint'],
-\   'pug': ['puglint', 'eslint'],
-\   'perl': ['perlcritic'],
-\   'sh': ['shellcheck'],
-\}
+  \ 'sh': ['shellcheck'],
+  \ 'python': ['flake8'],
+  \ 'perl': ['perl', 'perlcritic'],
+  \ 'pug': ['puglint', 'eslint'],
+  \ 'javascript': ['eslint'],
+  \ 'typescript': ['eslint'],
+\ }
 
-" Set shfmt options
-let g:ale_sh_shfmt_options = '-i 4 -ci -sr'  " Indent with 4 spaces, switch-case indentation, simplify redirects
+" Set shfmt options: Indent with 2 spaces, switch-case indentation, simplify redirects
+let g:ale_sh_shfmt_options = '-i 2 -ci -sr'
 
-let g:ale_fix_on_save = 0        " Auto-fix on save
-let g:ale_completion_enabled = 1 " Enable completion via ALE
-let g:ale_linters_explicit = 1   " Use only explicitly configured linters
-let g:ale_lint_on_enter = 0      " Do not lint on entering buffer
+" Set perltidy options
+" TODO .perltidy also?
+let s:perltidyrc = FileReadableInPaths('perltidyrc')
+let g:ale_perl_perltidy_options = s:perltidyrc != '' ? '-pro=' . s:perltidyrc : '-q'
+
+let g:ale_completion_enabled = 0
+
+let g:ale_linters_explicit = 1
+let g:ale_fix_on_save = 0
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_filetype_changed = 1
+let g:ale_lint_on_text_changed = 'never'
+
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '--'
-let g:ale_history_log_output = 1
 let g:ale_virtualtext_cursor = 'current'
-let g:ale_lint_on_text_changed = 'never'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+let g:ale_history_log_output = 1
+
+" CoC
+let g:coc_global_extensions = [
+  \ 'coc-tsserver',
+  \ 'coc-json',
+  \ 'coc-html',
+  \ 'coc-css',
+  \ 'coc-pyright',
+  \ 'coc-perl',
+  \ 'coc-sh',
+  \ 'coc-vimlsp',
+  \ 'coc-git',
+  \ 'coc-snippets'
+\ ]
 
 " Vim-airline
 let g:airline_theme='dracula'
@@ -337,12 +426,8 @@ let g:strip_whitespace_confirm=0
 " JSX Plugin Configuration
 let g:jsx_ext_required = 0
 
-" Tagbar
-nnoremap <silent> <F3> :TagbarToggle<CR>
-
 " NERDTree Configuration
 let NERDTreeShowHidden=1
-map <F4> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " NERDCommenter

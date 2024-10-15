@@ -1,15 +1,19 @@
 #!/bin/bash
 
 # Enable error handling, but allow the script to continue on errors for stow
-# set -euo pipefail
+set -euo pipefail
 
 # Define variables
 LOCAL_DIR="$HOME/.local"
 LOCAL_BIN="$HOME/.local/bin"
+
 DOTFILES_DIR="$HOME/dotfiles"
 DOTFILES_REPO="https://github.com/Randallsm83/dotfiles.git"
+
+VIM_URL="https://github.com/vim/vim.git"
 STOW_URL_BASE="https://ftp.gnu.org/gnu/stow"
 COREUTILS_URL_BASE="https://ftp.gnu.org/gnu/coreutils"
+
 DEPENDENCIES=("wget" "tar" "git" "make" "gcc")
 
 # Let's add these now in case things exist here but we just dont have our dotfiles with the correct paths yet
@@ -49,19 +53,36 @@ check_dependencies() {
     echo "All dependencies are installed."
 }
 
-# Function to install GNU Coreutils on macOS
-install_coreutils_mac() {
-    echo "Installing GNU Coreutils via Homebrew on macOS..."
-
-    # Check if Homebrew is installed
-    if ! command -v brew &> /dev/null; then
-        echo "Homebrew not found. Installing Homebrew..."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Function to install Homebrew on macOS or run brew update/upgrade if it exists
+install_or_update_homebrew() {
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        if ! command -v brew &> /dev/null; then
+            echo "Homebrew not found. Installing Homebrew..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        else
+            echo "Updating and upgrading Homebrew..."
+            brew update && brew upgrade
+        fi
     fi
+}
 
-    # Install GNU Coreutils
-    brew install coreutils
-    echo "GNU Coreutils installed via Homebrew."
+# Function to install Vim
+install_vim() {
+  #TODO upgrade if exists in brew, check if exists and up to date from source
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        echo "Installing Vim via Homebrew..."
+        brew install vim
+    elif [[ "$(uname -s)" == "Linux" ]]; then
+        echo "Installing Vim from source on Linux..."
+        git clone "$VIM_URL"
+        cd vim || exit
+        ./configure --prefix="$LOCAL_DIR"
+        make -j"$(nproc)"
+        make install
+        cd ..
+        rm -rf vim
+        echo "Vim installed in $LOCAL_BIN."
+    fi
 }
 
 # Function to install GNU Coreutils on Linux
@@ -81,6 +102,7 @@ install_coreutils_linux() {
 
 # Function to check Coreutils installation and install if necessary
 check_coreutils_installation() {
+  #TODO upgrade if exists in brew, check if exists and up to date from source
     if command -v ls &> /dev/null; then
       coreutils_version=$(ls --version 2>&1)
       if [[ "$coreutils_version" == *"GNU coreutils"* ]]; then
@@ -91,14 +113,16 @@ check_coreutils_installation() {
 
     echo "GNU Coreutils not found. Installing..."
     if [[ "$(uname -s)" == "Darwin" ]]; then
-        install_coreutils_mac
+      brew install coreutils
+      echo "GNU Coreutils installed via Homebrew."
     elif [[ "$(uname -s)" == "Linux" ]]; then
-        install_coreutils_linux
+      install_coreutils_linux
     fi
 }
 
 # Function to install GNU Stow locally
 install_stow() {
+  #TODO upgrade if exists in brew, check if exists and up to date from source
     STOW_VERSION=$(get_latest_stow_version)
     STOW_TAR="stow-$STOW_VERSION.tar.gz"
     STOW_URL="$STOW_URL_BASE/$STOW_TAR"
@@ -128,6 +152,7 @@ install_stow() {
 
 # Function to check if GNU Stow is installed
 check_stow_installation() {
+  #TODO install with brew if mac like coreutils
     if ! command -v stow &> /dev/null; then
         echo "GNU Stow is not installed. Installing now..."
         install_stow
@@ -307,35 +332,62 @@ restore_stashed_changes() {
     fi
 }
 
-# Main script
+# Function to update and install zplug plugins
+update_zplug() {
+    if command -v zplug &> /dev/null; then
+        echo "Updating and installing zplug plugins..."
+        zplug update && zplug install
+    else
+        echo "zplug is not installed or not in PATH."
+    fi
+}
+
+# Function to install Vim plugins using vim-plug
+install_vim_plugins() {
+    if command -v vim &> /dev/null; then
+        echo "Installing Vim plugins..."
+        vim +'PlugInstall --sync' +qa
+    else
+        echo "Vim is not installed or not in PATH."
+    fi
+}
+
+#TODO Install vim and any other items i want to maintain or have better versions of
 
 # Check if zsh is the default shell and activate it if necessary
-echo "Checking if ZSH is default"
 check_and_activate_zsh
 
 # Check and install dependencies
-echo "Checking dependencies"
 check_dependencies
 
+# Install or update Homebrew on macOS
+install_or_update_homebrew
+
+# Install Vim from source or via Homebrew
+install_vim
+
 # Install the latest version of GNU Coreutils if needed
-echo "Running check_coreutils_installation"
 check_coreutils_installation
 
 # Check if GNU Stow is installed and install it if not
-echo "Running check_stow_installation"
 check_stow_installation
 
 # Clone dotfiles repository and handle any local changes
-echo "Running clone_dotfiles"
 clone_dotfiles
 
 # Create symlinks using GNU Stow and handle conflicts dynamically
-echo "Running stow_dotfiles"
 stow_dotfiles
 
 # Restore stashed changes, if any
-echo "Running restore_stashed_changes"
 restore_stashed_changes
+
+# Update and install zplug plugins
+update_zplug
+
+# Install Vim plugins using vim-plug
+install_vim_plugins
 
 echo "Dotfiles setup completed!"
 
+# Reload the terminal to apply all changes
+exec zsh
