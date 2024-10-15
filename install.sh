@@ -92,14 +92,34 @@ install_source_vim() {
   cd "$LOCAL_DIR"
   git clone "$VIM_URL"
   cd vim || exit
-  ./configure --with-features=huge \
-    --enable-multibyte \
-    --enable-pythoninterp \
-    --enable-python3interp \
-    --enable-perlinterp \
-    --enable-luainterp \
-    --enable-cscope \
-    --prefix="$LOCAL_DIR" -v
+
+  # Detect Python 3 config directory
+  PYTHON3_CONFIG_DIR=$(python3-config --configdir 2>/dev/null)
+
+  # Detect Perl binary
+  PERL_PATH=$(which perl 2>/dev/null)
+
+  # Detect Lua installation
+  LUA_PREFIX=$(which lua 2>/dev/null)
+
+  # Run Vim configure dynamically
+  ./configure \
+    --with-features=huge \
+    --enable-multibyte=yes \
+    --enable-python3interp=yes \
+    --with-python3-config-dir="$PYTHON3_CONFIG_DIR" \
+    --enable-perlinterp=yes \
+    --with-perl="$PERL_PATH" \
+    --enable-luainterp=yes \
+    --with-lua-prefix="$LUA_PREFIX" \
+    --enable-cscope=yes \
+    --prefix="$LOCAL_DIR" \
+    --with-tlib=ncurses \
+    --enable-gui=auto \
+    --without-x \
+    --disable-netbeans \
+    --enable-fail-if-missing \
+    -v
   make -j"$(nproc)"
   make install
   cd ..
