@@ -12,21 +12,24 @@ STOW_URL_BASE="https://ftp.gnu.org/gnu/stow"
 COREUTILS_URL_BASE="https://ftp.gnu.org/gnu/coreutils"
 DEPENDENCIES=("wget" "tar" "git" "make" "gcc")
 
+# Let's add these now in case things exist here but we just dont have our dotfiles with the correct paths yet
+export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/grep/libexec/gnubin:/Users/randallm/.rd/bin:$HOME/bin:$HOME/local/bin:$HOME/.local/bin:$HOME/local:$HOME/.local:$HOME/projects/ndn/dh/bin:$HOME/perl5/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+
 # Function to get the latest GNU Coreutils version number
 get_latest_coreutils_version() {
-    wget -qO- "$COREUTILS_URL_BASE/" | grep -oP 'coreutils-\K[0-9.]+(?=.tar.xz)' | sort -V | tail -1
+    wget -qO- "$COREUTILS_URL_BASE/" | grep -Eo 'coreutils-[0-9]+\.[0-9]+' | sed 's/coreutils-//' | sort -V | tail -1
 }
 
 # Function to get the latest GNU Stow version number
 get_latest_stow_version() {
-    wget -qO- "$STOW_URL_BASE/" | grep -oP 'stow-\K[0-9.]+(?=.tar.gz)' | sort -V | tail -1
+    wget -qO- "$STOW_URL_BASE/" | grep -Eo 'stow-[0-9]+\.[0-9]+(\.[0-9]+)?' | sed 's/stow-//' | sort -V | tail -1
 }
 
 # Function to check and switch to zsh if it's not the current shell
 check_and_activate_zsh() {
     if [[ "$SHELL" != *zsh* ]]; then
         echo "Switching to zsh..."
-        chsh -s "$(which zsh)"
+        chsh -s "$(command -v zsh)"
         echo "Please restart the terminal or log back in for zsh to take effect."
         exit 0
     else
