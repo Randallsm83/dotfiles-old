@@ -8,7 +8,7 @@ LOCAL_DIR="$HOME/.local"
 LOCAL_BIN="$HOME/.local/bin"
 
 DOTFILES_DIR="$HOME/dotfiles"
-DOTFILES_REPO="https://github.com/Randallsm83/dotfiles.git"
+DOTFILES_REPO="git@github.com/Randallsm83/dotfiles.git"
 
 VIM_URL="https://github.com/vim/vim.git"
 STOW_URL_BASE="https://ftp.gnu.org/gnu/stow"
