@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Enable error handling, but allow the script to continue on errors for stow
-set -euo pipefail
+# set -euo pipefail
 
 # Define variables
 LOCAL_DIR="$HOME/.local"
@@ -307,24 +307,31 @@ restore_stashed_changes() {
 # Main script
 
 # Check if zsh is the default shell and activate it if necessary
+echo "Checking if ZSH is default"
 check_and_activate_zsh
 
 # Check and install dependencies
+echo "Checking dependencies"
 check_dependencies
 
 # Install the latest version of GNU Coreutils if needed
+echo "Running check_coreutils_installation"
 check_coreutils_installation
 
 # Check if GNU Stow is installed and install it if not
+echo "Running check_stow_installation"
 check_stow_installation
 
 # Clone dotfiles repository and handle any local changes
+echo "Running clone_dotfiles"
 clone_dotfiles
 
 # Create symlinks using GNU Stow and handle conflicts dynamically
+echo "Running stow_dotfiles"
 stow_dotfiles
 
 # Restore stashed changes, if any
+echo "Running restore_stashed_changes"
 restore_stashed_changes
 
 echo "Dotfiles setup completed!"
