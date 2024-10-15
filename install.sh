@@ -4,12 +4,35 @@
 set -euo pipefail
 
 # Define variables
-DOTFILES_REPO="https://github.com/Randallsm83/dotfiles.git"
-DOTFILES_DIR="$HOME/dotfiles"
-LOCAL_BIN="$HOME/.local/bin"
 LOCAL_DIR="$HOME/.local"
+LOCAL_BIN="$HOME/.local/bin"
+DOTFILES_DIR="$HOME/dotfiles"
+DOTFILES_REPO="https://github.com/Randallsm83/dotfiles.git"
 STOW_URL_BASE="https://ftp.gnu.org/gnu/stow"
+COREUTILS_URL_BASE="https://ftp.gnu.org/gnu/coreutils"
 DEPENDENCIES=("wget" "tar" "git" "make" "gcc")
+
+# Function to get the latest GNU Coreutils version number
+get_latest_coreutils_version() {
+    wget -qO- "$COREUTILS_URL_BASE/" | grep -oP 'coreutils-\K[0-9.]+(?=.tar.xz)' | sort -V | tail -1
+}
+
+# Function to get the latest GNU Stow version number
+get_latest_stow_version() {
+    wget -qO- "$STOW_URL_BASE/" | grep -oP 'stow-\K[0-9.]+(?=.tar.gz)' | sort -V | tail -1
+}
+
+# Function to check and switch to zsh if it's not the current shell
+check_and_activate_zsh() {
+    if [[ "$SHELL" != *zsh* ]]; then
+        echo "Switching to zsh..."
+        chsh -s "$(which zsh)"
+        echo "Please restart the terminal or log back in for zsh to take effect."
+        exit 0
+    else
+        echo "Already using zsh."
+    fi
+}
 
 # Function to check dependencies
 check_dependencies() {
@@ -23,9 +46,52 @@ check_dependencies() {
     echo "All dependencies are installed."
 }
 
-# Function to get the latest GNU Stow version number
-get_latest_stow_version() {
-    wget -qO- "$STOW_URL_BASE/" | grep -oP 'stow-\K[0-9.]+(?=.tar.gz)' | sort -V | tail -1
+# Function to install GNU Coreutils on macOS
+install_coreutils_mac() {
+    echo "Installing GNU Coreutils via Homebrew on macOS..."
+
+    # Check if Homebrew is installed
+    if ! command -v brew &> /dev/null; then
+        echo "Homebrew not found. Installing Homebrew..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+
+    # Install GNU Coreutils
+    brew install coreutils
+    echo "GNU Coreutils installed via Homebrew."
+}
+
+# Function to install GNU Coreutils on Linux
+install_coreutils_linux() {
+    COREUTILS_VERSION=$(get_latest_coreutils_version)
+    echo "Installing GNU Coreutils version $COREUTILS_VERSION from source on Linux..."
+    wget "$COREUTILS_URL_BASE/coreutils-${COREUTILS_VERSION}.tar.xz"
+    tar -xf "coreutils-${COREUTILS_VERSION}.tar.xz"
+    cd "coreutils-${COREUTILS_VERSION}" || exit
+    ./configure --prefix="$LOCAL_DIR"
+    make -j"$(nproc)"
+    make install
+    cd ..
+    rm -rf "coreutils-${COREUTILS_VERSION}" "coreutils-${COREUTILS_VERSION}.tar.xz"
+    echo "GNU Coreutils installed to $LOCAL_BIN."
+}
+
+# Function to check Coreutils installation and install if necessary
+check_coreutils_installation() {
+    if command -v ls &> /dev/null; then
+      coreutils_version=$(ls --version 2>&1)
+      if [[ "$coreutils_version" == *"GNU coreutils"* ]]; then
+          echo "GNU Coreutils is already installed."
+          return
+      fi
+    fi
+
+    echo "GNU Coreutils not found. Installing..."
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        install_coreutils_mac
+    elif [[ "$(uname -s)" == "Linux" ]]; then
+        install_coreutils_linux
+    fi
 }
 
 # Function to install GNU Stow locally
@@ -45,9 +111,9 @@ install_stow() {
     tar -xf "$STOW_TAR"
     cd "stow-$STOW_VERSION" || exit
 
-    # Install Stow locally in ~/local
+    # Install Stow locally in ~/.local
     ./configure --prefix="$LOCAL_DIR"
-    make -j$(nproc)
+    make -j"$(nproc)"
     make install
 
     # Clean up
@@ -55,6 +121,16 @@ install_stow() {
     rm -rf "stow-$STOW_VERSION" "$STOW_TAR"
 
     echo "GNU Stow installed locally at $LOCAL_BIN"
+}
+
+# Function to check if GNU Stow is installed
+check_stow_installation() {
+    if ! command -v stow &> /dev/null; then
+        echo "GNU Stow is not installed. Installing now..."
+        install_stow
+    else
+        echo "GNU Stow is already installed."
+    fi
 }
 
 # Function to clone dotfiles repository
@@ -69,7 +145,7 @@ clone_dotfiles() {
             echo "Local changes detected in dotfiles repository."
 
             # Prompt user to stash or reset
-            read -p "Would you like to (s)tash, (r)eset, or (a)bort? [s/r/a]: " choice
+            read -r -p "Would you like to (s)tash, (r)eset, or (a)bort? [s/r/a]: " choice
             case $choice in
                 s|S)
                     echo "Stashing local changes..."
@@ -100,16 +176,6 @@ clone_dotfiles() {
     echo "Dotfiles cloned to $DOTFILES_DIR"
 }
 
-# Function to restore stashed changes
-restore_stashed_changes() {
-    cd "$DOTFILES_DIR" || exit
-    if git stash list | grep -q 'stash@{0}'; then
-        echo "Restoring stashed changes..."
-        git stash pop
-    else
-        echo "No stashed changes to restore."
-    fi
-}
 
 # Function to back up conflicting files during stow operation
 backup_conflicting_files() {
@@ -132,9 +198,12 @@ backup_conflicting_files() {
     echo "Backup completed for $conflicting_dir."
 }
 
-# Function to create symlinks using stow with options for handling conflicts
+# Function to create symlinks using stow, based on hostname
 stow_dotfiles() {
     echo "Creating symlinks with GNU Stow..."
+
+    # Get the current hostname
+    FULL_HOSTNAME=$(hostname -f)
 
     # Add ~/.local/bin to PATH if it's not already there
     if [[ ":$PATH:" != *":$LOCAL_BIN:"* ]]; then
@@ -143,12 +212,20 @@ stow_dotfiles() {
 
     cd "$DOTFILES_DIR" || exit
 
-    # Use stow to create symlinks for each directory
-    for dir in */; do
+    # Base list of directories to stow
+    STOW_DIRS=("dir1" "dir2" "bin")  # General directories
+
+    # Add specific directories if hostname contains "dreamhost"
+    if [[ "$FULL_HOSTNAME" == *"dreamhost"* ]]; then
+        STOW_DIRS+=("dreamhost_specific_dir")
+    fi
+
+    # Use stow to create symlinks for each selected directory
+    for dir in "${STOW_DIRS[@]}"; do
        stow_exit_code=0
 
         # Special case for the 'bin' directory to stow to ~/.local/bin
-        if [[ "$dir" == "bin/" ]]; then
+        if [[ "$dir" == "bin" ]]; then
             echo "Stowing $dir to ~/.local/bin"
             stow_output=$(stow --override=~ -n -v -t ~/.local/bin "$dir" 2>&1) || stow_exit_code=$?
         else
@@ -156,12 +233,12 @@ stow_dotfiles() {
             stow_output=$(stow --override=~ -n -v -t ~ "$dir" 2>&1) || stow_exit_code=$?
         fi
 
-        # Check if stow detected any conflicts
+        # Handle conflicts
         if [[ $stow_output == *"conflicts"* || $stow_exit_code -ne 0 ]]; then
             echo "Conflicts detected for $dir:"
             echo "$stow_output"
 
-            # Print what each option will do
+            # Print options for resolving conflicts
             echo "Options:"
             echo "  (s)kip: Do not stow $dir."
             echo "  (b)ackup: Move conflicting files in $HOME to $HOME/dotfiles_backup/$dir and then stow $dir."
@@ -203,7 +280,7 @@ stow_dotfiles() {
                     ;;
             esac
         else
-            if [[ "$dir" == "bin/" ]]; then
+            if [[ "$dir" == "bin" ]]; then
                 stow --override=~ -v -t ~/.local/bin "$dir"
             else
                 stow --override=~ -v -t ~ "$dir"
@@ -214,19 +291,27 @@ stow_dotfiles() {
     echo "Symlinks created successfully."
 }
 
-
-# Function to check if GNU Stow is installed
-check_stow_installation() {
-    if ! command -v stow &> /dev/null; then
-        echo "GNU Stow is not installed. Installing now..."
-        install_stow
+# Function to restore stashed changes
+restore_stashed_changes() {
+    cd "$DOTFILES_DIR" || exit
+    if git stash list | grep -q 'stash@{0}'; then
+        echo "Restoring stashed changes..."
+        git stash pop
     else
-        echo "GNU Stow is already installed."
+        echo "No stashed changes to restore."
     fi
 }
 
+# Main script
+
+# Check if zsh is the default shell and activate it if necessary
+check_and_activate_zsh
+
 # Check and install dependencies
 check_dependencies
+
+# Install the latest version of GNU Coreutils if needed
+check_coreutils_installation
 
 # Check if GNU Stow is installed and install it if not
 check_stow_installation
@@ -241,3 +326,4 @@ stow_dotfiles
 restore_stashed_changes
 
 echo "Dotfiles setup completed!"
+
