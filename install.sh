@@ -74,6 +74,7 @@ install_vim() {
         brew install vim
     elif [[ "$(uname -s)" == "Linux" ]]; then
         echo "Installing Vim from source on Linux..."
+        cd "$LOCAL_DIR"
         git clone "$VIM_URL"
         cd vim || exit
         ./configure --with-tlib=ncurses CPPFLAGS="-I/usr/include/ncurses" LDFLAGS="-L/usr/lib/x86_64-linux-gnu" --prefix="$LOCAL_DIR" -v
@@ -89,6 +90,7 @@ install_vim() {
 install_coreutils_linux() {
     COREUTILS_VERSION=$(get_latest_coreutils_version)
     echo "Installing GNU Coreutils version $COREUTILS_VERSION from source on Linux..."
+    cd "$LOCAL_DIR"
     wget "$COREUTILS_URL_BASE/coreutils-${COREUTILS_VERSION}.tar.xz"
     tar -xf "coreutils-${COREUTILS_VERSION}.tar.xz"
     cd "coreutils-${COREUTILS_VERSION}" || exit
