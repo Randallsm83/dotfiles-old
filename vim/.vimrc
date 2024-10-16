@@ -151,8 +151,8 @@ endfunction
 
 " Backup and swap settings
 " Create backup and swap directories if they don't exist
-let s:vim_swp = expand('$HOME/.vim/swp')
-let s:vim_cache = expand('$HOME/.vim/backup')
+let s:vim_swp = expand('~/.vim/swp')
+let s:vim_cache = expand('~/.vim/backup')
 
 if filewritable(s:vim_swp) == 0 && exists("*mkdir")
   call mkdir(s:vim_swp, "p", 0700)
@@ -354,6 +354,7 @@ endif
 let g:ale_fixers = {
   \ '*': ['remove_trailing_lines', 'trim_whitespace'],
   \ 'sh': ['shfmt'],
+  \ 'zsh': ['shfmt'],
   \ 'css': ['prettier'],
   \ 'html': ['prettier'],
   \ 'python': ['black'],
@@ -365,6 +366,7 @@ let g:ale_fixers = {
 
 let g:ale_linters = {
   \ 'sh': ['shellcheck'],
+  \ 'zsh': ['shellcheck'],
   \ 'python': ['flake8'],
   \ 'perl': ['perl', 'perlcritic'],
   \ 'pug': ['puglint', 'eslint'],

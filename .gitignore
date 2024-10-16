@@ -1,2 +1,5 @@
 # Ignore all .git directories by default
 **/.git
+
+# No .DS_Store
+.DS_Store
