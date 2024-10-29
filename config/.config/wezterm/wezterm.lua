@@ -13,44 +13,44 @@ config.colors = {}
 -------------------- Appearance ----------------------------
 
 --- Gruvbox
--- config.color_scheme = 'GruvboxDark'
--- config.color_scheme = 'GruvboxDarkHard'
--- config.color_scheme = 'Gruvbox Dark (Gogh)'
--- config.color_scheme = 'Gruvbox Material (Gogh)'
--- config.color_scheme = 'Gruvbox dark, pale (base16)'
-config.color_scheme = "Gruvbox dark, soft (base16)"
+-- config.color_scheme = "GruvboxDark"
+-- config.color_scheme = "GruvboxDarkHard"
+config.color_scheme = "Gruvbox Dark (Gogh)"
+-- config.color_scheme = "Gruvbox Material (Gogh)"
+-- config.color_scheme = "Gruvbox dark, pale (base16)"
+-- config.color_scheme = "Gruvbox dark, soft (base16)"
 -- config.color_scheme = "Gruvbox dark, medium (base16)"
--- config.color_scheme = 'Gruvbox dark, hard (base16)'
+-- config.color_scheme = "Gruvbox dark, hard (base16)"
 
 --- Dracula
--- config.color_scheme = 'Dracula+'
--- config.color_scheme = 'Dracula (Gogh)'
--- config.color_scheme = 'Dracula (Official)'
+-- config.color_scheme = "Dracula+"
+-- config.color_scheme = "Dracula (Gogh)"
+-- config.color_scheme = "Dracula (Official)"
 
 --- One Dark
--- config.color_scheme = 'One Dark (Gogh)'
--- config.color_scheme = 'OneDark (base16)'
+-- config.color_scheme = "One Dark (Gogh)"
+-- config.color_scheme = "OneDark (base16)"
 
 --- Kanagawa
--- config.color_scheme = 'Kanagawa (Gogh)'
+-- config.color_scheme = "Kanagawa (Gogh)"
 
 --- Tokyo Nights
--- config.color_scheme = 'Tokyo Night'
--- config.color_scheme = 'Tokyo Night Storm'
--- config.color_scheme = 'Tokyo Night Moon'
+-- config.color_scheme = "Tokyo Night"
+-- config.color_scheme = "Tokyo Night Storm"
+-- config.color_scheme = "Tokyo Night Moon"
 
 --- Catppuccin
--- config.color_scheme = 'catppuccin-frappe'
--- config.color_scheme = 'catppuccin-macchiato'
--- config.color_scheme = 'catppuccin-mocha'
+-- config.color_scheme = "catppuccin-frappe"
+-- config.color_scheme = "catppuccin-macchiato"
+-- config.color_scheme = "catppuccin-mocha"
 
 --- Chalk
--- config.color_scheme = 'Chalk'
--- config.color_scheme = 'Chalk (Gogh)'
--- config.color_scheme = 'Chalk (dark) (terminal.sexy)'
+-- config.color_scheme = "Chalk"
+-- config.color_scheme = "Chalk (Gogh)"
+-- config.color_scheme = "Chalk (dark) (terminal.sexy)"
 
 --- Gogh
--- config.color_scheme = 'Gogh (Gogh)'
+-- config.color_scheme = "Gogh (Gogh)"
 
 --- Kanagawa
 -- config.colors = {
@@ -79,7 +79,7 @@ config.font = wezterm.font_with_fallback({
 	"Menlo",
 })
 config.font_size = 14
-config.line_height = 1.1
+config.line_height = 1.025
 
 ------------------ Windows and Panes -----------------------
 -- Window configuration
@@ -90,21 +90,21 @@ config.window_decorations = "RESIZE"
 config.native_macos_fullscreen_mode = false
 config.adjust_window_size_when_changing_font_size = false
 
-config.window_background_opacity = 0.9
-config.macos_window_background_blur = 25
+config.window_background_opacity = 1
+-- config.macos_window_background_blur = 0
 
 -- Window Padding
 config.window_padding = {
-	top = 2,
-	left = 5,
-	right = 10,
-	bottom = 10,
+	top = 5,
+	left = 10,
+	right = 5,
+	bottom = 5,
 }
 
 -- Dim inactive panes
 config.inactive_pane_hsb = {
 	saturation = 0.9,
-	brightness = 0.6,
+	brightness = 0.7,
 }
 
 ------------------------- Tabs -----------------------------
