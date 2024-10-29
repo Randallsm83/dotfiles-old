@@ -1,5 +1,8 @@
 # Ignore all .git directories by default
 **/.git
 
+# No zsh history
+config/.config/zsh/zsh_history
+
 # No .DS_Store
 .DS_Store
