@@ -79,7 +79,7 @@ config.font = wezterm.font_with_fallback({
 	"Menlo",
 })
 config.font_size = 14
-config.line_height = 1.025
+config.line_height = 1.05
 
 ------------------ Windows and Panes -----------------------
 -- Window configuration
