@@ -22,6 +22,7 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 [[ -f ~/.config/zsh/zsh-syntax-theme ]] && source ~/.config/zsh/zsh-syntax-theme
 
 # ---- Language Plugins ----
+zplug "lukechilds/zsh-nvm"
 zplug "mattberther/zsh-pyenv"
 zplug "DhavalKapil/luaver"
 
