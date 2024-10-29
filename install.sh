@@ -12,9 +12,8 @@ DOTFILES_REPO="https://github.com/Randallsm83/dotfiles.git"
 
 # Available with git
 VIM_URL="https://github.com/vim/vim.git"
+NEOVIM_URL="https://github.com/neovim/neovim.git"
 STOW_URL="https://git.savannah.gnu.org/git/stow.git"
-COREUTILS_URL="https://github.com/coreutils/coreutils.git"
-PKGCONFIG_URL="https://gitlab.freedesktop.org/pkg-config/pkg-config.git"
 
 # Available with wget
 TAR_URL="https://ftp.gnu.org/gnu/tar/tar-latest.tar.gz"
@@ -27,16 +26,11 @@ LUA_URL="https://www.lua.org/download.html"
 DEPENDENCIES=("wget" "git" "tar" "make" "gcc" "pkg-config")
 
 # Let's add these now in case things exist here but we just dont have our dotfiles with the correct paths yet
-export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/grep/libexec/gnubin:~/.local/bin:~/.local:~/bin:~/projects/ndn/dh/bin:~/perl5/bin:/usr/local/bin:/usr/local/sbin:$PATH"
-export LDFLAGS="-L~/.local/lib $LDFLAGS"
-export CPPFLAGS="-I~/.local/include $CPPFLAGS"
-export LD_LIBRARY_PATH="~/.local/lib:$LD_LIBRARY_PATH"
-export PKG_CONFIG_PATH="~/.local/lib/pkgconfig:$PKG_CONFIG_PATH"
-
-# Function to get the latest GNU Coreutils version number
-get_latest_coreutils_version() {
-  wget -qO- "$COREUTILS_URL/" | grep -Eo 'coreutils-[0-9]+\.[0-9]+' | sed 's/coreutils-//' | sort -V | tail -1
-}
+export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/grep/libexec/gnubin:$HOME/.local/bin:$HOME/.local:$HOME/bin:$HOME/projects/ndn/dh/bin:$HOME/perl5/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+export LDFLAGS="-L$HOME/.local/lib $LDFLAGS"
+export CPPFLAGS="-I$HOME/.local/include $CPPFLAGS"
+export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="$HOME/.local/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # Function to get the latest GNU Stow version number
 get_latest_stow_version() {
@@ -70,7 +64,7 @@ check_dependencies() {
 # Function to install Homebrew on macOS or run brew update/upgrade if it exists
 install_or_update_homebrew() {
   if [[ "$(uname -s)" == "Darwin" ]]; then
-    if ! command -v brew &> /dev/null; then
+    if ! command -v brew &>/dev/null; then
       echo "Homebrew not found. Installing Homebrew..."
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     else
@@ -94,103 +88,6 @@ handle_brew_package() {
   else
     echo "Installing $package..."
     brew install "$package"
-  fi
-}
-
-#TODO Install lua and ncurses
-
-# Function to install Vim from source
-install_source_vim() {
-  echo "Installing Vim from source on Linux..."
-  cd "$LOCAL_DIR"
-  git clone "$VIM_URL"
-  cd vim || exit
-
-  # Detect Python 3 config directory
-  PYTHON3_CONFIG_DIR=$(python3-config --configdir 2>/dev/null)
-
-  # Detect Perl binary
-  PERL_PATH=$(which perl 2>/dev/null)
-
-  LDFLAGS="$(pkg-config --libs ncursesw)"
-  CPPFLAGS="$(pkg-config --cflags ncursesw)"
-
-  # Run Vim configure dynamically
-  LDFLAGS CPPFLAGS ./configure \
-    --with-features=huge \
-    --enable-multibyte=yes \
-    --enable-python3interp=yes \
-    --with-python3-config-dir="$PYTHON3_CONFIG_DIR" \
-    --enable-perlinterp=yes \
-    --with-perl="$PERL_PATH" \
-    --enable-luainterp=yes \
-    --with-lua-prefix="$LOCAL_DIR" \
-    --enable-cscope=yes \
-    --prefix="$LOCAL_DIR" \
-    --with-tlib=ncurses \
-    --enable-gui=auto \
-    --without-x \
-    --disable-netbeans \
-    --enable-fail-if-missing \
-    -v
-  make -j"$(nproc)"
-  make install
-  cd ..
-  rm -rf vim
-  echo "Vim installed in $LOCAL_BIN."
-}
-
-# Function to check Vim and install or upgrade when necessary
-check_vim() {
-  if [[ "$(uname -s)" == "Darwin" ]]; then
-    handle_brew_package vim
-  elif [[ "$(uname -s)" == "Linux" ]]; then
-    if command -v vim &> /dev/null; then
-      vim_version=$(vim --version | head -n 1)
-      echo "Vim is already installed: $vim_version"
-      echo "To update Vim on Linux, please rebuild from source."
-    else
-      echo "Vim not found. Installing from source..."
-      install_source_vim
-    fi
-  fi
-}
-
-# Function to install GNU Coreutils
-install_coreutils_linux() {
-  COREUTILS_VERSION=$(get_latest_coreutils_version)
-  echo "Installing GNU Coreutils version $COREUTILS_VERSION from source on Linux..."
-  cd "$LOCAL_DIR"
-  wget "$COREUTILS_URL/coreutils-${COREUTILS_VERSION}.tar.xz"
-  tar -xf "coreutils-${COREUTILS_VERSION}.tar.xz"
-  cd "coreutils-${COREUTILS_VERSION}" || exit
-  ./configure --prefix="$LOCAL_DIR"
-  make -j"$(nproc)"
-  make install
-  cd ..
-  rm -rf "coreutils-${COREUTILS_VERSION}" "coreutils-${COREUTILS_VERSION}.tar.xz"
-  echo "GNU Coreutils installed to $LOCAL_BIN."
-}
-
-# Function to check Coreutils installation and install if necessary
-check_coreutils_installation() {
-  if [[ "$(uname -s)" == "Darwin" ]]; then
-    echo "Installing or upgrading GNU Coreutils via Homebrew..."
-    brew install coreutils || brew upgrade coreutils
-  elif [[ "$(uname -s)" == "Linux" ]]; then
-    if command -v ls &> /dev/null; then
-      coreutils_version=$(ls --version 2>&1)
-      if [[ "$coreutils_version" == *"GNU coreutils"* ]]; then
-        echo "GNU Coreutils is already installed."
-        echo "To update GNU Coreutils on Linux, please rebuild from source."
-      else
-        echo "GNU Coreutils not found. Installing from source..."
-        install_coreutils_linux
-      fi
-    else
-      echo "GNU Coreutils not found. Installing from source..."
-      install_coreutils_linux
-    fi
   fi
 }
 
@@ -218,7 +115,7 @@ install_stow() {
 # Function to check if GNU Stow is installed
 check_stow_installation() {
   #TODO install with brew if mac like coreutils
-  if ! command -v stow &> /dev/null; then
+  if ! command -v stow &>/dev/null; then
     echo "GNU Stow is not installed. Installing now..."
     install_stow
   else
@@ -233,42 +130,41 @@ clone_dotfiles() {
     echo "Dotfiles directory already exists."
     cd "$DOTFILES_DIR" || exit
 
-        # Check for local changes
-        if [ -n "$(git status --porcelain)" ]; then
-          echo "Local changes detected in dotfiles repository."
+    # Check for local changes
+    if [ -n "$(git status --porcelain)" ]; then
+      echo "Local changes detected in dotfiles repository."
 
-            # Prompt user to stash or reset
-            read -r -p "Would you like to (s)tash, (r)eset, or (a)bort? [s/r/a]: " choice
-            case $choice in
-              s|S)
-                echo "Stashing local changes..."
-                git stash --include-untracked
-                ;;
-              r|R)
-                echo "Resetting local changes..."
-                git reset --hard
-                git clean -fd
-                ;;
-              a|A)
-                echo "Aborting..."
-                exit 1
-                ;;
-              *)
-                echo "Invalid choice. Aborting..."
-                exit 1
-                ;;
-            esac
-        fi
+      # Prompt user to stash or reset
+      read -r -p "Would you like to (s)tash, (r)eset, or (a)bort? [s/r/a]: " choice
+      case $choice in
+      s | S)
+        echo "Stashing local changes..."
+        git stash --include-untracked
+        ;;
+      r | R)
+        echo "Resetting local changes..."
+        git reset --hard
+        git clean -fd
+        ;;
+      a | A)
+        echo "Aborting..."
+        exit 1
+        ;;
+      *)
+        echo "Invalid choice. Aborting..."
+        exit 1
+        ;;
+      esac
+    fi
 
-        # Pull latest changes from the main branch
-        echo "Pulling latest changes from repository..."
-        git pull --rebase origin main
-      else
-        git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
+    # Pull latest changes from the main branch
+    echo "Pulling latest changes from repository..."
+    git pull --rebase origin main
+  else
+    git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
   fi
   echo "Dotfiles cloned to $DOTFILES_DIR"
 }
-
 
 # Function to back up conflicting files during stow operation
 backup_conflicting_files() {
@@ -306,7 +202,7 @@ stow_dotfiles() {
   cd "$DOTFILES_DIR" || exit
 
   # Base list of directories to stow
-  STOW_DIRS=("bin" "git" "iterm2" "vim" "zsh")  # General directories
+  STOW_DIRS=("bin" "git" "iterm2" "vim" "zsh") # General directories
 
   # Add specific directories if hostname contains "dreamhost"
   if [[ "$FULL_HOSTNAME" == *"dreamhost"* ]]; then
@@ -333,53 +229,53 @@ stow_dotfiles() {
       echo "Conflicts detected for $dir:"
       echo "$stow_output"
 
-        # Print options for resolving conflicts
-        echo "Options:"
-        echo "  (s)kip: Do not stow $dir."
-        echo "  (b)ackup: Move conflicting files in $HOME to $HOME/dotfiles_backup/$dir and then stow $dir."
-        echo "  (a)dopt: Make stow take control of existing conflicting files."
-        echo "  (o)verwrite: Forcefully replace conflicting files with symlinks from $dir."
-        read -r -p "Choose an option: [s/b/a/o]: " choice
+      # Print options for resolving conflicts
+      echo "Options:"
+      echo "  (s)kip: Do not stow $dir."
+      echo "  (b)ackup: Move conflicting files in $HOME to $HOME/dotfiles_backup/$dir and then stow $dir."
+      echo "  (a)dopt: Make stow take control of existing conflicting files."
+      echo "  (o)verwrite: Forcefully replace conflicting files with symlinks from $dir."
+      read -r -p "Choose an option: [s/b/a/o]: " choice
 
-        case $choice in
-          s|S)
-            echo "Skipping $dir..."
-            ;;
-          b|B)
-            echo "Backing up conflicting files for $dir..."
-            backup_conflicting_files "$dir"
-            if [[ "$dir" == "bin/" ]]; then
-              stow --override=~ -v -t ~/.local/bin "$dir"
-            else
-              stow --override=~ -v -t ~ "$dir"
-            fi
-            ;;
-          a|A)
-            echo "Adopting existing files for $dir..."
-            if [[ "$dir" == "bin/" ]]; then
-              stow --override=~ --adopt -v -t ~/.local/bin "$dir"
-            else
-              stow --override=~ --adopt -v -t ~ "$dir"
-            fi
-            ;;
-          o|O)
-            echo "Overwriting existing files for $dir..."
-            if [[ "$dir" == "bin/" ]]; then
-              stow --override=~ --force -v -t ~/.local/bin "$dir"
-            else
-              stow --override=~ --force -v -t ~ "$dir"
-            fi
-            ;;
-          *)
-            echo "Invalid choice. Skipping $dir..."
-            ;;
-        esac
-      else
-        if [[ "$dir" == "bin" ]]; then
+      case $choice in
+      s | S)
+        echo "Skipping $dir..."
+        ;;
+      b | B)
+        echo "Backing up conflicting files for $dir..."
+        backup_conflicting_files "$dir"
+        if [[ "$dir" == "bin/" ]]; then
           stow --override=~ -v -t ~/.local/bin "$dir"
         else
           stow --override=~ -v -t ~ "$dir"
         fi
+        ;;
+      a | A)
+        echo "Adopting existing files for $dir..."
+        if [[ "$dir" == "bin/" ]]; then
+          stow --override=~ --adopt -v -t ~/.local/bin "$dir"
+        else
+          stow --override=~ --adopt -v -t ~ "$dir"
+        fi
+        ;;
+      o | O)
+        echo "Overwriting existing files for $dir..."
+        if [[ "$dir" == "bin/" ]]; then
+          stow --override=~ --force -v -t ~/.local/bin "$dir"
+        else
+          stow --override=~ --force -v -t ~ "$dir"
+        fi
+        ;;
+      *)
+        echo "Invalid choice. Skipping $dir..."
+        ;;
+      esac
+    else
+      if [[ "$dir" == "bin" ]]; then
+        stow --override=~ -v -t ~/.local/bin "$dir"
+      else
+        stow --override=~ -v -t ~ "$dir"
+      fi
     fi
   done
 
@@ -399,25 +295,13 @@ restore_stashed_changes() {
 
 # Function to update and install zplug plugins
 update_zplug() {
-  if command -v zplug &> /dev/null; then
+  if command -v zplug &>/dev/null; then
     echo "Updating and installing zplug plugins..."
     zplug update && zplug install
   else
     echo "zplug is not installed or not in PATH."
   fi
 }
-
-# Function to install Vim plugins using vim-plug
-install_vim_plugins() {
-  if command -v vim &> /dev/null; then
-    echo "Installing Vim plugins..."
-    vim +'PlugInstall --sync' +qa
-  else
-    echo "Vim is not installed or not in PATH."
-  fi
-}
-
-#TODO Install vim and any other items i want to maintain or have better versions of
 
 # Create local directories before anything
 mkdir -p "$LOCAL_BIN"

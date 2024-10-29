@@ -86,19 +86,25 @@ export VISUAL='nvim'
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-# Path modifications
-export LDFLAGS="-L~/.local/lib $LDFLAGS"
-export CPPFLAGS="-I~/.local/include $CPPFLAGS"
-export LD_LIBRARY_PATH="~/.local/lib:$LD_LIBRARY_PATH"
-export PKG_CONFIG_PATH="~/.local/lib/pkgconfig:$PKG_CONFIG_PATH"
-export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
-export PATH="~/.local/bin:~/.local:~/bin:~/projects/ndn/dh/bin:~/perl5/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+# Path and flag modifications
+export PATH="$HOME/.local/bin:$HOME/.local:$HOME/bin:$HOME/projects/ndn/dh/bin:$HOME/perl5/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
-# TODO
-# Oh-My-Zsh settings
-# export HYPHEN_INSENSITIVE="true"
-# export ENABLE_CORRECTION="true"
-# export COMPLETION_WAITING_DOTS="true"
+export PATH="/opt/homebrew/opt/findutils/libexec/gnubin:$PATH"
+export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
+export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
+export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
+export PATH="/opt/homebrew/opt/ncurses/bin:$PATH"
+
+export LDFLAGS="-L~/.local/lib $LDFLAGS"
+export LDFLAGS="-L/opt/homebrew/opt/ncurses/lib $LDFLAGS"
+export LDFLAGS="-L/opt/homebrew/opt/readline/lib $LDFLAGS"
+export CPPFLAGS="-I~/.local/include $CPPFLAGS"
+export CPPFLAGS="-I/opt/homebrew/opt/ncurses/include $CPPFLAGS"
+export CPPFLAGS="-I/opt/homebrew/opt/readline/include $CPPFLAGS"
+export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="$HOME/.local/lib/pkgconfig:$PKG_CONFIG_PATH"
+
 
 # ========================= Key Bindings ======================================
 # History substring search bindings
@@ -106,8 +112,9 @@ bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 # ========================= Visual Settings ===================================
-eval `dircolors --sh ~/.config/zsh/gruvbox.default.dircolors`
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+eval "$(dircolors --sh ~/.config/zsh/gruvbox.default.dircolors)"
+IFS=: read -rA ls_colors_array <<< "$LS_COLORS"
+zstyle ':completion:*' list-colors "${ls_colors_array[@]}"
 
 # ========================= Source Configurations =============================
 # to customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
