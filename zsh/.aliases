@@ -9,11 +9,19 @@ alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup
 # Set ls color
 alias ls="ls --color=auto"
 
+# Nvim
+alias vi="nvim"
+alias vim="nvim"
+
+# Edit configs
+alias vrc="vim ~/.vimrc"
+alias nrc="vim ~/.config/nvim/init.lua"
+alias zrc="vim ~/.zshrc"
+alias wrc="vim ~/.config/wezterm/wezterm.lua"
+
 
 # TODO
 alias gg='git grep -E'
-alias zrc="vim ~/.zshrc"
-alias vrc="vim ~/.vimrc"
 alias zpui="zplug update && zplug install"
 
 # SSH
@@ -25,13 +33,26 @@ alias ard="arduino-cli"
 alias ardc="arduino-cloud-cli"
 
 # Functions
-lscolors() {
-    for i in {0..255}; do print -Pn “%K{$i} %k%F{$i}${(l:3::0:)i}%f “ ${${(M)$((i%6)):#3}:+$’\n’}; done
+
+# Visualize the 16 ANSI colors
+16colors() {
+  for i in {0..15}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
 }
+
+# Visualize the 256 ANSI colors
+256colors() {
+  for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
+}
+
+# Generate ssh key with name and comment
 sshkeygen() {
-    ssh-keygen -t ed25519 -f ~/.ssh/"$1" -C "$2"
+  ssh-keygen -t ed25519 -f ~/.ssh/"$1" -C "$2"
 }
+
 # Install dotfiles
 dotinstall() {
-    bash <(wget -qO- https://raw.githubusercontent.com/Randallsm83/dotfiles/refs/heads/main/install.sh)
+  bash <(wget -qO- https://raw.githubusercontent.com/Randallsm83/dotfiles/refs/heads/main/install.sh)
 }
+
+# Quick move up directories
+up() { cd "$(printf "%0.s../" $(seq 1 $1))" || return; }

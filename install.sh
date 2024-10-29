@@ -8,25 +8,39 @@ LOCAL_DIR="$HOME/.local"
 LOCAL_BIN="$HOME/.local/bin"
 
 DOTFILES_DIR="$HOME/dotfiles"
-DOTFILES_REPO="git@github.com/Randallsm83/dotfiles.git"
+DOTFILES_REPO="https://github.com/Randallsm83/dotfiles.git"
 
+# Available with git
 VIM_URL="https://github.com/vim/vim.git"
-STOW_URL_BASE="https://ftp.gnu.org/gnu/stow"
-COREUTILS_URL_BASE="https://ftp.gnu.org/gnu/coreutils"
+STOW_URL="https://git.savannah.gnu.org/git/stow.git"
+COREUTILS_URL="https://github.com/coreutils/coreutils.git"
+PKGCONFIG_URL="https://gitlab.freedesktop.org/pkg-config/pkg-config.git"
 
-DEPENDENCIES=("wget" "tar" "git" "make" "gcc")
+# Available with wget
+TAR_URL="https://ftp.gnu.org/gnu/tar/tar-latest.tar.gz"
+WGET_URL="https://ftp.gnu.org/gnu/wget/wget-latest.tar.gz"
+NCURSES_URL="https://invisible-island.net/datafiles/current/ncurses.tar.gz"
+
+# Available with wget but need to determine latest version ourselves
+LUA_URL="https://www.lua.org/download.html"
+
+DEPENDENCIES=("wget" "git" "tar" "make" "gcc" "pkg-config")
 
 # Let's add these now in case things exist here but we just dont have our dotfiles with the correct paths yet
-export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/grep/libexec/gnubin:/Users/randallm/.rd/bin:$HOME/bin:$HOME/local/bin:$HOME/.local/bin:$HOME/local:$HOME/.local:$HOME/projects/ndn/dh/bin:$HOME/perl5/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/grep/libexec/gnubin:~/.local/bin:~/.local:~/bin:~/projects/ndn/dh/bin:~/perl5/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+export LDFLAGS="-L~/.local/lib $LDFLAGS"
+export CPPFLAGS="-I~/.local/include $CPPFLAGS"
+export LD_LIBRARY_PATH="~/.local/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="~/.local/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # Function to get the latest GNU Coreutils version number
 get_latest_coreutils_version() {
-  wget -qO- "$COREUTILS_URL_BASE/" | grep -Eo 'coreutils-[0-9]+\.[0-9]+' | sed 's/coreutils-//' | sort -V | tail -1
+  wget -qO- "$COREUTILS_URL/" | grep -Eo 'coreutils-[0-9]+\.[0-9]+' | sed 's/coreutils-//' | sort -V | tail -1
 }
 
 # Function to get the latest GNU Stow version number
 get_latest_stow_version() {
-  wget -qO- "$STOW_URL_BASE/" | grep -Eo 'stow-[0-9]+\.[0-9]+(\.[0-9]+)?' | sed 's/stow-//' | sort -V | tail -1
+  wget -qO- "$STOW_URL/" | grep -Eo 'stow-[0-9]+\.[0-9]+(\.[0-9]+)?' | sed 's/stow-//' | sort -V | tail -1
 }
 
 # Function to check and switch to zsh if it's not the current shell
@@ -43,7 +57,6 @@ check_zsh() {
 
 # Function to check dependencies
 check_dependencies() {
-  # ncurses for vim?
   echo "Checking dependencies..."
   for dep in "${DEPENDENCIES[@]}"; do
     if ! command -v "$dep" &>/dev/null; then
@@ -99,11 +112,11 @@ install_source_vim() {
   # Detect Perl binary
   PERL_PATH=$(which perl 2>/dev/null)
 
-  # Detect Lua installation
-  LUA_PREFIX=$(which lua 2>/dev/null)
+  LDFLAGS="$(pkg-config --libs ncursesw)"
+  CPPFLAGS="$(pkg-config --cflags ncursesw)"
 
   # Run Vim configure dynamically
-  ./configure \
+  LDFLAGS CPPFLAGS ./configure \
     --with-features=huge \
     --enable-multibyte=yes \
     --enable-python3interp=yes \
@@ -111,7 +124,7 @@ install_source_vim() {
     --enable-perlinterp=yes \
     --with-perl="$PERL_PATH" \
     --enable-luainterp=yes \
-    --with-lua-prefix="$LUA_PREFIX" \
+    --with-lua-prefix="$LOCAL_DIR" \
     --enable-cscope=yes \
     --prefix="$LOCAL_DIR" \
     --with-tlib=ncurses \
@@ -148,7 +161,7 @@ install_coreutils_linux() {
   COREUTILS_VERSION=$(get_latest_coreutils_version)
   echo "Installing GNU Coreutils version $COREUTILS_VERSION from source on Linux..."
   cd "$LOCAL_DIR"
-  wget "$COREUTILS_URL_BASE/coreutils-${COREUTILS_VERSION}.tar.xz"
+  wget "$COREUTILS_URL/coreutils-${COREUTILS_VERSION}.tar.xz"
   tar -xf "coreutils-${COREUTILS_VERSION}.tar.xz"
   cd "coreutils-${COREUTILS_VERSION}" || exit
   ./configure --prefix="$LOCAL_DIR"
@@ -184,17 +197,11 @@ check_coreutils_installation() {
 # Function to install GNU Stow locally
 install_stow() {
   #TODO upgrade if exists in brew, check if exists and up to date from source
-  STOW_VERSION=$(get_latest_stow_version)
-  STOW_TAR="stow-$STOW_VERSION.tar.gz"
-  STOW_URL="$STOW_URL_BASE/$STOW_TAR"
-
   echo "Installing GNU Stow locally..."
-  echo "Latest GNU Stow version: $STOW_VERSION"
 
-  # Download and extract GNU Stow
-  wget "$STOW_URL" -O "$STOW_TAR"
-  tar -xf "$STOW_TAR"
-  cd "stow-$STOW_VERSION" || exit
+  cd "$LOCAL_DIR"
+  git clone "$STOW_URL"
+  cd stow || exit
 
   # Install Stow locally in ~/.local
   ./configure --prefix="$LOCAL_DIR"

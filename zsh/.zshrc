@@ -19,10 +19,11 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 # ------------------------- Plugin Configuration -------------------------
 
 # ---- Before Plugins -------
-[[ -f ~/.zsh-syntax-theme ]] && source ~/.zsh-syntax-theme
+[[ -f ~/.config/zsh/zsh-syntax-theme ]] && source ~/.config/zsh/zsh-syntax-theme
 
 # ---- Language Plugins ----
 zplug "mattberther/zsh-pyenv"
+zplug "DhavalKapil/luaver"
 
 # ---- Oh-My-Zsh Plugins ----
 zplug "plugins/git", from:oh-my-zsh
@@ -35,7 +36,7 @@ zplug "plugins/common-aliases", from:oh-my-zsh
 # ---- Zsh Users Plugins ----
 zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-syntax-highlighting", defer:3
 zplug "zsh-users/zsh-history-substring-search", defer:2
 
 # ---- Supercrab Tree ---------
@@ -46,6 +47,9 @@ zplug "romkatv/powerlevel10k", as:theme, depth:1
 
 # ---- FZF Setup ----
 zplug "junegunn/fzf", use:"shell/*.zsh", hook-build:"./install --all"
+
+# ---- Diff So Fancy ----
+zplug "so-fancy/diff-so-fancy", as:command, use:"diff-so-fancy"
 
 # ---- My Stuff ----
  # zplug "$HOME/.aliases", from:local, use:".aliases"
@@ -61,32 +65,33 @@ zplug load
 
 # ========================= General Settings =========================
 # History settings
-HISTFILE=~/.zsh_history              # Where to save the command history
-HISTSIZE=500000                      # Number of lines kept in memory
-SAVEHIST=500000                      # Number of lines to save in history file
-setopt appendhistory                 # Append to history file, do not overwrite
-setopt INC_APPEND_HISTORY            # Write to history file immediately
-setopt SHARE_HISTORY                 # Share history across all sessions
-setopt HIST_IGNORE_SPACE             # Ignore commands with leading spaces
-setopt HIST_REDUCE_BLANKS            # Remove unnecessary blanks
-setopt HIST_IGNORE_DUPS              # Ignore duplicate commands
-setopt HIST_FIND_NO_DUPS             # Do not display old duplicates in history search
-setopt HIST_SAVE_NO_DUPS             # Do not save duplicate commands in history
-setopt HIST_VERIFY                   # Don't execute immediately upon history expansion
-setopt EXTENDED_HISTORY              # Record command execution time
+setopt appendhistory      # Append to history file, do not overwrite
+setopt INC_APPEND_HISTORY # Write to history file immediately
+setopt SHARE_HISTORY      # Share history across all sessions
+setopt HIST_IGNORE_SPACE  # Ignore commands with leading spaces
+setopt HIST_REDUCE_BLANKS # Remove unnecessary blanks
+setopt HIST_IGNORE_DUPS   # Ignore duplicate commands
+setopt HIST_FIND_NO_DUPS  # Do not display old duplicates in history search
+setopt HIST_SAVE_NO_DUPS  # Do not save duplicate commands in history
+setopt HIST_VERIFY        # Don't execute immediately upon history expansion
+setopt EXTENDED_HISTORY   # Record command execution time
+HISTSIZE=500000           # Number of lines kept in memory
+SAVEHIST=500000           # Number of lines to save in history file
+HISTFILE=~/.config/zsh/zsh_history   # Where to save the command history
 
 # Environment variables
-export EDITOR='vim'
-export VISUAL='vim'
+export EDITOR='nvim'
+export VISUAL='nvim'
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 # Path modifications
-export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/grep/libexec/gnubin:~/.local/bin:~/.local:~/bin:~/projects/ndn/dh/bin:~/perl5/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 export LDFLAGS="-L~/.local/lib $LDFLAGS"
 export CPPFLAGS="-I~/.local/include $CPPFLAGS"
 export LD_LIBRARY_PATH="~/.local/lib:$LD_LIBRARY_PATH"
 export PKG_CONFIG_PATH="~/.local/lib/pkgconfig:$PKG_CONFIG_PATH"
+export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
+export PATH="~/.local/bin:~/.local:~/bin:~/projects/ndn/dh/bin:~/perl5/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
 # TODO
 # Oh-My-Zsh settings
@@ -94,12 +99,16 @@ export PKG_CONFIG_PATH="~/.local/lib/pkgconfig:$PKG_CONFIG_PATH"
 # export ENABLE_CORRECTION="true"
 # export COMPLETION_WAITING_DOTS="true"
 
-# ========================= Key Bindings ==========================
+# ========================= Key Bindings ======================================
 # History substring search bindings
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
-# ========================= Source Configurations ==================
+# ========================= Visual Settings ===================================
+eval `dircolors --sh ~/.config/zsh/gruvbox.default.dircolors`
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+# ========================= Source Configurations =============================
 # to customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
@@ -115,4 +124,5 @@ bindkey '^[[B' history-substring-search-down
 [ -f ~/perl5/perlbrew/etc/bashrc ] && source ~/perl5/perlbrew/etc/bashrc
 
 # Shell Integration
-[[ -f ~/.iterm2_shell_integration.zsh ]] && source ~/.iterm2_shell_integration.zsh
+[[ -f ~/.config/wezterm/wezterm.sh ]] && source ~/.config/wezterm/wezterm.sh
+[[ -f ~/.config/iterm2/iterm2_shell_integration.zsh ]] && source ~/.config/iterm2/iterm2_shell_integration.zsh

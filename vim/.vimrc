@@ -1,9 +1,8 @@
 " vim:filetype=vim
 "
-" ============================================
+" =============================================================================
 "                 Vim-Plug Setup
-" ============================================
-
+" =============================================================================
 " Install vim-plug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -41,6 +40,8 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdcommenter'
 Plug 'Raimondi/delimitMate'
+Plug 'Yggdroot/indentLine'
+Plug 'tpope/vim-unimpaired'
 
 " ----- File Navigation and Management -----
 Plug 'scrooloose/nerdtree'
@@ -57,13 +58,117 @@ Plug 'tmux-plugins/vim-tmux'
 " ----- Visual Enhancements -----
 Plug 'bling/vim-airline'
 Plug 'edkolev/tmuxline.vim'
+
+" ----- Colorscheme Choice -----
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+Plug 'morhetz/gruvbox', { 'as': 'gruvbox' }
 
 call plug#end()
 
 " ============================================
+"               Colorscheme Settings
+" ============================================
+
+" Set terminal colors
+if &term =~ '256color'
+  " Enable true (24-bit) colors instead of (8-bit) 256 colors.
+  " :h true-color
+  if has('termguicolors')
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    set termguicolors
+  endif
+
+  set background=dark
+
+  " Dracula theme
+  " let g:dracula_bold = 1
+  " let g:dracula_italic = 1
+  " let g:dracula_italic_comment = 1
+  " let g:dracula_underline = 1
+  " let g:dracula_high_contrast = 1
+  " let g:dracula_colorterm = 1
+  " autocmd vimenter * ++nested colorscheme dracula
+
+  " Gruvbox theme
+  let g:gruvbox_contrast_dark = 'medium'
+  autocmd vimenter * ++nested colorscheme gruvbox
+endif
+
+" ============================================
+"               Language Settings
+" ============================================
+" Enable filetype plugin and indentation detection
+filetype plugin indent on
+
+" Default indentation and tab settings
+set tabstop=2               " Set width of a <Tab> to 2 spaces
+set shiftwidth=2            " Number of spaces to use for auto-indent
+set softtabstop=2           " Number of spaces when <Tab> is pressed
+set expandtab               " Convert tabs to spaces globally
+set textwidth=120           " Wrap text at 100 characters globally
+
+" Language-specific indentation settings
+augroup language_settings
+  autocmd!
+
+  " HTML and CSS
+  autocmd FileType html,css setlocal ts=2 sw=2 sts=2 et tw=120
+
+  " JavaScript, TypeScript, JSX, Pug
+  autocmd FileType jsx,pug,javascript,typescript setlocal ts=2 sw=2 sts=2 et tw=120
+
+  " Perl (4 space width, use tabs, 78 char text width)
+  autocmd FileType perl setlocal ts=4 sw=4 sts=4 noet tw=78
+
+  " Python (PEP 8: 4 space width, 79 char text width)
+  autocmd FileType python setlocal ts=4 sw=4 sts=4 et tw=79
+  autocmd FileType python setlocal formatoptions+=croq
+  autocmd FileType python setlocal cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+
+  " Ruby
+  autocmd FileType ruby setlocal ts=2 sw=2 sts=2 et tw=120
+
+  " Shell scripts
+  autocmd FileType sh setlocal ts=2 sw=2 sts=2 et tw=120
+
+  " Vim script
+  autocmd FileType vim setlocal ts=2 sw=2 sts=2 et tw=120
+
+  " JSON (no wrapping as it’s machine-parsed)
+  autocmd FileType json setlocal ts=2 sw=2 sts=2 et tw=0
+
+  " Markdown (Wrap at 80 characters for readability, enable spelling)
+  autocmd FileType markdown setlocal ts=2 sw=2 sts=2 tw=80 wrap spell
+
+  " YAML (no wrapping for configuration files)
+  autocmd FileType yaml setlocal ts=2 sw=2 sts=2 et tw=0
+
+  " Gitconfig (no wrapping for configuration files)
+  autocmd FileType gitconfig setlocal ts=4 sw=4 sts=4 noet tw=0
+augroup END
+
+" ============================================
 "              Custom Functions
 " ============================================
+" Function to list syntax groups at the cursor and print them
+function! Synnames(count) abort
+  " Get syntax groups at the cursor using Vim's internal command
+  let syn_names = synstack(line('.'), col('.'))
+
+  " Map syntax IDs to their names
+  let syn_names = map(syn_names, 'synIDattr(v:val, "name")')
+
+  " If a count is passed, show only the specific group
+  if a:count > 0 && a:count <= len(syn_names)
+    let selected_name = get(syn_names, a:count - 1, 'No such syntax group')
+    echo 'Selected Syntax Group: ' . selected_name
+  else
+    " Join all syntax group names and echo them
+    echo 'All Syntax Groups: ' . join(syn_names, ', ')
+  endif
+endfunction
 
 " CoC show documentation in preview window
 function! s:show_documentation()
@@ -174,7 +279,7 @@ set showmatch            " Highlight matching parentheses
 set incsearch            " Incremental search, shows matches as you type
 set hlsearch             " Highlight all search matches
 set splitright           " Split windows to the right
-set scrolloff=8          " Keep 8 lines visible above and below the cursor when scrolling
+set scrolloff=10         " Keep 10 lines visible above and below the cursor
 set wrap                 " Enable line wrapping
 set cindent              " Enable C-like indentation
 set number               " Show absolute line numbers
@@ -186,6 +291,10 @@ set wildignorecase       " Case-insensitive matching in wildmenu
 set backspace=indent,eol,start " Allow backspacing over indentation, line breaks, and insert start
 set wildmode=longest:full,full " Command-line completion mode
 
+" Other
+set ttimeout
+set ttimeoutlen=100
+
 " ============================================
 "               Key Mappings
 " ============================================
@@ -193,8 +302,15 @@ set wildmode=longest:full,full " Command-line completion mode
 " Set mapleader key (using comma as leader key)
 let mapleader=','
 
-" <Space> toggle search highlighting
-nnoremap <silent> <Space> :set hlsearch!<CR>
+" <F2> to toggle paste mode
+set pastetoggle=<F2>
+
+" <Space> toggle search highlighting and manage highlights while searching
+" nnoremap <silent> <Space> :set hlsearch!<CR>
+nnoremap <silent> <Space> :call gruvbox#hls_toggle()<CR>
+nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
+nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
+nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
 
 " Ctrl-N and Ctrl-P to navigate between buffers
 nnoremap <C-n> :bnext<CR>
@@ -230,25 +346,27 @@ nnoremap <silent> <F3> :TagbarToggle<CR>
 nnoremap <leader>af <Plug>(ale_fix)
 vnoremap <Leader>af :call ALEFixRange()<CR>
 
+" Mapping to call Synnames with a count
+nnoremap <silent> zS :<C-U>call Synnames(v:count)<CR>
+
 " ----- CoC Mappings -----
-"
+
+" Space-o toggle outline
+nnoremap <silent><nowait> <space>o  :call ToggleOutline()<CR>
+function! ToggleOutline() abort
+  let winid = coc#window#find('cocViewId', 'OUTLINE')
+  if winid == -1
+    call CocActionAsync('showOutline', 1)
+  else
+    call coc#window#close(winid)
+  endif
+endfunction
+
 " Highlight the symbol and its references when holding the cursor
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" Use tab for trigger completion with characters ahead and navigate
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
 " Use <c-space> to trigger completion
-inoremap <silent><expr> <c-space> coc#refresh()
+inoremap <silent><expr> <C-Space> coc#refresh()
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -271,82 +389,6 @@ xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 " ============================================
-"               Language Settings
-" ============================================
-
-" Default indentation and tab settings
-set tabstop=4            " Set width of a <Tab> to 4 spaces
-set shiftwidth=4         " Use 4 spaces for auto-indent
-set softtabstop=4        " Insert 4 spaces when <Tab> is pressed
-set textwidth=120        " Wrap text at 120 characters
-set expandtab            " Convert tabs to spaces
-
-" Enable filetype plugin and indentation detection
-filetype plugin indent on
-
-" Language-specific indentation settings
-augroup language_settings
-  autocmd!
-
-  " HTML and CSS
-  autocmd FileType html,css setlocal ts=2 sw=2 sts=2 expandtab
-
-  " JavaScript, TypeScript, JSX, and Pug
-  autocmd FileType javascript,typescript,jsx,pug setlocal ts=2 sw=2 sts=2 expandtab
-
-  " JSON
-  autocmd FileType json setlocal ts=4 sw=4 sts=4 expandtab
-
-  " Perl
-  autocmd FileType perl setlocal ts=4 sw=4 sts=0 noexpandtab
-
-  " Python
-  autocmd FileType python setlocal ts=4 sw=4 sts=4 expandtab textwidth=79
-  autocmd FileType python setlocal formatoptions+=croq
-  autocmd FileType python setlocal softtabstop=4
-  autocmd FileType python setlocal cinwords=if,elif,else,for,while,try,except,finally,def,class,with
-
-  " Ruby
-  autocmd FileType ruby setlocal ts=2 sw=2 sts=2 expandtab
-
-  " Markdown
-  autocmd FileType markdown setlocal textwidth=80 wrap spell
-
-  " YAML
-  autocmd FileType yaml setlocal ts=2 sw=2 sts=2 expandtab
-
-  " Shell scripts
-  autocmd FileType sh setlocal ts=2 sw=2 sts=2 expandtab
-
-  " Vim script
-  autocmd FileType vim setlocal ts=2 sw=2 sts=2 expandtab
-augroup END
-
-" ============================================
-"               Colorscheme Settings
-" ============================================
-
-" Set terminal colors
-if &term =~ '256color'
-  " Enable true (24-bit) colors instead of (8-bit) 256 colors.
-  " :h true-color
-  if has('termguicolors')
-    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-    set termguicolors
-  endif
-
-  " Dracula theme settings
-  let g:dracula_bold = 1
-  let g:dracula_italic = 1
-  let g:dracula_italic_comment = 1
-  let g:dracula_underline = 1
-  let g:dracula_high_contrast = 1
-  let g:dracula_colorterm = 1
-  colorscheme dracula
-endif
-
-" ============================================
 "             Plugin Configurations
 " ============================================
 
@@ -357,6 +399,7 @@ let g:ale_fixers = {
   \ 'zsh': ['shfmt'],
   \ 'css': ['prettier'],
   \ 'html': ['prettier'],
+  \ 'yaml': ['prettier'],
   \ 'python': ['black'],
   \ 'perl': ['perltidy'],
   \ 'pug': ['puglint', 'eslint'],
@@ -366,7 +409,8 @@ let g:ale_fixers = {
 
 let g:ale_linters = {
   \ 'sh': ['shellcheck'],
-  \ 'zsh': ['shellcheck'],
+  \ 'zsh': ['zsh-lint'],
+  \ 'yaml': ['yaml-language-server'],
   \ 'python': ['flake8'],
   \ 'perl': ['perl', 'perlcritic'],
   \ 'pug': ['puglint', 'eslint'],
@@ -382,8 +426,6 @@ let g:ale_sh_shfmt_options = '-i 2 -ci -sr'
 let s:perltidyrc = FileReadableInPaths('perltidyrc')
 let g:ale_perl_perltidy_options = s:perltidyrc != '' ? '-pro=' . s:perltidyrc : '-q'
 
-let g:ale_completion_enabled = 0
-
 let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 0
 let g:ale_lint_on_save = 1
@@ -394,29 +436,37 @@ let g:ale_lint_on_text_changed = 'never'
 
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '--'
+let g:ale_sign_column_always = 1
 let g:ale_virtualtext_cursor = 'current'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
+let g:ale_completion_enabled = 0
 let g:ale_history_log_output = 1
 
 " CoC
 let g:coc_global_extensions = [
-  \ 'coc-tsserver',
-  \ 'coc-json',
   \ 'coc-html',
   \ 'coc-css',
-  \ 'coc-pyright',
-  \ 'coc-perl',
   \ 'coc-sh',
-  \ 'coc-vimlsp',
+  \ 'coc-perl',
+  \ 'coc-tsserver',
+  \ 'coc-pyright',
+  \ 'coc-json',
+  \ 'coc-yaml',
   \ 'coc-git',
+  \ 'coc-vimlsp',
+  \ 'coc-lua',
   \ 'coc-snippets'
 \ ]
 
 " Vim-airline
-let g:airline_theme='dracula'
+let g:airline_theme='gruvbox'
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#ale#enabled = 1
+let g:airline_extensions = ['branch', 'coc']
+" let g:airline#extensions#ale#open_lnum_symbol = ':L'
+" let g:airline#extensions#ale#close_lnum_symbol = ''
+" let g:airline#extensions#coc#error_symbol = 'E:'
+" let g:airline#extensions#coc#warning_symbol = 'W:'
 
 " Vim-better-whitespace
 let g:better_whitespace_enabled=1
@@ -436,3 +486,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDSpaceDelims = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
+
+" indentLine
+let g:indentLine_char_list = ['|', '¦']

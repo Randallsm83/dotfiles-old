@@ -1,59 +1,59 @@
 ---
-workspace_dir: '~/projects'
+workspace_dir: "~/projects"
 auto_env: true
 projects:
   ndn:
     enable: true
     repo: git@git.dreamhost.com:dreamhost/ndn.git
-    path: 'ndn'
+    path: "ndn"
     env_vars:
-    - AUTO_SYNC_WITH_LOCIZE: 'false'
-    - DB_SOURCE: '/ndnsecure/etc/db'
-    - AUTH_SOURCE: '/ndnsecure/etc/auth'
-    - NDN_ENVIRONMENT: production
-    - NDN_SECURE_PATH: '~/projects/ndnsecure'
-# If left commented, a ready-to-use staging version of each React app will be used. If uncommented, a respective React app will run locally in development mode. Uncomment only if you intend to make changes to React apps. When you uncomment, also enable the respective service in the section below by changing `enable` from `false` to `true. If you want to enable development mode for all, you can uncomment NDN_DEV_ALL instead.
-    #
-    # - NDN_DEV_DOMAINS: 'true'
-    # - NDN_REVIEWAPP: 'true'
-    # - NDN_WORKERS_NUMBER: 'true'
-    #
-    # ----- Panel + Uebernet > React UI Apps
-    # - NDN_DEV_ALL: 'true'
-    #
-    # ----- Panel > React UI Apps
-    # - NDN_DEV_AI_SEARCH_BAR: 'true'
-    # - NDN_DEV_AI_DASHBOARD: 'true'
-    # - NDN_DEV_PANEL_NAVIGATION: 'true'
-    # - NDN_DEV_DOMAINS: 'true'
-    # - NDN_DEV_GSUITE: 'true'
-    # - NDN_DEV_ONBOARDING: 'true'
-    # - NDN_DEV_SITEPANEL: 'true'
-    # - NDN_DEV_USERS: 'true'
-    # - NDN_DEV_PANEL_SEO: 'true'
-    # - NDN_DEV_DREAMASSISTANT: 'true'
-    # - NDN_DEV_WORDPRESS: 'true'
-    # - NDN_DEV_DREAMSHIELD: 'true'
-    # - NDN_DEV_UNIVERSAL_CHECKOUT: 'true'
-    # - NDN_DEV_MAIL: 'true'
-    # - NDN_DEV_PRO_SERVICES: 'true'
-    #
-    # ----- Uebernet > React UI Apps
-    # - NDN_DEV_TECHSUPPORT_WIDGET: 'true'
-    # - NDN_DEV_UEBERNET_ROADMAP: 'true'
-    # - NDN_DEV_UEBERNET_NAVIGATION: 'true'
-    # - NDN_DEV_UEBERNET_NOTIFICATIONS_CONSTRUCTOR: 'true'
+      - AUTO_SYNC_WITH_LOCIZE: "false"
+      - DB_SOURCE: "/ndnsecure/etc/db"
+      - AUTH_SOURCE: "/ndnsecure/etc/auth"
+      - NDN_ENVIRONMENT: production
+      - NDN_SECURE_PATH: "~/projects/ndnsecure"
+  # If left commented, a ready-to-use staging version of each React app will be used. If uncommented, a respective React app will run locally in development mode. Uncomment only if you intend to make changes to React apps. When you uncomment, also enable the respective service in the section below by changing `enable` from `false` to `true. If you want to enable development mode for all, you can uncomment NDN_DEV_ALL instead.
+  #
+  # - NDN_DEV_DOMAINS: 'true'
+  # - NDN_REVIEWAPP: 'true'
+  # - NDN_WORKERS_NUMBER: 'true'
+  #
+  # ----- Panel + Uebernet > React UI Apps
+  # - NDN_DEV_ALL: 'true'
+  #
+  # ----- Panel > React UI Apps
+  # - NDN_DEV_AI_SEARCH_BAR: 'true'
+  # - NDN_DEV_AI_DASHBOARD: 'true'
+  # - NDN_DEV_PANEL_NAVIGATION: 'true'
+  # - NDN_DEV_DOMAINS: 'true'
+  # - NDN_DEV_GSUITE: 'true'
+  # - NDN_DEV_ONBOARDING: 'true'
+  # - NDN_DEV_SITEPANEL: 'true'
+  # - NDN_DEV_USERS: 'true'
+  # - NDN_DEV_PANEL_SEO: 'true'
+  # - NDN_DEV_DREAMASSISTANT: 'true'
+  # - NDN_DEV_WORDPRESS: 'true'
+  # - NDN_DEV_DREAMSHIELD: 'true'
+  # - NDN_DEV_UNIVERSAL_CHECKOUT: 'true'
+  # - NDN_DEV_MAIL: 'true'
+  # - NDN_DEV_PRO_SERVICES: 'true'
+  #
+  # ----- Uebernet > React UI Apps
+  # - NDN_DEV_TECHSUPPORT_WIDGET: 'true'
+  # - NDN_DEV_UEBERNET_ROADMAP: 'true'
+  # - NDN_DEV_UEBERNET_NAVIGATION: 'true'
+  # - NDN_DEV_UEBERNET_NOTIFICATIONS_CONSTRUCTOR: 'true'
 
-# REACT/SPA APPS BELOW
+  # REACT/SPA APPS BELOW
 
-### Panel
+  ### Panel
 
   #TODO DOES THIS WORK?
   # - NDN_DEV_AI_SEARCH_BAR: 'true' -- makes ndn use dev js generated from here
   # ai-search-bar:
-    # enable: 'true'
-    # repo: git@git.dreamhost.com:dreamhost/panel/ai-search-bar.git
-    # path: '~/projects/ai-search-bar'
+  # enable: 'true'
+  # repo: git@git.dreamhost.com:dreamhost/panel/ai-search-bar.git
+  # path: '~/projects/ai-search-bar'
 
   # # - NDN_DEV_AI_DASHBOARD: 'true' -- makes ndn use dev js generated from here
   # ai-dashboard:
@@ -70,24 +70,24 @@ projects:
 
   # # - NDN_DEV_PANEL_NAVIGATION: 'true' -- makes ndn use dev js generated from here
   # panel-navigation:
-    # enable: 'true'
-    # repo: git@git.dreamhost.com:dreamhost/panel-navigation-js.git
-    # path: 'panel-navigation-js'
-    # env_vars:
-    #  - API2_PATH: '/ndn'
-    #  - API2_LOGIN_PUBLIC_PATH: '${API2_PATH:-/ndn}/dhwebpanel/'
-    #  - API2_SITEPANEL_PUBLIC_PATH: '${API2_PATH:-/ndn}/api2_sitepanel/rpc'
-    #
-    #  - API3_PATH: '/api3'
-    #  - API3_LOGIN_PUBLIC_PATH: '${API3_PATH:-/api3}/login'
-    #  - API3_PUBLIC_PATH: '${API3_PATH:-/api3}'
-    #
-    #  - LOCIZE_DEV_MODE: 'true'
-    #  - LOCIZE_PROJECT_ID: '033e0513-3c64-4a02-9f6e-e267a1d6d58d'
-    #  - LOCIZE_API_KEY: '07ffcc41-6bf5-4882-953f-c2ed1f52fe84'
-    #
-    #  - IGNORE_QUERY_CONFIG_PARAMS: '${IGNORE_QUERY_CONFIG_PARAMS:-false}'
-    #  - DISABLE_CSRF: 'false'
+  # enable: 'true'
+  # repo: git@git.dreamhost.com:dreamhost/panel-navigation-js.git
+  # path: 'panel-navigation-js'
+  # env_vars:
+  #  - API2_PATH: '/ndn'
+  #  - API2_LOGIN_PUBLIC_PATH: '${API2_PATH:-/ndn}/dhwebpanel/'
+  #  - API2_SITEPANEL_PUBLIC_PATH: '${API2_PATH:-/ndn}/api2_sitepanel/rpc'
+  #
+  #  - API3_PATH: '/api3'
+  #  - API3_LOGIN_PUBLIC_PATH: '${API3_PATH:-/api3}/login'
+  #  - API3_PUBLIC_PATH: '${API3_PATH:-/api3}'
+  #
+  #  - LOCIZE_DEV_MODE: 'true'
+  #  - LOCIZE_PROJECT_ID: '033e0513-3c64-4a02-9f6e-e267a1d6d58d'
+  #  - LOCIZE_API_KEY: '07ffcc41-6bf5-4882-953f-c2ed1f52fe84'
+  #
+  #  - IGNORE_QUERY_CONFIG_PARAMS: '${IGNORE_QUERY_CONFIG_PARAMS:-false}'
+  #  - DISABLE_CSRF: 'false'
 
   # # - NDN_DEV_DOMAINS: 'true' -- makes ndn use dev js generated from here
   # domains:
@@ -315,7 +315,7 @@ projects:
   #   #  - LOCIZE_PROJECT_ID: 'db1fac6c-70c2-4622-b611-fc35ac47b58c'
   #   #  - LOCIZE_API_KEY: 'e971cfff-7aa6-4e31-8186-d594f2332e8e'
 
-### Uebernet
+  ### Uebernet
 
   # # - NDN_DEV_UEBERNET_NAVIGATION: 'true' -- variable in `ndn` makes it use dev js generated from here
   # uebernet-navigation:
@@ -369,7 +369,7 @@ projects:
   #   #  - FIREBASE_MESSAGING_SENDER_ID: '${FIREBASE_MESSAGING_SENDER_ID:-157153869609}'
   #   #  - FIREBASE_APP_ID: '${FIREBASE_APP_ID:-1:157153869609:web:f75bc1c22a65a380ca4138}'
 
-# Enable this one if you want to use PRODUCTION API2 endpoints. CAREFUL!
+  # Enable this one if you want to use PRODUCTION API2 endpoints. CAREFUL!
   # api2:
   #   enable: true
   #   repo: git@git.dreamhost.com:dreamhost/lde-nginx-proxy.git
@@ -377,8 +377,8 @@ projects:
   #   env_vars:
   #   - PROXY_URL: 'https://develop.proddb.dreamhost.io'
 
-# Enable this one if you want to use PRODUCTION database for API3. CAREFUL!
-# After enabling this, disable the other api3 services below.
+  # Enable this one if you want to use PRODUCTION database for API3. CAREFUL!
+  # After enabling this, disable the other api3 services below.
   # api3:
   #   enable: true
   #   repo: git@git.dreamhost.com:dreamhost/lde-nginx-proxy.git
@@ -386,230 +386,229 @@ projects:
   #   env_vars:
   #   - PROXY_URL: 'https://api-gateway-develop.dev-bm.kubecluster.dreamhost.io'
 
-# API3 services
+  # API3 services
   api3:
     enable: true
     repo: git@git.dreamhost.com:dreamhost/microservices/api-gateway.git
-    path: 'api-gateway'
+    path: "api-gateway"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   auth-service:
     enable: true
     repo: git@git.dreamhost.com:dreamhost/microservices/auth-service.git
-    path: 'auth-service'
+    path: "auth-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   person-service:
     enable: true
     repo: git@git.dreamhost.com:dreamhost/microservices/person-service.git
-    path: 'person-service'
+    path: "person-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   domain-service:
     enable: true
     repo: git@git.dreamhost.com:dreamhost/microservices/domain-service.git
-    path: 'domain-service'
+    path: "domain-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   users-service:
     enable: true
     repo: git@git.dreamhost.com:dreamhost/microservices/users-service.git
-    path: 'users-service'
+    path: "users-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   dns-service:
     enable: true
     repo: git@git.dreamhost.com:dreamhost/microservices/dns-service.git
-    path: 'dns-service'
+    path: "dns-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   product-service:
     enable: true
     repo: git@git.dreamhost.com:dreamhost/microservices/product-service.git
-    path: 'product-service'
+    path: "product-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   queue-service:
     enable: true
     repo: git@git.dreamhost.com:dreamhost/microservices/queue-service.git
-    path: 'queue-service'
+    path: "queue-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   email-service:
     enable: false
     repo: git@git.dreamhost.com:dreamhost/microservices/email-service.git
-    path: 'email-service'
+    path: "email-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   google-workspace-service:
     enable: false
     repo: git@git.dreamhost.com:dreamhost/microservices/google-workspace-service.git
-    path: 'google-workspace-service'
+    path: "google-workspace-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   inspirations-service:
     enable: false
     repo: git@git.dreamhost.com:dreamhost/microservices/inspirations-service.git
-    path: 'inspirations-service'
+    path: "inspirations-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   klaviyo-service:
     enable: false
     repo: git@git.dreamhost.com:dreamhost/microservices/klaviyo-service.git
-    path: 'klaviyo-service'
+    path: "klaviyo-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   mailchannels-service:
     enable: false
     repo: git@git.dreamhost.com:dreamhost/microservices/mailchannels-service.git
-    path: 'mailchannels-service'
+    path: "mailchannels-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   marketgoo-seo-service:
     enable: false
     repo: git@git.dreamhost.com:dreamhost/microservices/marketgoo-seo-service.git
-    path: 'marketgoo-seo-service'
+    path: "marketgoo-seo-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   notification-service:
     enable: false
     repo: git@git.dreamhost.com:dreamhost/microservices/notification-service.git
-    path: 'notification-service'
+    path: "notification-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   uebernet-service:
     enable: true
     repo: git@git.dreamhost.com:dreamhost/microservices/uebernet-service.git
-    path: 'uebernet-service'
+    path: "uebernet-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   scanner-service:
     enable: true
     repo: git@git.dreamhost.com:dreamhost/microservices/scanner-service.git
-    path: 'scanner-service'
+    path: "scanner-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
   search-service:
     enable: true
     repo: git@git.dreamhost.com:dreamhost/microservices/search-service.git
-    path: 'search-service'
+    path: "search-service"
     env_vars:
-      - ENABLE_DEBUGGER: 'false'
-      - PROD_DATABASES: 'true'
-      - EXECUTE_TYPESCRIPT: 'false'
-      - DEBUG_COMMAND_SYSTEM: 'false'
-      - DEBUG_DB_SQL: 'false'
-      - DEBUG: '*'
-      - LINK_LOCAL_PACKAGES: 'false'
-# END of API3 services
+      - ENABLE_DEBUGGER: "false"
+      - PROD_DATABASES: "true"
+      - EXECUTE_TYPESCRIPT: "false"
+      - DEBUG_COMMAND_SYSTEM: "false"
+      - DEBUG_DB_SQL: "false"
+      - DEBUG: "*"
+      - LINK_LOCAL_PACKAGES: "false"
+  # END of API3 services
 
-# API3 package watcher
-# Used to watch and rebuild locally linked NPM packages
-# Custom NPM packages located @ https://git.dreamhost.com/dreamhost/microservices/npm-packages
+  # API3 package watcher
+  # Used to watch and rebuild locally linked NPM packages
+  # Custom NPM packages located @ https://git.dreamhost.com/dreamhost/microservices/npm-packages
   packages-watcher:
     enable: true
     repo: git@git.dreamhost.com:dreamhost/microservices/packages-watcher.git
-    path: 'packages-watcher'
-
+    path: "packages-watcher"

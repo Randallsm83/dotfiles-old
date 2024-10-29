@@ -1,0 +1,2193 @@
+: 1728956636:0;cat /private/etc/zshrc
+: 1728956636:0;cat /private/etc/zshrc_Apple_Terminal
+: 1728956636:0;gg will continue to remain active and usable
+: 1728956636:0;gg "will continue to remain active and usable"
+: 1728956636:0;gg "turn-off-auto"
+: 1728956636:0;gg -i "cardcancelinline"
+: 1728956636:0;gg -i 'account-plan-toggle'
+: 1728956636:0;gg -i 'cancel-btn'
+: 1728956636:0;gco -b PRO-638
+: 1728956636:0;git commit -m 'use proper cancellation phrase'
+: 1728956636:0;la docker-compose.yml
+: 1728956636:0;vi docker-compose.yml
+: 1728956636:0;vi .gitlab-ci.yml
+: 1728956636:0;gg -i 'job_token'
+: 1728956636:0;vi .zshr
+: 1728956636:0;vi ~/dotfiles/.zshrc
+: 1728956636:0;lde exec 
+: 1728956636:0;lde exec -s ndn-appserver env
+: 1728956636:0;lde top
+: 1728956636:0;lde exec -s ndn env
+: 1728956636:0;lde exec -s appserver ndn
+: 1728956636:0;lde exec -s ctl ndn
+: 1728956636:0;cd ../product-service
+: 1728956636:0;gco staging
+: 1728956636:0;git show 7c33e60db740393ac342b978a3d935c00ef6c631
+: 1728956636:0;gg -i 'active-orders'
+: 1728956636:0;vi src/controller/ShoppingCartController.ts
+: 1728956636:0;vi src/services/ShoppingCartService.ts
+: 1728956636:0;lde logs -ftall product-service
+: 1728956636:0;git clone
+: 1728956636:0;git clone git@git.dreamhost.com:dreamhost/microservices/scanner-service.git
+: 1728956636:0;lde up scanner-service
+: 1728956636:0;lde logs -ftall scanner-service
+: 1728956636:0;la ../.iterm2
+: 1728956636:0;/var/folders/k5/4n6b51ld01q2l6mkdqzj81f00000gn/T/orbstack-open-terminal_384EEF93.sh; exit
+: 1728956636:0;cd api-gateway
+: 1728956636:0;for dir in */; do\
+    (cd "$dir" && pwd)\
+done
+: 1728956636:0;for dir in */; do\
+    if [[ "$dir" != "ndn/" && "$dir" != "ndnsecure/" ]]; then\
+        (cd "$dir" && git checkout develop && git pull)\
+    fi\
+done
+: 1728956636:0;ssh yakk
+: 1728956636:0;scp -r yakko:/home/rmiller/dotfiles ./dotfiles.chk
+: 1728956636:0;mv dotfiles.chk ../..
+: 1728956636:0;la ../..
+: 1728956636:0;diff dotfiles.chk/.vimrc ./.vimrc
+: 1728956636:0;cp .vimrc dotfiles.chk
+: 1728956636:0;diff -r ~ dotfiles; diff -r ~ dotfiles.chk; diff -r dotfiles dotfiles.chk
+: 1728956636:0;for file in $(find dotfiles dotfiles.chk -type f | sed 's|dotfiles/||;s|dotfiles.chk/||' | sort -u); do diff -r ~/"$file" dotfiles/"$file"; done; for file in $(find dotfiles dotfiles.chk -type f | sed 's|dotfiles/||;s|dotfiles.chk/||' | sort -u); do diff -r ~/"$file" dotfiles.chk/"$file"; done; for file in $(find dotfiles dotfiles.chk -type f | sed 's|dotfiles/||;s|dotfiles.chk/||' | sort -u); do diff -r dotfiles/"$file" dotfiles.chk/"$file"; done
+: 1728956636:0;for file in $(find dotfiles.chk -type f | sed 's|dotfiles.chk/||' | sort -u); do echo "Comparing ~/$file with dotfiles.chk/$file"; diff -r ~/"$file" dotfiles.chk/"$file"; done
+: 1728956636:0;cp dotfiles.chk/.aliases.ndn dotfiles
+: 1728956636:0;cp dotfiles/.lde.yml dotfiles.chk
+: 1728956636:0;cp dotfiles.chk/.zshrc dotfiles
+: 1728956636:0;for file in $(find dotfiles.chk -type f | sed 's|dotfiles.chk/||' | sort -u); do echo "Comparing dotfiles/$file with dotfiles.chk/$file"; diff -r dotfiles/"$file" dotfiles.chk/"$file"; done
+: 1728956636:0;cp dotfiles.chk/.iterm2_shell_integration.zsh dotfiles
+: 1728956636:0;cp dotfiles.chk/.iterm2_shell_integration.zsh .
+: 1728956636:0;cp dotfiles/.zshrc .
+: 1728956636:0;for file in $(find dotfiles dotfiles.chk -type f | sed 's|dotfiles/||;s|dotfiles.chk/||' | sort -u | grep -v 'projects/ndn/.git/config'); do echo "Comparing ~/$file with dotfiles/$file"; diff -r ~/"$file" dotfiles/"$file"; done; for file in $(find dotfiles dotfiles.chk -type f | sed 's|dotfiles/||;s|dotfiles.chk/||' | sort -u | grep -v 'projects/ndn/.git/config'); do echo "Comparing ~/$file with dotfiles.chk/$file"; diff -r ~/"$file" dotfiles.chk/"$file"; done; for file in $(find dotfiles dotfiles.chk -type f | sed 's|dotfiles/||;s|dotfiles.chk/||' | sort -u | grep -v 'projects/ndn/.git/config'); do echo "Comparing dotfiles/$file with dotfiles.chk/$file"; diff -r dotfiles/"$file" dotfiles.chk/"$file"; done
+: 1728956636:0;rm -rf dotfiles.chk
+: 1728956636:0;diff projects/ndn/.git/config dotfiles/projects/ndn/.git/config
+: 1728956636:0;cp projects/ndn/.git/config dotfiles/projects/ndn/.git
+: 1728956636:0;for file in $(find dotfiles dotfiles.chk -type f | sed 's|dotfiles/||;s|dotfiles.chk/||' | sort -u); do echo "Comparing ~/$file with dotfiles/$file"; diff -r ~/"$file" dotfiles/"$file"; done; for file in $(find dotfiles dotfiles.chk -type f | sed 's|dotfiles/||;s|dotfiles.chk/||' | sort -u); do echo "Comparing ~/$file with dotfiles.chk/$file"; diff -r ~/"$file" dotfiles.chk/"$file"; done; for file in $(find dotfiles dotfiles.chk -type f | sed 's|dotfiles/||;s|dotfiles.chk/||' | sort -u); do echo "Comparing dotfiles/$file with dotfiles.chk/$file"; diff -r dotfiles/"$file" dotfiles.chk/"$file"; done
+: 1728956636:0;scp -r dotfiles yakko:/home/rmiller/dotfiles
+: 1728956636:0;grep perlbrew_set
+: 1728956636:0;vi perl5/perlbrew/bin/perlbrew
+: 1728956636:0;vi perl/Ndn/Dhwebpanel/Billing/Account.pm.tp
+: 1728956636:0;la node_modules
+: 1728956636:0;vi package.json
+: 1728956636:0;npm config list
+: 1728956636:0;npm config ls -l
+: 1728956636:0;which npm
+: 1728956636:0;nvm available
+: 1728956636:0;nvm -v
+: 1728956636:0;cd ~/.nvm
+: 1728956636:0;gg -i 'most'
+: 1728956636:0;vi ~/.nvm/nvm.sh
+: 1728956636:0;which nvm | grep most
+: 1728956636:0;which nvm | grep grep
+: 1728956636:0;nvm -h
+: 1728956636:0;nvm ls-remote
+: 1728956636:0;ggrep
+: 1728956636:0;brew install grep
+: 1728956636:0;vi ~/.zshrc
+: 1728956636:0;source ~/.zshrc
+: 1728956636:0;type grep
+: 1728956636:0;type ggrep
+: 1728956636:0;alias grep
+: 1728956636:0;whence -p grep
+: 1728956636:0;grep -q
+: 1728956636:0;ggrep -q
+: 1728956636:0;npm 
+: 1728956636:0;npm -l
+: 1728956636:0;npm help 7 config
+: 1728956636:0;brew info nvm
+: 1728956636:0;nvm root
+: 1728956636:0;nvm unload
+: 1728956636:0;rm -rf $NVM_DIR
+: 1728956636:0;echo $NVM_DIR
+: 1728956636:0;echo $XDG_CONFIG_HOME
+: 1728956636:0;PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash'
+: 1728956636:0;nvm ls
+: 1728956636:0;nvm install --lts
+: 1728956636:0;which node
+: 1728956636:0;npm list
+: 1728956636:0;npm -g list
+: 1728956636:0;npm -g bin
+: 1728956636:0;nvm bin
+: 1728956636:0;npm -g get prefix
+: 1728956636:0;npm -g install prettier
+: 1728956636:0;prettier
+: 1728956636:0;git commit -m 'tabs?? really'
+: 1728956636:0;for file in $(find dotfiles -type f | sed 's|dotfiles/||' | sort -u); do echo "Comparing ~/$file with dotfiles/$file"; diff -r ~/"$file" dotfiles/"$file"; done
+: 1728956636:0;vi .ssh/config
+: 1728956636:0;vi .iterm2_shell_integration.zsh
+: 1728956636:0;rm -rf .iterm2
+: 1728956636:0;rm .iterm2_shell_integration.zsh
+: 1728956636:0;curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
+: 1728956636:0;imgcat
+: 1728956636:0;cp -R .iterm2 dotfiles
+: 1728956636:0;vi web/dhwebpanel/images/newpanel/js/billing.accounts.js
+: 1728956636:0;git commit -m 'use same messaging as the original'
+: 1728956636:0;git clone git@git.dreamhost.com:dreamhost/panel/panel-navigation-js.git
+: 1728956636:0;gg -i 'RUNING HTTP SERVICE CONFIG'
+: 1728956636:0;vi perl/Ndn/Dreamhost/Service/HttpBase.pm
+: 1728956636:0;cd ../panel-navigation-js
+: 1728956636:0;gg -i 'domainlogin'
+: 1728956636:0;gg -i 'nested_alias'
+: 1728956636:0;vi perl/Ndn/Common/TreeNav.pm
+: 1728956636:0;pbcopy < perl/Ndn/Common/TreeNav.pm
+: 1728956636:0;pbcopy < perl/Ndn/Dhwebpanel/Navigation.pm
+: 1728956636:0;vi perl/Ndn/Dhwebpanel/Navigation.pm
+: 1728956636:0;vi perl/Ndn/Dreamhost/Product/Marketgoo/Instance.pm
+: 1728956636:0;vi perl/Ndn/Dreamhost/Product/Core/Role/Chat.pm
+: 1728956636:0;vi perl/Ndn/Dreamhost/Product/Marketgoo/Action/Teardown.pm
+: 1728956636:0;gg -i 'clean_install'
+: 1728956636:0;vi oneclicks/wordpress/install.tp
+: 1728956636:0;gg -i 'dreamhost-panel-login'
+: 1728956636:0;gg -i accessors
+: 1728956636:0;gg -i memoize
+: 1728956636:0;qvi perl/Ndn/Common/ApiCall.pm
+: 1728956636:0;vi perl/Ndn/Common/ApiCall.pm
+: 1728956636:0;perl -c perl/Ndn/Dreamhost/Service/Installer.pm
+: 1728956636:0;cd projects/domain-service
+: 1728956636:0;find . -type d -exec sh -c 'cd "{}" && git grep -i "change_php"' \;
+: 1728956636:0;find . -type d -exec sh -c 'cd "{}" && pwd' \;
+: 1728956636:0;find . -type d -maxdepth 1 -exec sh -c 'cd "{}" && git grep -i change_php' \;
+: 1728956636:0;find . -type d -maxdepth 1 -exec sh -c 'cd "{}" && pwd' \;
+: 1728956636:0;git clone git@git.dreamhost.com:dreamhost/panel/domains-dashboard.git
+: 1728956636:0;cd domains-dashboard
+: 1728956636:0;gg -i 'change_php'
+: 1728956636:0;vi src/presentation/components/Site/Domain/PHP/ChangePhpVersion.js
+: 1728956636:0;find . -type d -maxdepth 1 -exec sh -c 'cd "{}" && git grep -i 'scanandchangephp'' \;
+: 1728956636:0;vi src/asynchronous/index.js
+: 1728956636:0;gg -i "\/version"
+: 1728956636:0;vi src/controller/PHPVersionsController.ts
+: 1728956636:0;vi src/services/PhpService.ts
+: 1728956636:0;lde urls
+: 1728956636:0;zplug clear
+: 1728956636:0;fzf
+: 1728956636:0;k
+: 1728956636:0;gco -b yakko
+: 1728956636:0;scp -r yakko:/home/rmiller/dotfiles .
+: 1728956636:0;cp dotfiles/dotfiles/* .
+: 1728956636:0;cp -r dotfiles/dotfiles/* .
+: 1728956636:0;dst
+: 1728956636:0;rm -rf .*
+: 1728956636:0;rm -rf projects
+: 1728956636:0;la dotfiles/dotfiles
+: 1728956636:0;mv dotfiles/dotfiles ../dotbak
+: 1728956636:0;mv dotfiles/* .
+: 1728956636:0;la projects
+: 1728956636:0;mv dotfiles/.* .
+: 1728956636:0;diff -r dotfiles dotbak
+: 1728956636:0;for file in dotfiles/*; do diff "$file" "${file#dotfiles/}"; done
+: 1728956636:0;for file in dotfiles/*; do diff "$file" "${file#dotbak/}"; done
+: 1728956636:0;diff .zshrc dotfiles/.zshrc
+: 1728956636:0;history G for
+: 1728956636:0;find "$HOME/dotfiles" -type f | xargs -I {} sh -c 'diff {} "$HOME/$(basename {})"'\
+
+: 1728956636:0;la dot
+: 1728956636:0;la dotbak
+: 1728956636:0;diff -r ~/dotfiles ~
+: 1728956636:0;git status
+: 1728956636:0;git remote ls
+: 1728956636:0;git remore -v
+: 1728956636:0;vi App.ts
+: 1728956636:0;la src/components/
+: 1728956636:0;la src/presentation
+: 1728956636:0;la src/state
+: 1728956636:0;npm run dev --host
+: 1728956636:0;npm run --host dev
+: 1728956636:0;cp -r dh_gp dh_gp2
+: 1728956636:0;cd dh_gp2
+: 1728956636:0;mv src/components/LoginButton.tsx src/components/Login.tsx
+: 1728956636:0;vi src/components/Login.tsx
+: 1728956636:0;cd ../dh_gp
+: 1728956636:0;vi src/components/Profile.tsx
+: 1728956636:0;la src/components
+: 1728956636:0;vi src/main.tsx 
+: 1728956636:0;vi src/components/LoginButton.tsx
+: 1728956636:0;vi src/components/LogoutButton.tsx
+: 1728956636:0;vi src/App.
+: 1728956636:0;cp .lde.yml dotfiles
+: 1728956636:0;cp .iterm2_shell_integration.zsh dotfiles
+: 1728956636:0;cp .p10k.zsh dotfiles
+: 1728956636:0;cp .vimrc dotfiles
+: 1728956636:0;cp .zshrc dotfiles
+: 1728956636:0;scp -r yakko:/home/rmiller/dotfiles ./dotbak
+: 1728956636:0;cp dotfiles/.lde.yml dotbak
+: 1728956636:0;cp dotfiles/.p10k.zsh dotbak
+: 1728956636:0;vi dotfiles/.zshrc
+: 1728956636:0;find dotfiles -type f -exec bash -c 'file="{}"; base="${file#dotfiles/}"; [ -f "dotbak/$base" ] && echo "Comparing dotfiles/$base with dotbak/$base" && diff "dotfiles/$base" "dotbak/$base"' \;\
+
+: 1728956636:0;rm -rf dotbak
+: 1728956636:0;cp -r .iterm2 dotfiles
+: 1728956636:0;zrv
+: 1728956636:0;mkdir zsh
+: 1728956636:0;mkdir vim
+: 1728956636:0;mkdir git
+: 1728956636:0;mkdir iterm2
+: 1728956636:0;mv .gitconfig git
+: 1728956636:0;mv .iterm2* iterm2
+: 1728956636:0;mv .zshrc .zsh-syntax-theme zsh
+: 1728956636:0;mv .vimrc vim
+: 1728956636:0;mv .p10k.zsh zsh
+: 1728956636:0;mkdir ndn
+: 1728956636:0;mv projects ndn
+: 1728956636:0;mv .perltidyrc ndn
+: 1728956636:0;mv .aliases.ndn ndn
+: 1728956636:0;mv .lde.yml ndn
+: 1728956636:0;mv .aliases zsh
+: 1728956636:0;git init
+: 1728956636:0;git commit -m 'Initial Commit'
+: 1728956636:0;git remote add origin git@github.com:Randallsm83/dotfiles.git
+: 1728956636:0;git push origin master
+: 1728956636:0;git remote rename 
+: 1728956636:0;git fetch --all
+: 1728956636:0;git remote -D
+: 1728956636:0;git remote prune
+: 1728956636:0;git remote prune origin
+: 1728956636:0;    git branch --set-upstream-to=origin/master master
+: 1728956636:0;git pull --rebase
+: 1728956636:0;git rename destination origing
+: 1728956636:0;git rename destination origin
+: 1728956636:0;git remote
+: 1728956636:0;rm -rf .oh-my-zsh .tmux .vim .aliases .make.sh .tmux.conf .vimrc .zshrc dracula.tmux
+: 1728956636:0;git commit -m 'Cleanup old stuff'
+: 1728956636:0;la ndn/projects/ndn/.git/config
+: 1728956636:0;cd ndn/projects/ndn
+: 1728956636:0;mv projects projects.t
+: 1728956636:0;mv projects.t/ projects
+: 1728956636:0;vi projects/ndn/.git/config
+: 1728956636:0;cp ndn/projects/ndn/.git/config .
+: 1728956636:0;vi .git/config 
+: 1728956636:0;mv config ndn/projects/ndn/.git
+: 1728956636:0;la 
+: 1728956636:0;la ndn/projects/ndn
+: 1728956636:0;\
+git config --list --show-origin
+: 1728956636:0;git ls-files --others --ignored --exclude-standard
+: 1728956636:0;git check-ignore -v ndn/projects/ndn/.git/config
+: 1728956636:0;git add ndn/projects/ndn/.git/config
+: 1728956636:0;touch .gitignore
+: 1728956636:0;git add .gitignore
+: 1728956636:0;git commit -m "Add .gitignore but dont ignore the ones in subfolders"
+: 1728956636:0;tree ndn
+: 1728956636:0;ls -la ~/dotfiles/ndn/projects/ndn/.git/
+: 1728956636:0;cat ~/.git/info/exclude
+: 1728956636:0;cd ~/dotfiles/ndn/projects/ndn
+: 1728956636:0;ls -la .git
+: 1728956636:0;git submodule add ndn/projects/ndn
+: 1728956636:0;git submodule add ./ndn/projects/ndn
+: 1728956636:0;git add -f ndn/projects/ndn/.git/config
+: 1728956636:0;git commit -m "Add ndn/projects/ndn/.git/config to the main repository"\
+
+: 1728956636:0;git add ndn
+: 1728956636:0;git commit -m "Readd ndn"
+: 1728956636:0;git rm -r --cached ndn
+: 1728956636:0;mv ndn ..
+: 1728956636:0;git commit -m "Remove ndn directory to add as a submodule"
+: 1728956636:0;mv ../ndn .
+: 1728956636:0;git submodule add ./ndn/projects/ndn ndn
+: 1728956636:0;la .git
+: 1728956636:0;la .git/info/exclude
+: 1728956636:0;cat .git/info/exclude
+: 1728956636:0;la ndn/projects
+: 1728956636:0;la ndn/projects/ndn/.git
+: 1728956636:0;mv ndn/projects/ndn/.git/config ./ndn_gitconfig
+: 1728956636:0;mdkir -p ndn/projects/ndn/.git
+: 1728956636:0;mkdir -p ndn/projects/ndn/.git
+: 1728956636:0;mv ndn_gitconfig ndn
+: 1728956636:0;ln -s ndn/ndn_gitconfig ndn/projects/ndn/.git/config
+: 1728956636:0;git commit -m "trying to add ndn properly"
+: 1728956636:0;rm -rf ndn/projects
+: 1728956636:0;mkdir -p ndn/ndn_gitconfig_link
+: 1728956636:0;rm ndn/ndn_gitconfig
+: 1728956636:0;rm ndn/ndn_gitconfig_link
+: 1728956636:0;rm -rf ndn/ndn_gitconfig_link
+: 1728956636:0;git commit -m 'over trying to make the ndn git config work'
+: 1728956636:0;chmod +x install.sh
+: 1728956636:0;git commit -m 'add install script'
+: 1728956636:0;git commit -m 'add install alias'
+: 1728956636:0;git commit -m 'update stow version'
+: 1728956636:0;cp zsh/.aliases ..
+: 1728956636:0;cp .aliases dotfiles/zsh/.aliases
+: 1728956636:0;git commit -m 'fix'
+: 1728956636:0;wget
+: 1728956636:0;brew install wget
+: 1728956636:0;la Downloads
+: 1728956636:0;git commit -m 'use latest'
+: 1728956636:0;cp ../.inputrc ./zsh
+: 1728956636:0;cat zsh/.inputrc
+: 1728956636:0;echo $INPUTRC
+: 1728956636:0;la ../.zsh_history
+: 1728956636:0;grep -E 'HISTSIZE|SAVEHIST|history' ~/.zshrc ~/.zshenv ~/.zprofile\
+
+: 1728956636:0;diff zsh/.zshrc ../.zshrc
+: 1728956636:0;cp zsh/.zshrc ../
+: 1728956636:0;echo "test 1"
+: 1728956636:0;echo "test 2"
+: 1728956636:0;tail -n .zsh_history
+: 1728956636:0;tail -n 10 .zsh_history
+: 1728956636:0;history G test
+: 1728956636:0;history -h
+: 1728956636:0;man history
+: 1728956636:0;git commit -m 'history updates and add inputrc'
+: 1728956636:0;la stow-2.4.1
+: 1728956636:0;cd stow-2.4.1
+: 1728956636:0;cat INSTALL.md
+: 1728956636:0;rm -rf stow-*
+: 1728956636:0;ls -l ~ | grep -E '.* -> .*dotfiles'
+: 1728956636:0;mv dotfiles dotfiles.bak
+: 1728956636:0;perlbrew -h
+: 1728956636:0;la .perlbrew/libs
+: 1728956636:0;brew uninstall rancher
+: 1728956636:0;brew info perl
+: 1728956636:0;la perl5
+: 1728956636:0;la perl5/perlbrew
+: 1728956636:0;which perlbrew
+: 1728956636:0;whence perlbrew
+: 1728956636:0;history G perlbrew
+: 1728956636:0;vi .zsh_history
+: 1728956636:0;rm -rf ~/perl5/perlbrew
+: 1728956636:0;la .perlbrew
+: 1728956636:0;rm -rf .perlbrew
+: 1728956636:0;curl -L https://install.perlbrew.pl | bash
+: 1728956636:0;perlbrew ifno
+: 1728956636:0;perlbrew install perl-5.40.0
+: 1728956636:0;perlbrew install perl-5.40.0 -j 4
+: 1728956636:0;tail -f ~/perl5/perlbrew/build.perl-5.40.0.log
+: 1728956636:0;pbcopy < .zshrc
+: 1728956636:0;perlbrew list-modules
+: 1728956636:0;perlbrew install-cpanm
+: 1728956636:0;perlbrew clean
+: 1728956636:0;perlbrew alias create perl-5.40.0 54
+: 1728956636:0;perlbrew available
+: 1728956636:0;perlbrew switch 54
+: 1728956636:0;perlbrew init
+: 1728956636:0;perlbrew switch 5.40.0
+: 1728956636:0;cat ~/.perlbrew/init
+: 1728956636:0;cd projects/ndq
+: 1728956636:0;vi perl/Ndn/Sitepanel/Server.pm
+: 1728956636:0;vi perl/Ndn/Dreamhost/Machine/CloudBase.pm
+: 1728956636:0;gco -b tidy.fix
+: 1728956636:0;git commit -m 'tidy these up'
+: 1728956636:0;gco perl/Ndn/PSGI/Server/Marketing.pm
+: 1728956636:0;gco perl/Ndn/PSGI/Server/Marketing.pm origin
+: 1728956636:0;gco master perl/Ndn/PSGI/Server/Marketing.pm
+: 1728956636:0;git commit -m 'except this one'
+: 1728956636:0;gco staging-DEV-16532\
+
+: 1728956636:0;vi perl/Ndn/PSGI/Server/Marketing.pm
+: 1728956636:0;gco -b tidy.fix.yours
+: 1728956636:0;git commit -m 'tidy'
+: 1728956636:0;vi ~/vimrc
+: 1728956636:0;bindkey | grep -E '\^\[\[A|\^\[\[B'
+: 1728956636:0;grep HISTORY ~/.zshrc ~/.zshenv
+: 1728956636:0;cd dotfiles.bak
+: 1728956636:0;find dotfiles -type f -exec bash -c '[ -f "${1##*/}" ] && echo "Comparing ${1##*/} with $1" && diff "${1##*/}" "$1"' _ {} \;
+: 1728956636:0;find dotfilesbak -type f -exec bash -c '[ -f "${1##*/}" ] && echo "Comparing ${1##*/} with $1" && diff "${1##*/}" "$1"' _ {} \;
+: 1728956636:0;find dotfiles.bak -type f -exec bash -c '[ -f "${1##*/}" ] && echo "Comparing ${1##*/} with $1" && diff "${1##*/}" "$1"' _ {} \;
+: 1728956636:0;gg -i 'st_export'
+: 1728956636:0;gg -i "\\$tp"
+: 1728956636:0;gg -i "/\$tp"
+: 1728956636:0;gg -i "\$tp"
+: 1728956636:0;gg -i "\$"
+: 1728956636:0;gg -i "/\$"
+: 1728956636:0;gg -i "\\$"
+: 1728956636:0;gg -F "\$"
+: 1728956636:0;gg -i "\\\$"
+: 1728956636:0;gg -w "\\\$"
+: 1728956636:0;gg -i "\\\\$"
+: 1728956636:0;gg '\\\$'
+: 1728956636:0;gg '\\\$t'
+: 1728956636:0;gg '\\\$tp'
+: 1728956636:0;mv ~/tmp ~/dowp.pm
+: 1728956636:0;gg _manage_web_cache_plugins_nginx
+: 1728956636:0;vi perl/Ndn/Dreamhost/DreamPress/Roles/WebServer.pm
+: 1728956636:0;gg -i 'memoize'
+: 1728956636:0;vi perl/Ndn/Reporting/ExitSurvey.pm
+: 1728956636:0;vi perl/Ndn/Common/ZabbixClient.pm
+: 1728956636:0;vi perl/Ndn/Common/ObjectBuilder.pm
+: 1728956636:0;vi perl/Ndn/Common/GeoIP.pm
+: 1728956636:0;vi perl/Ndn/Registrar/ContactModifier.pm
+: 1728956636:0;vi perl/Ndn/Billing/ServiceInstance.pm
+: 1728956636:0;gg -i 'justcol'
+: 1728956636:0;gg -i 'just_col'
+: 1728956636:0;vi perl/Ndn/Dreamhost/Service/Dreampress.pm
+: 1728956636:0;ss
+: 1728956636:0;la t/perl/unit/Ndn/Common/ApiCall/api-info.t
+: 1728956636:0;git show t/perl/unit/Ndn/Common/ApiCall/api-info.t
+: 1728956636:0;git log t/perl/unit/Ndn/Common/ApiCall/api-info.t
+: 1728956636:0;la perl/t/unit/Ndn/Common/ApiCall/api-info.t
+: 1728956636:0;la perl/t/unit/Ndn/Common/ApiCall/
+: 1728956636:0;la t/perl/unit/Ndn/Common/ApiCall/
+: 1728956636:0;git log perl/t/unit/Ndn/Common/ApiCall/api-info.t
+: 1728956636:0;git log perl/t/unit/Ndn/
+: 1728956636:0;gg -i 'Attempting to install extendify and extendable'
+: 1728956636:0;gg -i 'extendify and extendable'
+: 1728956636:0;gg -i 'attempting to install'
+: 1728956636:0;cd projects/
+: 1728956636:0;gg -i 'console'
+: 1728956636:0;git commit -m 'got auth working'
+: 1728956636:0;rm -rf dh_gp2
+: 1728956636:0;mv dh_gp dh_gp.old
+: 1728956636:0;git clone github.com:Randallsm83/dh_gp.git
+: 1728956636:0;ssh-agent -l
+: 1728956636:0;pbcopy < ~/.zshrc
+: 1728956636:0;vi .ssh/conf
+: 1728956636:0;history | for
+: 1728956636:0;cd /home
+: 1728956636:0;la dotfiles.bak
+: 1728956636:0;cd Dev/dh_gp
+: 1728956636:0;rm -rf dh_gp
+: 1728956636:0;mv dh_gp.old dh_gp
+: 1728956636:0;cd dh_gp
+: 1728956636:0;vi src/components/SessionManager.tsx
+: 1728956636:0;curl https://xivapi.com/item/1675
+: 1728956636:0;l]a
+: 1728956636:0;cd panel-navigation-js
+: 1728956636:0;git clone git@git.dreamhost.com:dreamhost/panel/ai-search-bar.git
+: 1728956636:0;cd ai-search-bar
+: 1728956636:0;gg -i 'website builder'
+: 1728956636:0;gg -i 'useAutocompleteSuggestedLinks'
+: 1728956636:0;vi src/presentation/components/SearchInputPopover/Autocomplete/List.js
+: 1728956636:0;git clone git@git.dreamhost.com:dreamhost/qa-automation.git
+: 1728956636:0;cd qa-automation
+: 1728956636:0;gco -b staging-ai-2877
+: 1728956636:0;gg -i ''REMIXER_ICON_GROUP'
+: 1728956636:0;gg -i 'REMIXER_ICON_GROUP'
+: 1728956636:0;gg -i builder
+: 1728956636:0;gg -i 'iswpaas
+: 1728956636:0;vi perl/Ndn/Dreamhost/Machine/Logical/Openstack.pm
+: 1728956636:0;gg -i 'incluster'
+: 1728956636:0;vi perl/Ndn/Dreamhost/Machine.pm
+: 1728956636:0;gg -i 'iswpaas'
+: 1728956636:0;./kubectl.sh satging-bm get pods -n micro-services
+: 1728956636:0;./kubectl.sh staging-bm get pods -n micro-services
+: 1728956636:0;./kubectl.sh dev-bm get pods -n micro-services
+: 1728956636:0;./kubectl.sh dev-bm get pods
+: 1728956636:0;./kubectl.sh dev-bm get pods -n ndn-development
+: 1728956636:0;git log --author="Mika Epstein" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }' -
+: 1728956636:0;git log --author="Randall Miller" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }' -
+: 1728956636:0;cd projects
+: 1728956636:0;cd kubekick
+: 1728956636:0;./kubectl.sh dev-bm get namespaces
+: 1728956636:0;vi ../../.lde
+: 1728956636:0;vi ../../.lde.yml
+: 1728956636:0;lde status ai-search-bar
+: 1728956636:0;lde logs ai-search-bar
+: 1728956636:0;lde exec -s nginx ndn
+: 1728956636:0;vi t/perl/unit/Ndn/Dreamhost/WebApplication/Install/Plugins.t
+: 1728956636:0;lde exec -s tests ndn 'prove -v t/perl/unit/Ndn/Dreamhost/WebApplication/Install/Plugins.t'
+: 1728956636:0;git commit -m 'fix empty arrays'
+: 1728956636:0;lde up panel-navigation
+: 1728956636:0;lde logs -ftall panel-navigation
+: 1728956636:0;lde logs -ftall domain-service
+: 1728956636:0;git commit -m 'touch'
+: 1728956636:0;git commit --amend
+: 1728956636:0;gco staging-ai-2877
+: 1728956636:0;bindkey G fzf
+: 1728956636:0;bindkey G substring
+: 1728956636:0;gco WP-3955
+: 1728956636:0;lde exec -s tests ndn 'prove -v t/perl/acceptance/API2/Command-Remixer-GetWordpress/basic.t'
+: 1728956636:0;vi t/perl/acceptance/API2/Command-Remixer-GetWordpress/basic.t
+: 1728956636:0;vi perl/Ndn/Dreamhost/WebApplication/Install.pm
+: 1728956636:0;git commit -m 'opposite'
+: 1728956636:0;gco -b staging-ai-2877-2
+: 1728956636:0;gco ai-2877
+: 1728956636:0;vi src/constants/autocompleteIcons.js
+: 1728956636:0;vi src/hooks/useAutocompleteIconGroup.js
+: 1728956636:0;vi src/hooks/useAutocompleteSuggestedLinks.js
+: 1728956636:0;git commit -m 'cleanup'
+: 1728956636:0;git fetch
+: 1728956636:0;cd ../qa-automation
+: 1728956636:0;git branch -D staging-ai-2877
+: 1728956636:0;git branch -D staging-ai-2877-2
+: 1728956636:0;gco -b staging-AI-2877
+: 1728956636:0;git clone git@git.dreamhost.com:dreamhost/microservices/search-service.git
+: 1728956636:0;cd search-service
+: 1728956636:0;vi test/IndexSearchService.test.ts
+: 1728956636:0;gg -i 'remix'
+: 1728956636:0;git commit -m 'remove remixer from ai search suggestions'
+: 1728956636:0;cd ~/ndn
+: 1728956636:0;rm dowp.pm
+: 1728956636:0;rm -rf dotfiles.bak
+: 1728956636:0;git clone git@github.com:Randallsm83/dotfiles.git
+: 1728956636:0;for
+: 1728956636:0;for file in dotfiles/*; do diff "$file" "$HOME/$(basename "$file")"; done
+: 1728956636:0;find dotfiles -type f | while read file; do diff "$file" "$HOME/${file#dotfiles/}"; done
+: 1728956636:0;find dotfiles -type f | while read file; do diff "$file" "$HOME/$file"; done
+: 1728956636:0;find dotfiles -type f | while read -r file; do diff "$file" "$(basename "$file")"; done
+: 1728956636:0;cp .vimrc dotfiles/vim
+: 1728956636:0;cp .lde.yml dotfiles/ndn
+: 1728956636:0;git commit -m 'vimrc and lde update'
+: 1728956636:0;cat .gitignore
+: 1728956636:0;history
+: 1728956636:0;bindkey G history
+: 1728956636:0;\
+env | grep -E 'HISTSIZE|HISTFILE|HISTCONTROL|ZSH'
+: 1728956636:0;echo $FZF_CTRL_R_OPTS\
+
+: 1728956636:0;echo $term
+: 1728956636:0;env G HIST
+: 1728956636:0;env | grep -E 'HISTCONTROL|HISTSIZE|HISTFILE|HISTIGNORE'
+: 1728956636:0;setopy
+: 1728956636:0;setopt
+: 1728956636:0;tail .zsh_history
+: 1728956636:0;cat -v
+: 1728956636:0;bre install showkey
+: 1728956636:0;brew install showkey
+: 1728956636:0;showkey -a
+: 1728956636:0;bindkey G history-sub
+: 1728956636:0;zle history-substring-search-up
+: 1728956636:0;zsh -i -c 'declare -p ZSH_VERSION HISTSIZE SAVEHIST HISTFILE'\
+
+: 1728956636:0;zsh -x
+: 1728956636:0;perlbrew 54
+: 1728956636:0;perlbrew lib create test
+: 1728956636:0;perlbrew lib delete test
+: 1728956636:0;perlbrew lib create ndn
+: 1728956636:0;perlbrew alias create perl-5.40.0@ndn 54@ndn
+: 1728956636:0;perlbrew alias -h
+: 1728956636:0;perlbrew alias delete 54
+: 1728956636:0;perlbrew alias create perl-5.40.0@ndn ndn
+: 1728956636:0;perlbrew use perl-5.40.0@ndn
+: 1728956636:0;echo $PERL5LIB
+: 1728956636:0;perlbrew alias create perl-5.40.0@ndn ndn\
+
+: 1728956636:0;aliases
+: 1728956636:0;paths
+: 1728956636:0;la dotfiles/*
+: 1728956636:0;rm projects/ndn/tmp
+: 1728956636:0;mv dotfiles/install.sh.old dotfiles/install.sh.old.sh
+: 1728956636:0;rm install.sh.old.sh
+: 1728956636:0;pbcopy < install.sh
+: 1728956636:0;git remote -l
+: 1728956636:0;dotfiles
+: 1728956636:0;gco -b AI-2877
+: 1728956636:0;scp wp_plugin_failure_cnt.pl yakko:/home/rmiller/
+: 1728956636:0;stow
+: 1728956636:0;la .local/share
+: 1728956636:0;diff .zshrc dotfiles/zsh/.zshrc
+: 1728956636:0;cp .zshrc dotfiles/zsh
+: 1728956636:0;git commit -m 'use local not .local and defer substring-search install'
+: 1728956636:0;la dotfiles_backup
+: 1728956636:0;cd dotfiles/
+: 1728956636:0;git config --get core.excludesfile
+: 1728956636:0;rm -rf dotfiles_backup
+: 1728956636:0;git branch -m main
+: 1728956636:0;git push origin main
+: 1728956636:0;git branch -l
+: 1728956636:0;git push -u origin main
+: 1728956636:0;git push origin --delete master
+: 1728956636:0;git branch
+: 1728956636:0;git branch -r
+: 1728956636:0;stow --override=~ -n -v -t ~ "$dir"
+: 1728956636:0;stow --override=~ -n -v -t ~ zsh
+: 1728956636:0;function dotinstall
+: 1728956636:0;which dotinstall
+: 1728956636:0;git commit -m 'update install script'
+: 1728956636:0;cat ldap.pub
+: 1728956636:0;cat .ssh/config
+: 1728956636:0;cat .ssh/github
+: 1728956636:0;cat .ssh/github.pub
+: 1728956636:0;cat .ssh/ldap.pub
+: 1728956636:0;cat .ssh/dhgit.pub
+: 1728956636:0;vi ~/.vimrc
+: 1728956636:0;cp ssh-key-manager.sh ..
+: 1728956636:0;source ../.aliases
+: 1728956636:0;chmod +x ssh-key-manager.sh
+: 1728956636:0;chmod +x dotfiles/ssh-key-manager.sh
+: 1728956636:0;la G ssh
+: 1728956636:0;displaykeys
+: 1728956636:0;vi ssh-key-manager.sh
+: 1728956636:0;mkdir
+: 1728956636:0;mkdir scripts
+: 1728956636:0;mv ssh-key-manager.sh scripts
+: 1728956636:0;grep -E "exit|logout|kill|exec" ~/dotfiles/scripts/ssh-key-manager.sh\
+
+: 1728956636:0;la .ssh
+: 1728956636:0;scp yakko:/home/rmiller/projects/ndn/tmp .
+: 1728956636:0;vi perl/Ndn/Dreamhost/Service/Installer.pm
+: 1728956636:0;cd ../ai-search-bar
+: 1728956636:0;lde up search-service
+: 1728956636:0;lde up ai-search-bar
+: 1728956636:0;lde logs -ftall ai-search-bar
+: 1728956636:0;lde logs -ftall search-service
+: 1728956636:0;lde logs -ftall ndn
+: 1728956636:0;cd ndn
+: 1728956636:0;gco -b staging-ai2877
+: 1728956636:0;vi perl/Ndn/Dhwebpanel/FastSearch.pm
+: 1728956636:0;git commit -m 'test comment to see if staging works first'
+: 1728956636:0;mkdir gitlab-api
+: 1728956636:0;cd gitlab-api
+: 1728956636:0;vi env
+: 1728956636:0;brew install pyenv
+: 1728956636:0;brew uninstall pyenv
+: 1728956636:0;brew uninstall python@3.12
+: 1728956636:0;vi perl/Ndn/Dreamhost/Service/Wordpress.pm
+: 1728956636:0;git show d213351370d
+: 1728956636:0;scp yakko:/home/rmiller/tmp .
+: 1728956636:0;open tmp
+: 1728956636:0;open -h
+: 1728956636:0;brew info xcode
+: 1728956636:0;open -a Google\ Chrome tmp
+: 1728956636:0;mv tmp tmp.html
+: 1728956636:0;open tmp.html
+: 1728956636:0;scp yakko:/home/rmiller/dotfiles/.vimrc ./tmp
+: 1728956636:0;scp yakko:/home/rmiller/dotfiles/vim/.vimrc ./tmp
+: 1728956636:0;pbcopy < tmp
+: 1728956636:0;la script
+: 1728956636:0;la scripts
+: 1728956636:0;git commit -m 'ssh key manager'
+: 1728956636:0;vi /opt/homebrew/etc/gitconfig
+: 1728956636:0;which vimdiff
+: 1728956636:0;la local
+: 1728956636:0;la local/bin
+: 1728956636:0;rm tmp tmp.html
+: 1728956636:0;vi la dotfiles
+: 1728956636:0;la dotfiles/scripts
+: 1728956636:0;mv scripts
+: 1728956636:0;mv scripts bin
+: 1728956636:0;git commit -m 'rename scripts to bin'
+: 1728956636:0;brew install shfmt
+: 1728956636:0;brew install shellcheck
+: 1728956636:0;git commit -m 'update install.sh and add shellcheck and shfmt'
+: 1728956636:0;rm -rf local
+: 1728956636:0;rm -rf ssh-key-manager.sh
+: 1728956636:0;git commit -m 'set to 0 so its initialized'
+: 1728956636:0;brew info arduino
+: 1728956636:0;alias dotinstall
+: 1728956636:0;dotinst
+: 1728956636:0;functions
+: 1728956636:0;npm
+: 1728956636:0;nvm list
+: 1728956636:0;brew info arduino-cli
+: 1728956636:0;brew install arduino-cli
+: 1728956636:0;arduino-cli
+: 1728956636:0;ard board
+: 1728956636:0;ard board list
+: 1728956636:0;ard board details
+: 1728956636:0;ard board details -b arduino:renesas_uno:unor4wifi
+: 1728956636:0;ard config dump
+: 1728956636:0;ard core download
+: 1728956636:0;ard core download arduino:renesas_uno
+: 1728956636:0;ard core
+: 1728956636:0;ard core list
+: 1728956636:0;ard core search
+: 1728956636:0;ard core install arduino:renesas_uno
+: 1728956636:0;ard credential
+: 1728956636:0;ard credentials
+: 1728956636:0;brew info arduino-cloud-cli
+: 1728956636:0;ard config
+: 1728956636:0;cd Downloads
+: 1728956636:0;tar -xvzf arduino-cloud-cli_0.3.0_macOS_64bit.tar.gz
+: 1728956636:0;./arduino-cloud-cli
+: 1728956636:0;mv arduino-cloud-cli ../.local/bin
+: 1728956636:0;echo $PATH G local
+: 1728956636:0;arduino-cloud-cli
+: 1728956636:0;ardc
+: 1728956636:0;ardc credentials
+: 1728956636:0;ardc credentials init
+: 1728956636:0;arduino-cloud-cli credentials find
+: 1728956636:0;cd /Users/randallm/Library/Arduino15
+: 1728956636:0;arduino-cloud-cli device list-fqbn
+: 1728956636:0;arduino-cloud-cli device list-fqbn G uno
+: 1728956636:0;arduino-cloud-cli device list-fqbn G UNO
+: 1728956636:0;cd ~/projects/ndn
+: 1728956636:0;cd master
+: 1728956636:0;la perl/Ndn/Dreamhost
+: 1728956636:0;vi perl/Ndn/Dreamhost/Service.pm
+: 1728956636:0;rm ~/.aliases.ndn
+: 1728956636:0;la ~/dotfiles
+: 1728956636:0;la ~/dotfiles/ndn
+: 1728956636:0;vi ~/dotfiles/install.sh
+: 1728956636:0;vi git/.gitconfig
+: 1728956636:0;gd git
+: 1728956636:0;gco git
+: 1728956636:0;gco -p ndn
+: 1728956636:0;gd ndn
+: 1728956636:0;gco -p vim
+: 1728956636:0;gd vim
+: 1728956636:0;vi ~/.vim/backup/%Users%randallm%.vimrc\~
+: 1728956636:0;gd vim/
+: 1728956636:0;ard
+: 1728956636:0;gco -p zsh/.zshrc
+: 1728956636:0;gd zsh/
+: 1728956636:0;git commit -m 'udpates'
+: 1728956636:0;git --version
+: 1728956636:0;git -h
+: 1728956636:0;git push -h
+: 1728956636:0;git help autosetupremote
+: 1728956636:0;git help config
+: 1728956636:0;git commit -m 'gitconfig push options'
+: 1728956636:0;locale
+: 1728956636:0;gg -i 'utf'
+: 1728956636:0;echo $COLORTERM
+: 1728956636:0;echo $TERM
+: 1728956636:0;brew install dircolors
+: 1728956636:0;brew search dircolors
+: 1728956636:0;alias lscolros
+: 1728956636:0;function lscolors
+: 1728956636:0;brew search coreutils
+: 1728956636:0;gdircolors --print-ls-colors
+: 1728956636:0;echo $PATH G gnu
+: 1728956636:0;which dircolors
+: 1728956636:0;la /opt/homebrew/opt/grep/libexec/gnubin
+: 1728956636:0;cd /opt/homebrew
+: 1728956636:0;la opt
+: 1728956636:0;cd opt/coreutils
+: 1728956636:0;which grep
+: 1728956636:0;whence grep
+: 1728956636:0;cd bin
+: 1728956636:0;l
+: 1728956636:0;la libexec/gnubin
+: 1728956636:0;cd libexec/gnubin
+: 1728956636:0;la gnuman
+: 1728956636:0;cd gnubin
+: 1728956636:0;pwd
+: 1728956636:0;dircolors --print-database | grep '^TERM'
+: 1728956636:0;git clone https://github.com/dracula/dircolors.git\
+
+: 1728956636:0;cat dircolors/screenshot.png
+: 1728956636:0;vi dircolors/draculize_dircolors.py
+: 1728956636:0;vi dircolors/README.md
+: 1728956636:0;vi dircolors/INSTALL.md
+: 1728956636:0;vi dircolors/.dircolors
+: 1728956636:0;alias ls
+: 1728956636:0;ls --colors
+: 1728956636:0;ls --color
+: 1728956636:0;/bin/ls --versino
+: 1728956636:0;/bin/ls --color
+: 1728956636:0;ls -h
+: 1728956636:0;whcih ls
+: 1728956636:0;ls --help
+: 1728956636:0;echo $LESS
+: 1728956636:0;vi .git/config
+: 1728956636:0;cat .git/config
+: 1728956636:0;cat ../.gitconfig
+: 1728956636:0;ls --help G color
+: 1728956636:0;dircolors -b
+: 1728956636:0;dircolors --version
+: 1728956636:0;git commit -m 'rebase'
+: 1728956636:0;git rebase --continue
+: 1728956636:0;rm ../.aliases.ndn
+: 1728956636:0;gg -i '\.local'
+: 1728956636:0;gg '\.local'
+: 1728956636:0;which ard
+: 1728956636:0;which arduino-cli
+: 1728956636:0;la dotfiles/bin
+: 1728956636:0;pbcopy < dotfiles/install.sh
+: 1728956636:0;uname
+: 1728956636:0;uname -h
+: 1728956636:0;uname --help
+: 1728956636:0;uname -a
+: 1728956636:0;uname -s
+: 1728956636:0;unsame -n
+: 1728956636:0;uname -n
+: 1728956636:0;uname -r
+: 1728956636:0;uname -v
+: 1728956636:0;uname -m
+: 1728956636:0;uname -p
+: 1728956636:0;uname -i
+: 1728956636:0;uname -o
+: 1728956636:0;echo $hostname
+: 1728956636:0;echo $HOSTNAME
+: 1728956636:0;echo $(hostname)
+: 1728956636:0;hostname -f
+: 1728956636:0;ls -v
+: 1728956636:0;/bin/ls --version
+: 1728956636:0;/bin/ls --help
+: 1728956636:0;/bin/ls -h
+: 1728956636:0;man /bin/ls
+: 1728956636:0;vi /usr/share/man/ls
+: 1728956636:0;vi /usr/share/man/man1/ls.1
+: 1728956636:0;man /usr/share/man/man1/ls.1
+: 1728956636:0;man ls
+: 1728956636:0;fd
+: 1728956636:0;git commit -m 'reorder path'
+: 1728956636:0;ls
+: 1728956636:0;grep -q 'libexec/gnubin' .zshrc
+: 1728956636:0;grep 'libexec' .zshrc
+: 1728956636:0;which zsh
+: 1728956636:0;brew info zsh
+: 1728956636:0;zsh --version
+: 1728956636:0;cd projects/n
+: 1728956636:0;gco AI-2877
+: 1728956636:0;git reset HEAD^1
+: 1728956636:0;git branch --set-upstream-to=origin/develop develop
+: 1728956636:0;gco -b AI-2877-develop
+: 1728956636:0;git commit -m 'dont include remixer if they dont have it'
+: 1728956636:0;git commit -m 'new install script'
+: 1728956636:0;mkdir ndnhost
+: 1728956636:0;mkdir localhost
+: 1728956636:0;mv ndn/.aliases.ndn ndnhost
+: 1728956636:0;mv ndn/.lde.yml localhost
+: 1728956636:0;mv ndn/.perltidyrc localhost
+: 1728956636:0;la ndn
+: 1728956636:0;rm -rf ndn
+: 1728956636:0;ls git
+: 1728956636:0;git commit -m 'change dir structure, add host depenedent folders'
+: 1728956636:0;vi ../.aliases
+: 1728956636:0;rm ../tmp
+: 1728956636:0;echo $STOW_DIRS
+: 1728956636:0;stow -n --adopt --verbose
+: 1728956636:0;echo $DOTFILES_DIR
+: 1728956636:0;ls "$DOTFILES_DIR"
+: 1728956636:0;stow -n --delete
+: 1728956636:0;stow -n --delete --verbose
+: 1728956636:0;stow --verbose --no -n
+: 1728956636:0;diff .aliases dotfiles/.aliases
+: 1728956636:0;diff .aliases dotfiles/zsh/.aliases
+: 1728956636:0;rm .gitconfig
+: 1728956636:0;find . "dir1"
+: 1728956636:0;cat share/doc/stow
+: 1728956636:0;cat share/doc/stow/INSTALL.md
+: 1728956636:0;perlbrew lsit
+: 1728956636:0;perlbrew alias
+: 1728956636:0;perlbrew alias list
+: 1728956636:0;env G perl
+: 1728956636:0;env G PERL
+: 1728956636:0;which cpanm
+: 1728956636:0;vi ~/perl5/perlbrew/bin
+: 1728956636:0;cp iterm2/.iterm2 iterm2/iterm2
+: 1728956636:0;cp -r iterm2/.iterm2 iterm2/iterm2
+: 1728956636:0;stow -n -v iterm2
+: 1728956636:0;rm -rf iterm2/iterm2/
+: 1728956636:0;stow -n -v
+: 1728956636:0;stow --override=~ -n -v -t ~
+: 1728956636:0;rm ../.iterm2
+: 1728956636:0;rm -rf ../.iterm2
+: 1728956636:0;rm .gitconfig .inputrc .iterm2_shell_integration.zsh .lde.yml .p10k.zsh .perltidyrc .vimrc .zsh-syntax-theme .zshrc
+: 1728956636:0;rm -rf dotfiles
+: 1728956636:0;rm -rf .aliases
+: 1728956636:0;wget -qO- https://raw.githubusercontent.com/Randallsm83/dotfiles/refs/heads/main/install.sh
+: 1728956636:0;ls -la .local
+: 1728956636:0;ls -la .local/bin
+: 1728956636:0;wget -qO- "$STOW_URL_BASE/" | grep -oP 'stow-\K[0-9.]+(?=.tar.gz)' | sort -V | tail -1
+: 1728956636:0;wget -qO- "$STOW_URL_BASE/" | grep -oE 'stow-\K[0-9.]+(?=.tar.gz)' | sort -V | tail -1
+: 1728956636:0;    wget -qO- "$COREUTILS_URL_BASE/" | grep -Eo 'coreutils-[0-9.]+' | sed 's/coreutils-//' | sort -V | tail -1\
+
+: 1728956636:0;    wget -qO- "https://ftp.gnu.org/gnu/coreutils" | grep -Eo 'coreutils-[0-9.]+' | sed 's/coreutils-//' | sort -V | tail -1\
+
+: 1728956636:0;wget -qO- https://ftp.gnu.org/gnu/stow | grep -Eo 'stow-[0-9.]+' | sed 's/stow-//' | sort -V | tail -1
+: 1728956636:0;wget -qO- "https://ftp.gnu.org/gnu/coreutils" | grep -Eo 'coreutils-[0-9]+\.[0-9]+' | sed 's/coreutils-//' | sort -V | tail -1\
+
+: 1728956636:0;wget -qO- "https://ftp.gnu.org/gnu/stow" | grep -Eo 'stow-[0-9]+\.[0-9]+(\.[0-9]+)?' | sed 's/stow-//' | sort -V | tail -1\
+
+: 1728956636:0;ls -la
+: 1728956636:0;bash <(wget -qO- https://raw.githubusercontent.com/Randallsm83/dotfiles/refs/heads/main/install.sh)
+: 1728956636:0;rm stow-.tar.gz
+: 1728955808:0;stow -v
+: 1728959422:0;pbcopy < dotfiles/vim/.vimrc
+: 1728963357:0;brew search ctags
+: 1728963363:0;brew info ctags
+: 1728963381:0;brew info universal-ctags
+: 1728963418:0;brew install universal-ctags
+: 1728965181:0;la dh
+: 1728965187:0;la doc
+: 1728965192:0;la etc
+: 1728965202:0;la examples
+: 1728965207:0;la examples/general-perl
+: 1728965213:0;vi examples/general-perl/function_args.pl
+: 1728968329:0;la ~/.vim
+: 1728968337:0;la ~/.vim/plugged
+: 1728968370:0;vi tmp.vim
+: 1728970119:0;vi projects/ndn/perl/Ndn/Dhwebpanel/FastSearch.pm
+: 1728970186:0;which perl
+: 1729010226:0;cat README.md
+: 1729012514:0;git commit -m 'update install.sh and add CoC;
+: 1729012608:0;git commit -m 'update install.sh and add CoC'
+: 1729012618:0;git remote set-url origin git@github.com:Randallsm83/dotfiles.git\
+
+: 1729012625:0;dotinstall
+: 1729012704:0;command -v zplug
+: 1729012753:0;zplugs
+: 1729012816:0;cd .
+: 1729014247:0;./install.sh
+: 1729015429:0;brew install coreutils || brew upgrade coreutils
+: 1729016051:0;which wget
+: 1729016059:0;which tar
+: 1729016063:0;brew search tar
+: 1729016079:0;bre info gnu-tar
+: 1729016085:0;brew info gnu-tar
+: 1729016187:0;la /opt/homebrew/opt/
+: 1729016194:0;which readline
+: 1729016278:0;brew search grep
+: 1729016288:0;brew search sed
+: 1729016421:0;brew info gsed
+: 1729016435:0;brew info gnu-sed
+: 1729016483:0;brew info grep
+: 1729016574:0;brew info readline
+: 1729016600:0;brew info git
+: 1729016680:0;brew info perlbrew
+: 1729016685:0;brew search perl
+: 1729016751:0;brew info wgetr
+: 1729016798:0;vi .vim
+: 1729016830:0;which perlcritic
+: 1729016925:0;brew search puhg
+: 1729016929:0;brew search pug
+: 1729016938:0;brew search prettier
+: 1729016943:0;brew info prettier
+: 1729016953:0;brew info eslint
+: 1729016995:0;brew search make
+: 1729017020:0;make -v
+: 1729017036:0;brew info ta
+: 1729017038:0;brew info tar
+: 1729017046:0;brew info tart
+: 1729017057:0;brew search gcc
+: 1729017076:0;gcc -v
+: 1729017088:0;la /Library/Developer/CommandLineTools
+: 1729017092:0;la /Library/Developer/CommandLineTools/usr
+: 1729017095:0;la /Library/Developer/CommandLineTools/usr/bin
+: 1729017153:0;which git
+: 1729017155:0;which gcc
+: 1729017161:0;la /usr/bin
+: 1729017166:0;la /usr/bin/gcc
+: 1729017181:0;whence /usr/bin/gcc
+: 1729017469:0;brew info gcc
+: 1729017547:0;brew search black
+: 1729017628:0;brew search python
+: 1729022129:0;which python2
+: 1729022178:0;pyenv which
+: 1729023788:0;scp Downloads/ncurses.tar.gz yakko.sd.dreamhost.com:/home/rmiller/.local
+: 1729023891:0;scp Downloads/ncurses.tar.gz yakko:/home/rmiller/.local
+: 1729025906:0;vi zsh/.zsh
+: 1729026014:0;git commit -m 'install script updates and path updates'
+: 1729026826:0;git commit -m 'better vim configure'
+: 1729052185:0;brew search stow
+: 1729052241:0;la ../projects
+: 1729052295:0;brew info make
+: 1729052299:0;which make
+: 1729052304:0;make --version
+: 1729052389:0;brew info wget
+: 1729052407:0;brew info pkg-config
+: 1729053408:0;brew search ncurses
+: 1729053413:0;brew info ncurses
+: 1729053893:0;which curl
+: 1729053895:0;curl -v
+: 1729053898:0;brew search cur;
+: 1729053902:0;brew search curl
+: 1729053908:0;brew info curl
+: 1729053983:0;wget-h
+: 1729053985:0;wget -h
+: 1729055436:0;gg '\~'
+: 1729055790:0;defaults write com.apple.Finder AppleShowAllFiles true
+: 1729055793:0;killAll Finder
+: 1729056314:0;which diff
+: 1729056317:0;which diffutils
+: 1729056322:0;brew info diffutils
+: 1729056441:0;brew info brotli
+: 1729056454:0;brew info ca-certificates
+: 1729056467:0;brew info gmp
+: 1729056737:0;which which
+: 1729056746:0;type
+: 1729056748:0;which type
+: 1729057720:0;vi .gitignore
+: 1729058449:0;glob
+: 1729058947:0;vi zsh/.zshrc
+: 1729059616:0;vi tmp
+: 1729059681:0;mv tmp tmp.sh
+: 1729060050:0;chmod +x tmp.sh
+: 1729061408:0;la v6.1.0.tar.gz
+: 1729061410:0;find v6.1.0.tar.gz
+: 1729061528:0;find . v6.1.0.tar.gz
+: 1729061550:0;la share
+: 1729061552:0;la lib
+: 1729061618:0;./../tmp.sh
+: 1729061645:0;vi ../tmp.sh
+: 1729063278:0;la .local
+: 1729063281:0;la .local/bin
+: 1729064033:0;./tmp.sh
+: 1729096837:0;cd .local
+: 1729096848:0;cd .l
+: 1729096913:0;la dotfiles/tmp
+: 1729096916:0;cat dotfiles/tmp
+: 1729096948:0;vi tmp.sh
+: 1729097124:0;gg -i '\::Db\->new'
+: 1729097152:0;gg -i '\::Db\->new' G or
+: 1729097169:0;gg -i '\::Db\->new' G 'or '
+: 1729104296:0;dig https://radzivil.club/
+: 1729104307:0;dig radzivil.club
+: 1729109180:0;gg -i 'clickuptasksearch'
+: 1729111358:0;nano ~/.vimrc
+: 1729111757:0;sed -i '' -e 's|"$HOME/\([^"]*\)"|~/\1|g' -e 's|\$HOME|~|g' ~/.zshrc
+: 1729111771:0;vi vim/.vimrc
+: 1729111912:0;la ~/.vim/backup
+: 1729111945:0;sed -i '' -e 's|"$HOME/\([^"]*\)"|~/\1|g' -e 's|\$HOME|~|g' zsh/.zshrc
+: 1729112349:0;pkgutil
+: 1729112372:0;pkg-config
+: 1729112393:0;la ../.local/include
+: 1729112400:0;la ../.local/lib
+: 1729112405:0;la ../.local/bin
+: 1729112427:0;cd ../.local
+: 1729112744:0;la lib/site_perl
+: 1729112753:0;perlbrew info
+: 1729112764:0;perlbrew lib
+: 1729112768:0;perlbrew lib list
+: 1729112797:0;perlbrew info perl-5.40.0@ndn
+: 1729112805:0;perlbrew info perl-5.40.0
+: 1729112836:0;perlbrew info -h
+: 1729112883:0;rm -rf .local
+: 1729112887:0;rm workspace.postman_globals.json
+: 1729112893:0;cat tmp.sh
+: 1729112943:0;mv tmp ..
+: 1729113074:0;e
+: 1729113090:0;grep -R "LD" ~/.zshrc ~/.bashrc ~/.bash_profile ~/.profile ~/.zprofile
+: 1729113100:0;echo $CPPFLAGS
+: 1729113335:0;git add .gitignore vim zsh
+: 1729113347:0;git commit -m 'updates'
+: 1729113417:0;gco -b PS-14601
+: 1729113431:0;git commit -m 'expose get task endpoint'
+: 1729113453:0;cd ../ndn
+: 1729113456:0;gco -b staging-PS-14601
+: 1729113945:0;gco master
+: 1729124907:0;cd ../ndnsecure
+: 1729124911:0;vi etc/auth/clickup
+: 1729146512:0;yarn exec uvt
+: 1729146759:0;brew install yaml-language-server
+: 1729148221:0;vi ~/.lde.yml
+: 1729148260:0;lde
+: 1729148278:0;lde config
+: 1729149164:0;printf "\x1b[38;2;255;100;0mTRUECOLOR\x1b[0m\n"
+: 1729149172:0;awk 'BEGIN{\
+    s="/\\/\\/\\/\\/\\"; s=s s s s s s s s;\
+    for (colnum = 0; colnum<77; colnum++) {\
+        r = 255-(colnum*255/76);\
+        g = (colnum*510/76);\
+        b = (colnum*255/76);\
+        if (g>255) g = 510-g;\
+        printf "\033[48;2;%d;%d;%dm", r,g,b;\
+        printf "\033[38;2;%d;%d;%dm", 255-r,255-g,255-b;\
+        printf "%s\033[0m", substr(s,colnum+1,1);\
+    }\
+    printf "\n";\
+}'
+: 1729149410:0;brew reinstall lde
+: 1729149640:0;brew uninstall lde
+: 1729149646:0;brew install lde
+: 1729149696:0;brew install --HEAD dreamhost/homebrew/lde
+: 1729149736:0;docker login
+: 1729149791:0;docker login git.dreamhost.com:5001 -u ranmil8 -p reallyimtheplug
+: 1729149860:0;whence lde
+: 1729149868:0;pyenv whence lde
+: 1729149967:0;lde build
+: 1729149969:0;lde init
+: 1729149973:0;vi bin/ndn-dev
+: 1729149979:0;gco bin
+: 1729150053:0;brew doctor lde
+: 1729150056:0;brew doctor
+: 1729150197:0;pyenv install -l
+: 1729150230:0;pyenv install 3.12.0
+: 1729152374:0;pyenv local
+: 1729152395:0;python verisons
+: 1729152425:0;pyenv activate 3.12.0
+: 1729152458:0;pyenv shell 3.12.0
+: 1729152464:0;pyenv version
+: 1729152503:0;pyenv which python3
+: 1729152530:0;brew install python@3.12
+: 1729152538:0;brew link
+: 1729152554:0;brew link --overwrite python@3.12
+: 1729152563:0;brew unlink python@3.12
+: 1729152573:0;brew link python@3.12
+: 1729152607:0;brew upgrade lde\
+
+: 1729152632:0;brew reinstall lde -h
+: 1729152674:0;brew reinstall lde -v
+: 1729152849:0;which lde
+: 1729152851:0;lde --version
+: 1729179452:0;vi ../.lde.yml
+: 1729180125:0;binkey G space
+: 1729180132:0;bindkey G space
+: 1729180159:0;bindkey G SP
+: 1729184974:0;cd projects/Nd
+: 1729184985:0;gco PS-14601
+: 1729185242:0;gco PS-14601-2
+: 1729185254:0;gco develop
+: 1729185267:0;gco -b PS-14601-2
+: 1729185272:0;git stash pop
+: 1729185918:0;vi dh/bin/nsconfig
+: 1729199818:0;cat .lde-env
+: 1729207841:0;vi perl/Ndn/Dreamhost/Service/Proservices.pm
+: 1729207996:0;echo $LDFLAGS
+: 1729208226:0;la dotfiles/iterm2
+: 1729208246:0;mkdir dotfiles/etc
+: 1729208257:0;cd dotfiles/etc
+: 1729208269:0;mdkir colors
+: 1729208272:0;mkdir colors
+: 1729208274:0;cd colors
+: 1729208277:0;git clone https://github.com/catppuccin/iterm.git
+: 1729208637:0;cd dotfiles/etc/colors
+: 1729208639:0;git clone https://github.com/herrbischoff/iterm2-gruvbox.git
+: 1729227868:0;cd projects/j
+: 1729231201:0;vi ~/dotfiles/iterm2/.gruvbox.dircolors
+: 1729231434:0;gls
+: 1729231437:0;which gls
+: 1729231442:0;brew info gls
+: 1729231447:0;brew info coreutils
+: 1729231474:0;la /opt/homebrew/opt/coreutils/libexec/gnubin
+: 1729231571:0;gls --version
+: 1729231608:0;which stow
+: 1729231616:0;vi dotfiles/install.sh
+: 1729231731:0;brew info stow
+: 1729231737:0;brew install stow
+: 1729231769:0;rm iterm2/.DS_Store
+: 1729231809:0;la .iterm2
+: 1729231815:0;la dotfiles/iterm2/.iterm2
+: 1729231904:0;cat dircolors/.dircolors
+: 1729231910:0;la dircolors
+: 1729231920:0;open dircolors/screenshot.png
+: 1729231991:0;dircolors -h
+: 1729232043:0;info '(coreutils) dircolors invocation'
+: 1729232097:0;cp dircolors/.dracula.dircolors dotfiles/iterm2/colors
+: 1729232119:0;cp dircolors/.dircolors dotfiles/iterm2/colors/.dracular.dircolors
+: 1729232126:0;rm -rf dircolors
+: 1729232248:0;mv iterm2/.gruvbox.dircolors iterm2/colors
+: 1729232255:0;rm .DS_Store
+: 1729232265:0;la iterm2/colors
+: 1729232429:0;stow --override=~ -n -v -t ~ -D iterm2
+: 1729232439:0;stow --override=~ -n -v -D iterm2
+: 1729232448:0;stow --override=~ -v -t ~ -D iterm2
+: 1729232461:0;stow --override=~ -v -t ~ iterm2
+: 1729232468:0;la ../colors
+: 1729232506:0;la dotfiles/iterm2/colors
+: 1729232526:0;la colors
+: 1729232723:0;cd ../..
+: 1729232726:0;vi install.sh
+: 1729232784:0;stow --override=~ -n -v -t ~ iterm2
+: 1729232792:0;stow --override=~ --force -n -v -t ~ iterm2
+: 1729232830:0;stow -n -v -t ~ iterm2
+: 1729232838:0;stow -R -n -v -t ~ iterm2
+: 1729232852:0;stow -R -v -t ~ iterm2
+: 1729232875:0;cd ../
+: 1729232898:0;la colors/.dracular.dircolors
+: 1729232916:0;mv colors/.dracular.dircolors colors/.dracula.dircolors
+: 1729233003:0;dircolors --sh ../colors/.dracular.dircolors
+: 1729233066:0;dircolors --sh colors/.dracula.dircolors
+: 1729233137:0;export $(dircolors --sh colors/.dracula.dircolors)
+: 1729233164:0;$(dircolors --sh colors/.dracula.dircolors)
+: 1729233276:0;LS_COLORS=''
+: 1729233281:0;dircolors colors/.dracula.dircolors
+: 1729233297:0;eval $(dircolors colors/.dracula.dircolors)
+: 1729233351:0;cd projects/nd
+: 1729233466:0;which la
+: 1729233474:0;whence ls
+: 1729233557:0;pbcopy < colors/.gruvbox.dircolors
+: 1729233655:0;dircolors G link
+: 1729233660:0;dircolors G -i link
+: 1729233687:0;dircolors --sh colors/.gruvbox.dircolors G -i link
+: 1729233773:0;la Downloads/
+: 1729233815:0;la Downloads/powerlevel10k
+: 1729233820:0;la Downloads/powerlevel10k/.git
+: 1729233852:0;touch test.tar
+: 1729233879:0;eval $(dircolors)
+: 1729233958:0;eval $(dircolors colors/.gruvbox.dircolors)
+: 1729233971:0;dircolors --sh colors/.gruvbox.dircolors
+: 1729234102:0;touch test.tmp
+: 1729234112:0;rm test.t*
+: 1729234190:0;cd dotfiles/iterm2/colors
+: 1729234232:0;pbcopy < $(dircolors)
+: 1729234251:0;vi .gruvbox.dircolors
+: 1729234458:0;dircolors -p
+: 1729234565:0;eval $(dircolors colors/.gruvbox.default.dircolors)
+: 1729234686:0;cat .zsh-syntax-theme
+: 1729234901:0;la projects/*
+: 1729234917:0;la projects/*/*/*
+: 1729234984:0;dircolors --sh colors/.gruvbox.default.dircolors
+: 1729235000:0;echo $LS_COLORS
+: 1729235033:0;vi colors/.gruvbox.default.dircolors
+: 1729235041:0;vi ~/.lde-env
+: 1729235049:0;la Downloads/powerlevel10k/files
+: 1729235062:0;vi Downloads/powerlevel10k/files/.p10k.zsh
+: 1729267758:0;cd ../projects/ndn
+: 1729267765:0;gg -i 'do_a
+: 1729267767:0;gg -i 'do_a'
+: 1729269371:0;dig randall.codes @ns1.dreamhost.com
+: 1729269378:0;dig randall.codes @ns1.dreamhost.com +short
+: 1729269385:0;dig randall.codes +short
+: 1729269812:0;ssh 208.113.235.10
+: 1729278881:0;s
+: 1729279292:0;echo 'export LD_LIBRARY_PATH\ ="~/.local/lib:$LD_LIBRARY_PATH"' | shellcheck -
+: 1729279335:0;echo '#!/bin/zsh export LD_LIBRARY_PATH\ ="~/.local/lib:$LD_LIBRARY_PATH"' | shellcheck -
+: 1729279372:0;echo '#!/bin/sh export LD_LIBRARY_PATH\ ="~/.local/lib:$LD_LIBRARY_PATH"' | shellcheck -
+: 1729279383:0;echo '#!/bin/sh; export LD_LIBRARY_PATH\ ="~/.local/lib:$LD_LIBRARY_PATH"' | shellcheck -
+: 1729279509:0;echo '#!/bin/zsh export LD_LIBRARY_PATH\ ="~/.local/lib:$LD_LIBRARY_PATH"' | shellcheck --shell=bash -
+: 1729279586:0;echo 'export LD_LIBRARY_PATH\ ="~/.local/lib:$LD_LIBRARY_PATH"' | shellcheck --shell=bash -
+: 1729280293:0;bindkey G c
+: 1729280306:0;bindkey
+: 1729280308:0;showkey
+: 1729283049:0;cat
+: 1729285579:0;shfmt -filename=/Users/randallm/.zshrc -i 2 -ci -sr
+: 1729285589:0;shfmt --filename=/Users/randallm/.zshrc -i 2 -ci -sr
+: 1729285602:0;shfmt
+: 1729285607:0;shfmt -h
+: 1729285631:0;shfmt -f
+: 1729286361:0;brew install zsh-lint
+: 1729286681:0;git add -p
+: 1729286728:0;git commit -m 'get all tasks from a list'
+: 1729286746:0;lse up
+: 1729314441:0;vrx
+: 1729314443:0;vrxc
+: 1729314777:0;vi dotfiles/vim/.vimrc
+: 1729314936:0;cd .vim
+: 1729314940:0;vi swp
+: 1729314951:0;cat coc-settings.json
+: 1729314956:0;la swp
+: 1729314961:0;cd swp
+: 1729314968:0;rm %Users%randallm%projects%uebernet-service%src%models%FrontImportArgsModel.ts.swp
+: 1729393304:0;lde restart auth-service
+: 1729394607:0;cd ueb
+: 1729395325:0;pyenv version-name
+: 1729395370:0;pyenv global 3.12.0
+: 1729395391:0;pyenv global 3.12.0 2.7.15
+: 1729395415:0;pyenv latest
+: 1729395435:0;pyenv install list
+: 1729395480:0;pyenv install
+: 1729395500:0;cd /Users/randallm/.pyenv/plugins/python-build/../.. && git pull && cd -
+: 1729395505:0;pyenv install latest
+: 1729395541:0;pytho install 2.7.18
+: 1729395551:0;pyenv install 2.7.18
+: 1729395672:0;pyenv install 3.13.0
+: 1729395778:0;pyenv gloabl 3.13.0 2.7.18
+: 1729395789:0;pyenv global 3.13.0 2.7.18
+: 1729396110:0;pyenv --version
+: 1729396130:0;pyenvh help
+: 1729396133:0;pyenv help
+: 1729396146:0;pyenv global help
+: 1729396157:0;pyenv help global
+: 1729396195:0;pyenv shell
+: 1729396198:0;pyenv shims
+: 1729396205:0;python2
+: 1729396622:0;jpyuthon --version
+: 1729396641:0;pyenv virtualenv 2.7.18 python2
+: 1729396704:0;pyenv virtualenv-delete 2.7.18/envs/python2
+: 1729396722:0;pyenv virtualenv-delete python2
+: 1729396740:0;pyenv install --list
+: 1729396758:0;pyenv uninstall 2.7.18
+: 1729396767:0;pyenv uninstall 3.12.0
+: 1729396810:0;pyenv global 3.13.0
+: 1729396928:0;perlbrew
+: 1729396936:0;perlbrew list
+: 1729397121:0;gd zsh/.p10k.zsh
+: 1729397296:0;free -m
+: 1729397319:0;free --giga
+: 1729397325:0;brew info free
+: 1729397329:0;freemem
+: 1729397348:0;vm_stat | awk '/free/ {print $3 * 4096 / 1024 / 1024 " MB"}'
+: 1729397370:0;vm_stat | awk '/free/ {free=$3} /active/ {active=$3} /inactive/ {inactive=$3} /speculative/ {speculative=$3} /wired/ {wired=$4} /page size of/ {page_size=$8} END {total=(free+active+inactive+speculative+wired)*page_size/1024/1024; used=(active+inactive+speculative+wired)*page_size/1024/1024; free=free*page_size/1024/1024; printf "Total Memory: %.2f MB\nUsed Memory: %.2f MB\nFree Memory: %.2f MB\n", total, used, free}'
+: 1729397390:0;sysctl vm.swapusage
+: 1729397412:0;sysctl hw.memsize
+: 1729397419:0;sysctl hw.memsize -h
+: 1729397426:0;sysctl -h
+: 1729397431:0;sysctl --help
+: 1729397438:0;man sysctl
+: 1729397466:0;sysctl -h hw.memsize
+: 1729397496:0;sysctl hw.memsize hw.ncpu hw.physicalcpu hw.logicalcpu hw.cpufrequency hw.cpufrequency_max hw.cpufrequency_min hw.cachelinesize hw.l1icachesize hw.l1dcachesize hw.l2cachesize hw.l3cachesize hw.tbfrequency hw.pagesize hw.disknames
+: 1729397574:0;sysctl user.posix2_char_term
+: 1729397612:0;sysctl vm.free_shared
+: 1729397636:0;vm_stat
+: 1729397647:0;vm_stat -h
+: 1729397651:0;man vm_stat
+: 1729398696:0;for code in {0..255}; do print -P "%K{$code}  $code  %k"; done
+: 1729398840:0;for code in {0..15}; do print -P "%K{$code}  $code  %k"; done
+: 1729398950:0;lscolors
+: 1729398970:0;alias lscolors
+: 1729398973:0;which lscolors
+: 1729400928:0;for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
+: 1729401722:0;alias print
+: 1729401724:0;which print
+: 1729401730:0;echo $chpwd_functions
+: 1729402829:0;brew install luaenv
+: 1729402850:0;brew search lua
+: 1729402932:0;brew search lua-build
+: 1729403283:0;brew info luacheck
+: 1729403292:0;brew info luaradio
+: 1729403299:0;brew info luau
+: 1729403360:0;luaver version
+: 1729403383:0;luaver use
+: 1729404228:0;brew info luarocks
+: 1729404734:0;luaver list r
+: 1729404736:0;luaver list -r
+: 1729404870:0;luaver -g
+: 1729404895:0;lua -v
+: 1729404983:0;brew info luaver
+: 1729405195:0;brew config
+: 1729405217:0;brew env
+: 1729405232:0;brew desc luaver
+: 1729405243:0;brew docs luaver
+: 1729405272:0;brew log
+: 1729405282:0;brew options
+: 1729405306:0;brew options -dv luaver
+: 1729405320:0;brew options luaver
+: 1729405337:0;brew pyenv-sync
+: 1729405347:0;brew pyenv-sync -h
+: 1729405361:0;brew pyenv-sync -dv
+: 1729405366:0;pyenv list
+: 1729405370:0;pyenv --list
+: 1729405405:0;brew info python
+: 1729405432:0;whence python3
+: 1729405461:0;brew link -h
+: 1729405474:0;brew tap-info
+: 1729405484:0;brew uses
+: 1729405490:0;brew audit
+: 1729405523:0;brew info python@3.13
+: 1729405560:0;pyenv version-file
+: 1729405570:0;pyenv updatre
+: 1729405571:0;pyenv update
+: 1729405597:0;pyenv global
+: 1729405604:0;pyenv commands
+: 1729405621:0;pyenv virtualenvs
+: 1729405625:0;brew -h
+: 1729405633:0;brew list luaenv
+: 1729405638:0;brew list luaver
+: 1729405726:0;la ~/.luaver
+: 1729405732:0;la ~/.luaver/lua
+: 1729405736:0;la ~/.luaver/lua/5.4.6
+: 1729405738:0;la ~/.luaver/lua/5.4.7
+: 1729405745:0;brew uninstall lu
+: 1729405748:0;brew uninstall lua
+: 1729405777:0;brew uninstall lua --ignore-dependencies lua
+: 1729405801:0;luaver use 5.4.7
+: 1729405818:0;luaver -h
+: 1729405856:0;luaver help
+: 1729406083:0;cat .luaver/DEFAULT_LUA
+: 1729406363:0;la .luaver/src
+: 1729406368:0;la .luaver/src/lua-5.4.7
+: 1729406372:0;la .luaver/src/lua-5.4.7/src
+: 1729406569:0;brew clean
+: 1729406571:0;brew
+: 1729406576:0;brew commands
+: 1729406614:0;it clone https://github.com/DhavalKapil/luaver.git ~/.luaver
+: 1729406617:0;git clone https://github.com/DhavalKapil/luaver.git ~/.luaver
+: 1729406772:0;rm -rf .luaver
+: 1729406791:0;brew info lua
+: 1729406803:0;brew install lua
+: 1729406910:0;brew install luaver
+: 1729407263:0;source .zshrc
+: 1729407273:0;lauver
+: 1729407286:0;la .luaver/
+: 1729407311:0;which pyenv
+: 1729407322:0;whence pyenv
+: 1729407344:0;brew uninstall luaver
+: 1729407351:0;which luaver
+: 1729407739:0;luaver install 5.4.7
+: 1729407783:0;luaver set-default 5.4.7
+: 1729407873:0;echo $fpath
+: 1729408266:0;function luaver
+: 1729408357:0;p10k reload
+: 1729408368:0;p10k
+: 1729408376:0;p10k display
+: 1729408418:0;p10k display -a '*'
+: 1729408444:0;p10k segment
+: 1729408764:0;la .zplug
+: 1729408827:0;la dotfiles
+: 1729408832:0;la dotfiles/zsh
+: 1729408965:0;p10k help segment
+: 1729409489:0;luaver install 5.4.6
+: 1729409542:0;luaver use 5.4.6
+: 1729409783:0;color
+: 1729409787:0;colos
+: 1729409788:0;colors
+: 1729409791:0;colors -h
+: 1729409886:0;vi .p10k.zsh
+: 1729409954:0;time
+: 1729410029:0;source .p10k.zsh
+: 1729410216:0;vi .zplug/repos/romkatv/powerlevel10k/powerlevel10k.zsh-theme
+: 1729410256:0;vi .zplug/repos/romkatv/powerlevel10k/gitstatus/
+: 1729410260:0;cd .zplug/repos/romkatv/powerlevel10k/gitstatus/
+: 1729410266:0;gg -i gitstatus_stop_p9k
+: 1729410324:0;grep gitstatus_stop_p9k_
+: 1729410510:0;vi ../.zshrc
+: 1729410548:0;la .zplug/repos/romkatv/powerlevel10k/
+: 1729410552:0;cd .zplug/repos/romkatv/powerlevel10k/
+: 1729410596:0;which lua
+: 1729410605:0;which python
+: 1729410617:0;whence python
+: 1729410621:0;python --version
+: 1729410713:0;cat .aliases
+: 1729410724:0;which ls
+: 1729410729:0;ls --version
+: 1729410742:0;cd .zplug
+: 1729410751:0;zplug
+: 1729410763:0;zplug --version
+: 1729410768:0;which zplug
+: 1729410774:0;zplug status
+: 1729410797:0;zplug help
+: 1729410813:0;zplug info
+: 1729410973:0;luaver -r list-luajit
+: 1729411008:0;brew info luajit
+: 1729411020:0;luaver install-luajit 2.1
+: 1729411036:0;luaver install-luajit 2.1.1727870382
+: 1729411190:0;luaver install-luarocks -r
+: 1729411207:0;luaver list-luarocks -r
+: 1729411214:0;luaver install-luarocks 3.9.2
+: 1729411236:0;luaver set-default-luarocks 3.9.2
+: 1729411272:0;luarocks search
+: 1729411277:0;luarocks search --all
+: 1729411332:0;gco
+: 1729479561:0;vi .vimrc
+: 1729480226:0;xcode-select
+: 1729480250:0;xcode-select -v
+: 1729480261:0;xcode-select -p
+: 1729480268:0;brew info
+: 1729480285:0;brew info sqlite
+: 1729480298:0;brew info sqlite3
+: 1729480355:0;pyenv versions
+: 1729480373:0;which python3
+: 1729480377:0;python3 --version
+: 1729480388:0;pyenv which python
+: 1729480403:0;pyenv pip list
+: 1729480407:0;pyenv
+: 1729480411:0;pyenv install pip
+: 1729480420:0;pyenv docot
+: 1729480424:0;pyenv doctor
+: 1729480450:0;pyenv pip3
+: 1729480469:0;pyenv -m
+: 1729480478:0;pyenv exec pip
+: 1729480482:0;which pip
+: 1729481336:0;git commit -m 'no console'
+: 1729481419:0;brew info neofetch
+: 1729481435:0;brew install neosearch
+: 1729481450:0;brew install neofetch
+: 1729487903:0;which fzf
+: 1729487912:0;fzf-completion
+: 1729487927:0;fzf -h
+: 1729487938:0;echo $FZF_DEFAULT_COMMAND
+: 1729487945:0;echo FZF_DEFAULT_OPTS
+: 1729487951:0;echo $FZF_DEFAULT_OPTS
+: 1729487958:0;echo $FZF_DEFAULT_OPTS_FILE
+: 1729487962:0;env G FZF
+: 1729487971:0;env G -i fzf
+: 1729487997:0;bindkey -h
+: 1729488003:0;bindkey G ctrl-r
+: 1729488010:0;bindkey G -i ctrl-r
+: 1729488017:0;bindkey G -i r
+: 1729488022:0;bindkey G -i -r
+: 1729488026:0;bindkey G -i \-r
+: 1729488031:0;bindkey G -i "\-r"
+: 1729488043:0;bindkey G -i "\-r\""
+: 1729488046:0;bindkey G -i "r\""
+: 1729490468:0;cat eslint.config.mjs
+: 1729490476:0;cat tsconfig.json
+: 1729492037:0;gg -i clickuptasklist
+: 1729535454:0;lde restart
+: 1729541643:0;pbcopy < projects/uebernet-service/src/models/dto/ClickupTaskDTO.ts
+: 1729545008:0;vi t
+: 1729568360:0;neofetch battery
+: 1729568368:0;neofetch cols
+: 1729568372:0;neofetch cpu
+: 1729568380:0;neofetch cpu_usage
+: 1729568430:0;neofetch de
+: 1729568433:0;neofetch disk
+: 1729568442:0;neofetch cpu_usage -h
+: 1729568446:0;neofetch -h
+: 1729568451:0;neofetch help
+: 1729568454:0;man neofetch
+: 1729568598:0;neofetch --shell_path
+: 1729568612:0;neofetch icons
+: 1729568618:0;neofetch packages
+: 1729568632:0;neofetch public_ip
+: 1729568637:0;neofetch -a
+: 1729568652:0;neofetch --print_config
+: 1729568722:0;cd ../projects/uebernet-service
+: 1729568728:0;gg -i customfields'
+: 1729568893:0;gg -i customfields
+: 1729568903:0;gl
+: 1729568907:0;glg
+: 1729569003:0;neofetch --iterm2
+: 1729569183:0;which 16colors
+: 1729569202:0;pbcopy < echo $(which 16colors )
+: 1729569210:0;pbcopy < $(which 16colors )
+: 1729569221:0;pbcopy < which 16colors
+: 1729569227:0;top -c
+: 1729570418:0;neofetch
+: 1729570428:0;which neofetch
+: 1729570587:0;echo -e "\033[31mred\033[m"
+: 1729570595:0;echo -e "\033[31myellow\033[m"
+: 1729570666:0;echo -e "\033[myellow\033[m"
+: 1729570676:0;echo -e "\022[31mred\022[m"
+: 1729570686:0;echo -e "\033[32mred\033[m"
+: 1729570692:0;echo -e "\033[33mred\033[m"
+: 1729570698:0;echo -e "\033[34mred\033[m"
+: 1729570702:0;echo -e "\033[35mred\033[m"
+: 1729570707:0;echo -e "\033[36mred\033[m"
+: 1729570713:0;echo -e "\033[37mred\033[m"
+: 1729570724:0;echo -e "\035[37mred\035[m"
+: 1729570740:0;echo -e "\033[37mCOLOR\033[m"
+: 1729570747:0;echo -e "\033[36mCOLOR\033[m"
+: 1729570780:0;echo -e "\033[0;30mBlack\033[0m"
+: 1729570780:0;echo -e "\033[0;31mRed\033[0m"
+: 1729570780:0;echo -e "\033[0;32mGreen\033[0m"
+: 1729570780:0;echo -e "\033[0;33mYellow\033[0m"
+: 1729570780:0;echo -e "\033[0;34mBlue\033[0m"
+: 1729570780:0;echo -e "\033[0;35mMagenta\033[0m"
+: 1729570781:0;echo -e "\033[0;36mCyan\033[0m"
+: 1729570781:0;echo -e "\033[0;37mWhite\033[0m"
+: 1729570781:0;echo -e "\033[1;30mBright Black\033[0m"
+: 1729570781:0;echo -e "\033[1;31mBright Red\033[0m"
+: 1729570781:0;echo -e "\033[1;32mBright Green\033[0m"
+: 1729570781:0;echo -e "\033[1;33mBright Yellow\033[0m"
+: 1729570781:0;echo -e "\033[1;34mBright Blue\033[0m"
+: 1729570781:0;echo -e "\033[1;35mBright Magenta\033[0m"
+: 1729570782:0;echo -e "\033[1;36mBright Cyan\033[0m"
+: 1729570782:0;echo -e "\033[1;37mBright White\033[0m"
+: 1729570819:0;echo -e "\e[0m  \e[0;30mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;31mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;32mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;33mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;34mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;35mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;36mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;37mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;90mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;91mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;92mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;93mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;94mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;95mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;96mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;97mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m"
+: 1729570907:0;printf '\e[0m  \e[0;30mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;31mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;32mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;33mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;34mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;35mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;36mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[0;37mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m\n\e[0m  \e[1;30mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[1;31mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[1;32mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[1;33mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[1;34mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[1;35mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[1;36mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m \e[1;37mâƒ¶ƒ¨âƒ¶ƒ¨\e[0m\n'
+: 1729571344:0;exec zsh
+: 1729571448:0;brew install diff-so-fancy
+: 1729571707:0;git config --list
+: 1729571773:0;brew uninstall diff-so-fancy
+: 1729571835:0;which diff-so-fancy
+: 1729571847:0;which git-dsf
+: 1729571871:0;zplug check
+: 1729571875:0;zplug clea
+: 1729571879:0;zplug cleam
+: 1729572049:0;dsf
+: 1729572231:0;zplug list
+: 1729572272:0;vi .zshrc
+: 1729572302:0;zplug load
+: 1729572334:0;vi .gitconfig
+: 1729572405:0;;q
+: 1729575507:0;git config --list --local
+: 1729575520:0;git config --list --user
+: 1729575537:0;git config --list --global
+: 1729575556:0;git config --global color.ui true
+: 1729575560:0;git config --global color.diff-highlight.oldNormal "red bold"
+: 1729575563:0;git config --global color.diff-highlight.oldHighlight "red bold 52"
+: 1729575566:0;git config --global color.diff-highlight.newNormal "green bold"
+: 1729575568:0;git config --global color.diff-highlight.newHighlight "green bold 22"
+: 1729575572:0;git config --global color.diff.meta "yellow"
+: 1729575575:0;git config --global color.diff.frag "magenta bold"
+: 1729575577:0;git config --global color.diff.commit "yellow bold"
+: 1729575580:0;git config --global color.diff.old "red bold"
+: 1729575583:0;git config --global color.diff.new "green bold"
+: 1729575588:0;git config --global color.diff.whitespace "red reverse"
+: 1729575940:0;git config --global interactive.diffFilter "diff-so-fancy --patch"
+: 1729575960:0;cat ./.git/config
+: 1729575977:0;cat ~/.gitconfig
+: 1729576093:0;16colors
+: 1729576971:0;which gd
+: 1729576974:0;git diff
+: 1729577036:0;diff-so-fancy --set-defaults
+: 1729577318:0;jgd
+: 1729577910:0;echo $(git config --get-color "" "120 bold reverse") color test $(git config --get-color "" reset)
+: 1729577967:0;echo $(git config --get-color "" "167 bold") color test $(git config --get-color "" reset)
+: 1729578010:0;echo $(git config --get-color "" "160 bold") color test $(git config --get-color "" reset)
+: 1729578019:0;echo $(git config --get-color "" "165 bold") color test $(git config --get-color "" reset)
+: 1729578036:0;echo $(git config --get-color "" "166 bold") color test $(git config --get-color "" reset)
+: 1729578050:0;echo $(git config --get-color "" "161 bold") color test $(git config --get-color "" reset)
+: 1729578059:0;echo $(git config --get-color "" "161") color test $(git config --get-color "" reset)
+: 1729578075:0;echo $(git config --get-color "" "131") color test $(git config --get-color "" reset)
+: 1729578084:0;echo $(git config --get-color "" "203") color test $(git config --get-color "" reset)
+: 1729578096:0;echo $(git config --get-color "" "203 bold") color test $(git config --get-color "" reset)
+: 1729578120:0;vi ~/.gitconfig
+: 1729578270:0;diff-so-fancy
+: 1729578335:0;256colors
+: 1729578540:0;diff-so-fancy --colors
+: 1729580162:0;brew install wezterm
+: 1729580486:0;wezterm show-keys
+: 1729580510:0;t
+: 1729580554:0;mkdir dotfiles/wezterm
+: 1729580631:0;stow -R -v -t ~ wezterm
+: 1729615850:0;curl konstantynov.xyz
+: 1729615856:0;curl -h
+: 1729615900:0;curl www.konstantynov.xyz
+: 1729615941:0;dig www.konstantynov.xyz
+: 1729615949:0;host 107.180.232.184
+: 1729615986:0;dig randall.code
+: 1729616000:0;dig randall.codes
+: 1729616009:0;host 169.150.236.105
+: 1729616185:0;vi dotfiles/wezterm/.wezterm.lua
+: 1729616193:0;cd ../../dotfiles
+: 1729619793:0;gg -i 'import'
+: 1729619917:0;vi src/models/enum/ECustomFieldsMap.ts
+: 1729621966:0;ping konstantynov.xyz
+: 1729622626:0;dig konstantynov.xyz @ns1.dreamhost.com
+: 1729622681:0;host 169.150.236.104
+: 1729624547:0;dig wwwkonstantynovxyz.b-cdn.net
+: 1729624670:0;dig konstantynov.xyz @ns1.dreamhost.com +short
+: 1729624700:0;dig konstantynov.xyz
+: 1729624794:0;dig https://www.konstantynov.xyz/
+: 1729632208:0;lde down uebernet-service
+: 1729632211:0;lde up uebernet-service
+: 1729632696:0;ls-fonts
+: 1729632720:0;wezterm ls-fonts G -i menlo
+: 1729632824:0;wezterm ls-fonts G -i meslo
+: 1729633084:0;wezterm ls-fonts --list-system G -i mes
+: 1729633186:0;wezterm ls-fonts --text a b
+: 1729633192:0;wezterm ls-fonts --text=a b
+: 1729633260:0;wezterm ls-fonts --list-system G -i mono
+: 1729633310:0;wezterm ls-fonts --text=a
+: 1729633316:0;wezterm ls-fonts --text="a b"
+: 1729633329:0;run-help wezterm
+: 1729633340:0;wezterm ls-fonts --text="a 23J#"
+: 1729652857:0;wezterm cli list-clients
+: 1729652919:0;mv .vimrc .vimrc.off
+: 1729652934:0;vi wezterm/.wezterm.lua
+: 1729653109:0;mv .vimrc.off .vimrc
+: 1729653195:0;alias vi
+: 1729653198:0;vi --version
+: 1729653222:0;which vi
+: 1729653226:0;la /opt/homebrew/bin
+: 1729653243:0;brew info vi
+: 1729653906:0;config_data
+: 1729653954:0;wezterm shell-completion
+: 1729653983:0;wezterm shell-completion -h
+: 1729654014:0;wezterm ssh
+: 1729654022:0;wezterm ssh rmiller@yakko.sd.dreamhost.com
+: 1729654124:0;wezterm -h
+: 1729655264:0;d
+: 1729655266:0;afd
+: 1729657395:0;brew tap homebrew/cask-fonts
+: 1729657439:0;brew info font-meslo-for-powerlevel10k
+: 1729657457:0;brew info font-meslo-for-powerline
+: 1729657478:0;brew info font-meslo-lg
+: 1729657691:0;brew install font-meslo-lg-nerd-font
+: 1729657723:0;la ~/Library/Fonts\ \(Removed\)
+: 1729657731:0;la ~/Library/Fonts\ \(Removed\)/10-17-2024\ 22_
+: 1729657733:0;la ~/Library/Fonts\ \(Removed\)/10-17-2024\ 22_17_56\ PDT
+: 1729657741:0;la ~/Library/Fonts\ \(Removed\)/10-17-2024\ 22_17_56\ PDT/Meslo\ LG\ M\  
+: 1729657746:0;la ~/Library/Fonts\ \(Removed\)/10-17-2024\ 22_17_56\ PDT/
+: 1729657753:0;la ~/Library/Fonts\ \(Removed\)/10-17-2024\ 22_18_23\ PDT
+: 1729657875:0;cd ~/Library/Fonts
+: 1729657913:0;rm MesloLGS\ NF\ Bold\ Italic.ttf
+: 1729657955:0;rm MesloLGS\ NF\ *
+: 1729657982:0;rm Meslo\ LG\ *
+: 1729657988:0;rm -f Meslo\ LG\ *
+: 1729658003:0;la G -i mesl
+: 1729658008:0;la G -i mesl | wc
+: 1729658013:0;la G -i mesl | wc -l
+: 1729658124:0;vi ~/tmptmp
+: 1729659079:0;brew info font-meslo-lg-nerd-font
+: 1729659986:0;wezterm ls-fonts --list-system G -i meslo | wc -l
+: 1729660068:0;echo "tty has $(tput cols)/$(tput lines) columns/lines."
+: 1729660197:0;brew info font-monaspace-nerd-font
+: 1729660228:0;brew install font-monaspace-nerd-font
+: 1729660794:0;wezterm ls-fonts --list-system G -i fira
+: 1729660804:0;wezterm ls-fonts --list-system G -i droid
+: 1729660867:0;wezterm ls-fonts --list-system G -i meslo
+: 1729660965:0;wezterm ls-fonts --list-system G -i mona
+: 1729661441:0;brew info font-sf-pro
+: 1729661448:0;brew install font-sf-pro
+: 1729662102:0;brew info font-new-york
+: 1729662111:0;brew install font-new-york
+: 1729663231:0;la projects/*/*
+: 1729663571:0;vi ~/.wezterm.lua
+: 1729665749:0;wezterm shell-completion --shell zsh
+: 1729665759:0;pbcopy < wezterm shell-completion --shell zsh
+: 1729665766:0;pbcopy < command wezterm shell-completion --shell zsh
+: 1729665814:0;pbcopy < $(wezterm shell-completion --shell zsh)
+: 1729666983:0;luaver list
+: 1729666998:0;luaver list-luarocks
+: 1729667015:0;luaver current
+: 1729667038:0;luarock
+: 1729667069:0;which luarocks
+: 1729667076:0;luarocks help path
+: 1729667092:0;eval 'luarocks path'
+: 1729667122:0;luarocks help
+: 1729667168:0;mkdir .luarocks
+: 1729667175:0;luarocks --local
+: 1729667215:0;luarocks init
+: 1729667349:0;la .lua
+: 1729667357:0;luarocks help init
+: 1729667423:0;luarocks search inspect
+: 1729667436:0;luarocks install inspect
+: 1729667446:0;luarocks
+: 1729667469:0;luarocks --local install inspect
+: 1729667489:0;luarocks remove inspect
+: 1729667660:0;luarock path
+: 1729668047:0;start wezterm
+: 1729668272:0;wezterm ls-fonts --config-file .wezterm.lua
+: 1729668294:0;wezterm --config-file .wezterm.lua ls-fonts
+: 1729668528:0;wezterm
+: 1729671182:0;v:
+: 1729671197:0;fjdska
+: 1729671361:0;jdkflsaj
+: 1729704586:0;vi .wezterm.lua
+: 1729705691:0;cat tmp
+: 1729705697:0;rm tmp
+: 1729707749:0;cd projects/u
+: 1729708680:0;la /opt/homebrew/completions/README.md
+: 1729708685:0;cat /opt/homebrew/completions/README.md
+: 1729708693:0;cat /opt/homebrew/completions/README.m
+: 1729708708:0;cat /opt/homebrew/completions/zsh/_brew
+: 1729708719:0;brew dracula-yaml-json
+: 1729708749:0;brew shellenv
+: 1729708880:0;cat ~/.ssh/config
+: 1729708896:0;ssh-add -l
+: 1729708927:0;cat ~/.ssh/dhgit
+: 1729708940:0;cat ~/.ssh/dhgit.pub
+: 1729708983:0;cat /etc/hosts
+: 1729708991:0;sudo vi /etc/hosts
+: 1729709003:0;source /etc/hosts
+: 1729709023:0;cat ~/.ssh/known_hosts
+: 1729709078:0;brew info lde
+: 1729709099:0;vi ~/.ssh/known_hosts
+: 1729709137:0;pbcopy < ~/.ssh/dhgit.pub
+: 1729709208:0;ssh -vT git@github.com
+: 1729709251:0;ssh -vT git@git.dreamhost.com
+: 1729709292:0;vim --version
+: 1729709299:0;brew info vim
+: 1729709316:0;brew update
+: 1729709322:0;brew upgrade
+: 1729709350:0;which ssh
+: 1729709426:0;ssh git.dreamhost.com
+: 1729709457:0;brew cleanup
+: 1729709529:0;la ~
+: 1729709535:0;la ~/colors
+: 1729709598:0;mv iterm2/colors iterm2/.colors
+: 1729709619:0;mv iterm2/.colors iterm2/.iterm2/
+: 1729709627:0;la vim
+: 1729709633:0;rm -rf colors
+: 1729709663:0;la .luarocks
+: 1729709669:0;la .luarocks/lib
+: 1729709672:0;la .luarocks/lib/luarocks
+: 1729709680:0;la .luaver
+: 1729709727:0;zpui
+: 1729709761:0;zplug clean
+: 1729709770:0;zplug env
+: 1729709879:0;print -l $fpath
+: 1729710112:0;which wezterm
+: 1729710118:0;which wezterm-gui
+: 1729710126:0;brew info wezterm
+: 1729710171:0;vi /Applications/WezTerm.app/Contents/Resources/wezterm.sh
+: 1729710341:0;cp /Applications/WezTerm.app/Contents/Resources/wezterm.sh ~/dotfiles/wezterm
+: 1729710376:0;mv iterm2/.iterm2_shell_integration.zsh iterm2/.iterm2/
+: 1729710379:0;la iterm2
+: 1729710412:0;la wezterm
+: 1729710454:0;la ../.config/neofetch
+: 1729710460:0;la ../.config/yarn
+: 1729710475:0;mkdir config
+: 1729710480:0;mkdir config/.config
+: 1729710496:0;mv wezterm config/.config
+: 1729710526:0;mv iterm2 config/.config
+: 1729710571:0;rm -rf ../.wezterm.lua
+: 1729710579:0;rm -rf ../.iterm2*
+: 1729710610:0;la ../.config/iterm2/
+: 1729710649:0;la config/.config/wezterm
+: 1729710707:0;mv config/.config/iterm2/.iterm2/* config/.config/iterm2
+: 1729710709:0;la config/.config/iterm2/.iterm2
+: 1729710715:0;la config/.config/iterm2/
+: 1729710745:0;la config/.config/iterm2/.iterm2/*
+: 1729710789:0;mv config/.config/iterm2/.iterm2/.colors config/.config/iterm2/colors
+: 1729710803:0;mv config/.config/iterm2/.iterm2/.iterm2_shell_integration.zsh config/.config/iterm2/
+: 1729710804:0;la config/.config/iterm2/.iterm2/
+: 1729710809:0;la config/.config/iterm2
+: 1729710817:0;rm -rf config/.config/iterm2/.iterm2
+: 1729710819:0;la *
+: 1729710837:0;la */*
+: 1729710876:0;chmod +x config/.config/wezterm/wezterm.sh
+: 1729710900:0;mv config/.config/wezterm/.wezterm.lua config/.config/wezterm/wezterm.lua
+: 1729710932:0;mv config/.config/iterm2/.iterm2_shell_integration.zsh config/.config/iterm2/iterm2_shell_integration.zsh
+: 1729710992:0;mkdir config/.config/zsh
+: 1729711006:0;mv zsh/.zsh-syntax-theme config/.config/zsh/zsh-syntax-theme
+: 1729711014:0;rm ../.zsh-syntax-theme
+: 1729711071:0;rm ../.config/iterm2/.iterm2
+: 1729711080:0;la config/.config
+: 1729711107:0;la ../.config
+: 1729711115:0;la ../.config/iterm2
+: 1729711143:0;echo $PTH
+: 1729711145:0;echo $PATH
+: 1729711179:0;it2setcolor
+: 1729711185:0;alias
+: 1729711198:0;which it2git
+: 1729711211:0;vi zsh/.aliases
+: 1729711263:0;stow -R -v -t ~ bin
+: 1729711310:0;rm ../ssh-key-manager.sh
+: 1729711528:0;la ../.local
+: 1729711532:0;la ../.local/share
+: 1729711534:0;la ../.local/share/wezterm
+: 1729711592:0;mv ../.zsh_history ../.config/zsh/zsh_history
+: 1729712372:0;la ./*
+: 1729712380:0;./*/*
+: 1729712386:0;la ./*/*
+: 1729712450:0;dircolors -sh
+: 1729712692:0;la .config/zsh/zsh-syntax-theme
+: 1729712696:0;vi .config/zsh/zsh-syntax-theme
+: 1729712837:0;cd --help
+: 1729712838:0;cd -h
+: 1729713189:0;dircolors --sh
+: 1729713198:0;dircolors --help
+: 1729713209:0;dircolors --print-ls-colors
+: 1729713243:0;dircolors --print-database | head -n 18
+: 1729713249:0;dircolors --print-database
+: 1729713355:0;la .config/
+: 1729713359:0;la .config/iterm2
+: 1729713364:0;la .config/iterm2/colors
+: 1729713367:0;la .config/iterm2/colors/
+: 1729713473:0;dircolors
+: 1729713491:0;dircolors --print-ls-colors .config/zsh/gruvbox.dircolors| head 18
+: 1729713497:0;dircolors --print-ls-colors .config/zsh/gruvbox.dircolors| head -n 18
+: 1729713517:0;dircolors --print-ls-colors .config/iterm2/colors/.gruvbox.dircolors| head -n 18
+: 1729713533:0;dircolors --print-ls-colors .config/iterm2/colors/.gruvbox.default.dircolors | head -n 18
+: 1729713568:0;dircolors --print-ls-colors | head -n 18
+: 1729713605:0;mv .config/iterm2/colors/.* .config/zsh/
+: 1729713608:0;la .config/zsh
+: 1729713610:0;la .config/zsh/
+: 1729713623:0;rm .config/zsh/.gruvbox.dircolors
+: 1729713642:0;mv .config/zsh/.gruvbox.default.dircolors .config/zsh/gruvbox.default.dircolors
+: 1729713657:0;mv .config/zsh/.dracula.dircolors .config/zsh/dracula.dircolors
+: 1729713749:0;it2attention
+: 1729713758:0;alias it2api
+: 1729713766:0;whence it2api
+: 1729713820:0;grep -r ' it2api '
+: 1729713912:0;zsh -ixc : 2>&1 | grep thingToSearchHere\
+
+: 1729713923:0;zsh -ixc : 2>&1 | grep 'it2api'
+: 1729713932:0;echo $WEZTERM_PROG
+: 1729713976:0;env G WEZ
+: 1729714059:0;source .aliases
+: 1729714837:0;lkjsdf
+: 1729714886:0;luarocks path
+: 1729714894:0;luarocks config
+: 1729714902:0;luarocks list
+: 1729717780:0;luarocks --local path
+: 1729728160:0;locate known_hosts
+: 1729728189:0;ssh -v
+: 1729728195:0;ssh --versino
+: 1729728199:0;ssh --versin
+: 1729728202:0;ssh --version
+: 1729728206:0;ssh -h
+: 1729729683:0;echo $GITHUB
+: 1729729791:0;echo $PLUGIN_DIR
+: 1729729817:0;cat .gitconfig
+: 1729730041:0;echo $SHELL
+: 1729730380:0;git remove -v
+: 1729730399:0;git remove --v
+: 1729730404:0;git remote show
+: 1729730411:0;cd ~/.vim
+: 1729730415:0;cd plugged
+: 1729730427:0;cd coc.nvim
+: 1729730431:0;git remote -v
+: 1729730619:0;cd --
+: 1729730791:0;vrc
+: 1729731110:0;wezterm start
+: 1729749338:0;lde status
+: 1729749351:0;lde status uebernet-service
+: 1729750498:0;gg -i 'clickuptasklist'
+: 1729750723:0;git log
+: 1729750733:0;git show
+: 1729750740:0;git show HEAD^
+: 1729750942:0;git stash
+: 1729750943:0;gdt
+: 1729751152:0;vi src/services/ProService.ts
+: 1729751161:0;vi src/controller/ProServiceController.ts
+: 1729751200:0;vi src/models/ClickupTaskArgs.ts
+: 1729751258:0;vi src/controller/ClickupController.ts
+: 1729751644:0;git stash show
+: 1729751668:0;git stash show -p
+: 1729751927:0;vi src/models/dto/ClickupTaskCustomFieldsDTO.ts
+: 1729752284:0;gg -i 'clickuptaskdto'
+: 1729752391:0;la src/models/dto/ G -i click
+: 1729786544:0;mv src/models/dto/ClickupTaskCustomFieldsDTO.ts src/models/ClickupCustomFieldsRaw.ts
+: 1729786632:0;vi src/models/ClickupDreamCareArgs.ts
+: 1729786707:0;mv src/models/ClickupDreamCareArgs.ts src/models/ClickupDreamCareFields.ts
+: 1729787162:0;grep -rl 'ClickupDreamCareArgs' . | xargs sed -i '' 's/ClickupDreamCareArgs/ClickupDreamCareFields/g'
+: 1729787223:0;grep -rl 'ClickupDreamCareArgs' . | xargs file | grep text | cut -d: -f1 | xargs sed -i '' 's/ClickupDreamCareArgs/ClickupDreamCareFields/g'
+: 1729787231:0;gg -i 'clickupdreamcareargs'
+: 1729787236:0;gg -i 'clickupdreamcare'
+: 1729787244:0;gg -i 'clickupdreamcarefields'
+: 1729787257:0;vi src/models/ClickupDreamCareFields.ts
+: 1729787352:0;la src/models/Clickup*
+: 1729787364:0;vi src/models/ClickupIncomingArgs.ts
+: 1729787399:0;gg -i 'clickupincoming'
+: 1729787569:0;gg -i 'clickupcustomfields'
+: 1729787689:0;gsrt
+: 1729787714:0;vi src/models/ClickupCustomFieldsRaw.ts
+: 1729791563:0;rm ~/Downloads/Final_Updated_ClickupService.ts
+: 1729791571:0;rm ~/Downloads/Updated_ClickupService.ts
+: 1729791717:0;rm ~/Downloads/Final_Updated_ClickupService_v2.ts
+: 1729802385:0;pbcopy < tt
+: 1729828947:0;lde logs -ftall api3
+: 1729828955:0;lde down
+: 1729829060:0;lde logs -ftall person-service
+: 1729829072:0;lde logs -ftall auth-service
+: 1729831206:0;rm t tt ttt
+: 1729831236:0;gd src/services
+: 1729831898:0;git commit -m 'update to allow getting all tasks from a list and update models to reflect properly'
+: 1729832177:0;git dd .
+: 1729832185:0;git commit -m 'dont need these anymore'
+: 1729836764:0;wezterm ls-fonts --list-system
+: 1729836865:0;wezterm ls-fonts
+: 1729838098:0;vi .config/wezterm/wezterm.lua
+: 1729838600:0;j
+: 1729839752:0;luarocks search scrollback
+: 1729841476:0;msgcat --color=test
+: 1729841481:0;which msgcat
+: 1729841521:0;msgcat
+: 1729841523:0;msgcat -h
+: 1729841714:0;brew info nvim
+: 1729841726:0;brew install nvim
+: 1729841767:0;brew install --HEAD utf8proc
+: 1729841789:0;neovim
+: 1729841806:0;nvim -h
+: 1729841832:0;nvim -v
+: 1729841837:0;which luajit
+: 1729841843:0;luaver
+: 1729841855:0;luaver list-luajit
+: 1729841873:0;luaver list-luajit -r
+: 1729841896:0;luaver install-luajit
+: 1729841910:0;nvim -V1 -v
+: 1729842128:0;mkdir config/nvim
+: 1729842212:0;vi config/init.lua
+: 1729842228:0;cd ../.config
+: 1729842247:0;la ..
+: 1729842260:0;rm init.lua
+: 1729842264:0;rm nvim
+: 1729842281:0;rm -rf config/init.lua
+: 1729842287:0;rm -rf config/nvim
+: 1729842301:0;mkdir config/.config/nvim
+: 1729842311:0;vi config/.config/nvim/init.lua
+: 1729842344:0;brew install ripgrep
+: 1729842464:0;git clone https://github.com/randallsm83/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim\
+
+: 1729842511:0;rm -rf dotfiles/config/.config/nvim
+: 1729842516:0;la .config/nvim
+: 1729842524:0;rm -rf .config/nvim
+: 1729842594:0;sudo git clone https://github.com/randallsm83/kickstart.nvim.git "~/dotfiles/config/.config/nvim"\
+
+: 1729842606:0;git clone https://github.com/randallsm83/kickstart.nvim.git "~/dotfiles/config/.config/nvim"\
+
+: 1729842610:0;la dotfiles/config/.config
+: 1729842650:0;la \~/dotfiles
+: 1729842653:0;la \~/dotfiles/config
+: 1729842674:0;rm -rf \~
+: 1729842687:0;cd .config
+: 1729842713:0;git clone https://github.com/randallsm83/kickstart.nvim.git "./nvim"
+: 1729842717:0;la nvim
+: 1729842762:0;stow -R -v -t ~ config
+: 1729842771:0;la .config
+: 1729842773:0;nvim
+: 1729871431:0;vi perl/Ndn/Dreamhost/Service/Marketgoo.pm
+: 1729871458:0;gg -i '\->signon_token'
+: 1729871501:0;vi perl/Ndn/Common/ApiCall/docs/Overview.md
+: 1729871974:0;curl --include --header "X-Auth-Token: 1234567890abcdef" --header "Accept: application/vnd.marketgoo.api+json" --header "Content-Type: application/vnd.marketgoo.api+json" 'https://private-anon-ead2fa0c73-marketgoo.apiary-mock.com/api/accounts/1cbd65c81e6462906c8f4eaf02417d3cae667ffb'
+: 1729872069:0;dbc dreamhost
+: 1729872072:0;ssh yakko
+: 1729872407:0;nvim src/models/dto/ClickupTaskDTO.ts
+: 1729874028:0;brew install fd
+: 1729874342:0;cd ~/.config
+: 1729874349:0;cd nvim
+: 1729874365:0;vi lua/custom/plugins/init.lua
+: 1729874384:0;vi lazy-lock.json
+: 1729874404:0;which nvim
+: 1729874433:0;find Colorutils .
+: 1729874754:0;brew list
+: 1729874778:0;brew install jessedduffield/lazygit/lazygit
+: 1729874803:0;vi ~/.ssh/config
+: 1729875080:0;vi ../../dotfiles/config/.config/nvim/.gitignore
+: 1729877387:0;nvim ~/.config/nvim/init.lua
+: 1729880008:0;vi ~/.aliases
+: 1729882338:0;vi config/retool.json
+: 1729882409:0;mkdir src/utils
+: 1729887883:0;cd ~/Dev/dh_gp
+: 1729887937:0;nvm
+: 1729887940:0;which nvm
+: 1729887948:0;nvm current
+: 1729887952:0;node -v
+: 1729887959:0;cat package.json
+: 1729887973:0;npm instll react-dom-router
+: 1729887985:0;npm install react-dom-router
+: 1729888024:0;npm install react-router-dom
+: 1729888033:0;npm audit fix
+: 1729888126:0;vi src/App.tsx
+: 1729888136:0;vi src/main.tsx
+: 1729889037:0;mkdir src/routes
+: 1729890527:0;npm run dev
+: 1729890633:0;git commit -m 'add first router'
+: 1729892540:0;cd ../../projects/uebernet-service
+: 1729893148:0;which wrc
+: 1729897786:0;mv ../domain-service/src/utils/Utils.ts ./src/utils
+: 1729897795:0;la src/utils
+: 1729897810:0;cd ../domainm
+: 1729897845:0;gs
+: 1729897850:0;gco .
+: 1729897861:0;vi src/utils/Utils.ts
+: 1729898424:0;cd ../domain
+: 1729898426:0;cd ../domain-service
+: 1729898430:0;gg -i rootdomain
+: 1729899351:0;la src/models
+: 1729899368:0;vi src/inject-types.ts
+: 1729899380:0;vi ../domain-service/src/utils/Utils.ts
+: 1729899391:0;vi src/controller/ManageDomainController.ts
+: 1729899409:0;vi ../domain-service/src/controller/ManageDomainController.ts
+: 1729899424:0;gstr
+: 1729899427:0;sst
+: 1729899436:0;vi src/models/dto/index.ts
+: 1729899448:0;vi src/models/index.ts
+: 1729899504:0;vi src/models/ClickupCreate
+: 1729899507:0;vi src/models/ClickupCreateTaskArgs.ts
+: 1729899518:0;vi src/models/ClickupCreateDreamCareArgs.ts
+: 1729899537:0;vi src/models/dto/ClickupTaskDTO.ts
+: 1729900799:0;gg -i 'types'
+: 1729900945:0;vi src/controller/c
+: 1729900949:0;vi config/clickup.json
+: 1729901232:0;pbcopy < src/models/ClickupDreamCareFields.ts
+: 1729901261:0;pbcopy < src/models/ClickupIncomingFields.ts
+: 1729901302:0;pbcopy < src/models/ClickupCustomFields.ts
+: 1729901308:0;vi src/models/ClickupCustomFields.ts
+: 1729923498:0;which npx
+: 1729923506:0;brew info repopack
+: 1729923513:0;brew install repopack
+: 1729923556:0;vi repopack-output.txt
+: 1729923656:0;la src
+: 1729923662:0;la src/controller
+: 1729923692:0;la src/services
+: 1729923718:0;cp -r uebernet-service clickup-service
+: 1729923727:0;cd clickup-service
+: 1729923750:0;cd src/controller
+: 1729923771:0;rm -f AccountsController.ts DDController.ts NotificationsController.ts PersonasController.ts RetoolController.ts ScreenshotsController.ts SupersetController.ts WebsitesController.ts
+: 1729923786:0;cd ../services
+: 1729923819:0;rm -f AccountService.ts ExperimentsService.ts FeaturesService.ts ModelsService.ts NotificationService.ts PersonasService.ts RetoolService.ts RetoolClient.ts ScreenshotService.ts SupersetClient.ts SupersetService.ts TestService.ts WebsiteService.ts
+: 1729923847:0;cd
+: 1729923858:0;la middleware
+: 1729923865:0;cd models
+: 1729923880:0;rm -f AccountArgsModel.ts ExperimentArgsModel.ts FeaturesArgsModel.ts FrontImportArgsModel.ts NotificationArgsModel.ts SnapshotModel.ts WebsiteArgsModel.ts
+: 1729923908:0;git restore FrontImportArgsModel.ts
+: 1729923917:0;cd dto
+: 1729923925:0;rm -f Account*
+: 1729923961:0;rm -f AuditDTO.ts Ch*C Cluster* DomainsDTO.ts Experiment* Feature* LabelsDTO.ts LtvDTO.ts MetricsDTO.ts Model*
+: 1729923965:0;rm AuditDTO.ts
+: 1729923969:0;rm CharacteristicDTO.ts
+: 1729923974:0;rm -f CharacteristicsDTO.ts
+: 1729923977:0;rm CheckpointDTO.ts
+: 1729923981:0;rm DomainsDTO.ts
+: 1729923992:0;rm -f Experiment*
+: 1729923997:0;rm -f Feature*
+: 1729924001:0;rm -f Cluster
+: 1729924005:0;rm -f Cluster*
+: 1729924012:0;rm -f LabelsDTO.ts LtvDTO.ts MetricsDTO.ts Model*
+: 1729924019:0;rm -f MrrDTO.ts Notification*
+: 1729924021:0;rm -f ObjectsCountDTO.ts
+: 1729924024:0;rm -f Output*
+: 1729924040:0;rm -f PaymentMethodsDTO.ts OwnerDTO.ts QuestDTO.ts RetoolEmbedUrlDTO.ts RoadmapDTO.ts Screenshot*
+: 1729924051:0;rm -f S*
+: 1729924056:0;rm -f Website*
+: 1729924083:0;cd enum
+: 1729924093:0;rm EAccountS*
+: 1729924099:0;rm -f EComparisonType.ts
+: 1729924119:0;rm -f EQuestStatus.ts ESnapshotType.ts EUserTypes.ts EWebsiteSort.ts
+: 1729924148:0;cd errors
+: 1729924162:0;rm -f ClusterNumberIsNotUniqueError.ts NameIsNotUniqueError.ts ObjectHasOutputsError.ts
+: 1729924173:0;vi index.ts
+: 1729924186:0;vi inject-types.ts
+: 1729924202:0;cd config
+: 1729924207:0;rm retool.json server.json superset.json
+: 1729924223:0;vi Re
+: 1729924226:0;vi README.md
+: 1729924251:0;pbcopy < repopack-output.txt
+: 1729925423:0;vi src/app.ts
+: 1729925487:0;cd ..
+: 1729925491:0;repopack --remote https://github.com/clickup/clickup-APIv2-demo
+: 1729928073:0;cd uebernet-service
+: 1729929095:0;alias wrc
+: 1729929104:0;alias nrc
+: 1729929110:0;alias zrc
+: 1729929462:0;vi .aliases
+: 1729929520:0;source ~/.aliases
+: 1729929522:0;ip
+: 1729929523:0;up
+: 1729929534:0;up 2
+: 1729929564:0;cd dotfiles
+: 1729929586:0;repopack -h
+: 1729929594:0;vi zsh/.p10k.zsh
+: 1729929653:0;repopack
+: 1729932137:0;la doc/cmp-nvim-lsp.txt
+: 1729932140:0;vi doc/cmp-nvim-lsp.txt
+: 1729932632:0;which zrc
+: 1729932634:0;which vim
+: 1730008281:0;\
+
+: 1730011063:0;cd ~
+: 1730016158:0;env
+: 1730143322:0;cd projects/ndn
+: 1730143325:0;git pull
+: 1730144144:0;cd ../uebernet-service
+: 1730144176:0;cd ~/uebernet-service/
+: 1730144190:0;cd ~/projects/uebernet-service
+: 1730144201:0;cd -
+: 1730146150:0;lde up
+: 1730147661:0;git commit -m 'move util functions to util class'
+: 1730148108:0;git commit -m 'empty result if no id'
+: 1730148314:0;vi src/services/ClickupService.ts
+: 1730150377:0;lde logs -ftall uebernet-service
+: 1730158296:0;cd projects/uebernet-service
+: 1730158298:0;gst
+: 1730158298:0;gd
+: 1730158302:0;git add .
+: 1730158310:0;git commit -m 'add pagination'
+: 1730158311:0;git push
+: 1730158489:0;cd ~/dotfiles
+: 1730158498:0;rm repopack-output.txt
+: 1730158506:0;la bin
+: 1730158509:0;la config
+: 1730158511:0;la config/*
+: 1730158513:0;la config/*/
+: 1730158516:0;la config/.config/*
+: 1730158543:0;la git
+: 1730158546:0;la localhost
+: 1730158548:0;la ndnhost
+: 1730158553:0;la vim/
+: 1730158557:0;la zsh
+: 1730158639:0;clear
+: 1730158644:0;la
+: 1730159541:0;wrc
+: 1730159550:0;zrc
+: 1730160527:0;nrc
+: 1730162214:0;cd ~/.config/
+: 1730162215:0;la
+: 1730162220:0;la fish
+: 1730162224:0;cd nvim
+: 1730162224:0;la
+: 1730162228:0;vi lua/
+: 1730162245:0;vi doc/kickstart.txt
+: 1730162270:0;cd ~
+: 1730162271:0;la
+: 1730162278:0;la .local
+: 1730162281:0;la .local/share
+: 1730162303:0;la .local/share/nvim/lazy/mini.nvim/lua/mini/basics.lua
+: 1730162307:0;vi .local/share/nvim/lazy/mini.nvim/lua/mini/basics.lua
+: 1730163631:0;nrc
+: 1730164006:0;la
+: 1730164007:0;gst
+: 1730164012:0;gd
+: 1730164038:0;gst
+: 1730164053:0;gd zsh
+: 1730164113:0;gst
+: 1730164116:0;gd vim
+: 1730164139:0;gst
+: 1730164154:0;gd config
+: 1730164160:0;la config
+: 1730164163:0;la config/.config
+: 1730164176:0;git add .
+: 1730164200:0;cd config/.config/nvim
+: 1730164204:0;gst
+: 1730164213:0;la
+: 1730164225:0;cat README.md
+: 1730164244:0;brew info nvim
+: 1730164253:0;which nvim
+: 1730164284:0;git remote -v
+: 1730164296:0;la
+: 1730164433:0;la doc
+: 1730164443:0;vi .gitignore
+: 1730164451:0;cat .stylua.toml
+: 1730164461:0;la .github
+: 1730164471:0;cat .github/pull_request_template.md
+: 1730164493:0;rm -rf .git
+: 1730164496:0;rm -rf .github
+: 1730164497:0;la
+: 1730164499:0;gst
+: 1730164508:0;la
+: 1730164517:0;rm -rf .gitignore
+: 1730164520:0;la doc
+: 1730164523:0;la lua
+: 1730164527:0;la lua/custom
+: 1730164532:0;la lua/custom/plugins
+: 1730164539:0;la lua/kickstart
+: 1730164542:0;la lua/kickstart/plugins
+: 1730164545:0;la
+: 1730164555:0;rm -rf LICENSE.md
+: 1730164556:0;la
+: 1730164560:0;la doc
+: 1730164568:0;cat lazy-lock.json
+: 1730164571:0;la
+: 1730164577:0;cd ../..
+: 1730164580:0;cd ..
+: 1730164581:0;la
+: 1730164586:0;gst
+: 1730164594:0;git add .
