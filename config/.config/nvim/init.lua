@@ -13,6 +13,11 @@ vim.g.have_nerd_font = true
 -- See `:help vim.opt`
 --  For more options, you can see `:help option-list`
 
+-- Wildmenu
+vim.opt.wildmode = 'full'
+vim.opt.wildoptions = 'pum,tagfile,fuzzy'
+vim.opt.wildignorecase = true
+
 -- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.

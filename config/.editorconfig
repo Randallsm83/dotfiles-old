@@ -1,0 +1,87 @@
+# EditorConfig is awesome: https://editorconfig.org
+root = true
+
+# Default settings
+[*]
+indent_style = space
+indent_size = 2
+tab_width = 2
+max_line_length = 120
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Language-specific overrides
+
+# HTML and CSS
+[*.html]
+indent_size = 2
+tab_width = 2
+max_line_length = 120
+
+[*.css]
+indent_size = 2
+tab_width = 2
+max_line_length = 120
+
+# JavaScript, TypeScript, JSX, Pug
+[*.{js,jsx,ts,tsx,pug}]
+indent_size = 2
+tab_width = 2
+max_line_length = 120
+
+# Perl (4 spaces, tabs instead of spaces, 78 character limit)
+[*.{pl,pm}]
+indent_style = tab
+indent_size = 4
+tab_width = 4
+max_line_length = 78
+
+# Python (PEP 8: 4 spaces, 79 character limit)
+[*.py]
+indent_size = 4
+tab_width = 4
+max_line_length = 79
+
+# Ruby
+[*.rb]
+indent_size = 2
+tab_width = 2
+max_line_length = 120
+
+# Shell scripts
+[*.sh]
+indent_size = 2
+tab_width = 2
+max_line_length = 120
+
+# Vim script
+[*.vim]
+indent_size = 2
+tab_width = 2
+max_line_length = 120
+
+# JSON (no wrapping)
+[*.json]
+indent_size = 2
+tab_width = 2
+max_line_length = off
+
+# Markdown (wrap at 80, enable spelling if your editor supports it)
+[*.md]
+indent_size = 2
+tab_width = 2
+max_line_length = 80
+
+# YAML (no wrapping)
+[*.yaml]
+indent_size = 2
+tab_width = 2
+max_line_length = off
+
+# Gitconfig (no wrapping, 4 spaces, tabs allowed)
+[*.gitconfig]
+indent_style = tab
+indent_size = 4
+tab_width = 4
+max_line_length = off
+
