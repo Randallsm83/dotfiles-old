@@ -87,24 +87,24 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 # Path and flag modifications
-export PATH="$HOME/.local/bin:$HOME/.local:$HOME/bin:$HOME/projects/ndn/dh/bin:$HOME/perl5/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+LOCALDIR="$HOME/.local"
+BREWDIR="/opt/homebrew/opt"
 
-export PATH="/opt/homebrew/opt/findutils/libexec/gnubin:$PATH"
-export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
-export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
-export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
-export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
-export PATH="/opt/homebrew/opt/ncurses/bin:$PATH"
+export PATH="$LOCALDIR/bin:$HOME/bin:$HOME/projects/ndn/dh/bin:$HOME/perl5/bin:$HOME/.cargo/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+export PATH="$BREWDIR/findutils/libexec/gnubin:$PATH"
+export PATH="$BREWDIR/make/libexec/gnubin:$PATH"
+export PATH="$BREWDIR/coreutils/libexec/gnubin:$PATH"
+export PATH="$BREWDIR/gnu-sed/libexec/gnubin:$PATH"
+export PATH="$BREWDIR/grep/libexec/gnubin:$PATH"
+export PATH="$BREWDIR/gnu-tar/libexec/gnubin:$PATH"
+export PATH="$BREWDIR/ncurses/bin:$PATH"
 
-export LDFLAGS="-L~/.local/lib $LDFLAGS"
-export LDFLAGS="-L/opt/homebrew/opt/ncurses/lib $LDFLAGS"
-export LDFLAGS="-L/opt/homebrew/opt/readline/lib $LDFLAGS"
-export CPPFLAGS="-I~/.local/include $CPPFLAGS"
-export CPPFLAGS="-I/opt/homebrew/opt/ncurses/include $CPPFLAGS"
-export CPPFLAGS="-I/opt/homebrew/opt/readline/include $CPPFLAGS"
-export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
-export PKG_CONFIG_PATH="$HOME/.local/lib/pkgconfig:$PKG_CONFIG_PATH"
-
+export LD_LIBRARY_PATH="$LOCALDIR/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$BREWDIR/ncurses/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$BREWDIR/readline/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="$LOCALDIR/lib/pkgconfig:$LOCALDIR/share/pkgconfig:$PKG_CONFIG_PATH"
+export PKG_CONFIG_PATH="$BREWDIR/ncurses/lib/pkgconfig:$PKG_CONFIG_PATH"
+export PKG_CONFIG_PATH="$BREWDIR/readline/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # ========================= Key Bindings ======================================
 # History substring search bindings
@@ -133,4 +133,4 @@ zstyle ':completion:*' list-colors "${ls_colors_array[@]}"
 
 # Shell Integration
 [[ -f ~/.config/wezterm/wezterm.sh ]] && source ~/.config/wezterm/wezterm.sh
-[[ -f ~/.config/iterm2/iterm2_shell_integration.zsh ]] && source ~/.config/iterm2/iterm2_shell_integration.zsh
+# [[ -f ~/.config/iterm2/iterm2_shell_integration.zsh ]] && source ~/.config/iterm2/iterm2_shell_integration.zsh

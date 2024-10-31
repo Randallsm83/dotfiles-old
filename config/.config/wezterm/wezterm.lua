@@ -7,12 +7,17 @@ if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 
+-------------------- Colorscheme ----------------------------
 -- Need empty object to set properties of colors and still support direct color modification of colors itself
 config.colors = {}
 
--------------------- Appearance ----------------------------
-
 --- Gruvbox
+-- https://github.com/morhetz/gruvbox?tab=readme-ov-file#palette
+-- fg #ebdbb2, fg0 #fbf1c7, fg1 #ebdbb2, fg2 #d5c4a1, fg3 #bdae93, fg4 #a89984
+-- bg #282828, bg0 #282828, bg1 #3c3836, bg2 #504945, bg3 #665c54, bg4 #7c6f64, bg0_soft #32302f, bg0_hard #1d2021
+-- normal gray #928374, red #cc241d, green #98971a, yellow #d79921, blue #458588, purple #b16286, aqua #689d6a, orange #d65d0e
+-- bright gray #a89984, red #fb4934, green #b8bb26, yellow #fadb2f, blue #83a598, purple #d3869b, aqua #8ec07c, orange #fe8019
+--
 -- config.color_scheme = "GruvboxDark"
 -- config.color_scheme = "GruvboxDarkHard"
 config.color_scheme = "Gruvbox Dark (Gogh)"
@@ -32,6 +37,7 @@ config.color_scheme = "Gruvbox Dark (Gogh)"
 -- config.color_scheme = "OneDark (base16)"
 
 --- Kanagawa
+-- config.color_scheme = "Kanagawa"
 -- config.color_scheme = "Kanagawa (Gogh)"
 
 --- Tokyo Nights
@@ -52,26 +58,6 @@ config.color_scheme = "Gruvbox Dark (Gogh)"
 --- Gogh
 -- config.color_scheme = "Gogh (Gogh)"
 
---- Kanagawa
--- config.colors = {
--- foreground = "#dcd7ba",
--- background = "#1f1f28",
---
--- cursor_bg = "#c8c093",
--- cursor_fg = "#c8c093",
--- cursor_border = "#c8c093",
---
--- selection_fg = "#c8c093",
--- selection_bg = "#2d4f67",
---
--- scrollbar_thumb = "#16161d",
--- split = "#16161d",
---
--- ansi = { "#090618", "#c34043", "#76946a", "#c0a36e", "#7e9cd8", "#957fb8", "#6a9589", "#c8c093" },
--- brights = { "#727169", "#e82424", "#98bb6c", "#e6c384", "#7fb4ca", "#938aa9", "#7aa89f", "#dcd7ba" },
--- indexed = { [16] = "#ffa066", [17] = "#ff5d62" },
--- }
-
 ------------------------- Font -----------------------------
 config.font = wezterm.font_with_fallback({
 	"MonaspiceNe Nerd Font",
@@ -79,7 +65,7 @@ config.font = wezterm.font_with_fallback({
 	"Menlo",
 })
 config.font_size = 14
-config.line_height = 1.05
+config.line_height = 1.07
 
 ------------------ Windows and Panes -----------------------
 -- Window configuration
@@ -90,15 +76,15 @@ config.window_decorations = "RESIZE"
 config.native_macos_fullscreen_mode = false
 config.adjust_window_size_when_changing_font_size = false
 
-config.window_background_opacity = 1
--- config.macos_window_background_blur = 0
+config.window_background_opacity = 0.90
+config.macos_window_background_blur = 35
 
 -- Window Padding
 config.window_padding = {
-	top = 5,
-	left = 10,
-	right = 5,
-	bottom = 5,
+	top = 2,
+	left = 0,
+	right = 0,
+	bottom = 0,
 }
 
 -- Dim inactive panes
@@ -107,8 +93,12 @@ config.inactive_pane_hsb = {
 	brightness = 0.7,
 }
 
+-- Pane split color
+local scheme = wezterm.color.load_scheme(wezterm.config_dir .. "/colors/MyKanagawa.toml")
+config.colors.split = scheme.ansi[8]
+
 ------------------------- Tabs -----------------------------
-config.use_fancy_tab_bar = false
+config.use_fancy_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = false
 config.show_new_tab_button_in_tab_bar = false
 
@@ -116,7 +106,7 @@ config.show_new_tab_button_in_tab_bar = false
 config.colors.tab_bar = {
 	-- Default ('Other', 'Options')
 	background = "#282828", -- Not available with fancy tab bar
-	inactive_tab_edge = "#1d2021", -- Only with fancy tab bar
+	inactive_tab_edge = "#d65d0e", -- Only with fancy tab bar
 	active_tab = {
 		bg_color = "#d65d0e",
 		fg_color = "#d5c4a1",
@@ -160,15 +150,15 @@ config.colors.tab_bar = {
 }
 
 -- Customize the fancy tab bar if in use
--- config.window_frame = {
--- 	font = wezterm.font({
--- 		family = "MonaspiceNe",
--- 		weight = "Bold", -- Roboto Bold
--- 	}),
--- 	font_size = 11.0, -- 12
--- 	active_titlebar_bg = "#333333",
--- 	inactive_titlebar_bg = "#333333",
--- }
+config.window_frame = {
+	font = wezterm.font({
+		family = "MonaspiceNe Nerd Font",
+		weight = "Bold",
+	}),
+	font_size = 12.5, -- 12
+	active_titlebar_bg = "#282828",
+	inactive_titlebar_bg = "#282828",
+}
 
 -- Cursor
 config.cursor_blink_rate = 800
