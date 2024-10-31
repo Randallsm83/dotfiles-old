@@ -3,6 +3,9 @@ alias aliases="alias | sed 's/=.*//'"
 alias functions="declare -f | grep '^[a-z].* ()' | sed 's/{$//'"
 alias paths='echo -e ${PATH//:/\\n}'
 
+# Has package
+alias has="curl -sL https://git.io/_has | bash -s"
+
 # Update
 alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup;'
 

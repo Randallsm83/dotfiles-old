@@ -1300,7 +1300,7 @@
   typeset -g POWERLEVEL9K_PERLBREW_FOREGROUND=0
   typeset -g POWERLEVEL9K_PERLBREW_BACKGROUND=2
   # Show perlbrew version only when in a perl project subdirectory.
-  typeset -g POWERLEVEL9K_PERLBREW_PROJECT_ONLY=true
+  typeset -g POWERLEVEL9K_PERLBREW_PROJECT_ONLY=false
   # Don't show "perl-" at the front.
   typeset -g POWERLEVEL9K_PERLBREW_SHOW_PREFIX=false
   # Custom icon.
