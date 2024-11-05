@@ -94,8 +94,9 @@ config.inactive_pane_hsb = {
 }
 
 -- Pane split color
-local scheme = wezterm.color.load_scheme(wezterm.config_dir .. "/colors/MyKanagawa.toml")
-config.colors.split = scheme.ansi[8]
+-- local scheme = wezterm.color.load_scheme(wezterm.config_dir .. "/colors/MyKanagawa.toml")
+local scheme = wezterm.color.get_builtin_schemes()['Gruvbox Dark (Gogh)']
+config.colors.split = scheme.ansi[4]
 
 ------------------------- Tabs -----------------------------
 config.use_fancy_tab_bar = true

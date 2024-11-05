@@ -150,41 +150,82 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
-    -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-    'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-    -- NOTE: Plugins can also be added by using a table,
-    -- with the first argument being the link and the following
-    -- keys can be used to configure plugin behavior/loading/etc.
-    --
-    -- Use `opts = {}` to force a plugin to be loaded.
-    --
-    -- Here is a more advanced example where we pass configuration
-    -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
-    --    require('gitsigns').setup({ ... })
-    --
-    -- See `:help gitsigns` to understand what the configuration keys do
-    { -- Adds git related signs to the gutter, as well as utilities for managing changes
-        'lewis6991/gitsigns.nvim',
-        opts = {
-            signs = {
-                add = {text = '+'},
-                change = {text = '~'},
-                delete = {text = '_'},
-                topdelete = {text = '‾'},
-                changedelete = {text = '~'}
-            }
-        }
-    }, -- Colorschemes
-    {'catppuccin/nvim', name = 'catppuccin', priority = 1000},
-
-    {'folke/tokyonight.nvim', name = 'tokyonight', priority = 1000},
-    {'rebelot/kanagawa.nvim', name = 'kanagawa', priority = 1000},
-    {'navarasu/onedark.nvim', name = 'onedark', priority = 1000},
-    {'morhetz/gruvbox', name = 'gruvbox-morhetz', priority = 1000}, {
-        'nvim-lualine/lualine.nvim',
-        opts = {theme = 'gruvbox'},
-        dependencies = {'nvim-tree/nvim-web-devicons'}
+  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
+  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  --
+  -- NOTE: Plugins can also be added by using a table,
+  -- with the first argument being the link and the following
+  -- keys can be used to configure plugin behavior/loading/etc.
+  --
+  -- Use `opts = {}` to force a plugin to be loaded.
+  --
+  -- Here is a more advanced example where we pass configuration
+  -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
+  --    require('gitsigns').setup({ ... })
+  --
+  -- Gitsigns
+  -- See `:help gitsigns` to understand what the configuration keys do
+  { -- Adds git related signs to the gutter, as well as utilities for managing changes
+      'lewis6991/gitsigns.nvim',
+      opts = {
+          signs = {
+              add = {text = '+'},
+              change = {text = '~'},
+              delete = {text = '_'},
+              topdelete = {text = '‾'},
+              changedelete = {text = '~'}
+          }
+      }
+  },
+  --
+  -- Colorschemes
+  {'catppuccin/nvim', name = 'catppuccin', priority = 1000},
+  {'folke/tokyonight.nvim', name = 'tokyonight', priority = 1000},
+  {'rebelot/kanagawa.nvim', name = 'kanagawa', priority = 1000},
+  {'navarasu/onedark.nvim', name = 'onedark', priority = 1000},
+  {'morhetz/gruvbox', name = 'gruvbox-morhetz', priority = 1000},
+  --
+  -- Lualine
+  {
+      'nvim-lualine/lualine.nvim',
+      opts = {theme = 'gruvbox'},
+      dependencies = {'nvim-tree/nvim-web-devicons'}
+  },
+  --
+  -- Nvm-lint
+  {
+    "mfussenegger/nvim-lint",
+    event = {
+      "BufReadPre",
+      "BufNewFile",
     },
+    config = function()
+      local lint = require("lint")
+
+      lint.linters_by_ft = {
+        javascript = { "eslint_d" },
+        typescript = { "eslint_d" },
+        javascriptreact = { "eslint_d" },
+        typescriptreact = { "eslint_d" },
+        svelte = { "eslint_d" },
+        python = { "pylint" },
+      }
+
+      local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+
+      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+        group = lint_augroup,
+        callback = function()
+          lint.try_lint()
+        end
+      })
+
+      vim.keymap.set("n", "<leader>l", function()
+        lint.try_lint()
+      end, { desc = "Trigger linting for current file" })
+    end
+  }
+    --
     -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
     --
     -- This is often very useful to both group configuration, as well as handle
@@ -252,12 +293,15 @@ require('lazy').setup({
                 {'<leader>h', group = 'Git [H]unk', mode = {'n', 'v'}}
             }
         }
-    }, -- NOTE: Plugins can specify dependencies.
+    },
+    --
+    -- NOTE: Plugins can specify dependencies.
     --
     -- The dependencies are proper plugin specifications as well - anything
     -- you do for a plugin at the top level, you can do for a dependency.
     --
     -- Use the `dependencies` key to specify the dependencies of a particular plugin
+    --
     { -- Fuzzy Finder (files, lsp, etc)
         'nvim-telescope/telescope.nvim',
         event = 'VimEnter',
@@ -569,11 +613,7 @@ require('lazy').setup({
             --  - settings (table): Override the default settings passed when initializing the server.
             --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
             local servers = {
-                -- clangd = {},
-                -- gopls = {},
-                -- pyright = {},
-                -- rust_analyzer = {},
-                -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
+                -- See `:help lspconfig-all` for a list of all the pre-configured LSPs
                 --
                 -- Some languages (like typescript) have entire language plugins that can be useful:
                 --    https://github.com/pmizio/typescript-tools.nvim
@@ -582,16 +622,25 @@ require('lazy').setup({
                 vimls = {},
                 html = {},
                 jsonls = {},
-                ts_ls = {},
                 eslint = {},
-                quick_lint_js = {},
+                ts_ls = {},
+                vtsls = {},
                 bashls = {
                     -- cmd = {...},
                     filetypes = {'sh', 'zsh'}
                     -- capabilities = {},
                     -- settings = { ... },
                 },
-                perlnavigator = {},
+                perlnavigator = {
+                    cmd = {'perlnavigator'},
+                    -- filetypes = {}
+                    -- capabilities = {},
+                    settings = {
+                        perlnavigator = {
+                            perlPath = '/Users/randallm/perl5/perlbrew/perls/perl-5.40.0/bin/perl'
+                        }
+                    }
+                },
                 lua_ls = {
                     -- cmd = {...},
                     -- filetypes = { ...},
@@ -639,7 +688,11 @@ require('lazy').setup({
                 }
             }
         end
-    }, { -- Autoformat
+    },
+    --
+    -- Autoformat
+    --
+    {
         'stevearc/conform.nvim',
         event = {'BufWritePre'},
         cmd = {'ConformInfo'},
@@ -656,41 +709,58 @@ require('lazy').setup({
                 desc = '[F]ormat buffer'
             }
         },
+        ---@module "conform"
+        ---@type conform.setupOpts
         opts = {
+            log_level = vim.log.levels.DEBUG,
             notify_on_error = false,
-            format_on_save = function(bufnr)
-                -- Disable "format_on_save lsp_fallback" for languages that don't
-                -- have a well standardized coding style. You can add additional
-                -- languages here or re-enable it for the disabled ones.
-                local disable_filetypes = {c = true, cpp = true}
-                local lsp_format_opt
-                if disable_filetypes[vim.bo[bufnr].filetype] then
-                    lsp_format_opt = 'never'
-                else
-                    lsp_format_opt = 'fallback'
-                end
-                return {timeout_ms = 500, lsp_format = lsp_format_opt}
-            end,
+            -- format_on_save = function(bufnr)
+            --     -- Disable "format_on_save lsp_fallback" for languages that don't
+            --     -- have a well standardized coding style. You can add additional
+            --     -- languages here or re-enable it for the disabled ones.
+            --     local disable_filetypes = {
+            --         c = true,
+            --         cpp = true,
+            --         perl = true,
+            --         perl6 = true,
+            --         typescript = true
+            --     }
+            --     local lsp_format_opt
+            --     if disable_filetypes[vim.bo[bufnr].filetype] then
+            --         lsp_format_opt = 'never'
+            --     else
+            --         lsp_format_opt = 'fallback'
+            --     end
+            --     -- return {timeout_ms = 500, lsp_format = lsp_format_opt}
+            --     return
+            -- end,
             formatters_by_ft = {
-                ['*'] = {'codespell'},
+                ['*'] = {'codespell', 'editorconfig-checker'},
                 sh = {'beautysh', 'shfmt'},
-                zsh = {'beautysh'},
-                bash = {'beautysh', 'shellcheck', 'shfmt'},
+                zsh = {'beautysh', 'shfmt'},
+                bash = {'shellcheck', 'beautysh', 'shfmt'},
+                vimscript = {'vint'},
                 perl = {'perltidy'},
+                lua = {'stylua', 'lua-format', 'luacheck'},
                 ruby = {'htmlbeautifier'},
-                lua = {'stylua', 'lua-format'},
-                css = {'prettier', 'prettierd'},
-                json = {'prettier', 'prettierd', 'jq', 'fixjson'},
-                html = {'prettier', 'prettierd', 'htmlbeautifier'},
-                javascript = {'prettier', 'prettierd', 'eslint_d', 'standardjs'},
-                typescript = {'prettier', 'prettierd', 'eslint_d'}
+                css = {'prettierd', 'prettier'},
+                json = {'prettierd', 'prettier', 'jq', 'jsonlint'},
+                html = {'prettierd', 'prettier', 'htmlbeautifier', 'htmlhint'},
+                javascript = {'eslint_d', 'prettierd', 'prettier', 'standard'},
+                typescript = {
+                    'eslint_d', 'prettierd', 'prettier', 'ts-standard'
+                }
                 -- Conform can also run multiple formatters sequentially
                 -- python = { "isort", "black" },
                 -- You can use 'stop_after_first' to run the first available formatter from the list
                 -- javascript = { "prettierd", "prettier", stop_after_first = true },
             }
         }
-    }, { -- Autocompletion
+    },
+    --
+    -- Autocompletion
+    --
+    {
         'hrsh7th/nvim-cmp',
         event = 'InsertEnter',
         dependencies = {
@@ -799,13 +869,20 @@ require('lazy').setup({
                 }
             }
         end
-    }, -- Highlight todo, notes, etc in comments
+    },
+    --
+    -- Highlight todo, notes, etc in comments
+    --
     {
         'folke/todo-comments.nvim',
         event = 'VimEnter',
         dependencies = {'nvim-lua/plenary.nvim'},
         opts = {}
-    }, { -- Collection of various small independent plugins/modules
+    },
+    --
+    -- Collection of various small independent plugins/modules
+    --
+    {
         'echasnovski/mini.nvim',
         config = function()
             --
@@ -875,7 +952,11 @@ require('lazy').setup({
             -- ... and there is more!
             --  Check out: https://github.com/echasnovski/mini.nvim
         end
-    }, { -- Highlight, edit, and navigate code
+    },
+    --
+    -- Highlight, edit, and navigate code
+    --
+    {
         'nvim-treesitter/nvim-treesitter',
         build = ':TSUpdate',
         main = 'nvim-treesitter.configs', -- Sets main module to use for opts

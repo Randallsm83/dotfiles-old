@@ -1,3 +1,4 @@
+#!/bin/sh
 # shellcheck shell=bash
 
 # This file hooks up shell integration for wezterm.
@@ -555,3 +556,8 @@ if [[ -z "${WEZTERM_SHELL_SKIP_CWD}" ]] ; then
 fi
 
 true
+
+# -------------------------------------------------------------------------------------------------
+# -*- mode: sh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-
+# vim: ft=sh sw=2 ts=2 et
+# -------------------------------------------------------------------------------------------------

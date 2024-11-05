@@ -1,3 +1,7 @@
+#############
+#  Aliases  #
+#############
+
 # List declared aliases, functions, paths
 alias aliases="alias | sed 's/=.*//'"
 alias functions="declare -f | grep '^[a-z].* ()' | sed 's/{$//'"
@@ -17,11 +21,11 @@ alias vi="nvim"
 alias vim="nvim"
 
 # Edit configs
-alias vrc="vim ~/.vimrc"
-alias nrc="vim ~/.config/nvim/init.lua"
-alias zrc="vim ~/.zshrc"
-alias wrc="vim ~/.config/wezterm/wezterm.lua"
-
+alias zrc="vi $ZDOTDIR/.zshrc"
+alias znv="vi $HOME/.zshenv"
+alias vrc="vi ~/.vimrc"
+alias nrc="vi ~/.config/nvim/init.lua"
+alias wrc="vi ~/.config/wezterm/wezterm.lua"
 
 # TODO
 alias gg='git grep -E'
@@ -35,7 +39,14 @@ alias displaykeys="source $HOME/ssh-key-manager.sh && display_public_keys"
 alias ard="arduino-cli"
 alias ardc="arduino-cloud-cli"
 
-# Functions
+#############
+# Functions #
+#############
+
+# Time ZSH start
+ztime() {
+  for i in $(seq 1 10); do /usr/bin/time /bin/zsh -i -c exit; done
+}
 
 # Visualize the 16 ANSI colors
 16colors() {

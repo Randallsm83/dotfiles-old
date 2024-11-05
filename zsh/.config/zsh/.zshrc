@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 # ======================= Powerlevel10k ==============================
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -19,7 +21,7 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 # ------------------------- Plugin Configuration -------------------------
 
 # ---- Before Plugins -------
-[[ -f ~/.config/zsh/zsh-syntax-theme ]] && source ~/.config/zsh/zsh-syntax-theme
+[[ -f ~/.config/zsh/colors/gruvbox.zsh-syntax-theme ]] && source ~/.config/zsh/colors/gruvbox.zsh-syntax-theme
 
 # ---- Language Plugins ----
 zplug "lukechilds/zsh-nvm"
@@ -37,7 +39,7 @@ zplug "plugins/common-aliases", from:oh-my-zsh
 # ---- Zsh Users Plugins ----
 zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-syntax-highlighting", defer:3
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:2
 
 # ---- Supercrab Tree ---------
@@ -66,45 +68,17 @@ zplug load
 
 # ========================= General Settings =========================
 # History settings
-setopt appendhistory      # Append to history file, do not overwrite
+setopt APPENDHISTORY      # Append to history file, do not overwrite
+setopt EXTENDED_HISTORY   # Record command execution time
 setopt INC_APPEND_HISTORY # Write to history file immediately
 setopt SHARE_HISTORY      # Share history across all sessions
+setopt HIST_VERIFY        # Don't execute immediately upon history expansion
 setopt HIST_IGNORE_SPACE  # Ignore commands with leading spaces
 setopt HIST_REDUCE_BLANKS # Remove unnecessary blanks
 setopt HIST_IGNORE_DUPS   # Ignore duplicate commands
 setopt HIST_FIND_NO_DUPS  # Do not display old duplicates in history search
 setopt HIST_SAVE_NO_DUPS  # Do not save duplicate commands in history
-setopt HIST_VERIFY        # Don't execute immediately upon history expansion
-setopt EXTENDED_HISTORY   # Record command execution time
-HISTSIZE=500000           # Number of lines kept in memory
-SAVEHIST=500000           # Number of lines to save in history file
-HISTFILE=~/.config/zsh/zsh_history   # Where to save the command history
-
-# Environment variables
-export EDITOR='nvim'
-export VISUAL='nvim'
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-
-# Path and flag modifications
-LOCALDIR="$HOME/.local"
-BREWDIR="/opt/homebrew/opt"
-
-export PATH="$LOCALDIR/bin:$HOME/bin:$HOME/projects/ndn/dh/bin:$HOME/perl5/bin:$HOME/.cargo/bin:/usr/local/bin:/usr/local/sbin:$PATH"
-export PATH="$BREWDIR/findutils/libexec/gnubin:$PATH"
-export PATH="$BREWDIR/make/libexec/gnubin:$PATH"
-export PATH="$BREWDIR/coreutils/libexec/gnubin:$PATH"
-export PATH="$BREWDIR/gnu-sed/libexec/gnubin:$PATH"
-export PATH="$BREWDIR/grep/libexec/gnubin:$PATH"
-export PATH="$BREWDIR/gnu-tar/libexec/gnubin:$PATH"
-export PATH="$BREWDIR/ncurses/bin:$PATH"
-
-export LD_LIBRARY_PATH="$LOCALDIR/lib:$LD_LIBRARY_PATH"
-export LD_LIBRARY_PATH="$BREWDIR/ncurses/lib:$LD_LIBRARY_PATH"
-export LD_LIBRARY_PATH="$BREWDIR/readline/lib:$LD_LIBRARY_PATH"
-export PKG_CONFIG_PATH="$LOCALDIR/lib/pkgconfig:$LOCALDIR/share/pkgconfig:$PKG_CONFIG_PATH"
-export PKG_CONFIG_PATH="$BREWDIR/ncurses/lib/pkgconfig:$PKG_CONFIG_PATH"
-export PKG_CONFIG_PATH="$BREWDIR/readline/lib/pkgconfig:$PKG_CONFIG_PATH"
+setopt HIST_EXPIRE_DUPS_FIRST # Expire a duplicate event first when trimming history.
 
 # ========================= Key Bindings ======================================
 # History substring search bindings
@@ -112,7 +86,7 @@ bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 # ========================= Visual Settings ===================================
-eval "$(dircolors --sh ~/.config/zsh/gruvbox.default.dircolors)"
+eval "$(dircolors --sh ~/.config/zsh/colors/gruvbox.default.dircolors)"
 IFS=: read -rA ls_colors_array <<< "$LS_COLORS"
 zstyle ':completion:*' list-colors "${ls_colors_array[@]}"
 
@@ -134,3 +108,8 @@ zstyle ':completion:*' list-colors "${ls_colors_array[@]}"
 # Shell Integration
 [[ -f ~/.config/wezterm/wezterm.sh ]] && source ~/.config/wezterm/wezterm.sh
 # [[ -f ~/.config/iterm2/iterm2_shell_integration.zsh ]] && source ~/.config/iterm2/iterm2_shell_integration.zsh
+#
+# -------------------------------------------------------------------------------------------------
+# -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-
+# vim: ft=zsh sw=2 ts=2 et
+# -------------------------------------------------------------------------------------------------
