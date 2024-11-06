@@ -143,6 +143,25 @@ function check_zsh() {
   fi
 }
 
+# TODO
+function install_fonts() {
+  FONT_SRC="$HOME/.dotfiles/fonts/.local/share/fonts"
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+      FONT_DEST="$HOME/Library/Fonts"  # macOS user font directory
+
+      # Copy font files to macOS font directory
+      echo "Copying fonts to macOS font directory..."
+      cp -v "$FONT_SRC"/*.{ttf,otf} "$FONT_DEST" 2>/dev/null
+  else
+      # For Linux, assume fonts have been stowed
+      FONT_DEST="$HOME/.local/share/fonts"
+      echo "Refreshing font cache on Linux..."
+      fc-cache -f "$FONT_DEST"
+  fi
+
+  echo "Fonts installed successfully!"
+}
+
 # Function to download, extract, configure, and install from source
 function install_source_package() {
     local name=$1

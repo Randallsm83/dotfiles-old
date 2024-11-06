@@ -60,12 +60,13 @@ config.color_scheme = "Gruvbox Dark (Gogh)"
 
 ------------------------- Font -----------------------------
 config.font = wezterm.font_with_fallback({
+  "Hack Nerd Font",
 	"MonaspiceNe Nerd Font",
 	"MesloLGM Nerd Font",
-	"Menlo",
+	"FiraCode Nerd Font",
 })
-config.font_size = 14
-config.line_height = 1.07
+config.font_size = 14.5
+config.line_height = 1.1
 
 ------------------ Windows and Panes -----------------------
 -- Window configuration
@@ -76,15 +77,15 @@ config.window_decorations = "RESIZE"
 config.native_macos_fullscreen_mode = false
 config.adjust_window_size_when_changing_font_size = false
 
-config.window_background_opacity = 0.90
-config.macos_window_background_blur = 35
+config.window_background_opacity = 0.95
+config.macos_window_background_blur = 25
 
 -- Window Padding
 config.window_padding = {
-	top = 2,
-	left = 0,
-	right = 0,
-	bottom = 0,
+	top = 5,
+	left = 5,
+	right = 5,
+	bottom = 5,
 }
 
 -- Dim inactive panes
@@ -161,6 +162,47 @@ config.window_frame = {
 	inactive_titlebar_bg = "#282828",
 }
 
+--- Tabline
+local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+tabline.setup({
+  options = {
+    icons_enabled = true,
+    theme = 'Gruvbox Dark (Gogh)',
+    color_overrides = {},
+    section_separators = {
+      left = wezterm.nerdfonts.pl_left_hard_divider,
+      right = wezterm.nerdfonts.pl_right_hard_divider,
+    },
+    component_separators = {
+      left = wezterm.nerdfonts.pl_left_soft_divider,
+      right = wezterm.nerdfonts.pl_right_soft_divider,
+    },
+    tab_separators = {
+      left = wezterm.nerdfonts.pl_left_soft_divider,
+      right = wezterm.nerdfonts.pl_right_soft_divider,
+    },
+  },
+  sections = {
+    tabline_a = { 'hostname' },
+    tabline_b = { 'workspace' },
+    -- tabline_c = { ' ' },
+    tab_active = {
+      { 'index', zero_indexed = true },
+      { 'cwd', padding = { left = 0, right = 1 } },
+      { 'zoomed', padding = 0 },
+    },
+    tab_inactive = {
+      {'index', zero_indexed = true },
+      { 'process', padding = { left = 0, right = 1 } }
+    },
+    tabline_x = { 'ram', 'cpu' },
+    tabline_y = { 'battery' },
+    tabline_z = { 'datetime' },
+  },
+  extensions = {},
+})
+
+--------------------------------------------------------------------------------
 -- Cursor
 config.cursor_blink_rate = 800
 config.force_reverse_video_cursor = true

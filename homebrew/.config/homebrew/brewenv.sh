@@ -11,7 +11,8 @@ export HOMEBREW_LOGS="${XDG_CACHE_HOME:-$HOME/.cache}/Homebrew/Logs"
 export HOMEBREW_TEMP="${XDG_RUNTIME_DIR:-/tmp}/Homebrew"
 
 # Performance optimizations
-export HOMEBREW_MAKE_JOBS="$(sysctl -n hw.ncpu)"
+cores="$(sysctl -n hw.ncpu)"
+export HOMEBREW_MAKE_JOBS="$cores"
 export HOMEBREW_DISPLAY_INSTALL_TIMES=1
 export HOMEBREW_COLOR=1
 

@@ -8,7 +8,7 @@ alias functions="declare -f | grep '^[a-z].* ()' | sed 's/{$//'"
 alias paths='echo -e ${PATH//:/\\n}'
 
 # Has package
-alias has="curl -sL https://git.io/_has | bash -s"
+alias has="curl -sL https://git.io/_has | bash -s "
 
 # Update
 alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup;'
@@ -21,15 +21,21 @@ alias vi="nvim"
 alias vim="nvim"
 
 # Edit configs
+alias zenv="vi $HOME/.zshenv"
+alias zpro="vi $ZDOTDIR/.zprofile"
 alias zrc="vi $ZDOTDIR/.zshrc"
-alias znv="vi $HOME/.zshenv"
 alias vrc="vi ~/.vimrc"
 alias nrc="vi ~/.config/nvim/init.lua"
 alias wrc="vi ~/.config/wezterm/wezterm.lua"
 
-# TODO
+# Git
 alias gg='git grep -E'
+
+# Zplug
 alias zpui="zplug update && zplug install"
+
+# Stow
+alias stowdir="stow --no-folding -R -v -t ~ "
 
 # SSH
 alias rotatekeys="source $HOME/ssh-key-manager.sh && rotate_keys"
