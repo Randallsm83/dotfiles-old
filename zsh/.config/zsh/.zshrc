@@ -19,6 +19,7 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug "lukechilds/zsh-nvm"
 zplug "mattberther/zsh-pyenv"
 zplug "DhavalKapil/luaver"
+zplug "wushenrong/zsh-plenv"
 
 # ---- Oh-My-Zsh Plugins ------
 zplug "plugins/git", from:oh-my-zsh
@@ -86,7 +87,6 @@ zstyle ':completion:*' list-colors "${ls_colors_array[@]}"
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -f ~/.aliases ]] && source ~/.aliases
 [[ -f ~/.aliases.ndn ]] && source ~/.aliases.ndn
-[[ -f ~/perl5/perlbrew/etc/bashrc ]] && source ~/perl5/perlbrew/etc/bashrc
 [[ -f ~/.config/wezterm/wezterm.sh ]] && source ~/.config/wezterm/wezterm.sh
 
 # ========================= Starship Prompt ====================================
