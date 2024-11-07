@@ -18,10 +18,10 @@ vim.opt.wildoptions = 'pum,tagfile,fuzzy'
 vim.opt.wildignorecase = true
 
 -- Make line numbers default
-vim.opt.number = true
+-- vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
-vim.opt.relativenumber = true
+-- vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -100,15 +100,6 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---
---  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -121,6 +112,47 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
     vim.highlight.on_yank()
   end,
+})
+
+-- Async formatting with conform, supporting ranges
+vim.api.nvim_create_user_command('Format', function(args)
+  local range = nil
+  if args.count ~= -1 then
+    local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+    range = {
+      start = { args.line1, 0 },
+      ['end'] = { args.line2, end_line:len() },
+    }
+  end
+  require('conform').format({ async = true, lsp_format = 'fallback', range = range }, function(err)
+    if not err then
+      local mode = vim.api.nvim_get_mode().mode
+      if vim.startswith(string.lower(mode), 'v') then
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', true)
+      end
+    end
+  end)
+end, { range = true })
+
+-- Disable format on save
+vim.api.nvim_create_user_command('FormatDisable', function(args)
+  if args.bang then
+    -- FormatDisable! will disable formatting just for this buffer
+    vim.b.disable_autoformat = true
+  else
+    vim.g.disable_autoformat = true
+  end
+end, {
+  desc = 'Disable autoformat-on-save',
+  bang = true,
+})
+
+-- Enable format on save
+vim.api.nvim_create_user_command('FormatEnable', function()
+  vim.b.disable_autoformat = false
+  vim.g.disable_autoformat = false
+end, {
+  desc = 'Re-enable autoformat-on-save',
 })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -680,10 +712,15 @@ require('lazy').setup({
       {
         '<leader>f',
         function()
-          require('conform').format {
-            async = true,
-            lsp_format = 'fallback',
-          }
+          require('conform').format { async = true }
+          require('conform').format({ async = true, lsp_format = 'fallback' }, function(err)
+            if not err then
+              local mode = vim.api.nvim_get_mode().mode
+              if vim.startswith(string.lower(mode), 'v') then
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', true)
+              end
+            end
+          end)
         end,
         mode = '',
         desc = '[F]ormat buffer',
@@ -694,36 +731,45 @@ require('lazy').setup({
     opts = {
       notify_on_error = false,
       log_level = vim.log.levels.DEBUG,
-      default_format_opts = {
-        lsp_format = 'fallback',
-      },
-      -- format_on_save = function(bufnr)
-      --     -- Disable "format_on_save lsp_fallback" for languages that don't
-      --     -- have a well standardized coding style. You can add additional
-      --     -- languages here or re-enable it for the disabled ones.
-      --     local disable_filetypes = {
-      --         c = true,
-      --         cpp = true,
-      --         perl = true,
-      --         perl6 = true,
-      --         typescript = true
-      --     }
-      --     local lsp_format_opt
-      --     if disable_filetypes[vim.bo[bufnr].filetype] then
-      --         lsp_format_opt = 'never'
-      --     else
-      --         lsp_format_opt = 'fallback'
-      --     end
-      --     -- return {timeout_ms = 500, lsp_format = lsp_format_opt}
-      --     return
-      -- end,
+      default_format_opts = { lsp_format = 'fallback' },
+      format_on_save = function(bufnr)
+        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+          return
+        end
+        -- Disable "format_on_save lsp_fallback" for languages that don't
+        -- have a well standardized coding style. You can add additional
+        -- languages here or re-enable it for the disabled ones.
+        local disable_filetypes = {
+          c = true,
+          cpp = true,
+        }
+
+        local lsp_format_opt
+
+        if disable_filetypes[vim.bo[bufnr].filetype] then
+          lsp_format_opt = 'never'
+        else
+          lsp_format_opt = 'fallback'
+        end
+
+        return { timeout_ms = 500, lsp_format = lsp_format_opt }
+      end,
       formatters_by_ft = {
         ['*'] = { 'codespell', 'editorconfig-checker' },
         sh = { 'beautysh', 'shfmt' },
         zsh = { 'beautysh', 'shfmt' },
         bash = { 'shellcheck', 'beautysh', 'shfmt' },
+        vim = { 'vint' },
         vimscript = { 'vint' },
-        perl = { 'perltidy' },
+        css = { 'prettierd', stop_after_first = true },
+        json = { 'prettierd', 'jq', 'jsonlint', stop_after_first = true },
+        html = {
+          'prettierd',
+          'prettier',
+          'htmlbeautifier',
+          'htmlhint',
+          stop_after_first = true,
+        },
         lua = {
           'stylua',
           'lua-format',
@@ -731,48 +777,23 @@ require('lazy').setup({
           stop_after_first = true,
         },
         ruby = { 'htmlbeautifier' },
-        css = { 'prettierd', 'prettier', stop_after_first = true },
-        json = {
-          'prettierd',
-          -- 'prettier',
-          'jq',
-          'jsonlint',
-          stop_after_first = true,
-        },
-        html = {
-          'prettierd',
-          -- 'prettier',
-          'htmlbeautifier',
-          'htmlhint',
-          stop_after_first = true,
-        },
+        perl = { 'perltidy' },
         javascript = {
           'eslint_d',
-          -- 'prettierd',
-          -- 'prettier',
-          -- 'standard',
-          -- stop_after_first = true,
+          'prettierd',
+          'prettier',
+          stop_after_first = true,
         },
         typescript = {
           'eslint_d',
-          -- 'prettierd',
-          -- 'prettier',
-          -- 'ts-standard',
-          -- stop_after_first = true,
-        },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
-      },
-      formatters = {
-        shfmt = {
-          prepend_args = { '-i', '2' },
+          'prettierd',
+          'prettier',
+          stop_after_first = true,
         },
       },
+      formatters = { shfmt = { prepend_args = { '-i', '2' } } },
     },
     init = function()
-      -- Set `formatexpr` to use Conform's formatting function
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
     end,
   },
@@ -1056,6 +1077,7 @@ require('lazy').setup({
   },
 })
 
+----------------------------------------------------------------------------
 -- Colorscheme
 vim.o.background = 'dark'
 vim.g.gruvbox_invert_selection = 0

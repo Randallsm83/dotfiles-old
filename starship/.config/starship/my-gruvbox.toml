@@ -90,11 +90,11 @@ RedHatEnterprise = "󱄛"
 Pop = ""
 
 [username]
-format = '[─](fg:bg3)[](fg:blue)[  ](fg:fg0 bg:blue)[](fg:blue bg:bg2)[ $user ](fg:fg0 bg:bg2)[](fg:bg2) '
+format = '[─](fg:bg3)[](fg:blue)[  ](fg:fg0 bg:blue)[](fg:blue bg:bg2)[ $user ](fg:fg0 bg:bg2)[](fg:bg2)'
 show_always = true
 
 [directory]
-format = '[─](fg:bg3)[](fg:yellow)[ 󰷏 ](fg:fg0 bg:yellow)[](fg:yellow bg:bg2)[ $read_only$truncation_symbol$path](fg:fg0 bg:bg2)[](fg:bg2)'
+format = '[─](fg:bg3)[](fg:yellow)[ 󰷏 ](fg:fg0 bg:yellow)[](fg:yellow bg:bg2)[$read_only$truncation_symbol $path](fg:fg0 bg:bg2)[](fg:bg2)'
 home_symbol = " ~/"
 truncation_symbol = ' '
 truncation_length = 3
