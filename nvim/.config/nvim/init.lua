@@ -692,8 +692,11 @@ require('lazy').setup({
     ---@module "conform"
     ---@type conform.setupOpts
     opts = {
-      log_level = vim.log.levels.DEBUG,
       notify_on_error = false,
+      log_level = vim.log.levels.DEBUG,
+      default_format_opts = {
+        lsp_format = 'fallback',
+      },
       -- format_on_save = function(bufnr)
       --     -- Disable "format_on_save lsp_fallback" for languages that don't
       --     -- have a well standardized coding style. You can add additional
@@ -762,11 +765,19 @@ require('lazy').setup({
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
       },
+      formatters = {
+        shfmt = {
+          prepend_args = { '-i', '2' },
+        },
+      },
     },
-  }, --
-  -- Autocompletion
-  --
-  {
+    init = function()
+      -- Set `formatexpr` to use Conform's formatting function
+      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+    end,
+  },
+  ----------------------------------------------------------------------------
+  { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
