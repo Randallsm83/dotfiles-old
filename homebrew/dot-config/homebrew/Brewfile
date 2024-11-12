@@ -1,43 +1,43 @@
 tap "dreamhost/homebrew", "git@git.dreamhost.com:dreamhost/homebrew-repo.git", force_auto_update: true if OS.mac?
 tap "homebrew/bundle"
 # Cross-platform make
-brew "cmake"
-# GNU File, Shell, and Text utilities
-brew "coreutils"
-# Get a file from an HTTP, HTTPS or FTP server
-brew "curl"
-# File comparison utilities
-brew "diffutils"
-# Pack, ship and run any application as a lightweight container
-brew "docker" if OS.mac?
-# Platform keystore credential helper for Docker
-brew "docker-credential-helper" if OS.mac?
-# Simple, fast and user-friendly alternative to find
-brew "fd"
-# Collection of GNU find, xargs, and locate
-brew "findutils"
-# XML-based font configuration API for X Windows
-brew "fontconfig"
-# GNU awk utility
-brew "gawk"
-# GNU compiler collection
-brew "gcc"
+# brew "cmake"
+# # GNU File, Shell, and Text utilities
+# brew "coreutils"
+# # Get a file from an HTTP, HTTPS or FTP server
+# brew "curl"
+# # File comparison utilities
+# brew "diffutils"
+# # Pack, ship and run any application as a lightweight container
+# brew "docker" if OS.mac?
+# # Platform keystore credential helper for Docker
+# brew "docker-credential-helper" if OS.mac?
+# # Simple, fast and user-friendly alternative to find
+# brew "fd"
+# # Collection of GNU find, xargs, and locate
+# brew "findutils"
+# # XML-based font configuration API for X Windows
+# brew "fontconfig"
+# # GNU awk utility
+# brew "gawk"
+# # GNU compiler collection
+# brew "gcc"
 # Distributed revision control system
 brew "git"
 # GNU implementation of the famous stream editor
-brew "gnu-sed"
-# GNU grep, egrep and fgrep
-brew "grep"
-# Lightweight and flexible command-line JSON processor
-brew "jq"
+# brew "gnu-sed"
+# # GNU grep, egrep and fgrep
+# brew "grep"
+# # Lightweight and flexible command-line JSON processor
+# brew "jq"
 # Powerful, lightweight programming language
-brew "lua"
+# brew "lua"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Platform built on V8 to build network applications
-brew "node"
+# brew "node"
 # Indents and reformats Perl scripts to make them easier to read
-brew "perltidy"
+# brew "perltidy"
 # Manage compile and link flags for libraries
 brew "pkg-config"
 # Interpreted, interactive, object-oriented programming language
@@ -47,7 +47,7 @@ brew "pkg-config"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Powerful, clean, object-oriented scripting language
-brew "ruby", args: ["HEAD"]
+# brew "ruby", args: ["HEAD"]
 # Static analysis and lint tool, for (ba)sh scripts
 # brew "shellcheck"
 # Autoformat shell script source code
@@ -59,21 +59,21 @@ brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
 # Display directories as trees (with optional color/HTML output)
-brew "tree"
+# brew "tree"
 # Maintained ctags implementation
-brew "universal-ctags"
+# brew "universal-ctags"
 # Clean C library for processing UTF-8 Unicode data
-brew "utf8proc", args: ["HEAD"]
+# brew "utf8proc", args: ["HEAD"]
 # Vi 'workalike' with many additional features
 brew "vim"
 # Internet file retriever
-brew "wget"
+# brew "wget"
 # Check your $HOME for unwanted files and directories
-brew "xdg-ninja"
+# brew "xdg-ninja"
 # Language Server for Yaml Files
 # brew "yaml-language-server"
 # JavaScript package manager
-brew "yarn"
+# brew "yarn"
 # UNIX shell (command interpreter)
 brew "zsh"
 # LDE
