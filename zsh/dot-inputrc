@@ -1,6 +1,9 @@
 # Make Tab autocomplete regardless of filename case
 set completion-ignore-case on
 
+# Treat Hyphens and Underscores as Equivalent
+set completion-map-case On
+
 # List all matches in case multiple possible completions are possible
 set show-all-if-ambiguous on
 
@@ -11,7 +14,7 @@ set mark-symlinked-directories on
 set page-completions off
 
 # If there are more than 200 possible completions for a word, ask to show them all
-set completion-query-items 200
+set completion-query-items 500
 
 # Show extra file information when completing, like `ls -F` does
 set visible-stats on
@@ -27,4 +30,16 @@ set skip-completed-text on
 set input-meta on
 set output-meta on
 set convert-meta off
+
+# Briefly Move to Opening Parenthesis When Closing Parenthesis Is Typed
+set blink-matching-paren on
+
+# Display Possible Completions With Different Colors to Indicate File Type
+set colored-stats on
+
+# Safe Pasting with Bracketed Paste
+set enable-bracketed-paste on
+
+# Expand Tilde to Home Directory
+set expand-tilde on
 

@@ -712,7 +712,7 @@ require('lazy').setup({
       {
         '<leader>f',
         function()
-          require('conform').format { async = true }
+          -- require('conform').format { async = true }
           require('conform').format({ async = true, lsp_format = 'fallback' }, function(err)
             if not err then
               local mode = vim.api.nvim_get_mode().mode
@@ -774,7 +774,7 @@ require('lazy').setup({
           'stylua',
           'lua-format',
           'luacheck',
-          stop_after_first = true,
+          -- stop_after_first = true,
         },
         ruby = { 'htmlbeautifier' },
         perl = { 'perltidy' },

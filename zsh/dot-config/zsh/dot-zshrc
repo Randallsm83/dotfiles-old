@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 # ========================= Zplug Setup ========================================
 if [[ ! -d ~/.zplug ]]; then
@@ -13,13 +13,13 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 # ========================= Plugins Setup ======================================
 
 # ---- ZSH Syntax Theme -------
-[[ -f ~/.config/zsh/colors/gruvbox.zsh-syntax-theme ]] && source ~/.config/zsh/colors/gruvbox.zsh-syntax-theme
+[[ -r "$ZDOTDIR/colors/gruvbox.zsh-syntax-theme" ]] && source "$ZDOTDIR/colors/gruvbox.zsh-syntax-theme"
 
 # ---- Language Plugins -------
-zplug "lukechilds/zsh-nvm"
-zplug "mattberther/zsh-pyenv"
 zplug "DhavalKapil/luaver"
+zplug "lukechilds/zsh-nvm"
 zplug "wushenrong/zsh-plenv"
+zplug "mattberther/zsh-pyenv"
 
 # ---- Oh-My-Zsh Plugins ------
 zplug "plugins/git", from:oh-my-zsh
@@ -79,7 +79,7 @@ bindkey '^[[B' history-substring-search-down
 # ========================= Visual Settings ====================================
 
 # ---- Set dircolors and completion colors ----
-eval "$(dircolors --sh ~/.config/zsh/colors/gruvbox.default.dircolors)"
+eval "$(dircolors --sh $ZDOTDIR/colors/gruvbox.default.dircolors)"
 IFS=: read -rA ls_colors_array <<<"$LS_COLORS"
 zstyle ':completion:*' list-colors "${ls_colors_array[@]}"
 
@@ -87,7 +87,7 @@ zstyle ':completion:*' list-colors "${ls_colors_array[@]}"
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -f ~/.aliases ]] && source ~/.aliases
 [[ -f ~/.aliases.ndn ]] && source ~/.aliases.ndn
-[[ -f ~/.config/wezterm/wezterm.sh ]] && source ~/.config/wezterm/wezterm.sh
+[[ -f "$XDG_CONFIG_HOME/wezterm/wezterm.sh" ]] && source "$XDG_CONFIG_HOME/wezterm/wezterm.sh"
 
 # ========================= Starship Prompt ====================================
 export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/my-gruvbox.toml"
