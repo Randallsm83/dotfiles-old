@@ -8,9 +8,17 @@ export EDITOR='nvim'
 export VISUAL='nvim'
 export PAGER='less'
 
-[[ -r "$ENVDIR/paths.sh" ]] && source "$ENVDIR/paths.sh"
+if [[ $(uname) == 'Darwin' ]]; then
+  export MACHINE_CORES="$(sysctl -n hw.logicalcpu)"
+elif [[ $(uname) == 'Linux' ]]; then
+  export MACHINE_CORES="$(nproc)"
+fi
 
-[[ -r "$ENVDIR/homebrew.sh" ]] && source "$ENVDIR/homebrew.sh"
+if [ -d "$ENVDIR" ]; then
+  for env_file in "$ENV_DIR"/*.conf; do
+    [ -r "$env_file" ] && source "$env_file"
+  done
+fi
 
 if command -v fc-cache &>/dev/null && [[ -d "$DATADIR/fonts" ]]; then
   fc-cache -f "$DATADIR/fonts"

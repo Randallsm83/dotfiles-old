@@ -1,0 +1,38 @@
+#!/usr/bin/env zsh
+
+#############
+# Functions #
+#############
+
+# Time ZSH start
+ztime() {
+  for i in $(seq 1 10); do /usr/bin/time /bin/zsh -i -c exit; done
+}
+
+# Visualize the 16 ANSI colors
+16colors() {
+  for i in {0..15}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
+}
+
+# Visualize the 256 ANSI colors
+256colors() {
+  for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
+}
+
+# Generate ssh key with name and comment
+sshkeygen() {
+  ssh-keygen -t ed25519 -f ~/.ssh/"$1" -C "$2"
+}
+
+# Install dotfiles
+dotinstall() {
+  bash <(wget -qO- https://raw.githubusercontent.com/Randallsm83/dotfiles/refs/heads/main/install.sh)
+}
+
+# Quick move up directories
+up() { cd "$(printf "%0.s../" $(seq 1 $1))" || return; }
+
+# -------------------------------------------------------------------------------------------------
+# -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-
+# vim: ft=zsh sw=2 ts=2 et
+# -------------------------------------------------------------------------------------------------

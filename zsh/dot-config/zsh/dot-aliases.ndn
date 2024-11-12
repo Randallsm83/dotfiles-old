@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # NDN Aliases
 alias dh-cluster='sudo /dh/bin/dh-cluster'
 alias dh-db='sudo /dh/bin/dh-db'
@@ -48,3 +50,8 @@ alias domy="${DEV_ENV}"
 alias ndntest="${DEV_ENV} prove -v"
 alias vix="vi ${HOME}/bin/scratchpad/x.pl"
 alias x="perl ${HOME}/bin/scratchpad/x.pl"
+
+# -------------------------------------------------------------------------------------------------
+# -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-
+# vim: ft=zsh sw=2 ts=2 et
+# -------------------------------------------------------------------------------------------------

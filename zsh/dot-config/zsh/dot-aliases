@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 #############
 #  Aliases  #
 #############
@@ -25,8 +27,8 @@ alias zenv="vi $HOME/.zshenv"
 alias zpro="vi $ZDOTDIR/.zprofile"
 alias zrc="vi $ZDOTDIR/.zshrc"
 alias vrc="vi ~/.vimrc"
-alias nrc="vi ~/.config/nvim/init.lua"
-alias wrc="vi ~/.config/wezterm/wezterm.lua"
+alias nrc="vi $XDG_CONFIG_HOME/nvim/init.lua"
+alias wrc="vi $XDG_CONFIG_HOME/wezterm/wezterm.lua"
 
 # Git
 alias gg='git grep -E'
@@ -35,7 +37,7 @@ alias gg='git grep -E'
 alias zpui="zplug update && zplug install"
 
 # Stow
-alias stowdir="stow --no-folding -R -v -t ~ "
+alias stowdir="stow --no-folding --dotfiles --verbose=2 -R -t ~ "
 
 # SSH
 alias rotatekeys="source $HOME/ssh-key-manager.sh && rotate_keys"
@@ -45,34 +47,7 @@ alias displaykeys="source $HOME/ssh-key-manager.sh && display_public_keys"
 alias ard="arduino-cli"
 alias ardc="arduino-cloud-cli"
 
-#############
-# Functions #
-#############
-
-# Time ZSH start
-ztime() {
-  for i in $(seq 1 10); do /usr/bin/time /bin/zsh -i -c exit; done
-}
-
-# Visualize the 16 ANSI colors
-16colors() {
-  for i in {0..15}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
-}
-
-# Visualize the 256 ANSI colors
-256colors() {
-  for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
-}
-
-# Generate ssh key with name and comment
-sshkeygen() {
-  ssh-keygen -t ed25519 -f ~/.ssh/"$1" -C "$2"
-}
-
-# Install dotfiles
-dotinstall() {
-  bash <(wget -qO- https://raw.githubusercontent.com/Randallsm83/dotfiles/refs/heads/main/install.sh)
-}
-
-# Quick move up directories
-up() { cd "$(printf "%0.s../" $(seq 1 $1))" || return; }
+# -------------------------------------------------------------------------------------------------
+# -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-
+# vim: ft=zsh sw=2 ts=2 et
+# -------------------------------------------------------------------------------------------------

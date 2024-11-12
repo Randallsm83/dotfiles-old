@@ -13,7 +13,7 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 # ========================= Plugins Setup ======================================
 
 # ---- ZSH Syntax Theme -------
-[[ -r "$ZDOTDIR/colors/gruvbox.zsh-syntax-theme" ]] && source "$ZDOTDIR/colors/gruvbox.zsh-syntax-theme"
+[[ -r "$ZSH_SYNTAX_THEME" ]] && source "$ZSH_SYNTAX_THEME"
 
 # ---- Language Plugins -------
 zplug "DhavalKapil/luaver"
@@ -83,15 +83,26 @@ eval "$(dircolors --sh $ZDOTDIR/colors/gruvbox.default.dircolors)"
 IFS=: read -rA ls_colors_array <<<"$LS_COLORS"
 zstyle ':completion:*' list-colors "${ls_colors_array[@]}"
 
-# ========================= Source Configurations ==============================
-[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
-[[ -f ~/.aliases ]] && source ~/.aliases
-[[ -f ~/.aliases.ndn ]] && source ~/.aliases.ndn
-[[ -f "$XDG_CONFIG_HOME/wezterm/wezterm.sh" ]] && source "$XDG_CONFIG_HOME/wezterm/wezterm.sh"
+# ========================= Set Machine Type ===================================
+fullname=$(hostname -f 2>/dev/null || hostname)
+case $fullname in
+*dreamhost.com) ;&
+*newdream.net)
+  machine_type="ndn"
+  ;;
+esac
+
+# ========================= Source Aliases & Functions =========================
+[[ -r "$ZDOTDIR/.aliases" ]] && source "~/.aliases"
+[[ -r "$ZDOTDIR/.functions" ]] && source "~/.functions"
+[[ -r "$ZDOTDIR/.aliases.$machine_type" ]] && source "$ZDOTDIR/.aliases.$machine_type"
+[[ -r "$ZDOTDIR/.functions.$machine_type" ]] && source "$ZDOTDIR/.functions.$machine_type"
+
+# ========================= Source Misc ========================================
+[[ -r ~/.fzf.zsh ]] && source ~/.fzf.zsh
+[[ -x "$XDG_CONFIG_HOME/wezterm/wezterm.sh" ]] && source "$XDG_CONFIG_HOME/wezterm/wezterm.sh"
 
 # ========================= Starship Prompt ====================================
-export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/my-gruvbox.toml"
-
 eval "$(starship init zsh)"
 
 # -------------------------------------------------------------------------------------------------
