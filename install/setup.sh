@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
 source_env() {
+  if [[ $(uname) == 'Darwin' ]]; then
+    cores="$(sysctl -n hw.logicalcpu)"
+  elif [[ $(uname) == 'Linux' ]]; then
+    cores="$(nproc)"
+  fi
+  export MACHINE_CORES=$cores
+
   for env_file in "$HOME/.dotfiles/env/dot-config/env.d"/*.conf; do
     echo "$env_file"
     [ -r "$env_file" ] && source "$env_file"

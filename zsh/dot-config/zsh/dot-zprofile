@@ -9,10 +9,11 @@ export VISUAL='nvim'
 export PAGER='less'
 
 if [[ $(uname) == 'Darwin' ]]; then
-  export MACHINE_CORES="$(sysctl -n hw.logicalcpu)"
+  cores="$(sysctl -n hw.logicalcpu)"
 elif [[ $(uname) == 'Linux' ]]; then
-  export MACHINE_CORES="$(nproc)"
+  cores="$(nproc)"
 fi
+export MACHINE_CORES=$cores
 
 if [ -d "$ENVDIR" ]; then
   for env_file in "$ENVDIR"/*.conf; do
