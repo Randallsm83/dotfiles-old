@@ -1,1 +1,1 @@
-source <(wget -qO- https://raw.githubusercontent.com/Randallsm83/dotfiles/refs/heads/main/setup.sh)
+source <(wget -qO- https://raw.githubusercontent.com/Randallsm83/dotfiles/refs/heads/main/install/setup.sh)
