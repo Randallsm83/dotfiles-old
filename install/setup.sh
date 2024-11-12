@@ -13,7 +13,7 @@ install_homebrew() {
 }
 
 # Clone your dotfiles repository
-git clone https://github.com/Randallsm83/dotfiles.git "$DOTFILES"
+git clone https://github.com/Randallsm83/dotfiles.git "$HOME/.dotfiles"
 
 source_env
 echo "ENV files sourced."
