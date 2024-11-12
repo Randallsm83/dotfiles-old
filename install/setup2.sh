@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Define custom installation paths
-HOMEBREW_PREFIX="$HOME/.local/homebrew"
-PERLBREW_ROOT="$HOME/.local/perlbrew"
+HOMEBREW_PREFIX="$HOME/.local/share/homebrew"
+PERLBREW_ROOT="$HOME/.local/share/perlbrew"
 DOTFILES_DIR="$HOME/.dotfiles"
 PATH="$HOMEBREW_PREFIX/bin:$PERLBREW_ROOT/bin:$PATH"
 

@@ -100,6 +100,7 @@ esac
 
 # ========================= Source Misc ========================================
 [[ -r ~/.fzf.zsh ]] && source ~/.fzf.zsh
+[[ -r "$PERLBREW_ROOT/etc/bashrc" ]] && source "$PERLBREW_ROOT/etc/bashrc"
 [[ -x "$XDG_CONFIG_HOME/wezterm/wezterm.sh" ]] && source "$XDG_CONFIG_HOME/wezterm/wezterm.sh"
 
 # ========================= Starship Prompt ====================================

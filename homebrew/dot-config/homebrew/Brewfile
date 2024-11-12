@@ -1,5 +1,12 @@
 tap "dreamhost/homebrew", "git@git.dreamhost.com:dreamhost/homebrew-repo.git", force_auto_update: true if OS.mac?
 tap "homebrew/bundle"
+tap "buo/cask-upgrade"
+tap "homebrew/cask-fonts"
+
+cask_args fontdir: "~/.local/share/fonts"
+
+# Mac Appstore management
+brew "mas" if OS.mac?
 # Cross-platform make
 # brew "cmake"
 # # GNU File, Shell, and Text utilities
@@ -82,13 +89,13 @@ brew "dreamhost/homebrew/lde", args: ["HEAD"] if OS.mac?
 cask "dropbox" if OS.mac?
 # Clipboard manager for developers
 cask "flycut" if OS.mac?
-cask "font-dejavu-sans-mono-nerd-font", args: { fontdir: "~/.local/share/fonts" }
-cask "font-droid-sans-mono-nerd-font", args: { fontdir: "~/.local/share/fonts" }
-cask "font-fira-code-nerd-font", args: { fontdir: "~/.local/share/fonts" }
-cask "font-hack-nerd-font", args: { fontdir: "~/.local/share/fonts" }
-cask "font-jetbrains-mono-nerd-font", args: { fontdir: "~/.local/share/fonts" }
-cask "font-meslo-lg-nerd-font", args: { fontdir: "~/.local/share/fonts" }
-cask "font-monaspace-nerd-font", args: { fontdir: "~/.local/share/fonts" }
+cask "font-dejavu-sans-mono-nerd-font"
+cask "font-droid-sans-mono-nerd-font"
+cask "font-fira-code-nerd-font"
+cask "font-hack-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-meslo-lg-nerd-font"
+cask "font-monaspace-nerd-font"
 # Keyboard shortcuts for every button on your screen
 cask "homerow" if OS.mac?
 # Terminal emulator as alternative to Apple's Terminal app
