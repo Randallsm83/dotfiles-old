@@ -12,7 +12,7 @@ source_env() {
     echo "$env_file"
     [ -r "$env_file" ] && source "$env_file"
   done
-  [[ -r "$HOME/.dotfiles/homebrew/dot-config/env.d/50-homebrew.conf" ]] && source "$HOME/.dotfiles/homebrew/dot-config/env.d/50-homebrew.conf"
+  # [[ -r "$HOME/.dotfiles/homebrew/dot-config/env.d/50-homebrew.conf" ]] && source "$HOME/.dotfiles/homebrew/dot-config/env.d/50-homebrew.conf"
   # [[ -r "$HOME/.dotfiles/env/dot-config/env.d/10-dirs.conf" ]] && source "$HOME/.dotfiles/env/dot-config/env.d/10-dirs.conf"
   # [[ -r "$DOTFILES/env/dot-config/env.d/paths.sh" ]] && source "$DOTFILES/env/dot-config/env.d/paths.sh"
   # [[ -r "$DOTFILES/env/dot-config/env.d/homebrew.sh" ]] && source "$DOTFILES/env/dot-config/env.d/homebrew.sh"
@@ -40,7 +40,6 @@ install_stow() {
 
   # Bootstrap, configure, compile, and install Stow to the custom prefix
   echo "Bootstrapping and configuring Stow with custom prefix..."
-  ./bootstrap
   ./configure --prefix="$PREFIX_DIR"
 
   echo "Building Stow..."
@@ -53,27 +52,20 @@ install_stow() {
   cd ..
   rm -rf stow
 
-  # Add the custom bin directory to PATH temporarily for this session
-  # You may also want to add this line to your shell profile to make it permanent
-  export PATH="$PREFIX_DIR/bin:$PATH"
-
   echo "GNU Stow installed to $PREFIX_DIR/bin. Add this directory to your PATH if needed."
 }
 
 # Clone your dotfiles repository
 git clone https://github.com/Randallsm83/dotfiles.git "$HOME/.dotfiles"
 
-#source_env
-#echo "ENV files sourced."
-
 install_stow
 echo "Stow installed."
 
+#source_env
+#echo "ENV files sourced."
+
 #install_homebrew
 #echo "Homebrew installed."
-
-# brew install stow
-# echo "Stow installed."
 
 echo "Temporary environment setup complete. Dotfiles repo has been cloned."
 echo "Now go install stow and stow the packages!"
