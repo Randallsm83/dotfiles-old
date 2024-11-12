@@ -24,14 +24,53 @@ install_homebrew() {
   chmod -R go-w "$(brew --prefix)/share/zsh"
 }
 
+install_stow() {
+  # Define the custom installation prefix (update this path as needed)
+  PREFIX_DIR="$HOME/.local"
+
+  # Create the installation directory if it doesn't exist
+  mkdir -p "$PREFIX_DIR"
+
+  # Clone the latest GNU Stow source code from the Git repository
+  echo "Cloning GNU Stow repository..."
+  git clone https://git.savannah.gnu.org/git/stow.git
+
+  # Move into the stow directory
+  cd stow || exit 1
+
+  # Bootstrap, configure, compile, and install Stow to the custom prefix
+  echo "Bootstrapping and configuring Stow with custom prefix..."
+  ./bootstrap
+  ./configure --prefix="$PREFIX_DIR"
+
+  echo "Building Stow..."
+  make
+
+  echo "Installing Stow to $PREFIX_DIR..."
+  make install
+
+  # Clean up the cloned repository
+  cd ..
+  rm -rf stow
+
+  # Add the custom bin directory to PATH temporarily for this session
+  # You may also want to add this line to your shell profile to make it permanent
+  export PATH="$PREFIX_DIR/bin:$PATH"
+
+  echo "GNU Stow installed to $PREFIX_DIR/bin. Add this directory to your PATH if needed."
+}
+
 # Clone your dotfiles repository
 git clone https://github.com/Randallsm83/dotfiles.git "$HOME/.dotfiles"
 
-source_env
-echo "ENV files sourced."
+#source_env
+#echo "ENV files sourced."
 
-install_homebrew
-echo "Homebrew installed."
+install_stow
+echo "Stow installed."
+
+#install_homebrew
+#echo "Homebrew installed."
 
 # brew install stow
 # echo "Stow installed."
