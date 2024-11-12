@@ -3,7 +3,7 @@
 # This is only the essentials, use .zprofile for the rest. Also, Mac is dumb and sources /etc/zprofile after this file
 # so you cannot set paths reliably here.
 
-ZDOTDIR=${XDG_CONFIG_HOME:-$HOME/.config}/zsh
+[[ -r "$HOME/.config/env.d/10-dirs.conf" ]] && source "$HOME/.config/env.d/10-dirs.conf"
 
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-

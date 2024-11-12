@@ -93,8 +93,8 @@ case $fullname in
 esac
 
 # ========================= Source Aliases & Functions =========================
-[[ -r "$ZDOTDIR/.aliases" ]] && source "~/.aliases"
-[[ -r "$ZDOTDIR/.functions" ]] && source "~/.functions"
+[[ -r "$ZDOTDIR/.aliases" ]] && source "$ZDOTDIR/.aliases"
+[[ -r "$ZDOTDIR/.functions" ]] && source "$ZDOTDIR/.functions"
 [[ -r "$ZDOTDIR/.aliases.$machine_type" ]] && source "$ZDOTDIR/.aliases.$machine_type"
 [[ -r "$ZDOTDIR/.functions.$machine_type" ]] && source "$ZDOTDIR/.functions.$machine_type"
 
