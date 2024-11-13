@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+
 # Define paths
 HOMEBREW_PREFIX := $(HOME)/.local/share/homebrew
 PERLBREW_ROOT := $(HOME)/.local/share/perlbrew
@@ -6,29 +8,39 @@ PATH := $(HOMEBREW_PREFIX)/bin:$(PERLBREW_ROOT)/bin:$(PATH)
 
 # Default target to install everything
 all: install_homebrew install_perlbrew install_perl setup_local_lib install_modules install_stow stow_dotfiles
+perl: install_perlbrew install_perl 
 
 # Step 1: Install Homebrew
 install_homebrew:
 	@echo "Installing Homebrew locally..."
 	git clone https://github.com/Homebrew/brew $(HOMEBREW_PREFIX)
-	@echo "Setting up Homebrew environment variables..."
-	eval "$$($(HOMEBREW_PREFIX)/bin/brew shellenv)"
+	eval $$($(HOMEBREW_PREFIX)/bin/brew shellenv)
 
 # Step 2: Install Perlbrew
 install_perlbrew:
 	@echo "Installing Perlbrew locally to $(PERLBREW_ROOT)..."
+	@export PERLBREW_ROOT=$(PERLBREW_ROOT) && \
 	curl -L https://install.perlbrew.pl | bash
-	export PERLBREW_ROOT=$(PERLBREW_ROOT)
-	export PATH=$(PERLBREW_ROOT)/bin:$(PATH)
-	source $(PERLBREW_ROOT)/etc/bashrc
+	@export PERLBREW_ROOT=$(PERLBREW_ROOT) && \
+	$(PERLBREW_ROOT)/bin/perlbrew init
+	@export PERLBREW_ROOT=$(PERLBREW_ROOT) && \
+	perlbrew install-patchperl
+	@export PERLBREW_ROOT=$(PERLBREW_ROOT) && \
+	perlbrew install-cpanm
+	@echo "Perlbrew installed in $(PERLBREW_ROOT)."
+	@echo "Run 'source $(PERLBREW_ROOT)/etc/bashrc'" 
 
-# Step 4: Install the latest Perl
+# Step 3: Install the latest Perl
 install_perl:
 	@echo "Installing the latest Perl with Perlbrew..."
-	perlbrew install perl --notest  # installs the latest stable Perl without testing
+	@export PERLBREW_ROOT=$(PERLBREW_ROOT) && \
+	$(PERLBREW_ROOT)/bin/perlbrew init
+	@export PERLBREW_ROOT=$(PERLBREW_ROOT) && \
+	perlbrew install perl-5.40.0 --notest  # installs the latest stable Perl without testing
+	@export PERLBREW_ROOT=$(PERLBREW_ROOT) && \
 	perlbrew install-cpanm
+	@export PERLBREW_ROOT=$(PERLBREW_ROOT) && \
 	perlbrew switch perl  # switch to the latest installed Perl
-	source $(PERLBREW_ROOT)/etc/bashrc
 
 # Step 5: Set up `local::lib`
 setup_local_lib:
