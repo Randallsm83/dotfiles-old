@@ -76,7 +76,7 @@ config.window_background_opacity = 0.95
 config.macos_window_background_blur = 25
 
 -- Window Padding
-config.window_padding = {top = 5, left = 5, right = 5, bottom = 5}
+config.window_padding = {top = 5, left = 8, right = 5, bottom = 5}
 
 -- Dim inactive panes
 config.inactive_pane_hsb = {saturation = 0.9, brightness = 0.7}
