@@ -239,6 +239,13 @@ install_asdf() {
     log "You may need to install them manually"
   fi
 
+  export C_INCLUDE_PATH="$HOME/local/glibc-dev/usr/include:/usr/include"
+  export LIBRARY_PATH="$HOME/local/glibc-dev/usr/lib:/usr/lib"
+  export CFLAGS="-I$HOME/local/glibc-dev/usr/include -I/usr/include ${CFLAGS:-}"
+  export CPPFLAGS="-I$HOME/local/glibc-dev/usr/include -I/usr/include ${CPPFLAGS:-}"
+  export LDFLAGS="-L$HOME/local/glibc-dev/usr/lib -L/usr/lib ${LDFLAGS:-}"
+
+
   log "Installing tool versions..."
   asdf install
 
@@ -288,9 +295,9 @@ check_glibc_headers() {
   fi
 
   # Update include paths
-  log "Updating environment variables with extracted glibc headers"
-  export C_INCLUDE_PATH="$GLIBC_DEV_DIR/usr/include:${C_INCLUDE_PATH:-}"
-  export LIBRARY_PATH="$GLIBC_DEV_DIR/usr/lib:${LIBRARY_PATH:-}"
+  # log "Updating environment variables with extracted glibc headers"
+  # export C_INCLUDE_PATH="$GLIBC_DEV_DIR/usr/include:${C_INCLUDE_PATH:-}"
+  # export LIBRARY_PATH="$GLIBC_DEV_DIR/usr/lib:${LIBRARY_PATH:-}"
 
   log "glibc development headers extracted successfully."
 }
