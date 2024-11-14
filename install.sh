@@ -259,97 +259,40 @@ install_asdf() {
 }
 
 check_glibc_headers() {
-  log "Checking and installing glibc development headers..."
+  log "Extracting glibc development headers..."
 
-  # Check if limits.h is already present
-  GLIBC_INCLUDE_PATH="$HOME/.local/include/limits.h"
-  if [ -f "$GLIBC_INCLUDE_PATH" ]; then
-    log "glibc development headers are already installed at $GLIBC_INCLUDE_PATH"
-    return 0
-  fi
+  # Set URL for the deb package with glibc headers
+  GLIBC_DEV_DEB_URL="http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/libc6-dev_2.40-1ubuntu3_amd64.deb"
+  GLIBC_DEV_DEB="$BUILD_DIR/libc6-dev.deb"
+  GLIBC_DEV_DIR="$BUILD_DIR/glibc-dev"
 
   # Set up build directory
   setup_build_directory
   cd "$BUILD_DIR"
 
-  # Set version and URLs
-  GLIBC_VERSION="2.4"
-  GLIBC_TARBALL_URL="https://ftp.gnu.org/gnu/libc/glibc-$GLIBC_VERSION.tar.gz"
-  GLIBC_TARBALL="$BUILD_DIR/glibc-$GLIBC_VERSION.tar.gz"
-  GLIBC_SOURCE_DIR="$BUILD_DIR/glibc-$GLIBC_VERSION"
-  GLIBC_BUILD_DIR="$BUILD_DIR/glibc-build"
-
-  # Download glibc source
-  log "Downloading glibc version $GLIBC_VERSION source..."
-  if ! curl -L "$GLIBC_TARBALL_URL" -o "$GLIBC_TARBALL" >>"$LOG_FILE" 2>&1; then
-    log "Failed to download glibc source tarball"
+  # Download glibc dev package
+  log "Downloading glibc dev package..."
+  if ! curl -L "$GLIBC_DEV_DEB_URL" -o "$GLIBC_DEV_DEB" >>"$LOG_FILE" 2>&1; then
+    log "Failed to download glibc dev package"
     cat "$LOG_FILE"
-    cleanup_build_directory
     return 1
   fi
 
-  # Extract glibc tarball
-  log "Extracting glibc source..."
-  if ! tar -xzf "$GLIBC_TARBALL" >>"$LOG_FILE" 2>&1; then
-    log "Failed to extract glibc source tarball"
+  # Extract glibc dev package
+  log "Extracting glibc dev package..."
+  mkdir -p "$GLIBC_DEV_DIR"
+  if ! dpkg-deb -x "$GLIBC_DEV_DEB" "$GLIBC_DEV_DIR" >>"$LOG_FILE" 2>&1; then
+    log "Failed to extract glibc dev package"
     cat "$LOG_FILE"
-    cleanup_build_directory
     return 1
   fi
 
-   # Create separate build directory for glibc
-  log "Creating separate build directory for glibc..."
-  mkdir -p "$GLIBC_BUILD_DIR"
-  cd "$GLIBC_BUILD_DIR"
+  # Update include paths
+  log "Updating environment variables with extracted glibc headers"
+  export C_INCLUDE_PATH="$GLIBC_DEV_DIR/usr/include:${C_INCLUDE_PATH:-}"
+  export LIBRARY_PATH="$GLIBC_DEV_DIR/usr/lib:${LIBRARY_PATH:-}"
 
-   # Find gcc dynamically
-  log "Finding gcc path dynamically..."
-  GCC_PATH=$(command -v gcc)
-  log "Found gcc at $GCC_PATH"
-  log "Finding cpp path dynamically..."
-  CPP_PATH=$(command -v cpp)
-  log "Found cpp at $CPP_PATH"
-
-  # Set compiler and preprocessor explicitly
-  export CC="$GCC_PATH"
-  export CPP="$CPP_PATH"
-  export C_INCLUDE_PATH="/usr/include:/usr/local/include:${C_INCLUDE_PATH:-}"
-  export LIBRARY_PATH="/usr/lib:/usr/local/lib:${LIBRARY_PATH:-}"
-  export CFLAGS="-I/usr/include -L/usr/lib -I/usr/local/include -L/usr/local/lib"
-
-  env
-
-  # Configure and install headers
-  log "Configuring glibc headers..."
-  if ! "$GLIBC_SOURCE_DIR/configure" --prefix="$HOME/.local" >>"$LOG_FILE" 2>&1; then
-    log "Failed to configure glibc headers"
-    # cat "$LOG_FILE"
-    # cleanup_build_directory
-    return 1
-  fi
-
-  log "Building glibc headers..."
-  if ! make -j"$(nproc)" >>"$LOG_FILE" 2>&1; then
-    log "Failed to build glibc headers"
-    cat "$LOG_FILE"
-    cleanup_build_directory
-    return 1
-  fi
-
-  log "Installing glibc headers..."
-  if ! make install-headers >>"$LOG_FILE" 2>&1; then
-    log "Failed to install glibc headers"
-    cat "$LOG_FILE"
-    cleanup_build_directory
-    return 1
-  fi
-
-  export C_INCLUDE_PATH="$HOME/.local/include:${C_INCLUDE_PATH:-}"
-
-  # Cleanup build directory after success
-  cleanup_build_directory
-
-  log "glibc development headers installed successfully."
+  log "glibc development headers extracted successfully."
 }
 
 check_macos_build_tools() {
