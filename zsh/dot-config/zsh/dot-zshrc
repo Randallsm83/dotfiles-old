@@ -16,15 +16,15 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 [[ -r "$ZSH_SYNTAX_THEME" ]] && source "$ZSH_SYNTAX_THEME"
 
 # ---- Language Plugins -------
-zplug "DhavalKapil/luaver"
 zplug "lukechilds/zsh-nvm"
-# zplug "wushenrong/zsh-plenv"
 zplug "mattberther/zsh-pyenv"
+zplug "plugins/asdf", from:oh-my-zsh
+# zplug "DhavalKapil/luaver"
+# zplug "wushenrong/zsh-plenv"
 
 # ---- Oh-My-Zsh Plugins ------
 zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/npm", from:oh-my-zsh
-zplug "plugins/nvm", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
 zplug "plugins/ssh-agent", from:oh-my-zsh
 zplug "plugins/common-aliases", from:oh-my-zsh

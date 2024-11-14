@@ -1,0 +1,6 @@
+perl 5.40.0
+lua 5.4.7
+luajit 2.1.0-beta3--3.11.1
+neovim stable
+rust stable
+starship 1.21.1
