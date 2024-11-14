@@ -320,7 +320,8 @@ main() {
 
   # Check permissions first
   if ! check_permissions; then
-    log "Permission check failed. Please check directory permissions."
+    echo "well this is weird"
+    # log "Permission check failed. Please check directory permissions."
     exit 1
   fi
 
