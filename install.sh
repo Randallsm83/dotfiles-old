@@ -19,22 +19,9 @@ LOG_DIR="$XDG_STATE_HOME/dotfiles/build/logs"
 mkdir -p "$LOG_DIR" || { echo "Failed to create $LOG_DIR"; exit 1; }
 mkdir -p "$BUILD_DIR" || { echo "Failed to create $BUILD_DIR"; exit 1; }
 
-# # List the directory structure to verify its existence
-# echo "Directory structure after creation attempt:"
-# ls -ld "$XDG_STATE_HOME" "$XDG_STATE_HOME/dotfiles" "$XDG_STATE_HOME/dotfiles/build" "$LOG_DIR" || { echo "Failed to list directory structure"; exit 1; }
-
 # Set log file path
 LOG_FILE="$LOG_DIR/setup_$(date '+%Y%m%d_%H%M%S').log"
 touch "$LOG_FILE" || { echo "Failed to create log file: $LOG_FILE"; exit 1; }
-
-# touch "$LOG_FILE" || {
-#   echo "Failed to create log file: $LOG_FILE"
-#   exit 1
-# }
-
-# # List the log file to verify its existence
-# echo "Log file created successfully:"
-# ls -l "$LOG_FILE"
 
 # Detect OS for package manager
 if [ "$(uname)" == "Darwin" ]; then
@@ -290,6 +277,7 @@ check_glibc_headers() {
   GLIBC_TARBALL_URL="https://ftp.gnu.org/gnu/libc/glibc-$GLIBC_VERSION.tar.gz"
   GLIBC_TARBALL="$BUILD_DIR/glibc-$GLIBC_VERSION.tar.gz"
   GLIBC_SOURCE_DIR="$BUILD_DIR/glibc-$GLIBC_VERSION"
+  GLIBC_BUILD_DIR="$BUILD_DIR/glibc-build"
 
   # Download glibc source
   log "Downloading glibc version $GLIBC_VERSION source..."
@@ -309,10 +297,14 @@ check_glibc_headers() {
     return 1
   fi
 
+   # Create separate build directory for glibc
+  log "Creating separate build directory for glibc..."
+  mkdir -p "$GLIBC_BUILD_DIR"
+
   # Configure and install headers
   log "Configuring glibc headers..."
-  cd "$GLIBC_SOURCE_DIR"
-  if ! ./configure --prefix="$HOME/.local" >>"$LOG_FILE" 2>&1; then
+  cd "$GLIBC_BUILD_DIR"
+  if ! "$GLIBC_SOURCE_DIR/configure" --prefix="$HOME/.local" >>"$LOG_FILE" 2>&1; then
     log "Failed to configure glibc headers"
     cat "$LOG_FILE"
     cleanup_build_directory
