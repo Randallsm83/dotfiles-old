@@ -14,7 +14,6 @@ DOTFILES="$XDG_CONFIG_HOME/dotfiles"
 BUILD_DIR="$XDG_CACHE_HOME/dotfiles/build"
 
 LOG_DIR="$XDG_STATE_HOME/dotfiles/build/logs"
-mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/setup_$(date '+%Y%m%d_%H%M%S').log"
 
 # Detect OS for package manager
@@ -57,16 +56,17 @@ check_permissions() {
   local dirs=("$XDG_DATA_HOME" "$XDG_CONFIG_HOME" "$XDG_STATE_HOME" "$XDG_CACHE_HOME" "$LOG_DIR" "$BUILD_DIR")
 
   for dir in "${dirs[@]}"; do
+    echo "Checking directory: $dir" # Debugging line
     if [ ! -d "$dir" ]; then
+      echo "Directory $dir does not exist. Creating it..." # Debugging line
       if ! mkdir -p "$dir" 2>/dev/null; then
-        echo "alriighhht"
-        log "Error: Cannot create directory $dir"
+        echo "Error: Cannot create directory $dir"
         return 1
       fi
     fi
+    echo "Directory $dir exists. Testing write permissions..." # Debugging line
     if ! touch "$dir/.write_test" 2>/dev/null; then
-      echo "no"
-      log "Error: Cannot write to $dir"
+      echo "Error: Cannot write to $dir"
       return 1
     fi
     rm -f "$dir/.write_test"
@@ -122,7 +122,7 @@ stow_dotfiles() {
       if [ -n "$regular_file_conflicts" ]; then
         log "Found regular file conflicts in $dir:"
         echo "$regular_file_conflicts"
-        read -p "Adopt these files into the repo? [y/N] " choice
+        read -rp "Adopt these files into the repo? [y/N] " choice
         if [[ $choice =~ ^[Yy]$ ]]; then
           "$HOME/.local/bin/stow" --adopt "$dir"
           log "Adopted files. Please review changes with 'git diff' and commit if happy"
