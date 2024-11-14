@@ -323,7 +323,7 @@ check_glibc_headers() {
   log "Configuring glibc headers..."
   if ! "$GLIBC_SOURCE_DIR/configure" --prefix="$HOME/.local" >>"$LOG_FILE" 2>&1; then
     log "Failed to configure glibc headers"
-    cat "$LOG_FILE"
+    # cat "$LOG_FILE"
     # cleanup_build_directory
     return 1
   fi
