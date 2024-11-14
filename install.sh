@@ -313,6 +313,10 @@ check_glibc_headers() {
   # Set compiler and preprocessor explicitly
   export CC="$GCC_PATH"
   export CPP="$CPP_PATH"
+  export C_INCLUDE_PATH="/usr/include:/usr/local/include:${C_INCLUDE_PATH:-}"
+  export LIBRARY_PATH="/usr/lib:/usr/local/lib:${LIBRARY_PATH:-}"
+  export CFLAGS="-I/usr/include -L/usr/lib -I/usr/local/include -L/usr/local/lib"
+
 
   # Configure and install headers
   log "Configuring glibc headers..."
@@ -338,6 +342,8 @@ check_glibc_headers() {
     cleanup_build_directory
     return 1
   fi
+
+  export C_INCLUDE_PATH="$HOME/.local/include:${C_INCLUDE_PATH:-}"
 
   # Cleanup build directory after success
   cleanup_build_directory
