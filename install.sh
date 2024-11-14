@@ -300,11 +300,15 @@ check_glibc_headers() {
    # Create separate build directory for glibc
   log "Creating separate build directory for glibc..."
   mkdir -p "$GLIBC_BUILD_DIR"
+  cd "$GLIBC_BUILD_DIR"
+
+  # Set compiler and preprocessor explicitly
+  export CC=/usr/bin/gcc
+  export CPP="/usr/bin/gcc -E"
 
   # Configure and install headers
   log "Configuring glibc headers..."
-  cd "$GLIBC_BUILD_DIR"
-  if ! "$GLIBC_SOURCE_DIR/configure" --prefix="$HOME/.local" >>"$LOG_FILE" 2>&1; then
+  if ! "$GLIBC_SOURCE_DIR/configure" --prefix="$HOME/.local" CC="$CC" CPP="$CPP" >>"$LOG_FILE" 2>&1; then
     log "Failed to configure glibc headers"
     cat "$LOG_FILE"
     cleanup_build_directory
