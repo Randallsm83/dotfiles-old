@@ -317,13 +317,14 @@ check_glibc_headers() {
   export LIBRARY_PATH="/usr/lib:/usr/local/lib:${LIBRARY_PATH:-}"
   export CFLAGS="-I/usr/include -L/usr/lib -I/usr/local/include -L/usr/local/lib"
 
+  env
 
   # Configure and install headers
   log "Configuring glibc headers..."
   if ! "$GLIBC_SOURCE_DIR/configure" --prefix="$HOME/.local" >>"$LOG_FILE" 2>&1; then
     log "Failed to configure glibc headers"
     cat "$LOG_FILE"
-    cleanup_build_directory
+    # cleanup_build_directory
     return 1
   fi
 
