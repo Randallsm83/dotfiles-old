@@ -53,7 +53,7 @@ log() {
 
 # Check permissions early
 check_permissions() {
-  local dirs=("$XDG_DATA_HOME" "$XDG_CONFIG_HOME" "$XDG_STATE_HOME" "$XDG_CACHE_HOME")
+  local dirs=("$XDG_DATA_HOME" "$XDG_CONFIG_HOME" "$XDG_STATE_HOME" "$XDG_CACHE_HOME" "$LOG_DIR" "$BUILD_DIR")
 
   for dir in "${dirs[@]}"; do
     if [ ! -d "$dir" ]; then
