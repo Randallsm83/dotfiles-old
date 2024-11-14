@@ -5,7 +5,7 @@ export LC_ALL=en_US.UTF-8
 
 export TERM='xterm-256color'
 export EDITOR='nvim'
-export VISUAL='nvim'
+export VISUAL="$EDITOR"
 export PAGER='less'
 
 if [[ $(uname) == 'Darwin' ]]; then
@@ -15,15 +15,15 @@ elif [[ $(uname) == 'Linux' ]]; then
 fi
 export MACHINE_CORES=$cores
 
-if [ -d "$ENVDIR" ]; then
+export ENVDIR="$HOME/.config/env.d"
+if [[ -d "$ENVDIR" ]]; then
   for env_file in "$ENVDIR"/*.conf; do
-    echo "$env_file"
-    [ -r "$env_file" ] && source "$env_file"
+    [[ -r "$env_file" ]] && source "$env_file"
   done
 fi
 
-if command -v fc-cache &>/dev/null && [[ -d "$DATADIR/fonts" ]]; then
-  fc-cache -f "$DATADIR/fonts"
+if command -v fc-cache &>/dev/null && [[ -d "$XDG_DATA_HOME/fonts" ]]; then
+  fc-cache -f "$XDG_DATA_HOME/fonts"
 fi
 
 # Added by OrbStack: command-line tools and integration

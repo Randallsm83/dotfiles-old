@@ -1,0 +1,11 @@
+--target=$HOME
+--no-folding
+--verbose=2
+--ignore='\.DS_Store'
+--ignore='install'
+--ignore='install.sh'
+--ignore='\.git'
+--ignore='\.gitignore'
+--ignore='^/README.*'
+--ignore='^/LICENSE.*'
+--ignore='^/COPYING'

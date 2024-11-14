@@ -18,7 +18,7 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 # ---- Language Plugins -------
 zplug "DhavalKapil/luaver"
 zplug "lukechilds/zsh-nvm"
-zplug "wushenrong/zsh-plenv"
+# zplug "wushenrong/zsh-plenv"
 zplug "mattberther/zsh-pyenv"
 
 # ---- Oh-My-Zsh Plugins ------
@@ -54,7 +54,7 @@ zplug load
 
 # ========================= General Settings ===================================
 # History settings
-export HISTFILE="$ZDOTDIR/zsh_history"
+export HISTFILE="$XDG_STATE_HOME/zsh/zsh_history"
 export HISTSIZE=500000
 export SAVEHIST=500000
 
