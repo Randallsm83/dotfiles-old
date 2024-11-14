@@ -58,11 +58,13 @@ check_permissions() {
   for dir in "${dirs[@]}"; do
     if [ ! -d "$dir" ]; then
       if ! mkdir -p "$dir" 2>/dev/null; then
+        echo "alriighhht"
         log "Error: Cannot create directory $dir"
         return 1
       fi
     fi
     if ! touch "$dir/.write_test" 2>/dev/null; then
+      echo "no"
       log "Error: Cannot write to $dir"
       return 1
     fi
