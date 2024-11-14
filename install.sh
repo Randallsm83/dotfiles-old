@@ -14,32 +14,27 @@ DOTFILES="$XDG_CONFIG_HOME/dotfiles"
 
 BUILD_DIR="$XDG_CACHE_HOME/dotfiles/build"
 LOG_DIR="$XDG_STATE_HOME/dotfiles/build/logs"
-# mkdir -p "$LOG_DIR $BUILD_DIR"
-
-echo "Attempting to create the following directory structure:"
-echo "$LOG_DIR"
 
 # Create the directory structure
 mkdir -p "$LOG_DIR" || { echo "Failed to create $LOG_DIR"; exit 1; }
+mkdir -p "$BUILD_DIR" || { echo "Failed to create $BUILD_DIR"; exit 1; }
 
-# List the directory structure to verify its existence
-echo "Directory structure after creation attempt:"
-ls -ld "$XDG_STATE_HOME" "$XDG_STATE_HOME/dotfiles" "$XDG_STATE_HOME/dotfiles/build" "$LOG_DIR" || { echo "Failed to list directory structure"; exit 1; }
+# # List the directory structure to verify its existence
+# echo "Directory structure after creation attempt:"
+# ls -ld "$XDG_STATE_HOME" "$XDG_STATE_HOME/dotfiles" "$XDG_STATE_HOME/dotfiles/build" "$LOG_DIR" || { echo "Failed to list directory structure"; exit 1; }
 
 # Set log file path
 LOG_FILE="$LOG_DIR/setup_$(date '+%Y%m%d_%H%M%S').log"
-
-# Attempt to create the log file
 touch "$LOG_FILE" || { echo "Failed to create log file: $LOG_FILE"; exit 1; }
 
-touch "$LOG_FILE" || {
-  echo "Failed to create log file: $LOG_FILE"
-  exit 1
-}
+# touch "$LOG_FILE" || {
+#   echo "Failed to create log file: $LOG_FILE"
+#   exit 1
+# }
 
-# List the log file to verify its existence
-echo "Log file created successfully:"
-ls -l "$LOG_FILE"
+# # List the log file to verify its existence
+# echo "Log file created successfully:"
+# ls -l "$LOG_FILE"
 
 # Detect OS for package manager
 if [ "$(uname)" == "Darwin" ]; then
@@ -182,6 +177,7 @@ install_stow_from_source() {
   if ! curl -L https://ftp.gnu.org/gnu/stow/stow-latest.tar.gz | tar xz >>"$LOG_FILE" 2>&1; then
     log "Failed to download or extract stow source"
     cat "$LOG_FILE"
+    cleanup_build_directory
     return 1
   fi
 
@@ -200,12 +196,14 @@ install_stow_from_source() {
   log "Building stow..."
   if ! make >>"$LOG_FILE" 2>&1; then
     log "Build failed. Check log at: $LOG_FILE"
+    cleanup_build_directory
     return 1
   fi
 
   log "Installing stow..."
   if ! make install >>"$LOG_FILE" 2>&1; then
     log "Installation failed. Check log at: $LOG_FILE"
+    cleanup_build_directory
     return 1
   fi
 
@@ -273,6 +271,76 @@ install_asdf() {
   esac
 }
 
+check_glibc_headers() {
+  log "Checking and installing glibc development headers..."
+
+  # Check if limits.h is already present
+  GLIBC_INCLUDE_PATH="$HOME/.local/include/limits.h"
+  if [ -f "$GLIBC_INCLUDE_PATH" ]; then
+    log "glibc development headers are already installed at $GLIBC_INCLUDE_PATH"
+    return 0
+  fi
+
+  # Set up build directory
+  setup_build_directory
+  cd "$BUILD_DIR"
+
+  # Set version and URLs
+  GLIBC_VERSION="2.4"
+  GLIBC_TARBALL_URL="https://ftp.gnu.org/gnu/libc/glibc-$GLIBC_VERSION.tar.gz"
+  GLIBC_TARBALL="$BUILD_DIR/glibc-$GLIBC_VERSION.tar.gz"
+  GLIBC_SOURCE_DIR="$BUILD_DIR/glibc-$GLIBC_VERSION"
+
+  # Download glibc source
+  log "Downloading glibc version $GLIBC_VERSION source..."
+  if ! curl -L "$GLIBC_TARBALL_URL" -o "$GLIBC_TARBALL" >>"$LOG_FILE" 2>&1; then
+    log "Failed to download glibc source tarball"
+    cat "$LOG_FILE"
+    cleanup_build_directory
+    return 1
+  fi
+
+  # Extract glibc tarball
+  log "Extracting glibc source..."
+  if ! tar -xzf "$GLIBC_TARBALL" >>"$LOG_FILE" 2>&1; then
+    log "Failed to extract glibc source tarball"
+    cat "$LOG_FILE"
+    cleanup_build_directory
+    return 1
+  fi
+
+  # Configure and install headers
+  log "Configuring glibc headers..."
+  cd "$GLIBC_SOURCE_DIR"
+  if ! ./configure --prefix="$HOME/.local" >>"$LOG_FILE" 2>&1; then
+    log "Failed to configure glibc headers"
+    cat "$LOG_FILE"
+    cleanup_build_directory
+    return 1
+  fi
+
+  log "Building glibc headers..."
+  if ! make -j"$(nproc)" >>"$LOG_FILE" 2>&1; then
+    log "Failed to build glibc headers"
+    cat "$LOG_FILE"
+    cleanup_build_directory
+    return 1
+  fi
+
+  log "Installing glibc headers..."
+  if ! make install-headers >>"$LOG_FILE" 2>&1; then
+    log "Failed to install glibc headers"
+    cat "$LOG_FILE"
+    cleanup_build_directory
+    return 1
+  fi
+
+  # Cleanup build directory after success
+  cleanup_build_directory
+
+  log "glibc development headers installed successfully."
+}
+
 check_macos_build_tools() {
   log "Checking build tools..."
 
@@ -323,6 +391,7 @@ ensure_build_tools() {
     local missing_tools=()
     local build_tools=(
       "gcc"
+      "ldd"
       "make"
       "automake"
       "perl"
@@ -340,6 +409,8 @@ ensure_build_tools() {
       log "Please install them through your distribution's package manager"
       exit 1
     fi
+
+    check_glibc_headers
   fi
 }
 
@@ -348,8 +419,7 @@ main() {
 
   # Check permissions first
   if ! check_permissions; then
-    echo "well this is weird"
-    # log "Permission check failed. Please check directory permissions."
+    log "Permission check failed. Please check directory permissions."
     exit 1
   fi
 
