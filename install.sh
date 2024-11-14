@@ -302,13 +302,21 @@ check_glibc_headers() {
   mkdir -p "$GLIBC_BUILD_DIR"
   cd "$GLIBC_BUILD_DIR"
 
+   # Find gcc dynamically
+  log "Finding gcc path dynamically..."
+  GCC_PATH=$(command -v gcc)
+  log "Found gcc at $GCC_PATH"
+  log "Finding cpp path dynamically..."
+  CPP_PATH=$(command -v cpp)
+  log "Found cpp at $CPP_PATH"
+
   # Set compiler and preprocessor explicitly
-  export CC=/usr/bin/gcc
-  export CPP="/usr/bin/gcc -E"
+  export CC="$GCC_PATH"
+  export CPP="$CPP_PATH"
 
   # Configure and install headers
   log "Configuring glibc headers..."
-  if ! "$GLIBC_SOURCE_DIR/configure" --prefix="$HOME/.local" CC="$CC" CPP="$CPP" >>"$LOG_FILE" 2>&1; then
+  if ! "$GLIBC_SOURCE_DIR/configure" --prefix="$HOME/.local" >>"$LOG_FILE" 2>&1; then
     log "Failed to configure glibc headers"
     cat "$LOG_FILE"
     cleanup_build_directory
@@ -387,6 +395,7 @@ ensure_build_tools() {
     local missing_tools=()
     local build_tools=(
       "gcc"
+      "cpp"
       "ldd"
       "make"
       "automake"
