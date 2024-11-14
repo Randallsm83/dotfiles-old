@@ -14,6 +14,7 @@ DOTFILES="$XDG_CONFIG_HOME/dotfiles"
 BUILD_DIR="$XDG_CACHE_HOME/dotfiles/build"
 
 LOG_DIR="$XDG_STATE_HOME/dotfiles/build/logs"
+mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/setup_$(date '+%Y%m%d_%H%M%S').log"
 
 # Detect OS for package manager
