@@ -28,7 +28,7 @@ fi
 
 # Error handling
 cleanup() {
-  local exit_code=$?
+  local exit_code="$?"
   log "Cleaning up..."
   cleanup_build_directory
   # Remove partial installs if failed
@@ -109,7 +109,7 @@ stow_dotfiles() {
 
   for dir in */; do
     if [ -d "$dir" ]; then
-      dir=${dir%/}
+      dir="${dir%/}"
       log "Processing $dir..."
 
       # Get conflicts that are regular files (not symlinks)
