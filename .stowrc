@@ -10,3 +10,7 @@
 --ignore='^/README.*'
 --ignore='^/LICENSE.*'
 --ignore='^/COPYING'
+--ignore='bin'
+--ignore='iterm2'
+--ignore='p10k'
+--ignore='spaceship'
