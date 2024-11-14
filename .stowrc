@@ -1,5 +1,6 @@
 --target=$HOME
 --no-folding
+--dotfiles
 --verbose=2
 --ignore='\.DS_Store'
 --ignore='install'
