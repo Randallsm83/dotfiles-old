@@ -18,7 +18,6 @@ export MACHINE_CORES=$cores
 export ENVDIR="$HOME/.config/env.d"
 if [[ -d "$ENVDIR" ]]; then
   for env_file in "$ENVDIR"/*.conf; do
-    echo $env_file
     [[ -r "$env_file" ]] && source "$env_file"
   done
 fi
