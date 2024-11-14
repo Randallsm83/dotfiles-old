@@ -34,23 +34,23 @@ else
 fi
 
 # Error handling
-cleanup() {
-  local exit_code="$?"
-  log "Cleaning up..."
-  cleanup_build_directory
-  # Remove partial installs if failed
-  if [ $exit_code -ne 0 ]; then
-    log "Installation failed. Check logs at $LOG_FILE"
-    if [ -d "$DOTFILES" ] && [ ! -d "$DOTFILES/.git" ]; then
-      log "Removing partial dotfiles install"
-      rm -rf "$DOTFILES"
-    fi
-  fi
-  exit $exit_code
-}
-
-trap cleanup EXIT
-trap 'trap - EXIT; cleanup' INT TERM
+# cleanup() {
+#   local exit_code="$?"
+#   log "Cleaning up..."
+#   cleanup_build_directory
+#   # Remove partial installs if failed
+#   if [ $exit_code -ne 0 ]; then
+#     log "Installation failed. Check logs at $LOG_FILE"
+#     if [ -d "$DOTFILES" ] && [ ! -d "$DOTFILES/.git" ]; then
+#       log "Removing partial dotfiles install"
+#       rm -rf "$DOTFILES"
+#     fi
+#   fi
+#   exit $exit_code
+# }
+#
+# trap cleanup EXIT
+# trap 'trap - EXIT; cleanup' INT TERM
 
 # Logging function
 log() {
