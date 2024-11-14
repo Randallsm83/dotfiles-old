@@ -12,12 +12,15 @@ XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
 DOTFILES="$XDG_CONFIG_HOME/dotfiles"
 
-LOG_DIR="$XDG_STATE_HOME/dotfiles/build/logs"
-mkdir -p "$LOG_DIR"
 BUILD_DIR="$XDG_CACHE_HOME/dotfiles/build"
-mkdir -p "$BUILD_DIR"
+LOG_DIR="$XDG_STATE_HOME/dotfiles/build/logs"
+mkdir -p "$LOG_DIR $BUILD_DIR"
 
 LOG_FILE="$LOG_DIR/setup_$(date '+%Y%m%d_%H%M%S').log"
+touch "$LOG_FILE" || {
+  echo "Failed to create log file: $LOG_FILE"
+  exit 1
+}
 
 # Detect OS for package manager
 if [ "$(uname)" == "Darwin" ]; then
