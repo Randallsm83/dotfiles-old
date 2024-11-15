@@ -117,39 +117,38 @@ clone_dotfiles() {
 }
 
 source_env_vars() {
+  ENVDIR="$HOME/.config/env.d"
+  IGNORE_DIRS=("env" "asdf" "homebrew")
 
-  # Define the directories containing environment files
-BASE_ENV_DIR="$DOTFILES_DIR/env.d"
-PACKAGE_DIRS=("$DOTFILES_DIR/package1" "$DOTFILES_DIR/package2")  # List all packages with env.conf files
+  # Source each base .conf file in env.d directory
+  if [ -d "$ENVDIR" ]; then
+    for conf in "$ENVDIR"/*.conf; do
+      if [ -f "$conf" ]; then
+        echo "Sourcing base environment file: $conf"
+        source "$conf"
+      fi
+    done
+  else
+    echo "Base environment directory $ENVDIR not found."
+  fi
 
-# Source each base .conf file in env.d directory
-if [ -d "$BASE_ENV_DIR" ]; then
-  for base_env_file in "$BASE_ENV_DIR"/*.conf; do
-    if [ -f "$base_env_file" ]; then
-      echo "Sourcing base environment file: $base_env_file"
-      source "$base_env_file"
+  # Source each package-specific .conf file if it exists
+  for package_dir in "${PACKAGE_DIRS[@]}"; do
+    env_conf_file="$package_dir/env.conf"
+    if [ -f "$env_conf_file" ]; then
+      echo "Sourcing package-specific environment file: $env_conf_file"
+      source "$env_conf_file"
+    else
+      echo "Package-specific environment file not found: $env_conf_file"
     fi
   done
-else
-  echo "Base environment directory $BASE_ENV_DIR not found."
-fi
-
-# Source each package-specific .conf file if it exists
-for package_dir in "${PACKAGE_DIRS[@]}"; do
-  env_conf_file="$package_dir/env.conf"
-  if [ -f "$env_conf_file" ]; then
-    echo "Sourcing package-specific environment file: $env_conf_file"
-    source "$env_conf_file"
-  else
-    echo "Package-specific environment file not found: $env_conf_file"
-  fi
-done
 }
 
 stow_dotfiles() {
   log "Stowing dotfiles..."
   cd "$DOTFILES"
 
+  # TODO if linux, add homebrew to ignore file
   for dir in */; do
     if [ -d "$dir" ]; then
       dir="${dir%/}"

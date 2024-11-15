@@ -17,8 +17,8 @@ export MACHINE_CORES="${cores:-4}"
 
 export ENVDIR="$HOME/.config/env.d"
 if [[ -d "$ENVDIR" ]]; then
-  for env_file in "$ENVDIR"/*.conf; do
-    [[ -r "$env_file" ]] && source "$env_file"
+  for conf in "$ENVDIR"/*.conf; do
+    [[ -r "$conf" ]] && source "$conf"
   done
 fi
 
