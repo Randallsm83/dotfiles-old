@@ -23,6 +23,12 @@ mkdir -p "$BUILD_DIR" || { echo "Failed to create $BUILD_DIR"; exit 1; }
 LOG_FILE="$LOG_DIR/setup_$(date '+%Y%m%d_%H%M%S').log"
 touch "$LOG_FILE" || { echo "Failed to create log file: $LOG_FILE"; exit 1; }
 
+# Logging function
+log() {
+  echo "$1"
+  echo "$(date '+%Y-%m-%d %H:%M:%S'): $1" >>"$LOG_FILE"
+}
+
 # Detect OS for package manager
 if [ "$(uname)" == "Darwin" ]; then
   OS="macos"
@@ -33,61 +39,6 @@ else
   exit 1
 fi
 
-# Error handling
-cleanup() {
-  local exit_code="$?"
-  log "Cleaning up..."
-  cleanup_build_directory
-  # Remove partial installs if failed
-  if [ $exit_code -ne 0 ]; then
-    log "Installation failed. Check logs at $LOG_FILE"
-    if [ -d "$DOTFILES" ] && [ ! -d "$DOTFILES/.git" ]; then
-      log "Removing partial dotfiles install"
-      rm -rf "$DOTFILES"
-    fi
-  fi
-  exit $exit_code
-}
-
-trap cleanup EXIT
-trap 'trap - EXIT; cleanup' INT TERM
-
-# Logging function
-log() {
-  echo "$1"
-  echo "$(date '+%Y-%m-%d %H:%M:%S'): $1" >>"$LOG_FILE"
-}
-
-# Check permissions early
-check_permissions() {
-  local dirs=("$XDG_DATA_HOME" "$XDG_CONFIG_HOME" "$XDG_STATE_HOME" "$XDG_STATE_HOME/dotfiles" "$XDG_STATE_HOME/dotfiles/build" "$XDG_CACHE_HOME" "$LOG_DIR" "$BUILD_DIR")
-
-  for dir in "${dirs[@]}"; do
-    echo "Checking directory: $dir" # Debugging line
-    if [ ! -d "$dir" ]; then
-      echo "Directory $dir does not exist. Creating it..." # Debugging line
-      if ! mkdir -p "$dir" 2>/dev/null; then
-        echo "Error: Cannot create directory $dir"
-        return 1
-      fi
-    fi
-    echo "Directory $dir exists. Testing write permissions..." # Debugging line
-    if ! touch "$dir/.write_test" 2>/dev/null; then
-      echo "Error: Cannot write to $dir"
-      return 1
-    fi
-    rm -f "$dir/.write_test"
-  done
-}
-
-setup_build_directory() {
-  if [ -d "$BUILD_DIR" ]; then
-    log "Cleaning existing build directory..."
-    rm -rf "$BUILD_DIR"*
-  fi
-  mkdir -p "$BUILD_DIR"
-}
-
 cleanup_build_directory() {
   if [ -d "$BUILD_DIR" ]; then
     log "Cleaning up build directory..."
@@ -95,6 +46,58 @@ cleanup_build_directory() {
   fi
 }
 
+# Error handling
+# cleanup() {
+#   local exit_code="$?"
+#   log "Cleaning up..."
+#   cleanup_build_directory
+#   # Remove partial installs if failed
+#   if [ $exit_code -ne 0 ]; then
+#     log "Installation failed. Check logs at $LOG_FILE"
+#     if [ -d "$DOTFILES" ] && [ ! -d "$DOTFILES/.git" ]; then
+#       log "Removing partial dotfiles install"
+#       rm -rf "$DOTFILES"
+#     fi
+#   fi
+#   exit $exit_code
+# }
+#
+# trap cleanup EXIT
+# trap 'trap - EXIT; cleanup' INT TERM
+#
+
+# Check permissions
+check_permissions() {
+  local dirs=(
+    "$XDG_DATA_HOME"
+    "$XDG_CONFIG_HOME"
+    "$XDG_CACHE_HOME"
+    "$XDG_STATE_HOME"
+    "$XDG_STATE_HOME/dotfiles"
+    "$XDG_STATE_HOME/dotfiles/build"
+    "$LOG_DIR"
+    "$BUILD_DIR"
+  )
+
+  for dir in "${dirs[@]}"; do
+    echo "Checking directory: $dir"
+    if [ ! -d "$dir" ]; then
+      echo "Directory $dir does not exist. Creating it..."
+      if ! mkdir -p "$dir" 2>/dev/null; then
+        log "Error: Cannot create directory $dir"
+        return 1
+      fi
+    fi
+    echo "Directory $dir exists. Testing write permissions..."
+    if ! touch "$dir/.write_test" 2>/dev/null; then
+      log "Error: Cannot write to $dir"
+      return 1
+    fi
+    rm -f "$dir/.write_test"
+  done
+}
+
+# Clone dotfiles
 clone_dotfiles() {
   if [ ! -d "$DOTFILES" ]; then
     log "Cloning dotfiles repository..."
@@ -111,6 +114,36 @@ clone_dotfiles() {
       return 1
     fi
   fi
+}
+
+source_env_vars() {
+
+  # Define the directories containing environment files
+BASE_ENV_DIR="$DOTFILES_DIR/env.d"
+PACKAGE_DIRS=("$DOTFILES_DIR/package1" "$DOTFILES_DIR/package2")  # List all packages with env.conf files
+
+# Source each base .conf file in env.d directory
+if [ -d "$BASE_ENV_DIR" ]; then
+  for base_env_file in "$BASE_ENV_DIR"/*.conf; do
+    if [ -f "$base_env_file" ]; then
+      echo "Sourcing base environment file: $base_env_file"
+      source "$base_env_file"
+    fi
+  done
+else
+  echo "Base environment directory $BASE_ENV_DIR not found."
+fi
+
+# Source each package-specific .conf file if it exists
+for package_dir in "${PACKAGE_DIRS[@]}"; do
+  env_conf_file="$package_dir/env.conf"
+  if [ -f "$env_conf_file" ]; then
+    echo "Sourcing package-specific environment file: $env_conf_file"
+    source "$env_conf_file"
+  else
+    echo "Package-specific environment file not found: $env_conf_file"
+  fi
+done
 }
 
 stow_dotfiles() {
@@ -154,49 +187,50 @@ install_homebrew() {
   fi
 }
 
-install_stow_from_source() {
-  log "Installing GNU stow from source..."
+install_stow() {
+  if ! command -v stow >/dev/null 2>&1; then
+    log "Installing GNU stow from source..."
 
-  setup_build_directory
-  cd "$BUILD_DIR"
+    mkdir -p "$BUILD_DIR/stow"
+    cd "$BUILD_DIR/stow"
 
-  log "Downloading stow source..."
-  if ! stdbuf -oL curl -L https://ftp.gnu.org/gnu/stow/stow-latest.tar.gz | tar xz >>"$LOG_FILE" 2>&1; then
-    log "Failed to download or extract stow source"
-    cleanup_build_directory
-    return 1
+    log "Downloading stow source..."
+    if ! stdbuf -oL curl -L https://ftp.gnu.org/gnu/stow/stow-latest.tar.gz | tar xz >>"$LOG_FILE" 2>&1; then
+      log "Failed to download or extract stow source. Check log at: $LOG_FILE"
+      return 1
+    fi
+
+    cd stow-*/
+
+    # Configure stow with XDG compliance
+    export PERL_HOMEDIR=1
+    export PERL_MM_OPT="INSTALL_BASE=$XDG_DATA_HOME/perl5"
+    export PERL_MB_OPT="--install_base $XDG_DATA_HOME/perl5"
+
+    log "Configuring stow..."
+    stdbuf -oL ./configure --prefix="$HOME/.local" \
+      --datarootdir="$XDG_DATA_HOME" \
+      --sysconfdir="$XDG_CONFIG_HOME" >>"$LOG_FILE" 2>&1
+
+    log "Building stow..."
+    if ! stdbuf -oL make >>"$LOG_FILE" 2>&1; then
+      log "Build failed. Check log at: $LOG_FILE"
+      return 1
+    fi
+
+    log "Installing stow..."
+    if ! stdbuf -oL make install >>"$LOG_FILE" 2>&1; then
+      log "Installation failed. Check log at: $LOG_FILE"
+      return 1
+    fi
+
   fi
-
-  cd stow-*/
-
-  # Configure stow with XDG compliance
-  PERL_HOMEDIR=1
-  PERL_MM_OPT="INSTALL_BASE=$XDG_DATA_HOME/perl5"
-  PERL_MB_OPT="--install_base $XDG_DATA_HOME/perl5"
-
-  log "Configuring stow..."
-  stdbuf -oL ./configure --prefix="$HOME/.local" \
-    --datarootdir="$XDG_DATA_HOME" \
-    --sysconfdir="$XDG_CONFIG_HOME" >>"$LOG_FILE" 2>&1
-
-  log "Building stow..."
-  if ! stdbuf -oL make >>"$LOG_FILE" 2>&1; then
-    log "Build failed. Check log at: $LOG_FILE"
-    cleanup_build_directory
-    return 1
-  fi
-
-  log "Installing stow..."
-  if ! stdbuf -oL make install >>"$LOG_FILE" 2>&1; then
-    log "Installation failed. Check log at: $LOG_FILE"
-    return 1
-  fi
-
-  cleanup_build_directory
 }
 
 install_asdf() {
   log "Setting up ASDF version manager..."
+
+  export ASDF_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
 
   # Clone ASDF
   if [ ! -d "$ASDF_DATA_DIR" ]; then
@@ -264,9 +298,8 @@ check_glibc_headers() {
   GLIBC_DEV_DEB="$BUILD_DIR/libc6-dev.deb"
   GLIBC_DEV_DIR="$BUILD_DIR/glibc-dev"
 
-  # Set up build directory
-  setup_build_directory
   cd "$BUILD_DIR"
+  mkdir -p "$GLIBC_DEV_DIR"
 
   # Download glibc dev package
   log "Downloading glibc dev package..."
@@ -277,7 +310,6 @@ check_glibc_headers() {
 
   # Extract glibc dev package
   log "Extracting glibc dev package..."
-  mkdir -p "$GLIBC_DEV_DIR"
   if ! stdbuf -oL dpkg-deb -x "$GLIBC_DEV_DEB" "$GLIBC_DEV_DIR" >>"$LOG_FILE" 2>&1; then
     log "Failed to extract glibc dev package"
     return 1
@@ -372,57 +404,41 @@ main() {
   log "Starting dotfiles setup..."
 
   # Check permissions first
-  if ! check_permissions; then
-    log "Permission check failed. Please check directory permissions."
-    exit 1
-  fi
+  check_permissions
 
+  # Get dotfiles
+  clone_dotfiles
+
+  # Source env vars
+  source_env_vars
+
+  # Check build deps
   ensure_build_tools
 
-  # Get dotfiles and initial env setup
-  if ! clone_dotfiles; then
-    log "Failed to setup dotfiles"
-    exit 1
-  fi
+  # Install stow
+  install_stow
 
-  # Install stow first since we need it
-  if ! command -v stow >/dev/null 2>&1; then
-    if ! install_stow_from_source; then
-      log "Failed to install stow"
-      exit 1
-    fi
-  fi
-
-  # First stow to get env files
-  if ! stow_dotfiles; then
-    log "Failed to stow dotfiles"
-    exit 1
-  fi
-
-  log "Before sourcing..."
-  log "$(env)"
+  # Stow files
+  stow_dotfiles
 
   # Now source your env files which handle all the rest
-  for env_file in "$XDG_CONFIG_HOME/env.d"/*.conf; do
-    if [[ -r "$env_file" ]]; then
-      source "$env_file"
-    else
-      log "Warning: Cannot read env file: $env_file"
-    fi
-  done
+  # for env_file in "$XDG_CONFIG_HOME/env.d"/*.conf; do
+  #   if [[ -r "$env_file" ]]; then
+  #     source "$env_file"
+  #   else
+  #     log "Warning: Cannot read env file: $env_file"
+  #   fi
+  # done
 
-  log "After sourcing...."
-  log "$(env)"
-
-  # Now that we have proper env, do the rest
-  if ! install_asdf; then
-    log "Failed to setup ASDF"
-    exit 1
-  fi
+  # Install asdf and other tools
+  install_asdf
 
   if git -C "$DOTFILES" status --porcelain | grep -q '^'; then
     log "There are uncommitted changes in your dotfiles repo. Please review with 'git diff' and commit if happy."
   fi
+
+  # We made it
+  cleanup_build_directory
 
   log "Setup complete! Please restart your shell session."
 }

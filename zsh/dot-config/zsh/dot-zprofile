@@ -13,7 +13,7 @@ if [[ $(uname) == 'Darwin' ]]; then
 elif [[ $(uname) == 'Linux' ]]; then
   cores="$(nproc)"
 fi
-export MACHINE_CORES=$cores
+export MACHINE_CORES="${cores:-4}"
 
 export ENVDIR="$HOME/.config/env.d"
 if [[ -d "$ENVDIR" ]]; then

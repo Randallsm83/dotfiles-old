@@ -1,16 +1,16 @@
 --target=$HOME
 --no-folding
 --dotfiles
---verbose=2
---ignore='\.DS_Store'
---ignore='install'
---ignore='install.sh'
---ignore='\.git'
---ignore='\.gitignore'
---ignore='^/README.*'
---ignore='^/LICENSE.*'
---ignore='^/COPYING'
---ignore='bin'
---ignore='iterm2'
---ignore='p10k'
---ignore='spaceship'
+--verbose 2
+--ignore .DS_Store
+--ignore .git
+--ignore .gitignore
+--ignore ^/README.*
+--ignore ^/LICENSE.*
+--ignore ^/COPYING
+--ignore install
+--ignore install.sh
+--ignore bin
+--ignore iterm2
+--ignore p10k
+--ignore spaceship
