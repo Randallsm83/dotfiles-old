@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -euoa pipefail
 
 # Minimal bootstrap - just what we need to clone and get the env files
 DOTFILES_URL="https://github.com/Randallsm83/dotfiles.git"
@@ -161,9 +161,8 @@ install_stow_from_source() {
   cd "$BUILD_DIR"
 
   log "Downloading stow source..."
-  if ! curl -L https://ftp.gnu.org/gnu/stow/stow-latest.tar.gz | tar xz >>"$LOG_FILE" 2>&1; then
+  if ! stdbuf -oL curl -L https://ftp.gnu.org/gnu/stow/stow-latest.tar.gz | tar xz >>"$LOG_FILE" 2>&1; then
     log "Failed to download or extract stow source"
-    cat "$LOG_FILE"
     cleanup_build_directory
     return 1
   fi
@@ -171,26 +170,25 @@ install_stow_from_source() {
   cd stow-*/
 
   # Configure stow with XDG compliance
-  export PERL_HOMEDIR=1
-  export PERL_MM_OPT="INSTALL_BASE=$XDG_DATA_HOME/perl5"
-  export PERL_MB_OPT="--install_base $XDG_DATA_HOME/perl5"
+  PERL_HOMEDIR=1
+  PERL_MM_OPT="INSTALL_BASE=$XDG_DATA_HOME/perl5"
+  PERL_MB_OPT="--install_base $XDG_DATA_HOME/perl5"
 
   log "Configuring stow..."
-  ./configure --prefix="$HOME/.local" \
+  stdbuf -oL ./configure --prefix="$HOME/.local" \
     --datarootdir="$XDG_DATA_HOME" \
     --sysconfdir="$XDG_CONFIG_HOME" >>"$LOG_FILE" 2>&1
 
   log "Building stow..."
-  if ! make >>"$LOG_FILE" 2>&1; then
+  if ! stdbuf -oL make >>"$LOG_FILE" 2>&1; then
     log "Build failed. Check log at: $LOG_FILE"
     cleanup_build_directory
     return 1
   fi
 
   log "Installing stow..."
-  if ! make install >>"$LOG_FILE" 2>&1; then
+  if ! stdbuf -oL make install >>"$LOG_FILE" 2>&1; then
     log "Installation failed. Check log at: $LOG_FILE"
-    cleanup_build_directory
     return 1
   fi
 
@@ -239,30 +237,23 @@ install_asdf() {
     log "You may need to install them manually"
   fi
 
-  export C_INCLUDE_PATH="$HOME/local/glibc-dev/usr/include:/usr/include"
-  export LIBRARY_PATH="$HOME/local/glibc-dev/usr/lib:/usr/lib"
-  export CFLAGS="-I$HOME/local/glibc-dev/usr/include -I/usr/include ${CFLAGS:-}"
-  export CPPFLAGS="-I$HOME/local/glibc-dev/usr/include -I/usr/include ${CPPFLAGS:-}"
-  export LDFLAGS="-L$HOME/local/glibc-dev/usr/lib -L/usr/lib ${LDFLAGS:-}"
-
-
   log "Installing tool versions..."
   asdf install
 
   # Install shell completions
-  local shell
-  shell=$(basename "$SHELL")
-  local completion_dir="$XDG_DATA_HOME/completions"
-  mkdir -p "$completion_dir"
-
-  case "$shell" in
-  bash)
-    cp "$ASDF_DATA_DIR/completions/asdf.bash" "$completion_dir/"
-    ;;
-  zsh)
-    cp "$ASDF_DATA_DIR/completions/asdf.zsh" "$completion_dir/"
-    ;;
-  esac
+  # local shell
+  # shell=$(basename "$SHELL")
+  # local completion_dir="$XDG_DATA_HOME/completions"
+  # mkdir -p "$completion_dir"
+  #
+  # case "$shell" in
+  # bash)
+  #   cp "$ASDF_DATA_DIR/completions/asdf.bash" "$completion_dir/"
+  #   ;;
+  # zsh)
+  #   cp "$ASDF_DATA_DIR/completions/asdf.zsh" "$completion_dir/"
+  #   ;;
+  # esac
 }
 
 check_glibc_headers() {
@@ -279,25 +270,26 @@ check_glibc_headers() {
 
   # Download glibc dev package
   log "Downloading glibc dev package..."
-  if ! curl -L "$GLIBC_DEV_DEB_URL" -o "$GLIBC_DEV_DEB" >>"$LOG_FILE" 2>&1; then
+  if ! stdbuf -oL curl -L "$GLIBC_DEV_DEB_URL" -o "$GLIBC_DEV_DEB" >>"$LOG_FILE" 2>&1; then
     log "Failed to download glibc dev package"
-    cat "$LOG_FILE"
     return 1
   fi
 
   # Extract glibc dev package
   log "Extracting glibc dev package..."
   mkdir -p "$GLIBC_DEV_DIR"
-  if ! dpkg-deb -x "$GLIBC_DEV_DEB" "$GLIBC_DEV_DIR" >>"$LOG_FILE" 2>&1; then
+  if ! stdbuf -oL dpkg-deb -x "$GLIBC_DEV_DEB" "$GLIBC_DEV_DIR" >>"$LOG_FILE" 2>&1; then
     log "Failed to extract glibc dev package"
-    cat "$LOG_FILE"
     return 1
   fi
 
   # Update include paths
-  # log "Updating environment variables with extracted glibc headers"
-  # export C_INCLUDE_PATH="$GLIBC_DEV_DIR/usr/include:${C_INCLUDE_PATH:-}"
-  # export LIBRARY_PATH="$GLIBC_DEV_DIR/usr/lib:${LIBRARY_PATH:-}"
+  log "Updating environment variables with extracted glibc headers"
+  export C_INCLUDE_PATH="$GLIBC_DEV_DIR/usr/include:/usr/include:${C_INCLUDE_PATH:-}"
+  export LIBRARY_PATH="$GLIBC_DEV_DIR/usr/lib:/usr/lib:${LIBRARY_PATH:-}"
+  export CFLAGS="-I$GLIBC_DEV_DIR/usr/include -I/usr/include ${CFLAGS:-}"
+  export CPPFLAGS="-I$GLIBC_DEV_DIR/usr/include -I/usr/include ${CPPFLAGS:-}"
+  export LDFLAGS="-L$GLIBC_DEV_DIR/usr/lib -L/usr/lib ${LDFLAGS:-}"
 
   log "glibc development headers extracted successfully."
 }
@@ -341,7 +333,7 @@ check_macos_build_tools() {
 
   for tool in "${missing_tools[@]}"; do
     log "Installing $tool..."
-    brew install "$tool" >>"$LOG_FILE" 2>&1
+    stdbuf -oL brew install "$tool" >>"$LOG_FILE" 2>&1
   done
 }
 
@@ -407,6 +399,9 @@ main() {
     exit 1
   fi
 
+  log "Before sourcing..."
+  log "$(env)"
+
   # Now source your env files which handle all the rest
   for env_file in "$XDG_CONFIG_HOME/env.d"/*.conf; do
     if [[ -r "$env_file" ]]; then
@@ -415,6 +410,9 @@ main() {
       log "Warning: Cannot read env file: $env_file"
     fi
   done
+
+  log "After sourcing...."
+  log "$(env)"
 
   # Now that we have proper env, do the rest
   if ! install_asdf; then
