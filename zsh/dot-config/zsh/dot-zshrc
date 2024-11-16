@@ -55,17 +55,16 @@ zplug load
 # ========================= General Settings ===================================
 # History settings
 export HISTFILE="$XDG_STATE_HOME/zsh/zsh_history"
-export HISTSIZE=500000
-export SAVEHIST=500000
+export HISTSIZE=1000000
+export SAVEHIST="$HISTSIZE"
 
-setopt APPENDHISTORY          # Append to history file, do not overwrite
-setopt EXTENDED_HISTORY       # Record command execution time
-setopt INC_APPEND_HISTORY     # Write to history file immediately
 setopt SHARE_HISTORY          # Share history across all sessions
+setopt EXTENDED_HISTORY       # Record command execution time
 setopt HIST_VERIFY            # Don't execute immediately upon history expansion
-setopt HIST_IGNORE_SPACE      # Ignore commands with leading spaces
 setopt HIST_REDUCE_BLANKS     # Remove unnecessary blanks
+setopt HIST_IGNORE_SPACE      # Ignore commands with leading spaces
 setopt HIST_IGNORE_DUPS       # Ignore duplicate commands
+setopt HIST_IGNORE_ALL_DUPS   # Delete old recorded entry if new entry is a duplicate.
 setopt HIST_FIND_NO_DUPS      # Do not display old duplicates in history search
 setopt HIST_SAVE_NO_DUPS      # Do not save duplicate commands in history
 setopt HIST_EXPIRE_DUPS_FIRST # Expire a duplicate event first when trimming history.

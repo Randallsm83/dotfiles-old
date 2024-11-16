@@ -15,7 +15,8 @@ alias has="curl -sL https://git.io/_has | bash -s "
 # Update
 alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup;'
 
-# Set ls color
+# Easy ls and set ls color
+alias l="ls -lah"
 alias ls="ls --color=auto"
 
 # CD Shortcuts
