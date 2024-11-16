@@ -1,7 +1,6 @@
 tap "dreamhost/homebrew", "git@git.dreamhost.com:dreamhost/homebrew-repo.git", force_auto_update: true if OS.mac?
 tap "homebrew/bundle"
 tap "buo/cask-upgrade"
-tap "homebrew/cask-fonts"
 
 cask_args fontdir: "~/.local/share/fonts"
 
@@ -40,7 +39,7 @@ brew "git"
 # Powerful, lightweight programming language
 # brew "lua"
 # Ambitious Vim-fork focused on extensibility and agility
-brew "neovim"
+#brew "neovim"
 # Platform built on V8 to build network applications
 # brew "node"
 # Indents and reformats Perl scripts to make them easier to read
@@ -62,9 +61,9 @@ brew "ripgrep"
 # Simple keystroke visualizer
 # brew "showkey"
 # Cross-shell prompt for astronauts
-brew "starship"
+#brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
-brew "stow"
+#brew "stow"
 # Display directories as trees (with optional color/HTML output)
 # brew "tree"
 # Maintained ctags implementation
@@ -72,7 +71,7 @@ brew "stow"
 # Clean C library for processing UTF-8 Unicode data
 # brew "utf8proc", args: ["HEAD"]
 # Vi 'workalike' with many additional features
-brew "vim"
+#brew "vim"
 # Internet file retriever
 # brew "wget"
 # Check your $HOME for unwanted files and directories
@@ -82,7 +81,7 @@ brew "vim"
 # JavaScript package manager
 # brew "yarn"
 # UNIX shell (command interpreter)
-brew "zsh"
+#brew "zsh"
 # LDE
 brew "dreamhost/homebrew/lde", args: ["HEAD"] if OS.mac?
 # Client for the Dropbox cloud storage service

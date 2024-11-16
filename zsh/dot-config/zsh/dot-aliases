@@ -18,17 +18,20 @@ alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup
 # Set ls color
 alias ls="ls --color=auto"
 
-# Nvim
-alias vi="nvim"
-alias vim="nvim"
+# CD Shortcuts
+alias dh="cd $DHSPACE"
 
 # Edit configs
-alias zenv="vi $HOME/.zshenv"
-alias zpro="vi $ZDOTDIR/.zprofile"
-alias zrc="vi $ZDOTDIR/.zshrc"
 alias vrc="vi ~/.vimrc"
 alias nrc="vi $XDG_CONFIG_HOME/nvim/init.lua"
 alias wrc="vi $XDG_CONFIG_HOME/wezterm/wezterm.lua"
+alias zrc="vi $ZDOTDIR/.zshrc"
+alias zenv="vi $HOME/.zshenv"
+alias zpro="vi $ZDOTDIR/.zprofile"
+
+# Nvim
+alias vi="nvim"
+alias vim="nvim"
 
 # Git
 alias gg='git grep -E'
