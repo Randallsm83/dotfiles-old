@@ -21,6 +21,7 @@ alias ls="ls --color=auto"
 
 # CD Shortcuts
 alias dh="cd $DHSPACE"
+alias dots="cd $DOTFILES"
 
 # Edit configs
 alias vrc="vi ~/.vimrc"
@@ -29,6 +30,11 @@ alias wrc="vi $XDG_CONFIG_HOME/wezterm/wezterm.lua"
 alias zrc="vi $ZDOTDIR/.zshrc"
 alias zenv="vi $HOME/.zshenv"
 alias zpro="vi $ZDOTDIR/.zprofile"
+
+alias aliasrc="vi $ZDOTDIR/.aliases"
+
+# LDE
+alias ldelog="lde logs -ftall "
 
 # Nvim
 alias vi="nvim"
@@ -41,7 +47,7 @@ alias gg='git grep -E'
 alias zpui="zplug update && zplug install"
 
 # Stow
-alias stowdir="stow --no-folding --dotfiles --verbose=2 -R -t ~ "
+alias stowdir="stow --no-folding --dotfiles --verbose=1 -R -t ~ "
 
 # SSH
 alias rotatekeys="source $HOME/ssh-key-manager.sh && rotate_keys"

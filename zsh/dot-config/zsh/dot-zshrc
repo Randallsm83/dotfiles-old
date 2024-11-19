@@ -19,8 +19,18 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug "lukechilds/zsh-nvm"
 zplug "mattberther/zsh-pyenv"
 zplug "plugins/asdf", from:oh-my-zsh
+# zplug "orbstack/orbstack", defer:1
 # zplug "DhavalKapil/luaver"
 # zplug "wushenrong/zsh-plenv"
+
+# ---- Supercrab Tree ----------
+zplug "supercrabtree/k"
+
+# ---- FZF Setup ---------------
+zplug "junegunn/fzf", use:"shell/*.zsh", hook-build:"./install --all"
+
+# ---- Diff So Fancy ---------
+zplug "so-fancy/diff-so-fancy", as:command, use:"diff-so-fancy"
 
 # ---- Oh-My-Zsh Plugins ------
 zplug "plugins/git", from:oh-my-zsh
@@ -35,15 +45,6 @@ zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:2
 
-# ---- Supercrab Tree ----------
-zplug "supercrabtree/k"
-
-# ---- FZF Setup ---------------
-zplug "junegunn/fzf", use:"shell/*.zsh", hook-build:"./install --all"
-
-# ---- Diff So Fancy ---------
-zplug "so-fancy/diff-so-fancy", as:command, use:"diff-so-fancy"
-
 # ========================= Zplug Install and Load =============================
 if ! zplug check --verbose; then
   echo
@@ -53,10 +54,10 @@ fi
 zplug load
 
 # ========================= General Settings ===================================
-# History settings
-export HISTFILE="$XDG_STATE_HOME/zsh/zsh_history"
-export HISTSIZE=1000000
-export SAVEHIST="$HISTSIZE"
+# -- History settings
+HISTFILE="$XDG_STATE_HOME/zsh/zsh_history"
+HISTSIZE=1000000
+SAVEHIST="$HISTSIZE"
 
 setopt SHARE_HISTORY          # Share history across all sessions
 setopt EXTENDED_HISTORY       # Record command execution time
@@ -71,13 +72,15 @@ setopt HIST_EXPIRE_DUPS_FIRST # Expire a duplicate event first when trimming his
 
 # ========================= Key Bindings =======================================
 
-# --- History substring search
+bindkey -e
+
+# -- History substring search
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 # ========================= Visual Settings ====================================
 
-# ---- Set dircolors and completion colors ----
+# -- Set dircolors and completion colors
 eval "$(dircolors --sh $ZDOTDIR/colors/gruvbox.default.dircolors)"
 IFS=: read -rA ls_colors_array <<<"$LS_COLORS"
 zstyle ':completion:*' list-colors "${ls_colors_array[@]}"
@@ -91,22 +94,30 @@ case $fullname in
   ;;
 esac
 
-# ========================= Source Aliases & Functions =========================
+# ========================= Source The Things ==================================
+
+# -- Aliases and Functions
 [[ -r "$ZDOTDIR/.aliases" ]] && source "$ZDOTDIR/.aliases"
 [[ -r "$ZDOTDIR/.functions" ]] && source "$ZDOTDIR/.functions"
 [[ -r "$ZDOTDIR/.aliases.$machine_type" ]] && source "$ZDOTDIR/.aliases.$machine_type"
 [[ -r "$ZDOTDIR/.functions.$machine_type" ]] && source "$ZDOTDIR/.functions.$machine_type"
 
-# ========================= Source Misc ========================================
+# -- FZF
 [[ -r ~/.fzf.zsh ]] && source ~/.fzf.zsh
-[[ -r "$PERLBREW_ROOT/etc/bashrc" ]] && source "$PERLBREW_ROOT/etc/bashrc"
-[[ -x "$XDG_CONFIG_HOME/wezterm/wezterm.sh" ]] && source "$XDG_CONFIG_HOME/wezterm/wezterm.sh"
 
-# ========================= Starship Prompt ====================================
+# -- Direnv
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
+
+# -- Wezterm
+[[ -x "${XDG_CONFIG_HOME:-$HOME/.config}/wezterm/wezterm.sh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/wezterm/wezterm.sh"
+
+# -- Starship
 eval "$(starship init zsh)"
+
+# -- Mise
+eval "$(mise activate zsh)"
 
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-
 # vim: ft=zsh sw=2 ts=2 et
 # -------------------------------------------------------------------------------------------------
-source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"

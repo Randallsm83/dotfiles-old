@@ -1,7 +1,10 @@
+--------------------------------------------------------------------------------
+-- Nvim Config
 -- run `:checkhealth` for more info.
+--------------------------------------------------------------------------------
 -- Set <space> as the leader key
 -- See `:help mapleader`
---  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+--  NOTE: Even though mini.basics does this, we need it for keymaps
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -9,154 +12,10 @@ vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
--- See `:help vim.opt`
---  For more options, you can see `:help option-list`
-
--- Wildmenu
-vim.opt.wildmode = 'full'
-vim.opt.wildoptions = 'pum,tagfile,fuzzy'
-vim.opt.wildignorecase = true
-
--- Make line numbers default
--- vim.opt.number = true
--- You can also add relative line numbers, to help with jumping.
---  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
-
--- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = 'a'
-
--- Don't show the mode, since it's already in the status line
-vim.opt.showmode = false
-
--- Sync clipboard between OS and Neovim.
---  Schedule the setting after `UiEnter` because it can increase startup-time.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
-vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
-end)
-
--- Enable break indent
-vim.opt.breakindent = true
-
--- Save undo history
-vim.opt.undofile = true
-
--- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-
--- Keep signcolumn on by default
-vim.opt.signcolumn = 'yes'
-
--- Decrease update time
-vim.opt.updatetime = 250
-
--- Decrease mapped sequence wait time
--- Displays which-key popup sooner
-vim.opt.timeoutlen = 300
-
--- Configure how new splits should be opened
-vim.opt.splitright = true
-vim.opt.splitbelow = true
-
--- Sets how neovim will display certain whitespace characters in the editor.
---  See `:help 'list'`
---  and `:help 'listchars'`
-vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
-
--- Preview substitutions live, as you type!
-vim.opt.inccommand = 'split'
-
--- Show which line your cursor is on
-vim.opt.cursorline = true
-
--- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
-
--- Smoother scrolling
-vim.opt.lazyredraw = true
+require 'options'
 
 -- [[ Basic Keymaps ]]
---  See `:help vim.keymap.set()`
-
--- Remap easier command prompt
-vim.keymap.set('n', ';', ':')
-
--- Clear highlights on search when pressing <Esc> in normal mode
---  See `:help hlsearch`
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-
--- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
--- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
-
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-})
-
--- Async formatting with conform, supporting ranges
-vim.api.nvim_create_user_command('Format', function(args)
-  local range = nil
-  if args.count ~= -1 then
-    local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
-    range = {
-      start = { args.line1, 0 },
-      ['end'] = { args.line2, end_line:len() },
-    }
-  end
-  require('conform').format({
-    async = true,
-    lsp_format = 'fallback',
-    range = range,
-  }, function(err)
-    if not err then
-      local mode = vim.api.nvim_get_mode().mode
-      if vim.startswith(string.lower(mode), 'v') then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', true)
-      end
-    end
-  end)
-end, { range = true })
-
--- Disable format on save
-vim.api.nvim_create_user_command('FormatDisable', function(args)
-  if args.bang then
-    -- FormatDisable! will disable formatting just for this buffer
-    vim.b.enable_autoformat = false
-  else
-    vim.g.enable_autoformat = false
-  end
-end, { desc = 'Disable autoformat-on-save', bang = true })
-
--- Enable format on save
-vim.api.nvim_create_user_command('FormatEnable', function(args)
-  if args.bang then
-    -- FormatEnable! will enable formatting just for this buffer
-    vim.b.enable_autoformat = true
-  else
-    vim.g.enable_autoformat = true
-  end
-end, { desc = 'Re-enable autoformat-on-save' })
+require 'keymaps'
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -177,19 +36,236 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
--- [[ Configure and install plugins ]]
+-- INFO: [[ Plugins ]]
 --
---  To check the current status of your plugins, run
---    :Lazy
---
---  You can press `?` in this menu for help. Use `:q` to close the window
---
---  To update plugins you can run
---    :Lazy update
---
--- NOTE: Here is where you install your plugins.
 require('lazy').setup({
+  ----------------------------------------------------------------------------
+  { -- INFO: Collection of various small independent plugins/modules
+    'echasnovski/mini.nvim',
+    config = function()
+      ----------------------------------------------------------------------------
+      -- Sensible Settings
+      require('mini.basics').setup {
+        options = {
+          -- Basic options ('number', 'ignorecase', and many more)
+          basic = true,
+          -- Extra UI features ('winblend', 'cmdheight=0', ...)
+          extra_ui = true,
+          -- Presets for window borders ('single', 'double', ...)
+          win_borders = 'default',
+        },
+        mappings = {
+          -- Basic mappings (better 'jk', save with Ctrl+S, ...)
+          basic = true,
+          -- Prefix for mappings that toggle common options ('wrap', 'spell', ...).
+          option_toggle_prefix = [[,]],
+          -- Window navigation with <C-hjkl>, resize with <C-arrow>
+          windows = true,
+          -- Move cursor in Insert, Command, and Terminal mode with <M-hjkl>
+          move_with_alt = true,
+        },
+        -- Autocommands. Set to `false` to disable
+        autocommands = {
+          -- Basic autocommands (highlight on yank, start Insert in terminal, ...)
+          basic = true,
+          -- Set 'relativenumber' only in linewise and blockwise Visual mode
+          relnum_in_visual_mode = false,
+        },
+        -- Whether to disable showing non-error feedback
+        silent = false,
+      }
+      ----------------------------------------------------------------------------
+      -- Better Around/Inside textobjects
+      --
+      -- Examples:
+      --  - va)  - [V]isually select [A]round [)]paren
+      --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
+      --  - ci'  - [C]hange [I]nside [']quote
+      require('mini.ai').setup {
+        -- Table with textobject id as fields, textobject specification as values.
+        -- Also use this to disable builtin textobjects. See |MiniAi.config|.
+        custom_textobjects = nil,
 
+        -- Module mappings. Use `''` (empty string) to disable one.
+        mappings = {
+          -- Main textobject prefixes
+          around = 'a',
+          inside = 'i',
+
+          -- Next/last variants
+          around_next = 'an',
+          inside_next = 'in',
+          around_last = 'al',
+          inside_last = 'il',
+
+          -- Move cursor to corresponding edge of `a` textobject
+          goto_left = 'g[',
+          goto_right = 'g]',
+        },
+
+        -- Number of lines within which textobject is searched
+        n_lines = 500,
+
+        -- How to search for object (first inside current line, then inside
+        -- neighborhood). One of 'cover', 'cover_or_next', 'cover_or_prev',
+        -- 'cover_or_nearest', 'next', 'previous', 'nearest'.
+        search_method = 'cover_or_next',
+
+        -- Whether to disable showing non-error feedback
+        silent = false,
+      }
+      ----------------------------------------------------------------------------
+      -- Alignment
+      require('mini.align').setup()
+      ----------------------------------------------------------------------------
+      -- Animate
+      require('mini.animate').setup {
+        -- Cursor path
+        cursor = {
+          -- Whether to enable this animation
+          enable = true,
+        },
+        -- Vertical scroll
+        scroll = {
+          -- Whether to enable this animation
+          enable = true,
+        },
+        -- Window resize
+        resize = {
+          -- Whether to enable this animation
+          enable = true,
+        },
+        -- Window open
+        open = {
+          -- Whether to enable this animation
+          enable = true,
+        },
+        -- Window close
+        close = {
+          -- Whether to enable this animation
+          enable = true,
+        },
+      }
+      ----------------------------------------------------------------------------
+      -- Mini which-key
+      local miniclue = require 'mini.clue'
+      miniclue.setup {
+        triggers = {
+          -- Leader triggers
+          { mode = 'n', keys = '<Leader>' },
+          { mode = 'x', keys = '<Leader>' },
+
+          -- Built-in completion
+          { mode = 'i', keys = '<C-x>' },
+
+          -- `g` key
+          { mode = 'n', keys = 'g' },
+          { mode = 'x', keys = 'g' },
+
+          -- Marks
+          { mode = 'n', keys = "'" },
+          { mode = 'n', keys = '`' },
+          { mode = 'x', keys = "'" },
+          { mode = 'x', keys = '`' },
+
+          -- Registers
+          { mode = 'n', keys = '"' },
+          { mode = 'x', keys = '"' },
+          { mode = 'i', keys = '<C-r>' },
+          { mode = 'c', keys = '<C-r>' },
+
+          -- Window commands
+          { mode = 'n', keys = '<C-w>' },
+
+          -- `z` key
+          { mode = 'n', keys = 'z' },
+          { mode = 'x', keys = 'z' },
+
+          -- `z` key
+          { mode = 'n', keys = ',' },
+        },
+
+        clues = {
+          -- Enhance this by adding descriptions for <Leader> mapping groups
+          miniclue.gen_clues.builtin_completion(),
+          miniclue.gen_clues.g(),
+          miniclue.gen_clues.marks(),
+          miniclue.gen_clues.registers(),
+          miniclue.gen_clues.windows(),
+          miniclue.gen_clues.z(),
+        },
+      }
+      ----------------------------------------------------------------------------
+      -- Move things
+      require('mini.move').setup {
+        -- Module mappings. Use `''` (empty string) to disable one.
+        mappings = {
+          -- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
+          left = '<M-h>',
+          right = '<M-l>',
+          down = '<M-j>',
+          up = '<M-k>',
+
+          -- Move current line in Normal mode
+          line_left = '<M-h>',
+          line_right = '<M-l>',
+          line_down = '<M-j>',
+          line_up = '<M-k>',
+        },
+
+        -- Options which control moving behavior
+        options = {
+          -- Automatically reindent selection during linewise vertical move
+          reindent_linewise = true,
+        },
+      }
+      ----------------------------------------------------------------------------
+      -- Add/delete/replace surroundings (brackets, quotes, etc.)
+      --
+      -- - saiw)  - [S]urround [A]dd [I]nner [W]ord [)]Paren
+      -- - sd'    - [S]urround [D]elete [']quotes
+      -- - sr)'   - [S]urround [R]eplace [)] [']
+      require('mini.surround').setup {
+        -- Add custom surroundings to be used on top of builtin ones. For more
+        -- information with examples, see `:h MiniSurround.config`.
+        custom_surroundings = nil,
+
+        -- Duration (in ms) of highlight when calling `MiniSurround.highlight()`
+        highlight_duration = 500,
+
+        -- Module mappings. Use `''` (empty string) to disable one.
+        mappings = {
+          add = 'sa', -- Add surrounding in Normal and Visual modes
+          delete = 'sd', -- Delete surrounding
+          find = 'sf', -- Find surrounding (to the right)
+          find_left = 'sF', -- Find surrounding (to the left)
+          highlight = 'sh', -- Highlight surrounding
+          replace = 'sr', -- Replace surrounding
+          update_n_lines = 'sn', -- Update `n_lines`
+
+          suffix_last = 'l', -- Suffix to search with "prev" method
+          suffix_next = 'n', -- Suffix to search with "next" method
+        },
+
+        -- Number of lines within which surrounding is searched
+        n_lines = 200,
+
+        -- Whether to respect selection type:
+        -- - Place surroundings on separate lines in linewise mode.
+        -- - Place surroundings on each line in blockwise mode.
+        respect_selection_type = false,
+
+        -- How to search for surrounding (first inside current line, then inside
+        -- neighborhood). One of 'cover', 'cover_or_next', 'cover_or_prev',
+        -- 'cover_or_nearest', 'next', 'prev', 'nearest'. For more details,
+        -- see `:h MiniSurround.config`.
+        search_method = 'cover',
+
+        -- Whether to disable showing non-error feedback
+        silent = false,
+      }
+    end,
+  },
   ----------------------------------------------------------------------------
   -- INFO: Colorschemes
   { 'morhetz/gruvbox', name = 'gruvbox-morhetz', priority = 1000 },
@@ -209,13 +285,6 @@ require('lazy').setup({
   --
   -- Use `opts = {}` to force a plugin to be loaded.
   --
-  -- Here is a more advanced example where we pass configuration
-  -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
-  --    require('gitsigns').setup({ ... })
-  --
-  -- Gitsigns
-  -- See `:help gitsigns` to understand what the configuration keys do
-  --
   ----------------------------------------------------------------------------
   { -- INFO: Gitsigns
     'lewis6991/gitsigns.nvim',
@@ -227,6 +296,56 @@ require('lazy').setup({
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+      on_attach = function(bufnr)
+        local gitsigns = require 'gitsigns'
+
+        local function map(mode, l, r, opts)
+          opts = opts or {}
+          opts.buffer = bufnr
+          vim.keymap.set(mode, l, r, opts)
+        end
+
+        -- Navigation
+        map('n', ']c', function()
+          if vim.wo.diff then
+            vim.cmd.normal { ']c', bang = true }
+          else
+            gitsigns.nav_hunk 'next'
+          end
+        end, { desc = 'Jump to next git [c]hange' })
+
+        map('n', '[c', function()
+          if vim.wo.diff then
+            vim.cmd.normal { '[c', bang = true }
+          else
+            gitsigns.nav_hunk 'prev'
+          end
+        end, { desc = 'Jump to previous git [c]hange' })
+
+        -- Actions
+        -- visual mode
+        map('v', '<leader>hs', function()
+          gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end, { desc = 'stage git hunk' })
+        map('v', '<leader>hr', function()
+          gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end, { desc = 'reset git hunk' })
+        -- normal mode
+        map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
+        map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
+        map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
+        map('n', '<leader>hu', gitsigns.undo_stage_hunk, { desc = 'git [u]ndo stage hunk' })
+        map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
+        map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
+        map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
+        map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
+        map('n', '<leader>hD', function()
+          gitsigns.diffthis '@'
+        end, { desc = 'git [D]iff against last commit' })
+        -- Toggles
+        map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
+        map('n', '<leader>tD', gitsigns.toggle_deleted, { desc = '[T]oggle git show [D]eleted' })
+      end,
     },
   },
   ----------------------------------------------------------------------------
@@ -294,7 +413,7 @@ require('lazy').setup({
       local lint = require 'lint'
 
       lint.linters_by_ft = {
-        ['*'] = { 'codespell', 'editorconfig-checker', 'commitlint' },
+        ['*'] = { 'codespell', 'editorconfig-checker' },
         bash = { 'shellcheck', 'bash' },
         zsh = { 'zsh' },
         vim = { 'vint' },
@@ -302,7 +421,7 @@ require('lazy').setup({
         json = { 'jsonlint' },
         html = { 'htmlhint' },
         -- perl = {'perlcritic'},
-        javascript = { 'eslint_d', 'standardjs' },
+        javascript = { 'eslint_d' },
         typescript = { 'eslint_d' },
       }
 
@@ -485,15 +604,6 @@ require('lazy').setup({
       },
     },
   },
-  ----------------------------------------------------------------------------
-  --
-  -- NOTE: Plugins can specify dependencies.
-  --
-  -- The dependencies are proper plugin specifications as well - anything
-  -- you do for a plugin at the top level, you can do for a dependency.
-  --
-  -- Use the `dependencies` key to specify the dependencies of a particular plugin
-  --
   ----------------------------------------------------------------------------
   { -- INFO: Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
@@ -797,6 +907,7 @@ require('lazy').setup({
         eslint = {},
         ts_ls = {},
         vtsls = {},
+        pylsp = {},
         bashls = {
           -- cmd = {...},
           filetypes = { 'sh', 'zsh' },
@@ -819,9 +930,9 @@ require('lazy').setup({
           -- capabilities = {},
           settings = {
             Lua = {
-              completion = { callSnippet = 'Replace' },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
+              workspace = { checkThirdParty = false, library = vim.api.nvim_get_runtime_file("", true) },
+              completion = { callSnippet = 'Both', keywordSnippet = 'Both' },
+              diagnostics = { disable = { 'missing-fields' }, gloabls = { 'vim' } },
             },
           },
         },
@@ -839,16 +950,21 @@ require('lazy').setup({
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'editorconfig-checker',
+        -- General
         'codespell',
+        'editorconfig-checker',
+        -- Bash/Sh
         'bashls',
         'shellcheck',
         'shfmt',
-        'lua_ls',
-        'stylua',
+        -- Json
+        'jsonls',
+        'jsonlint',
+        -- HTML
         'html',
         'htmlbeautifier',
         'htmlhint',
+        -- JS/TS
         'prettier',
         'prettierd',
         'eslint',
@@ -856,8 +972,15 @@ require('lazy').setup({
         'ts_ls',
         'vtsls',
         'ts-standard',
+        -- Perl
         'perlnavigator',
+        -- Python
         'pylsp',
+        -- Lua
+        'lua_ls',
+        'stylua',
+        'luacheck',
+        -- Vim
         'vimls',
         'vint',
       })
@@ -1024,206 +1147,6 @@ require('lazy').setup({
     opts = {},
   },
   ----------------------------------------------------------------------------
-  { -- INFO: Collection of various small independent plugins/modules
-    'echasnovski/mini.nvim',
-    config = function()
-      ----------------------------------------------------------------------------
-      -- Sensible Settings
-      require('mini.basics').setup {
-        options = {
-          -- Basic options ('number', 'ignorecase', and many more)
-          basic = true,
-          -- Extra UI features ('winblend', 'cmdheight=0', ...)
-          extra_ui = true,
-          -- Presets for window borders ('single', 'double', ...)
-          win_borders = 'default',
-        },
-        mappings = {
-          -- Basic mappings (better 'jk', save with Ctrl+S, ...)
-          basic = true,
-          -- Prefix for mappings that toggle common options ('wrap', 'spell', ...).
-          option_toggle_prefix = [[,]],
-          -- Window navigation with <C-hjkl>, resize with <C-arrow>
-          windows = true,
-          -- Move cursor in Insert, Command, and Terminal mode with <M-hjkl>
-          move_with_alt = true,
-        },
-        -- Autocommands. Set to `false` to disable
-        autocommands = {
-          -- Basic autocommands (highlight on yank, start Insert in terminal, ...)
-          basic = true,
-          -- Set 'relativenumber' only in linewise and blockwise Visual mode
-          relnum_in_visual_mode = false,
-        },
-        -- Whether to disable showing non-error feedback
-        silent = false,
-      }
-      ----------------------------------------------------------------------------
-      -- Better Around/Inside textobjects
-      --
-      -- Examples:
-      --  - va)  - [V]isually select [A]round [)]paren
-      --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
-      --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup {
-        -- Table with textobject id as fields, textobject specification as values.
-        -- Also use this to disable builtin textobjects. See |MiniAi.config|.
-        custom_textobjects = nil,
-
-        -- Module mappings. Use `''` (empty string) to disable one.
-        mappings = {
-          -- Main textobject prefixes
-          around = 'a',
-          inside = 'i',
-
-          -- Next/last variants
-          around_next = 'an',
-          inside_next = 'in',
-          around_last = 'al',
-          inside_last = 'il',
-
-          -- Move cursor to corresponding edge of `a` textobject
-          goto_left = 'g[',
-          goto_right = 'g]',
-        },
-
-        -- Number of lines within which textobject is searched
-        n_lines = 500,
-
-        -- How to search for object (first inside current line, then inside
-        -- neighborhood). One of 'cover', 'cover_or_next', 'cover_or_prev',
-        -- 'cover_or_nearest', 'next', 'previous', 'nearest'.
-        search_method = 'cover_or_next',
-
-        -- Whether to disable showing non-error feedback
-        silent = false,
-      }
-      ----------------------------------------------------------------------------
-      -- Alignment
-      require('mini.align').setup()
-      ----------------------------------------------------------------------------
-      -- Animate
-      require('mini.animate').setup {
-        -- Cursor path
-        cursor = {
-          -- Whether to enable this animation
-          enable = true,
-        },
-        -- Vertical scroll
-        scroll = {
-          -- Whether to enable this animation
-          enable = true,
-        },
-        -- Window resize
-        resize = {
-          -- Whether to enable this animation
-          enable = true,
-        },
-        -- Window open
-        open = {
-          -- Whether to enable this animation
-          enable = true,
-        },
-        -- Window close
-        close = {
-          -- Whether to enable this animation
-          enable = true,
-        },
-      }
-      ----------------------------------------------------------------------------
-      -- Mini which-key
-      local miniclue = require 'mini.clue'
-      miniclue.setup {
-        triggers = {
-          -- Leader triggers
-          { mode = 'n', keys = '<Leader>' },
-          { mode = 'x', keys = '<Leader>' },
-
-          -- Built-in completion
-          { mode = 'i', keys = '<C-x>' },
-
-          -- `g` key
-          { mode = 'n', keys = 'g' },
-          { mode = 'x', keys = 'g' },
-
-          -- Marks
-          { mode = 'n', keys = "'" },
-          { mode = 'n', keys = '`' },
-          { mode = 'x', keys = "'" },
-          { mode = 'x', keys = '`' },
-
-          -- Registers
-          { mode = 'n', keys = '"' },
-          { mode = 'x', keys = '"' },
-          { mode = 'i', keys = '<C-r>' },
-          { mode = 'c', keys = '<C-r>' },
-
-          -- Window commands
-          { mode = 'n', keys = '<C-w>' },
-
-          -- `z` key
-          { mode = 'n', keys = 'z' },
-          { mode = 'x', keys = 'z' },
-        },
-
-        clues = {
-          -- Enhance this by adding descriptions for <Leader> mapping groups
-          miniclue.gen_clues.builtin_completion(),
-          miniclue.gen_clues.g(),
-          miniclue.gen_clues.marks(),
-          miniclue.gen_clues.registers(),
-          miniclue.gen_clues.windows(),
-          miniclue.gen_clues.z(),
-        },
-      }
-      ----------------------------------------------------------------------------
-      -- Add/delete/replace surroundings (brackets, quotes, etc.)
-      --
-      -- - saiw)  - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- - sd'    - [S]urround [D]elete [']quotes
-      -- - sr)'   - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup {
-        -- Add custom surroundings to be used on top of builtin ones. For more
-        -- information with examples, see `:h MiniSurround.config`.
-        custom_surroundings = nil,
-
-        -- Duration (in ms) of highlight when calling `MiniSurround.highlight()`
-        highlight_duration = 500,
-
-        -- Module mappings. Use `''` (empty string) to disable one.
-        mappings = {
-          add = 'sa', -- Add surrounding in Normal and Visual modes
-          delete = 'sd', -- Delete surrounding
-          find = 'sf', -- Find surrounding (to the right)
-          find_left = 'sF', -- Find surrounding (to the left)
-          highlight = 'sh', -- Highlight surrounding
-          replace = 'sr', -- Replace surrounding
-          update_n_lines = 'sn', -- Update `n_lines`
-
-          suffix_last = 'l', -- Suffix to search with "prev" method
-          suffix_next = 'n', -- Suffix to search with "next" method
-        },
-
-        -- Number of lines within which surrounding is searched
-        n_lines = 200,
-
-        -- Whether to respect selection type:
-        -- - Place surroundings on separate lines in linewise mode.
-        -- - Place surroundings on each line in blockwise mode.
-        respect_selection_type = false,
-
-        -- How to search for surrounding (first inside current line, then inside
-        -- neighborhood). One of 'cover', 'cover_or_next', 'cover_or_prev',
-        -- 'cover_or_nearest', 'next', 'prev', 'nearest'. For more details,
-        -- see `:h MiniSurround.config`.
-        search_method = 'cover',
-
-        -- Whether to disable showing non-error feedback
-        silent = false,
-      }
-    end,
-  },
-  ----------------------------------------------------------------------------
   { -- INFO: Treesitter - Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
@@ -1299,7 +1222,6 @@ require('lazy').setup({
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
@@ -1353,6 +1275,64 @@ require('lazy').setup({
     },
   },
 })
+
+-- [[ Basic Autocommands ]]
+--  See `:help lua-guide-autocommands`
+
+-- Highlight when yanking (copying) text
+--  Try it with `yap` in normal mode
+--  See `:help vim.highlight.on_yank()`
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
+
+-- Async formatting with conform, supporting ranges
+vim.api.nvim_create_user_command('Format', function(args)
+  local range = nil
+  if args.count ~= -1 then
+    local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+    range = {
+      start = { args.line1, 0 },
+      ['end'] = { args.line2, end_line:len() },
+    }
+  end
+  require('conform').format({
+    async = true,
+    lsp_format = 'fallback',
+    range = range,
+  }, function(err)
+    if not err then
+      local mode = vim.api.nvim_get_mode().mode
+      if vim.startswith(string.lower(mode), 'v') then
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', true)
+      end
+    end
+  end)
+end, { range = true })
+
+-- Disable format on save
+vim.api.nvim_create_user_command('FormatDisable', function(args)
+  if args.bang then
+    -- FormatDisable! will disable formatting just for this buffer
+    vim.b.enable_autoformat = false
+  else
+    vim.g.enable_autoformat = false
+  end
+end, { desc = 'Disable autoformat-on-save', bang = true })
+
+-- Enable format on save
+vim.api.nvim_create_user_command('FormatEnable', function(args)
+  if args.bang then
+    -- FormatEnable! will enable formatting just for this buffer
+    vim.b.enable_autoformat = true
+  else
+    vim.g.enable_autoformat = true
+  end
+end, { desc = 'Re-enable autoformat-on-save' })
 
 ----------------------------------------------------------------------------
 -- Colorscheme
