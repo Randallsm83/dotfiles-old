@@ -1,7 +1,13 @@
+nodejs 23.2.0
 perl 5.40.0
-direnv 2.35.0
+python stable
+php stable
 lua 5.4.7
 luajit 2.1.0-beta3--3.11.1
-neovim stable
-rust stable
+golang 1.23.3
+rust 1.82.0
+direnv 2.35.0
+ripgrep 14.1.1
+neovim 0.10.2
 starship 1.21.1
+

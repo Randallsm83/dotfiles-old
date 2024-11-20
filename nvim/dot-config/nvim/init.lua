@@ -1,6 +1,7 @@
 --------------------------------------------------------------------------------
 -- Nvim Config
 -- run `:checkhealth` for more info.
+--
 --------------------------------------------------------------------------------
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -417,7 +418,7 @@ require('lazy').setup({
         bash = { 'shellcheck', 'bash' },
         zsh = { 'zsh' },
         vim = { 'vint' },
-        lua = { 'luacheck' },
+        -- lua = { 'luacheck' },
         json = { 'jsonlint' },
         html = { 'htmlhint' },
         -- perl = {'perlcritic'},
@@ -979,7 +980,7 @@ require('lazy').setup({
         -- Lua
         'lua_ls',
         'stylua',
-        'luacheck',
+        -- 'luacheck',
         -- Vim
         'vimls',
         'vint',
@@ -1038,6 +1039,8 @@ require('lazy').setup({
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-cmdline',
     },
     config = function()
       -- See `:help cmp`
@@ -1113,8 +1116,11 @@ require('lazy').setup({
           },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
+        }, {
           { name = 'path' },
-        },
+          { name = 'buffer' },
+          { name = 'cmdline' },
+        }
       }
     end,
   },

@@ -15,10 +15,12 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 # ---- ZSH Syntax Theme -------
 [[ -r "$ZSH_SYNTAX_THEME" ]] && source "$ZSH_SYNTAX_THEME"
 
-# ---- Language Plugins -------
-zplug "lukechilds/zsh-nvm"
-zplug "mattberther/zsh-pyenv"
+# --- Package Managers --------
 zplug "plugins/asdf", from:oh-my-zsh
+
+# ---- Language Plugins -------
+# zplug "lukechilds/zsh-nvm"
+# zplug "mattberther/zsh-pyenv"
 # zplug "orbstack/orbstack", defer:1
 # zplug "DhavalKapil/luaver"
 # zplug "wushenrong/zsh-plenv"
@@ -47,15 +49,21 @@ zplug "zsh-users/zsh-history-substring-search", defer:2
 
 # ========================= Zplug Install and Load =============================
 if ! zplug check --verbose; then
-  echo
-  zplug install
+  echo; zplug install
 fi
 
 zplug load
 
 # ========================= General Settings ===================================
 # -- History settings
-HISTFILE="$XDG_STATE_HOME/zsh/zsh_history"
+ZSTATE="$XDG_STATE_HOME/zsh"
+
+if [[ ! -d $ZSTATE ]]; then
+    echo "Creating directory: $ZSTATE"
+    mkdir -p "$ZSTATE" || { echo "Failed to create history dir: $ZSTATE" >&2; return 1; }
+fi
+
+HISTFILE="$ZSTATE/zsh_history"
 HISTSIZE=1000000
 SAVEHIST="$HISTSIZE"
 
@@ -115,7 +123,7 @@ esac
 eval "$(starship init zsh)"
 
 # -- Mise
-eval "$(mise activate zsh)"
+# eval "$(mise activate zsh)"
 
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-

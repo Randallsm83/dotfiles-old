@@ -12,12 +12,12 @@ XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
 DOTFILES="$XDG_CONFIG_HOME/dotfiles"
 
-BUILD_DIR="$XDG_CACHE_HOME/dotfiles/build"
-LOG_DIR="$XDG_STATE_HOME/dotfiles/build/logs"
+DOTS_BUILD_DIR="$XDG_CACHE_HOME/build/dotfiles"
+LOG_DIR="$XDG_STATE_HOME/build/dotfiles/logs"
 
 # Create the directory structure
 mkdir -p "$LOG_DIR" || { echo "Failed to create $LOG_DIR"; exit 1; }
-mkdir -p "$BUILD_DIR" || { echo "Failed to create $BUILD_DIR"; exit 1; }
+mkdir -p "$DOTS_BUILD_DIR" || { echo "Failed to create $DOTS_BUILD_DIR"; exit 1; }
 
 # Set log file path
 LOG_FILE="$LOG_DIR/setup_$(date '+%Y%m%d_%H%M%S').log"
@@ -40,9 +40,9 @@ else
 fi
 
 cleanup_build_directory() {
-  if [ -d "$BUILD_DIR" ]; then
+  if [ -d "$DOTS_BUILD_DIR" ]; then
     log "Cleaning up build directory..."
-    rm -rf "$BUILD_DIR"*
+    rm -rf "$DOTS_BUILD_DIR"*
   fi
 }
 
@@ -76,7 +76,7 @@ check_permissions() {
     "$XDG_STATE_HOME/dotfiles"
     "$XDG_STATE_HOME/dotfiles/build"
     "$LOG_DIR"
-    "$BUILD_DIR"
+    "$DOTS_BUILD_DIR"
   )
 
   for dir in "${dirs[@]}"; do
@@ -190,8 +190,8 @@ install_stow() {
   if ! command -v stow >/dev/null 2>&1; then
     log "Installing GNU stow from source..."
 
-    mkdir -p "$BUILD_DIR/stow"
-    cd "$BUILD_DIR/stow"
+    mkdir -p "$DOTS_BUILD_DIR/stow"
+    cd "$DOTS_BUILD_DIR/stow"
 
     log "Downloading stow source..."
     if ! stdbuf -oL curl -L https://ftp.gnu.org/gnu/stow/stow-latest.tar.gz | tar xz >>"$LOG_FILE" 2>&1; then
@@ -294,10 +294,10 @@ check_glibc_headers() {
 
   # Set URL for the deb package with glibc headers
   GLIBC_DEV_DEB_URL="http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/libc6-dev_2.40-1ubuntu3_amd64.deb"
-  GLIBC_DEV_DEB="$BUILD_DIR/libc6-dev.deb"
-  GLIBC_DEV_DIR="$BUILD_DIR/glibc-dev"
+  GLIBC_DEV_DEB="$DOTS_BUILD_DIR/libc6-dev.deb"
+  GLIBC_DEV_DIR="$DOTS_BUILD_DIR/glibc-dev"
 
-  cd "$BUILD_DIR"
+  cd "$DOTS_BUILD_DIR"
   mkdir -p "$GLIBC_DEV_DIR"
 
   # Download glibc dev package

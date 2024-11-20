@@ -4,90 +4,73 @@ tap "buo/cask-upgrade"
 
 cask_args fontdir: "~/.local/share/fonts"
 
-# Mac Appstore management
-brew "mas" if OS.mac?
-# Cross-platform make
-# brew "cmake"
-# # GNU File, Shell, and Text utilities
-# brew "coreutils"
-# # Get a file from an HTTP, HTTPS or FTP server
-# brew "curl"
-# # File comparison utilities
-# brew "diffutils"
-# # Pack, ship and run any application as a lightweight container
-# brew "docker" if OS.mac?
-# # Platform keystore credential helper for Docker
-# brew "docker-credential-helper" if OS.mac?
-# # Simple, fast and user-friendly alternative to find
-# brew "fd"
-# # Collection of GNU find, xargs, and locate
-# brew "findutils"
-# # XML-based font configuration API for X Windows
-# brew "fontconfig"
-# # GNU awk utility
-# brew "gawk"
-# # GNU compiler collection
-# brew "gcc"
-# Distributed revision control system
-brew "git"
-# GNU implementation of the famous stream editor
-# brew "gnu-sed"
-# # GNU grep, egrep and fgrep
-# brew "grep"
-# # Lightweight and flexible command-line JSON processor
-# brew "jq"
-# Powerful, lightweight programming language
-# brew "lua"
-# Ambitious Vim-fork focused on extensibility and agility
-#brew "neovim"
-# Platform built on V8 to build network applications
-# brew "node"
-# Indents and reformats Perl scripts to make them easier to read
-# brew "perltidy"
 # Manage compile and link flags for libraries
 brew "pkg-config"
-# Interpreted, interactive, object-oriented programming language
-# brew "python@3.12"
-# Pack repository contents into a single AI-friendly file
-# brew "repomix"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
-# Powerful, clean, object-oriented scripting language
-# brew "ruby", args: ["HEAD"]
-# Static analysis and lint tool, for (ba)sh scripts
-# brew "shellcheck"
-# Autoformat shell script source code
-# brew "shfmt"
-# Simple keystroke visualizer
-# brew "showkey"
-# Cross-shell prompt for astronauts
-#brew "starship"
-# Organize software neatly under a single directory tree (e.g. /usr/local)
-#brew "stow"
-# Display directories as trees (with optional color/HTML output)
-# brew "tree"
-# Maintained ctags implementation
-# brew "universal-ctags"
-# Clean C library for processing UTF-8 Unicode data
-# brew "utf8proc", args: ["HEAD"]
-# Vi 'workalike' with many additional features
-#brew "vim"
+
+# # GNU compiler collection
+# brew "gcc"
+
+# Cross-platform make
+# brew "cmake"
+
+# # GNU File, Shell, and Text utilities
+# brew "coreutils"
+
+# # Collection of GNU find, xargs, and locate
+# brew "findutils"
+
+# # File comparison utilities
+# brew "diffutils"
+
+# # GNU awk utility
+# brew "gawk"
+
+# GNU implementation of the famous stream editor
+# brew "gnu-sed"
+
+# # GNU grep, egrep and fgrep
+# brew "grep"
+
+# # Lightweight and flexible command-line JSON processor
+# brew "jq"
+
+# # Simple, fast and user-friendly alternative to find
+# brew "fd"
+
+# # Get a file from an HTTP, HTTPS or FTP server
+# brew "curl"
+
 # Internet file retriever
 # brew "wget"
+
 # Check your $HOME for unwanted files and directories
 # brew "xdg-ninja"
-# Language Server for Yaml Files
-# brew "yaml-language-server"
-# JavaScript package manager
-# brew "yarn"
+
 # UNIX shell (command interpreter)
 #brew "zsh"
-# LDE
-brew "dreamhost/homebrew/lde", args: ["HEAD"] if OS.mac?
-# Client for the Dropbox cloud storage service
-cask "dropbox" if OS.mac?
-# Clipboard manager for developers
-cask "flycut" if OS.mac?
+
+# Maintained ctags implementation
+# brew "universal-ctags"
+
+# # XML-based font configuration API for X Windows
+# brew "fontconfig"
+
+# Indents and reformats Perl scripts to make them easier to read
+# brew "perltidy"
+
+# Simple keystroke visualizer
+# brew "showkey"
+
+# Organize software neatly under a single directory tree (e.g. /usr/local)
+#brew "stow"
+
+# Display directories as trees (with optional color/HTML output)
+# brew "tree"
+
+# Clean C library for processing UTF-8 Unicode data
+# brew "utf8proc", args: ["HEAD"]
+
+## Fonts
 cask "font-dejavu-sans-mono-nerd-font"
 cask "font-droid-sans-mono-nerd-font"
 cask "font-fira-code-nerd-font"
@@ -95,23 +78,48 @@ cask "font-hack-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-meslo-lg-nerd-font"
 cask "font-monaspace-nerd-font"
+
+## Casks
+
+# LDE
+brew "dreamhost/homebrew/lde", args: ["HEAD"] if OS.mac?
+
+# Dropbox cloud storage service
+cask "dropbox" if OS.mac?
+
+# Clipboard manager for developers
+cask "flycut" if OS.mac?
+
 # Keyboard shortcuts for every button on your screen
 cask "homerow" if OS.mac?
+
 # Terminal emulator as alternative to Apple's Terminal app
 # cask "iterm2"
+
 # Client program for the OpenVPN Access Server
 cask "openvpn-connect" if OS.mac?
+
 # Replacement for Docker Desktop
 cask "orbstack" if OS.mac?
+
 # Collaboration platform for API development
 cask "postman" if OS.mac?
+
 # Move and resize windows using keyboard shortcuts or snap areas
 cask "rectangle" if OS.mac?
+
 # Team communication and collaboration software
 cask "slack" if OS.mac?
+
 # Music streaming service
 cask "spotify" if OS.mac?
+
 # Open-source code editor
 # cask "visual-studio-code"
+
 # GPU-accelerated cross-platform terminal emulator and multiplexer
 cask "wezterm" if OS.mac?
+
+# Mac Appstore management
+brew "mas" if OS.mac?
+
