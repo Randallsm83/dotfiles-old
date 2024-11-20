@@ -1,125 +1,76 @@
-tap "dreamhost/homebrew", "git@git.dreamhost.com:dreamhost/homebrew-repo.git", force_auto_update: true if OS.mac?
 tap "homebrew/bundle"
 tap "buo/cask-upgrade"
+tap "dreamhost/homebrew", "git@git.dreamhost.com:dreamhost/homebrew-repo.git"
 
-cask_args fontdir: "~/.local/share/fonts"
+brew "libpng"
+brew "autoconf"
+brew "pkgconf"
+brew "autogen"
+brew "automake"
+brew "bison"
+brew "fontconfig"
+brew "openssl@3"
+brew "cmake"
+brew "coreutils"
+brew "curl"
+brew "diffutils"
+brew "findutils"
+brew "gawk"
+brew "gcc"
+brew "gd"
+brew "icu4c@76"
+brew "git"
+brew "gnu-sed"
+brew "gnupg"
+brew "grep"
+brew "imagemagick"
+brew "jpeg"
+brew "krb5"
+brew "libedit"
+brew "libiconv"
+brew "libsodium"
+brew "libxml2"
+brew "libzip"
+brew "make"
+brew "mas"
+brew "neofetch"
+brew "openldap"
+brew "perltidy"
+brew "re2c"
+brew "showkey"
+brew "stow"
+brew "tree"
+brew "universal-ctags"
+brew "utf8proc", args: ["HEAD"]
+brew "wget"
+brew "xdg-ninja"
+brew "zlib"
+brew "zsh"
 
-# Manage compile and link flags for libraries
-brew "pkg-config"
-
-# # GNU compiler collection
-# brew "gcc"
-
-# Cross-platform make
-# brew "cmake"
-
-# # GNU File, Shell, and Text utilities
-# brew "coreutils"
-
-# # Collection of GNU find, xargs, and locate
-# brew "findutils"
-
-# # File comparison utilities
-# brew "diffutils"
-
-# # GNU awk utility
-# brew "gawk"
-
-# GNU implementation of the famous stream editor
-# brew "gnu-sed"
-
-# # GNU grep, egrep and fgrep
-# brew "grep"
-
-# # Lightweight and flexible command-line JSON processor
-# brew "jq"
-
-# # Simple, fast and user-friendly alternative to find
-# brew "fd"
-
-# # Get a file from an HTTP, HTTPS or FTP server
-# brew "curl"
-
-# Internet file retriever
-# brew "wget"
-
-# Check your $HOME for unwanted files and directories
-# brew "xdg-ninja"
-
-# UNIX shell (command interpreter)
-#brew "zsh"
-
-# Maintained ctags implementation
-# brew "universal-ctags"
-
-# # XML-based font configuration API for X Windows
-# brew "fontconfig"
-
-# Indents and reformats Perl scripts to make them easier to read
-# brew "perltidy"
-
-# Simple keystroke visualizer
-# brew "showkey"
-
-# Organize software neatly under a single directory tree (e.g. /usr/local)
-#brew "stow"
-
-# Display directories as trees (with optional color/HTML output)
-# brew "tree"
-
-# Clean C library for processing UTF-8 Unicode data
-# brew "utf8proc", args: ["HEAD"]
-
-## Fonts
-cask "font-dejavu-sans-mono-nerd-font"
-cask "font-droid-sans-mono-nerd-font"
-cask "font-fira-code-nerd-font"
-cask "font-hack-nerd-font"
-cask "font-jetbrains-mono-nerd-font"
-cask "font-meslo-lg-nerd-font"
-cask "font-monaspace-nerd-font"
-
-## Casks
-
-# LDE
 brew "dreamhost/homebrew/lde", args: ["HEAD"] if OS.mac?
 
-# Dropbox cloud storage service
+cask "font-dejavu-sans-mono-nerd-font", args: { fontdir: "~/.local/share/fonts" }
+cask "font-droid-sans-mono-nerd-font", args: { fontdir: "~/.local/share/fonts" }
+cask "font-fira-code-nerd-font", args: { fontdir: "~/.local/share/fonts" }
+cask "font-hack-nerd-font", args: { fontdir: "~/.local/share/fonts" }
+cask "font-jetbrains-mono-nerd-font", args: { fontdir: "~/.local/share/fonts" }
+cask "font-meslo-lg-nerd-font", args: { fontdir: "~/.local/share/fonts" }
+cask "font-monaspace-nerd-font", args: { fontdir: "~/.local/share/fonts" }
+cask "font-new-york" if OS.mac?
+cask "font-sf-mono" if OS.mac?
+cask "font-sf-pro" if OS.mac?
+
 cask "dropbox" if OS.mac?
-
-# Clipboard manager for developers
 cask "flycut" if OS.mac?
-
-# Keyboard shortcuts for every button on your screen
 cask "homerow" if OS.mac?
-
-# Terminal emulator as alternative to Apple's Terminal app
-# cask "iterm2"
-
-# Client program for the OpenVPN Access Server
+#cask "iterm2" if OS.mac?
 cask "openvpn-connect" if OS.mac?
-
-# Replacement for Docker Desktop
 cask "orbstack" if OS.mac?
-
-# Collaboration platform for API development
 cask "postman" if OS.mac?
-
-# Move and resize windows using keyboard shortcuts or snap areas
 cask "rectangle" if OS.mac?
-
-# Team communication and collaboration software
 cask "slack" if OS.mac?
-
-# Music streaming service
 cask "spotify" if OS.mac?
-
-# Open-source code editor
-# cask "visual-studio-code"
-
-# GPU-accelerated cross-platform terminal emulator and multiplexer
+#cask "visual-studio-code" if OS.mac?
 cask "wezterm" if OS.mac?
 
-# Mac Appstore management
-brew "mas" if OS.mac?
-
+mas "Dashlane", id: 517914548 if OS.mac?
