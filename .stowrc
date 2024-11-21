@@ -10,7 +10,5 @@
 --ignore ^/COPYING
 --ignore install
 --ignore install.sh
---ignore bin
 --ignore iterm2
 --ignore p10k
---ignore spaceship

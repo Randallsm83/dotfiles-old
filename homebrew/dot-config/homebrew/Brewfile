@@ -59,14 +59,14 @@ cask "font-sf-pro" if OS.mac?
 cask "dropbox" if OS.mac?
 cask "flycut" if OS.mac?
 cask "homerow" if OS.mac?
-#cask "iterm2" if OS.mac?
+cask "iterm2" if OS.mac?
 cask "openvpn-connect" if OS.mac?
 cask "orbstack" if OS.mac?
 cask "postman" if OS.mac?
 cask "rectangle" if OS.mac?
 cask "slack" if OS.mac?
 cask "spotify" if OS.mac?
-#cask "visual-studio-code" if OS.mac?
+cask "visual-studio-code" if OS.mac?
 cask "wezterm" if OS.mac?
 
 mas "Dashlane", id: 517914548 if OS.mac?

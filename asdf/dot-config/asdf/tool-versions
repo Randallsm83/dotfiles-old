@@ -1,6 +1,7 @@
 direnv 2.35.0
 fd 10.2.0
 git 2.47.0
+golang 1.23.3
 jq 1.7.1
 lua 5.4.7
 luajit 2.1.0-beta3--3.11.1

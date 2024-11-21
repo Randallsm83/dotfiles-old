@@ -66,13 +66,10 @@ local scheme = wezterm.color.get_builtin_schemes()[theme]
 
 ------------------------- Font -----------------------------
 
-config.font_locator = "ConfigDirsOnly"
 config.font_dirs = { wezterm.home_dir .. "/.local/share/fonts" }
 config.font = wezterm.font_with_fallback({
-  "Hack Nerd Font",
-  "MonaspiceNe Nerd Font",
-  "MesloLGM Nerd Font",
-  "FiraCode Nerd Font",
+  "Hack Nerd Font Mono",
+  "FiraCode Nerd Font Mono",
 })
 config.font_size = 13.5
 config.line_height = 1.1
