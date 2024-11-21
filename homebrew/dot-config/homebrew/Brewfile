@@ -8,8 +8,8 @@ brew "pkgconf"
 brew "autogen"
 brew "automake"
 brew "bison"
-brew "fontconfig"
 brew "openssl@3"
+brew "ca-certificates"
 brew "cmake"
 brew "coreutils"
 brew "curl"
@@ -17,9 +17,7 @@ brew "diffutils"
 brew "findutils"
 brew "gawk"
 brew "gcc"
-brew "gd"
 brew "icu4c@76"
-brew "git"
 brew "gnu-getopt"
 brew "gnu-sed"
 brew "gnu-tar"
@@ -35,14 +33,9 @@ brew "libsodium"
 brew "libxml2"
 brew "libzip"
 brew "make"
-brew "mas" if OS.mac?
-brew "neofetch"
 brew "openldap"
 brew "perltidy"
 brew "re2c"
-brew "showkey"
-###########brew "stow"
-brew "tree"
 brew "universal-ctags"
 brew "utf8proc", args: ["HEAD"]
 brew "wget"
@@ -50,15 +43,15 @@ brew "xdg-ninja"
 brew "zlib"
 brew "zsh"
 
+brew "mas" if OS.mac?
+brew "fontconfig" if OS.mac?
+
 brew "dreamhost/homebrew/lde", args: ["HEAD"] if OS.mac?
 
-cask "font-dejavu-sans-mono-nerd-font", args: { fontdir: "~/.local/share/fonts" }
-cask "font-droid-sans-mono-nerd-font", args: { fontdir: "~/.local/share/fonts" }
-cask "font-fira-code-nerd-font", args: { fontdir: "~/.local/share/fonts" }
-cask "font-hack-nerd-font", args: { fontdir: "~/.local/share/fonts" }
-cask "font-jetbrains-mono-nerd-font", args: { fontdir: "~/.local/share/fonts" }
-cask "font-meslo-lg-nerd-font", args: { fontdir: "~/.local/share/fonts" }
-cask "font-monaspace-nerd-font", args: { fontdir: "~/.local/share/fonts" }
+cask "font-fira-code-nerd-font", args: { fontdir: "~/.local/share/fonts" } if OS.mac?
+cask "font-hack-nerd-font", args: { fontdir: "~/.local/share/fonts" } if OS.mac?
+cask "font-meslo-lg-nerd-font", args: { fontdir: "~/.local/share/fonts" } if OS.mac?
+cask "font-monaspace-nerd-font", args: { fontdir: "~/.local/share/fonts" } if OS.mac?
 cask "font-new-york" if OS.mac?
 cask "font-sf-mono" if OS.mac?
 cask "font-sf-pro" if OS.mac?

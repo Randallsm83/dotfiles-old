@@ -32,3 +32,5 @@
 	first-run = false
 [interactive]
 	diffFilter = diff-so-fancy --patch
+[url "git@github.com:"]
+	insteadOf = https://github.com/
