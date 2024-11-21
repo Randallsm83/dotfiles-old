@@ -38,7 +38,7 @@ alias ldelog="lde logs -ftall "
 
 # Nvim
 alias vi="nvim"
-alias vim="nvim"
+# alias vim="nvim"
 
 # Git
 alias gg='git grep -E'
