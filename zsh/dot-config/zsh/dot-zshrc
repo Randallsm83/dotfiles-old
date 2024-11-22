@@ -21,7 +21,6 @@ zplug "plugins/asdf", from:oh-my-zsh
 # ---- Language Plugins -------
 # zplug "lukechilds/zsh-nvm"
 # zplug "mattberther/zsh-pyenv"
-# zplug "orbstack/orbstack", defer:1
 # zplug "DhavalKapil/luaver"
 # zplug "wushenrong/zsh-plenv"
 
