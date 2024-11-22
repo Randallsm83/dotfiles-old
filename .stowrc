@@ -2,13 +2,13 @@
 --no-folding
 --dotfiles
 --verbose 2
---ignore .DS_Store
---ignore .git
---ignore .gitignore
---ignore ^/README.*
---ignore ^/LICENSE.*
---ignore ^/COPYING
---ignore install
---ignore install.sh
---ignore iterm2
---ignore p10k
+--ignore '\.DS_Store'
+--ignore '\.git'
+--ignore '\.gitignore'
+--ignore '^/README.*'
+--ignore '^/LICENSE.*'
+--ignore '^/COPYING'
+--ignore 'install'
+--ignore 'install.sh'
+--ignore 'iterm2'
+--ignore 'p10k'

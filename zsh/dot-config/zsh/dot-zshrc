@@ -122,8 +122,8 @@ esac
 # -- Starship
 eval "$(starship init zsh)"
 
-# -- thefuck
-eval "$(thefuck --alias)"
+# # -- thefuck
+# eval "$(thefuck --alias)"
 
 # -- Mise
 # eval "$(mise activate zsh)"

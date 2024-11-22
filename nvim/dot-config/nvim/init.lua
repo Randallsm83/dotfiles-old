@@ -871,7 +871,7 @@ require('lazy').setup({
           -- capabilities = {},
           settings = {
             perlnavigator = {
-              perlPath = '${ADSF_DATA_DIR}/shims/perl',
+              perlPath = '${ASDF_DATA_DIR}/shims/perl',
             },
           },
         },
