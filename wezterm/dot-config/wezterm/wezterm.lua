@@ -1,4 +1,4 @@
-local wezterm = require("wezterm")
+local wezterm = require("wezterm") --[[@as Wezterm]]
 
 local act = wezterm.action
 
@@ -65,127 +65,202 @@ local scheme = wezterm.color.get_builtin_schemes()[theme]
 -- local scheme = wezterm.color.load_scheme(wezterm.config_dir .. "/colors/MyKanagawa.toml")
 
 ------------------------- Font -----------------------------
-
+config.font_locator = "ConfigDirsOnly"
 config.font_dirs = { wezterm.home_dir .. "/.local/share/fonts" }
 config.font = wezterm.font_with_fallback({
-  "Hack Nerd Font Mono",
-  "FiraCode Nerd Font Mono",
+  { family = "Hack", scale = 1.0 },
+  { family = "Fira Code", scale = 1.0 },
+  { family = "Symbols Nerd Font Mono", scale = 1.1 },
+  { family = "Noto Color Emoji", scale = 1.0 },
 })
-config.font_size = 14
+config.font_size = 13
 config.line_height = 1.1
+config.use_cap_height_to_scale_fallback_fonts = true
+-- config.allow_square_glyphs_to_overflow_width = 'Never'
 
 ------------------------- Tabs -----------------------------
-
---- Tabline
-local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
-
--- Set the following that apply_to_config would do, but also
--- sets config.colors to a new object instead off appending its key
-
-config.tab_max_width = 32
-config.use_fancy_tab_bar = false
-config.tab_bar_at_bottom = true
-config.hide_tab_bar_if_only_one_tab = false
-config.show_new_tab_button_in_tab_bar = false
-config.colors.tab_bar = { background = scheme.background }
-config.status_update_interval = 500
-
-tabline.setup({
-  options = {
-    icons_enabled = true,
-    theme = theme,
-    color_overrides = {},
-    section_separators = {
-      left = wezterm.nerdfonts.pl_left_hard_divider,
-      right = wezterm.nerdfonts.pl_right_hard_divider,
+-- Bar (Tab Bar Plugin)
+local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
+bar.apply_to_config(config, {
+  padding = { left = 2, right = 3 },
+  separator = {
+    space = 2,
+    right_icon = '',
+    left_icon = wezterm.nerdfonts.oct_dot_fill,
+    field_icon = wezterm.nerdfonts.iec_power_on,
+    -- field_icon = wezterm.nerdfonts.indent_line,
+    -- left_icon = wezterm.nerdfonts.fa_long_arrow_right,
+    -- right_icon = wezterm.nerdfonts.fa_long_arrow_left,
+  },
+  modules = {
+    tabs = {
+      active_tab_fg = 3,
+      inactive_tab_fg = 8,
     },
-    component_separators = {
-      left = wezterm.nerdfonts.pl_left_soft_divider,
-      right = wezterm.nerdfonts.pl_right_soft_divider,
+    workspace = {
+      enabled = true,
+      icon = wezterm.nerdfonts.cod_window,
+      color = 4,
     },
-    tab_separators = {
-      left = wezterm.nerdfonts.pl_left_hard_divider,
-      right = wezterm.nerdfonts.pl_right_hard_divider,
+    leader = {
+      enabled = true,
+      icon = wezterm.nerdfonts.oct_rocket,
+      color = 2,
+    },
+    pane = {
+      enabled = false,
+      icon = wezterm.nerdfonts.cod_multiple_windows,
+      color = 7,
+    },
+    username = {
+      enabled = true,
+      icon = wezterm.nerdfonts.fa_user,
+      color = 6,
+    },
+    hostname = {
+      enabled = true,
+      icon = wezterm.nerdfonts.cod_server,
+      color = 5,
+    },
+    clock = {
+      enabled = true,
+      icon = wezterm.nerdfonts.md_calendar_clock,
+      color = 7,
+    },
+    cwd = {
+      enabled = false,
+      icon = wezterm.nerdfonts.oct_file_directory,
+      color = 7,
+    },
+    spotify = {
+      enabled = false,
+      icon = wezterm.nerdfonts.fa_spotify,
+      color = 3,
+      max_width = 64,
+      throttle = 15,
     },
   },
-  sections = {
-    tabline_a = { "hostname" },
-    tabline_b = { "workspace" },
-    -- tabline_c = { ' ' },
-    tab_active = {
-      { "index", zero_indexed = true },
-      { "parent", padding = { left = 0, right = 0 } },
-      "/",
-      { "cwd", padding = { left = 0, right = 1 } },
-      { "zoomed", padding = 0 },
-    },
-    tab_inactive = {
-      { "index", zero_indexed = true },
-      { "process", padding = { left = 0, right = 1 } },
-    },
-    tabline_x = { "ram", "cpu" },
-    tabline_y = { "battery" },
-    tabline_z = { "datetime" },
-  },
-  extensions = {},
 })
--- tabline.apply_to_config(config)
+config.show_new_tab_button_in_tab_bar = false
+config.hide_tab_bar_if_only_one_tab = false
+-- config.show_tab_index_in_tab_bar = false
 
-print(tabline.get_colors())
+-- config.colors.tab_bar.background =  scheme.background
+-- config.colors.tab_bar.active_tab.bg_color = scheme.background
+-- config.colors.tab_bar.inactive_tab.bg_color = scheme.background
+
+--- Tabline (YATBP)
+-- local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+--
+-- -- Set the following that apply_to_config would do, but also
+-- -- sets config.colors to a new object instead off appending its key
+--
+-- config.tab_max_width = 32
+-- config.use_fancy_tab_bar = false
+-- config.tab_bar_at_bottom = true
+-- config.hide_tab_bar_if_only_one_tab = false
+-- config.show_new_tab_button_in_tab_bar = false
+-- config.colors.tab_bar = { background = scheme.background }
+-- config.status_update_interval = 500
+--
+-- tabline.setup({
+--   options = {
+--     icons_enabled = true,
+--     theme = theme,
+--     color_overrides = {},
+--     section_separators = {
+--       left = wezterm.nerdfonts.pl_left_hard_divider,
+--       right = wezterm.nerdfonts.pl_right_hard_divider,
+--     },
+--     component_separators = {
+--       left = wezterm.nerdfonts.pl_left_soft_divider,
+--       right = wezterm.nerdfonts.pl_right_soft_divider,
+--     },
+--     tab_separators = {
+--       left = wezterm.nerdfonts.pl_left_soft_divider,
+--       right = wezterm.nerdfonts.pl_right_soft_divider,
+--     },
+--   },
+--   sections = {
+--     tabline_a = { "hostname" },
+--     tabline_b = { "workspace" },
+--     -- tabline_c = { ' ' },
+--     tab_active = {
+--       { "index", zero_indexed = true },
+--       { "parent", padding = { left = 0, right = 0 } },
+--       "/",
+--       { "cwd", padding = { left = 0, right = 1 } },
+--       { "zoomed", padding = 0 },
+--     },
+--     tab_inactive = {
+--       { "index", zero_indexed = true },
+--       { "process", padding = { left = 0, right = 1 } },
+--     },
+--     tabline_x = { "ram", "cpu" },
+--     tabline_y = { "battery" },
+--     tabline_z = { "datetime" },
+--   },
+--   extensions = {},
+-- })
+-- -- tabline.apply_to_config(config)
+--
+-- print(tabline.get_colors())
+--
+--
 -- Tab Bar Colors
 -- config.colors.tab_bar = {
--- Default ('Other', 'Options')
--- background = require("tabline.config").colors.normal_mode.c.bg, --"#282828", -- Not available with fancy tab bar
--- inactive_tab_edge = "#d65d0e", -- Only with fancy tab bar
--- active_tab = {
---   bg_color = "#d65d0e",
---   fg_color = "#d5c4a1",
+--   --Default ('Other', 'Options')
+--   background = require("tabline.config").colors.normal_mode.c.bg, --"#282828", -- Not available with fancy tab bar
+--   inactive_tab_edge = "#d65d0e", -- Only with fancy tab bar
+--   active_tab = {
+--     bg_color = "#d65d0e",
+--     fg_color = "#d5c4a1",
+--     italic = false, -- false
+--     strikethrough = false, -- false
+--     underline = "None", -- 'None' ('Single', 'Double')
+--     intensity = "Normal", -- 'Normal' ('Half', 'Bold')
+--   },
+--   inactive_tab = {
+--     bg_color = "#504945",
+--     fg_color = "#928374",
+--     italic = false, -- false
+--     strikethrough = false, -- false
+--     underline = "None", -- 'None' ('Single', 'Double')
+--     intensity = "Normal", -- 'Normal' ('Half', 'Bold')
+--   },
+--   inactive_tab_hover = {
+--     bg_color = "#7c6f64",
+--     fg_color = "#bdae93",
+--     italic = true, -- false
+--     strikethrough = false, -- false
+--     underline = "None", -- 'None' ('Single', 'Double')
+--     intensity = "Normal", -- 'Normal' ('Half', 'Bold')
+--   },
+--   new_tab = {
+--   bg_color = "#1b1032",
+--   fg_color = "#808080",
 --   italic = false, -- false
 --   strikethrough = false, -- false
 --   underline = "None", -- 'None' ('Single', 'Double')
 --   intensity = "Normal", -- 'Normal' ('Half', 'Bold')
--- },
--- inactive_tab = {
---   bg_color = "#504945",
---   fg_color = "#928374",
---   italic = false, -- false
---   strikethrough = false, -- false
---   underline = "None", -- 'None' ('Single', 'Double')
---   intensity = "Normal", -- 'Normal' ('Half', 'Bold')
--- },
--- inactive_tab_hover = {
---   bg_color = "#7c6f64",
---   fg_color = "#bdae93",
+--   },
+--   new_tab_hover = {
+--   bg_color = "#3b3052",
+--   fg_color = "#909090",
 --   italic = true, -- false
 --   strikethrough = false, -- false
 --   underline = "None", -- 'None' ('Single', 'Double')
 --   intensity = "Normal", -- 'Normal' ('Half', 'Bold')
--- },
--- new_tab = {
--- bg_color = "#1b1032",
--- fg_color = "#808080",
--- italic = false, -- false
--- strikethrough = false, -- false
--- underline = "None", -- 'None' ('Single', 'Double')
--- intensity = "Normal", -- 'Normal' ('Half', 'Bold')
--- },
--- new_tab_hover = {
--- bg_color = "#3b3052",
--- fg_color = "#909090",
--- italic = true, -- false
--- strikethrough = false, -- false
--- underline = "None", -- 'None' ('Single', 'Double')
--- intensity = "Normal", -- 'Normal' ('Half', 'Bold')
--- },
+--   },
 -- }
 
 -- Customize the fancy tab bar if in use
 -- config.window_frame = {
 --   font = wezterm.font({
---     family = "Hack Nerd Font",
+--     family = "Hack Nerd Font Mono",
 --     weight = "Bold",
 --   }),
---   -- font_size = 12.5, -- 12
+--   font_size = 14.5, -- 12
 --   -- active_titlebar_bg = "#282828",
 --   -- inactive_titlebar_bg = "#282828",
 -- }
@@ -226,13 +301,13 @@ config.visual_bell = {
   fade_out_function = "Ease",
   fade_out_duration_ms = 75,
 }
-config.colors.visual_bell = "#202020"
+config.colors.visual_bell = "#2c2d2c"
 
 -- Use scrollback buffer for scrolling through terminal history
 config.scrollback_lines = 10000
 
 -- Enable hardware acceleration if available
-config.animation_fps = 30
+config.animation_fps = 60
 config.front_end = "WebGpu"
 config.webgpu_power_preference = "HighPerformance"
 
@@ -245,17 +320,21 @@ config.swallow_mouse_click_on_pane_focus = true
 config.bypass_mouse_reporting_modifiers = "ALT"
 
 -- Keys - Quick Reference:
--- ALT + t: New tab
--- ALT + w: Close tab
--- ALT + ] | [: Previous/Next tab
--- ALT + r | d: Split horizontal/vertical
--- ALT + CTRL  + hjkl: Navigate panes
--- ALT + SHIFT + hjkl: Resize panes
--- ALT + z: Toggle zoom
--- ALT + f: Toggle fullscreen
--- ALT + s: Show workspaces
--- ALT + q: Quite application
--- ALT + /: Searc/h
+-- CTRL + ;             Leader
+-- ALT + t              New tab
+-- ALT + w              Close tab
+-- ALT + ] | [          Previous/Next tab
+-- ALT + z              Toggle zoom
+-- ALT + f              Toggle fullscreen
+-- ALT + s              Show workspaces
+-- ALT + q              Quit application
+-- ALT + /              Searc/h
+-- LEADER + r | d       Split horizontal/vertical
+-- LEADER + hjkl        Navigate panes
+-- LEADER + CTRL + hjkl Resize panes
+
+config.leader = { key = ";", mods = "CTRL", timeout_milliseconds = 1000 }
+
 config.keys = {
   -- Session/Window Management
   {
@@ -269,33 +348,33 @@ config.keys = {
   { key = "[", mods = "ALT", action = act.ActivateTabRelative(-1) },
 
   -- Pane Navigation
-  { key = "h", mods = "CTRL|ALT", action = act.ActivatePaneDirection("Left") },
-  { key = "j", mods = "CTRL|ALT", action = act.ActivatePaneDirection("Down") },
-  { key = "k", mods = "CTRL|ALT", action = act.ActivatePaneDirection("Up") },
-  { key = "l", mods = "CTRL|ALT", action = act.ActivatePaneDirection("Right") },
+  { key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
+  { key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
+  { key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
+  { key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
 
   -- Pane Resizing
   {
     key = "h",
-    mods = "CTRL|ALT|SHIFT",
+    mods = "LEADER|CTRL",
     action = act.AdjustPaneSize({ "Left", 5 }),
   },
   {
     key = "j",
-    mods = "CTRL|ALT|SHIFT",
+    mods = "LEADER|CTRL",
     action = act.AdjustPaneSize({ "Down", 5 }),
   },
-  { key = "k", mods = "CTRL|ALT|SHIFT", action = act.AdjustPaneSize({ "Up", 5 }) },
+  { key = "k", mods = "LEADER|CTRL", action = act.AdjustPaneSize({ "Up", 5 }) },
   {
     key = "l",
-    mods = "CTRL|ALT|SHIFT",
+    mods = "LEADER|CTRL",
     action = act.AdjustPaneSize({ "Right", 5 }),
   },
   { key = "z", mods = "ALT", action = act.TogglePaneZoomState },
 
   -- Quick Actions
-  { key = "d", mods = "ALT", action = act.SplitVertical },
-  { key = "r", mods = "ALT", action = act.SplitHorizontal },
+  { key = "d", mods = "LEADER", action = act.SplitVertical },
+  { key = "r", mods = "LEADER", action = act.SplitHorizontal },
 
   { key = "q", mods = "ALT", action = act.QuitApplication },
   { key = "Enter", mods = "ALT", action = act.ToggleFullScreen },

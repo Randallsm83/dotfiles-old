@@ -4,18 +4,18 @@
 [core]
 	editor = vim
 	pager = diff-so-fancy | less --tabs=4 -RFX
-[color]
-	ui = true
-	diff = auto
 [init]
-	defaultBranch = master
-[pull]
-	rebase = true
+	defaultBranch = main
 [push]
 	default = simple
 	autoSetupRemote = true
+[pull]
+	rebase = true
 [grep]
 	lineNumber = true
+[color]
+	ui = true
+	diff = auto
 [color "diff-highlight"]
 	oldNormal = 167 bold
 	oldHighlight = 167 reverse
@@ -33,4 +33,13 @@
 [interactive]
 	diffFilter = diff-so-fancy --patch
 [url "git@github.com:"]
-	insteadOf = https://github.com/
+	insteadOf = "https://github.com/"
+[branch]
+	sort = -committerdate
+[merge]
+	tool = "nvim"
+[mergetool]
+	keepBackup = false
+	prompt = false
+[mergetool "nvim"]
+	cmd = "nvim -d -c \"wincmd l\" -c \"norm ]c\" \"$LOCAL\" \"$MERGED\" \"$REMOTE\""

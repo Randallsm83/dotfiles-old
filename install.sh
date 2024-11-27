@@ -117,19 +117,19 @@ clone_dotfiles() {
 }
 
 source_env_vars() {
-  ENVDIR="$HOME/.config/env.d"
+  ENV_DIR="$HOME/.config/env.d"
   IGNORE_DIRS=("env" "asdf" "homebrew")
 
   # Source each base .conf file in env.d directory
-  if [ -d "$ENVDIR" ]; then
-    for conf in "$ENVDIR"/*.conf; do
+  if [ -d "$ENV_DIR" ]; then
+    for conf in "$ENV_DIR"/*.conf; do
       if [ -f "$conf" ]; then
         echo "Sourcing base environment file: $conf"
         source "$conf"
       fi
     done
   else
-    echo "Base environment directory $ENVDIR not found."
+    echo "Base environment directory $ENV_DIR not found."
   fi
 
   # Source each package-specific .conf file if it exists
