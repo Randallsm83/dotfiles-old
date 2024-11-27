@@ -79,11 +79,16 @@ setopt HIST_EXPIRE_DUPS_FIRST # Expire a duplicate event first when trimming his
 
 # ========================= Key Bindings =======================================
 
+# Emacs
 bindkey -e
 
 # -- History substring search
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+
+# ========================= Completion Settings ================================
+
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 # ========================= Visual Settings ====================================
 
@@ -121,8 +126,8 @@ esac
 # -- Starship
 eval "$(starship init zsh)"
 
-# # -- thefuck
-# eval "$(thefuck --alias)"
+# -- thefuck
+eval "$(thefuck --alias)"
 
 # -- Mise
 # eval "$(mise activate zsh)"

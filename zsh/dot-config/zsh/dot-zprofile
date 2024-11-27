@@ -15,16 +15,26 @@ elif [[ $(uname) == 'Linux' ]]; then
 fi
 export MACHINE_CORES="${cores:-4}"
 
-export ENVDIR="$HOME/.config/env.d"
-if [[ -d "$ENVDIR" ]]; then
-  for conf in "$ENVDIR"/*.conf; do
+export ENV_DIR="$HOME/.config/env.d"
+if [[ -d "$ENV_DIR" ]]; then
+  for conf in "$ENV_DIR"/*.conf; do
     [[ -r "$conf" ]] && source "$conf"
   done
 fi
 
-if command -v fc-cache &>/dev/null && [[ -d "$XDG_DATA_HOME/fonts" ]]; then
-  fc-cache -f "$XDG_DATA_HOME/fonts"
+if [[ ! -z "$ENV_DIRS" ]]; then
+  for dir in ${(s/:/)ENV_DIRS}; do
+    if [[ ! -d "$dir" ]]; then
+      mkdir -p "$dir"
+    fi
+  done
 fi
+
+# Loop through each directory in ENV_DIRS
+
+# if command -v fc-cache &>/dev/null && [[ -d "$XDG_DATA_HOME/fonts" ]]; then
+#   fc-cache -f "$XDG_DATA_HOME/fonts"
+# fi
 
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.
