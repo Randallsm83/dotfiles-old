@@ -1,10 +1,7 @@
 --------------------------------------------------------------------------------
 -- Nvim Config
 -- run `:checkhealth` for more info.
---
---------------------------------------------------------------------------------
--- Set <space> as the leader key
--- See `:help mapleader`
+
 --  NOTE: Even though mini.basics does this, we need it for keymaps
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -220,11 +217,23 @@ require('lazy').setup({
   },
   ----------------------------------------------------------------------------
   -- INFO: Colorschemes
-  { 'morhetz/gruvbox', name = 'gruvbox-morhetz', priority = 1000 },
-  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
-  { 'folke/tokyonight.nvim', name = 'tokyonight', priority = 1000 },
-  { 'rebelot/kanagawa.nvim', name = 'kanagawa', priority = 1000 },
-  { 'navarasu/onedark.nvim', name = 'onedark', priority = 1000 },
+  {
+    'ellisonleao/gruvbox.nvim',
+    name = 'gruvbox-ellisonleao',
+    priority = 1000,
+    opts = {},
+    config = function()
+      vim.o.background = 'dark'
+      vim.g.gruvbox_invert_selection = 0
+      vim.g.gruvbox_contrast_dark = 'medium'
+      vim.cmd.colorscheme('gruvbox')
+    end,
+  },
+  -- { 'morhetz/gruvbox', name = 'gruvbox-morhetz', lazy = true },
+  { 'catppuccin/nvim', name = 'catppuccin', lazy = true },
+  { 'folke/tokyonight.nvim', name = 'tokyonight', lazy = true },
+  { 'rebelot/kanagawa.nvim', name = 'kanagawa', lazy = true },
+  { 'navarasu/onedark.nvim', name = 'onedark', lazy = true },
 
   ----------------------------------------------------------------------------
   -- Simple loaded plugins
@@ -670,8 +679,14 @@ require('lazy').setup({
       library = {
         -- Load luvit types when the `vim.uv` word is found
         { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+        { path= 'wezterm-types', modes = {'wezterm'} },
       },
     },
+  },
+  ----------------------------------------------------------------------------
+  { -- INFO: Wezterm Types
+    'justinsgithub/wezterm-types',
+    lazy = true,
   },
   ----------------------------------------------------------------------------
   { -- INFO: Luvit
@@ -845,6 +860,7 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+      local perl_path = (vim.loop.os_getenv("ASDF_DATA_DIR") .. '/shims/perl') or '/usr/bin/env perl'
       local servers = {
         -- See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -871,7 +887,8 @@ require('lazy').setup({
           -- capabilities = {},
           settings = {
             perlnavigator = {
-              perlPath = '${ASDF_DATA_DIR}/shims/perl',
+              perlPath = perl_path,
+              perlcriticEnabled = true
             },
           },
         },
@@ -904,6 +921,8 @@ require('lazy').setup({
         -- General
         'codespell',
         'editorconfig-checker',
+        -- Arduino
+        'arduino-language-server',
         -- Bash/Sh
         'bashls',
         'shellcheck',
@@ -1066,11 +1085,10 @@ require('lazy').setup({
           },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
-        }, {
           { name = 'path' },
           { name = 'buffer' },
           { name = 'cmdline' },
-        }
+        },
       }
     end,
   },
@@ -1113,14 +1131,27 @@ require('lazy').setup({
         'bash',
         'c',
         'diff',
+        'fish',
+        'gitcommit',
+        'go',
         'html',
+        'javascript',
         'lua',
         'luadoc',
         'markdown',
         'markdown_inline',
+        'nginx',
+        'perl',
+        'php',
+        'python',
         'query',
+        'ruby',
+        'rust',
+        'ssh_config',
+        'typescript',
         'vim',
         'vimdoc',
+        'yaml',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
@@ -1291,11 +1322,6 @@ vim.api.nvim_create_user_command('FormatEnable', function(args)
 end, { desc = 'Re-enable autoformat-on-save' })
 
 ----------------------------------------------------------------------------
--- Colorscheme
-vim.o.background = 'dark'
-vim.g.gruvbox_invert_selection = 0
-vim.g.gruvbox_contrast_dark = 'medium'
-vim.cmd.colorscheme 'gruvbox'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

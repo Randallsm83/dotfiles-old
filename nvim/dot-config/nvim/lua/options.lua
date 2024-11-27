@@ -36,5 +36,6 @@ vim.opt.scrolloff = 10
 
 -- Smoother scrolling
 vim.opt.lazyredraw = true
+vim.opt.smoothscroll = true
 
 -- vim: ts=2 sts=2 sw=2 et
