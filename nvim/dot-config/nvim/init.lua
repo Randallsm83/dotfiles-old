@@ -218,9 +218,21 @@ require('lazy').setup({
   ----------------------------------------------------------------------------
   -- INFO: Colorschemes
   {
+    'sainnhe/gruvbox-material',
+    name = 'gruvbox_material',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.o.background = 'dark'
+      vim.g.gruvbox_material_enable_italic = true
+      vim.g.gruvbox_material_background = 'hard'
+      vim.cmd [[colorscheme gruvbox-material]]
+    end,
+  },
+  {
     'ellisonleao/gruvbox.nvim',
     name = 'gruvbox-ellisonleao',
-    priority = 1000,
+    lazy = true,
     opts = {
       terminal_colors = true,
       undercurl = true,
@@ -239,7 +251,7 @@ require('lazy').setup({
       invert_tabline = false,
       invert_intend_guides = false,
       inverse = true, -- invert background for search, diffs, statuslines and errors
-      contrast = "hard", -- can be "hard", "soft" or empty string
+      contrast = 'hard', -- can be "hard", "soft" or empty string
       palette_overrides = {},
       overrides = {},
       dim_inactive = false,
@@ -247,12 +259,9 @@ require('lazy').setup({
     },
     config = function()
       vim.o.background = 'dark'
-      -- vim.g.gruvbox_invert_selection = 0
-      -- vim.g.gruvbox_contrast_dark = 'medium'
-      vim.cmd.colorscheme('gruvbox')
     end,
   },
-  -- { 'morhetz/gruvbox', name = 'gruvbox-morhetz', lazy = true },
+  { 'morhetz/gruvbox', name = 'gruvbox-morhetz', lazy = true },
   { 'catppuccin/nvim', name = 'catppuccin', lazy = true },
   { 'folke/tokyonight.nvim', name = 'tokyonight', lazy = true },
   { 'rebelot/kanagawa.nvim', name = 'kanagawa', lazy = true },
@@ -337,7 +346,7 @@ require('lazy').setup({
     'nvim-lualine/lualine.nvim',
     opts = {
       icons_enabled = true,
-      theme = 'gruvbox',
+      theme = 'gruvbox-material',
       component_separators = { left = '', right = '' },
       section_separators = { left = '', right = '' },
       disabled_filetypes = {
@@ -643,7 +652,11 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
+        pickers = {
+          find_files = {
+            follow = true,
+          },
+        },
         extensions = {
           ['ui-select'] = { require('telescope.themes').get_dropdown() },
         },
@@ -684,10 +697,15 @@ require('lazy').setup({
         }
       end, { desc = '[S]earch [/] in Open Files' })
 
-      -- Shortcut for searching your Neovim configuration files
+      -- Search Neovim config files
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+
+      -- Search dotfiles
+      vim.keymap.set('n', '<leader>sm', function()
+        builtin.find_files { cwd = vim.fn.getenv 'DOTFILES' }
+      end, { desc = '[S]earch [M]y Dotfiles' })
     end,
   },
   ----------------------------------------------------------------------------
@@ -702,7 +720,7 @@ require('lazy').setup({
       library = {
         -- Load luvit types when the `vim.uv` word is found
         { path = 'luvit-meta/library', words = { 'vim%.uv' } },
-        { path= 'wezterm-types', modes = {'wezterm'} },
+        { path = 'wezterm-types', modes = { 'wezterm' } },
       },
     },
   },
@@ -883,7 +901,9 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      local perl_path = (vim.loop.os_getenv("ASDF_DATA_DIR") .. '/shims/perl') or '/usr/bin/env perl'
+      local perl_path = vim.fn.getenv 'ASDF_DATA_DIR'
+      perl_path = (perl_path and perl_path .. '/shims/perl') or '/usr/bin/env perl'
+
       local servers = {
         -- See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -911,7 +931,7 @@ require('lazy').setup({
           settings = {
             perlnavigator = {
               perlPath = perl_path,
-              perlcriticEnabled = true
+              perlcriticEnabled = true,
             },
           },
         },
@@ -921,7 +941,7 @@ require('lazy').setup({
           -- capabilities = {},
           settings = {
             Lua = {
-              workspace = { checkThirdParty = false, library = vim.api.nvim_get_runtime_file("", true) },
+              workspace = { checkThirdParty = false, library = vim.api.nvim_get_runtime_file('', true) },
               completion = { callSnippet = 'Both', keywordSnippet = 'Both' },
               diagnostics = { disable = { 'missing-fields' }, gloabls = { 'vim' } },
             },
@@ -1199,15 +1219,19 @@ require('lazy').setup({
     'epwalsh/obsidian.nvim',
     version = '*', -- recommended, use latest release instead of latest commit
     lazy = true,
-    ft = 'markdown',
+    -- ft = 'markdown',
     -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-    -- event = {
-    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
-    --   -- refer to `:h file-pattern` for more examples
-    --   "BufReadPre path/to/my-vault/*.md",
-    --   "BufNewFile path/to/my-vault/*.md",
-    -- },
+    event = {
+      -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+      -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
+      -- refer to `:h file-pattern` for more examples
+      'BufReadPre '
+        .. vim.fn.expand '~'
+        .. '/vaults/personal/*.md',
+      'BufNewFile ' .. vim.fn.expand '~' .. '/vaults/personal/*.md',
+      'BufReadPre ' .. vim.fn.expand '~' .. '/vaults/work/*.md',
+      'BufNewFile ' .. vim.fn.expand '~' .. '/vaults/work/*.md',
+    },
     dependencies = {
       -- Required.
       'nvim-lua/plenary.nvim',
@@ -1240,9 +1264,6 @@ require('lazy').setup({
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   -- { import = 'custom.plugins' },
 }, {
-  install = {
-    colorscheme = { 'gruvbox' },
-  },
   checker = {
     -- automatically check for plugin updates
     enabled = true,
@@ -1251,17 +1272,20 @@ require('lazy').setup({
     check_pinned = false, -- check for pinned packages that can't be updated
   },
   performance = {
+    cache = {
+      enabled = true,
+    },
     rtp = {
       disabled_plugins = {
         -- Add disabled plugins here
-        -- "gzip",
+        'gzip',
         -- "matchit",
         -- "matchparen",
-        -- "netrwPlugin",
-        -- "tarPlugin",
-        -- "tohtml",
-        -- "tutor",
-        -- "zipPlugin",
+        'netrwPlugin',
+        'tarPlugin',
+        'tohtml',
+        'tutor',
+        'zipPlugin',
       },
     },
   },
