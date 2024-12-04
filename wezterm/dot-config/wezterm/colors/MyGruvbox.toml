@@ -1,19 +1,51 @@
 [colors]
-ansi = [ "#282828", "#fb4934", "#98971a", "#d79921", "#458588", "#b16286", "#689d6a", "#a89984" ]
+ansi = [ "#282828", "#cc241d", "#98971a", "#d79921", "#458588", "#b16286", "#689d6a", "#a89984" ]
 # bg0, neutral_red, neutral_green, neutral_yellow, neutral_blue, neutral_purple, neutral_aqua, fg4
-background = '#1d2021'
 # gray, bright_red, bright_green, bright_yellow, bright_blue, bright_purple, bright_aqua, fg1
 brights = [ "#928374", "#fb4934", "#b8bb26", "#fabd2f", "#83a598", "#d3869b", "#8ec07c", "#ebdbb2" ]
 
-cursor_bg = '#c8c093'
-cursor_border = '#c8c093'
-cursor_fg = '#c8c093'
-foreground = '#dcd7ba'
-selection_bg = '#2d4f67'
-selection_fg = '#c8c093'
+background = '#282828'
+foreground = '#ebdbb2'
+
+cursor_fg = '#282828'
+cursor_bg = '#ebdbb2'
+cursor_border = '#ebdbb2'
+selection_fg = '#ebdbb2'
+selection_bg = '#3c3836'
 
 [colors.indexed]
 
 [metadata]
 author = 'Me'
 name = 'MyGruvbox' # Based off ellisonleao/gruvbox.nvim
+# Gruvbox (Gogh) for reference
+# {
+#     "ansi": [
+#         "#282828",
+#         "#cc241d",
+#         "#98971a",
+#         "#d79921",
+#         "#458588",
+#         "#b16286",
+#         "#689d6a",
+#         "#a89984",
+#     ],
+#     "background": "#282828",
+#     "brights": [
+#         "#928374",
+#         "#fb4934",
+#         "#b8bb26",
+#         "#fabd2f",
+#         "#83a598",
+#         "#d3869b",
+#         "#8ec07c",
+#         "#ebdbb2",
+#     ],
+#     "cursor_bg": "#ebdbb2",
+#     "cursor_border": "#ebdbb2",
+#     "cursor_fg": "#282828",
+#     "foreground": "#ebdbb2",
+#     "indexed": [],
+#     "selection_bg": "#665c54",
+#     "selection_fg": "#ebdbb2",
+# }

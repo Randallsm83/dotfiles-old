@@ -1,578 +1,155 @@
 local wezterm = require("wezterm") --[[@as Wezterm]]
-
-local act = wezterm.action
+local mux = wezterm.mux
 
 local config = {}
 if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
--------------------- Colorscheme ----------------------------
+-------------------- Colorscheme -----------------------------------------------
 
-config.colors = {} -- So we can append keys instead of writing a whole new object later
-
---- Gruvbox
--- https://github.com/morhetz/gruvbox?tab=readme-ov-file#palette
--- fg #ebdbb2, fg0 #fbf1c7, fg1 #ebdbb2, fg2 #d5c4a1, fg3 #bdae93, fg4 #a89984
--- bg #282828, bg0 #282828, bg1 #3c3836, bg2 #504945, bg3 #665c54, bg4 #7c6f64, bg0_soft #32302f, bg0_hard #1d2021
--- normal gray #928374, red #cc241d, green #98971a, yellow #d79921, blue #458588, purple #b16286, aqua #689d6a, orange #d65d0e
--- bright gray #a89984, red #fb4934, green #b8bb26, yellow #fadb2f, blue #83a598, purple #d3869b, aqua #8ec07c, orange #fe8019
---
--- Or even better https://github.com/ellisonleao/gruvbox.nvim
-  -- dark0_hard = "#1d2021",
-  -- dark0 = "#282828",
-  -- dark0_soft = "#32302f",
-  -- dark1 = "#3c3836",
-  -- dark2 = "#504945",
-  -- dark3 = "#665c54",
-  -- dark4 = "#7c6f64",
-  -- light0_hard = "#f9f5d7",
-  -- light0 = "#fbf1c7",
-  -- light0_soft = "#f2e5bc",
-  -- light1 = "#ebdbb2",
-  -- light2 = "#d5c4a1",
-  -- light3 = "#bdae93",
-  -- light4 = "#a89984",
-  -- bright_red = "#fb4934",
-  -- bright_green = "#b8bb26",
-  -- bright_yellow = "#fabd2f",
-  -- bright_blue = "#83a598",
-  -- bright_purple = "#d3869b",
-  -- bright_aqua = "#8ec07c",
-  -- bright_orange = "#fe8019",
-  -- neutral_red = "#cc241d",
-  -- neutral_green = "#98971a",
-  -- neutral_yellow = "#d79921",
-  -- neutral_blue = "#458588",
-  -- neutral_purple = "#b16286",
-  -- neutral_aqua = "#689d6a",
-  -- neutral_orange = "#d65d0e",
-  -- faded_red = "#9d0006",
-  -- faded_green = "#79740e",
-  -- faded_yellow = "#b57614",
-  -- faded_blue = "#076678",
-  -- faded_purple = "#8f3f71",
-  -- faded_aqua = "#427b58",
-  -- faded_orange = "#af3a03",
-  -- dark_red_hard = "#792329",
-  -- dark_red = "#722529",
-  -- dark_red_soft = "#7b2c2f",
-  -- light_red_hard = "#fc9690",
-  -- light_red = "#fc9487",
-  -- light_red_soft = "#f78b7f",
-  -- dark_green_hard = "#5a633a",
-  -- dark_green = "#62693e",
-  -- dark_green_soft = "#686d43",
-  -- light_green_hard = "#d3d6a5",
-  -- light_green = "#d5d39b",
-  -- light_green_soft = "#cecb94",
-  -- dark_aqua_hard = "#3e4934",
-  -- dark_aqua = "#49503b",
-  -- dark_aqua_soft = "#525742",
-  -- light_aqua_hard = "#e6e9c1",
-  -- light_aqua = "#e8e5b5",
-  -- light_aqua_soft = "#e1dbac",
-  -- gray = "#928374",
---
- -- dark = {
- --      bg0 = p.dark0,
- --      bg1 = p.dark1,
- --      bg2 = p.dark2,
- --      bg3 = p.dark3,
- --      bg4 = p.dark4,
- --      fg0 = p.light0,
- --      fg1 = p.light1,
- --      fg2 = p.light2,
- --      fg3 = p.light3,
- --      fg4 = p.light4,
- --      red = p.bright_red,
- --      green = p.bright_green,
- --      yellow = p.bright_yellow,
- --      blue = p.bright_blue,
- --      purple = p.bright_purple,
- --      aqua = p.bright_aqua,
- --      orange = p.bright_orange,
- --      neutral_red = p.neutral_red,
- --      neutral_green = p.neutral_green,
- --      neutral_yellow = p.neutral_yellow,
- --      neutral_blue = p.neutral_blue,
- --      neutral_purple = p.neutral_purple,
- --      neutral_aqua = p.neutral_aqua,
- --      dark_red = p.dark_red,
- --      dark_green = p.dark_green,
- --      dark_aqua = p.dark_aqua,
- --      gray = p.gray,
- --    },
---
--- term_colors = {
---       colors.bg0,
---       colors.neutral_red,
---       colors.neutral_green,
---       colors.neutral_yellow,
---       colors.neutral_blue,
---       colors.neutral_purple,
---       colors.neutral_aqua,
---       colors.fg4,
---       colors.gray,
---       colors.red,
---       colors.green,
---       colors.yellow,
---       colors.blue,
---       colors.purple,
---       colors.aqua,
---       colors.fg1,
---     }
-
--- local theme = "GruvboxDark"
--- local theme = "GruvboxDarkHard"
-local theme = "Gruvbox Dark (Gogh)"
--- local theme = "Gruvbox Material (Gogh)"
--- local theme = "Gruvbox dark, pale (base16)"
--- local theme = "Gruvbox dark, soft (base16)"
--- local theme = "Gruvbox dark, medium (base16)"
--- local theme = "Gruvbox dark, hard (base16)"
-
---- Dracula
--- local theme = "Dracula+"
--- local theme = "Dracula (Gogh)"
--- local theme = "Dracula (Official)"
-
---- One Dark
--- local theme = "One Dark (Gogh)"
--- local theme = "OneDark (base16)"
-
---- Kanagawa
--- local theme = "Kanagawa"
--- local theme = "Kanagawa (Gogh)"
-
---- Tokyo Nights
--- local theme = "Tokyo Night"
--- local theme = "Tokyo Night Storm"
--- local theme = "Tokyo Night Moon"
-
---- Catppuccin
--- local theme = "catppuccin-frappe"
--- local theme = "catppuccin-macchiato"
--- local theme = "catppuccin-mocha"
-
---- Chalk
--- local theme = "Chalk"
--- local theme = "Chalk (Gogh)"
--- local theme = "Chalk (dark) (terminal.sexy)"
-
---- Gogh
--- local theme = "Gogh (Gogh)"
+local theme = "Gruvbox Material (Gogh)"
+-- local theme = "Gruvbox Dark (Gogh)"
+local scheme = wezterm.color.get_builtin_schemes()[theme]
 
 config.color_scheme = theme
 
-local scheme = wezterm.color.get_builtin_schemes()[theme]
--- Or for custom scheme
--- local scheme = wezterm.color.load_scheme(wezterm.config_dir .. "/colors/MyKanagawa.toml")
+-- So we can append keys instead of writing a whole new object later
+config.colors = {}
 
-------------------------- Font -----------------------------
-config.font_locator = "ConfigDirsOnly"
+------------------------- Font -------------------------------------------------
+
+-- config.font_locator = "ConfigDirsOnly"
 config.font_dirs = { wezterm.home_dir .. "/.local/share/fonts" }
+
+config.font_size = 13
+config.line_height = 1.1
+config.use_cap_height_to_scale_fallback_fonts = true
+-- config.allow_square_glyphs_to_overflow_width = 'Never'
+
 config.font = wezterm.font_with_fallback({
   { family = "Hack", scale = 1.0 },
   { family = "Fira Code", scale = 1.0 },
   { family = "Symbols Nerd Font Mono", scale = 1.1 },
   { family = "Noto Color Emoji", scale = 1.0 },
 })
-config.font_size = 13
-config.line_height = 1.1
-config.use_cap_height_to_scale_fallback_fonts = true
--- config.allow_square_glyphs_to_overflow_width = 'Never'
 
-------------------------- Tabs -----------------------------
--- Bar (Tab Bar Plugin)
-local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
-bar.apply_to_config(config, {
-  padding = { left = 2, right = 3 },
-  separator = {
-    space = 2,
-    right_icon = '',
-    left_icon = wezterm.nerdfonts.oct_dot_fill,
-    field_icon = wezterm.nerdfonts.iec_power_on,
-    -- field_icon = wezterm.nerdfonts.indent_line,
-    -- left_icon = wezterm.nerdfonts.fa_long_arrow_right,
-    -- right_icon = wezterm.nerdfonts.fa_long_arrow_left,
-  },
-  modules = {
-    tabs = {
-      active_tab_fg = 3,
-      inactive_tab_fg = 8,
-    },
-    workspace = {
-      enabled = true,
-      icon = wezterm.nerdfonts.cod_window,
-      color = 4,
-    },
-    leader = {
-      enabled = true,
-      icon = wezterm.nerdfonts.oct_rocket,
-      color = 2,
-    },
-    pane = {
-      enabled = false,
-      icon = wezterm.nerdfonts.cod_multiple_windows,
-      color = 7,
-    },
-    username = {
-      enabled = true,
-      icon = wezterm.nerdfonts.fa_user,
-      color = 6,
-    },
-    hostname = {
-      enabled = true,
-      icon = wezterm.nerdfonts.cod_server,
-      color = 5,
-    },
-    clock = {
-      enabled = true,
-      icon = wezterm.nerdfonts.md_calendar_clock,
-      color = 7,
-    },
-    cwd = {
-      enabled = false,
-      icon = wezterm.nerdfonts.oct_file_directory,
-      color = 7,
-    },
-    spotify = {
-      enabled = false,
-      icon = wezterm.nerdfonts.fa_spotify,
-      color = 3,
-      max_width = 64,
-      throttle = 15,
-    },
-  },
-})
-config.show_new_tab_button_in_tab_bar = false
-config.hide_tab_bar_if_only_one_tab = false
--- config.show_tab_index_in_tab_bar = false
+------------------------- Tabs -------------------------------------------------
 
--- config.colors.tab_bar.background =  scheme.background
--- config.colors.tab_bar.active_tab.bg_color = scheme.background
--- config.colors.tab_bar.inactive_tab.bg_color = scheme.background
+local tab_bar = require("tabs")
+config = tab_bar.apply_to_config(config)
 
---- Tabline (YATBP)
--- local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
---
--- -- Set the following that apply_to_config would do, but also
--- -- sets config.colors to a new object instead off appending its key
---
--- config.tab_max_width = 32
--- config.use_fancy_tab_bar = false
--- config.tab_bar_at_bottom = true
--- config.hide_tab_bar_if_only_one_tab = false
--- config.show_new_tab_button_in_tab_bar = false
--- config.colors.tab_bar = { background = scheme.background }
--- config.status_update_interval = 500
---
--- tabline.setup({
---   options = {
---     icons_enabled = true,
---     theme = theme,
---     color_overrides = {},
---     section_separators = {
---       left = wezterm.nerdfonts.pl_left_hard_divider,
---       right = wezterm.nerdfonts.pl_right_hard_divider,
---     },
---     component_separators = {
---       left = wezterm.nerdfonts.pl_left_soft_divider,
---       right = wezterm.nerdfonts.pl_right_soft_divider,
---     },
---     tab_separators = {
---       left = wezterm.nerdfonts.pl_left_soft_divider,
---       right = wezterm.nerdfonts.pl_right_soft_divider,
---     },
---   },
---   sections = {
---     tabline_a = { "hostname" },
---     tabline_b = { "workspace" },
---     -- tabline_c = { ' ' },
---     tab_active = {
---       { "index", zero_indexed = true },
---       { "parent", padding = { left = 0, right = 0 } },
---       "/",
---       { "cwd", padding = { left = 0, right = 1 } },
---       { "zoomed", padding = 0 },
---     },
---     tab_inactive = {
---       { "index", zero_indexed = true },
---       { "process", padding = { left = 0, right = 1 } },
---     },
---     tabline_x = { "ram", "cpu" },
---     tabline_y = { "battery" },
---     tabline_z = { "datetime" },
---   },
---   extensions = {},
--- })
--- -- tabline.apply_to_config(config)
---
--- print(tabline.get_colors())
---
---
--- Tab Bar Colors
--- config.colors.tab_bar = {
---   --Default ('Other', 'Options')
---   background = require("tabline.config").colors.normal_mode.c.bg, --"#282828", -- Not available with fancy tab bar
---   inactive_tab_edge = "#d65d0e", -- Only with fancy tab bar
---   active_tab = {
---     bg_color = "#d65d0e",
---     fg_color = "#d5c4a1",
---     italic = false, -- false
---     strikethrough = false, -- false
---     underline = "None", -- 'None' ('Single', 'Double')
---     intensity = "Normal", -- 'Normal' ('Half', 'Bold')
---   },
---   inactive_tab = {
---     bg_color = "#504945",
---     fg_color = "#928374",
---     italic = false, -- false
---     strikethrough = false, -- false
---     underline = "None", -- 'None' ('Single', 'Double')
---     intensity = "Normal", -- 'Normal' ('Half', 'Bold')
---   },
---   inactive_tab_hover = {
---     bg_color = "#7c6f64",
---     fg_color = "#bdae93",
---     italic = true, -- false
---     strikethrough = false, -- false
---     underline = "None", -- 'None' ('Single', 'Double')
---     intensity = "Normal", -- 'Normal' ('Half', 'Bold')
---   },
---   new_tab = {
---   bg_color = "#1b1032",
---   fg_color = "#808080",
---   italic = false, -- false
---   strikethrough = false, -- false
---   underline = "None", -- 'None' ('Single', 'Double')
---   intensity = "Normal", -- 'Normal' ('Half', 'Bold')
---   },
---   new_tab_hover = {
---   bg_color = "#3b3052",
---   fg_color = "#909090",
---   italic = true, -- false
---   strikethrough = false, -- false
---   underline = "None", -- 'None' ('Single', 'Double')
---   intensity = "Normal", -- 'Normal' ('Half', 'Bold')
---   },
--- }
+------------------ Windows and Panes -------------------------------------------
 
--- Customize the fancy tab bar if in use
--- config.window_frame = {
---   font = wezterm.font({
---     family = "Hack Nerd Font Mono",
---     weight = "Bold",
---   }),
---   font_size = 14.5, -- 12
---   -- active_titlebar_bg = "#282828",
---   -- inactive_titlebar_bg = "#282828",
--- }
-
------------------- Windows and Panes -----------------------
-
--- Window configuration
-config.initial_rows = 86
-config.initial_cols = 254
+-- Window Configuration
 config.enable_scroll_bar = false
 config.window_decorations = "RESIZE"
 config.native_macos_fullscreen_mode = false
 config.adjust_window_size_when_changing_font_size = false
 
+wezterm.on("gui-startup", function(cmd)
+  ---@diagnostic disable-next-line: unused-local
+  local tab, pane, window = mux.spawn_window(cmd or {})
+  window:gui_window():set_position(2560, 0)
+  window:gui_window():set_inner_size(5120, 3240)
+end)
+
+-- Window Opacity
 config.window_background_opacity = 0.92
 config.macos_window_background_blur = 30
 
 -- Window Padding
-config.window_padding = { top = 0, left = 0, right = 0, bottom = 0 }
+config.window_padding = { top = 2, left = 2, right = 2, bottom = 2 }
 
--- Dim inactive panes
-config.inactive_pane_hsb = { saturation = 0.9, brightness = 0.7 }
+-- Dim Inactive Panes
+config.inactive_pane_hsb = { saturation = 0.9, brightness = 0.8 }
 
--- Pane split color
+-- Pane Split Color
 config.colors.split = scheme.ansi[4]
 
---------------------------------------------------------------------------------
+------------------------------ Misc --------------------------------------------
+
+-- Mouse
+config.swallow_mouse_click_on_pane_focus = true
+config.bypass_mouse_reporting_modifiers = "ALT"
+
 -- Cursor
-config.cursor_blink_rate = 800
+---@diagnostic disable-next-line: assign-type-mismatch
+config.default_cursor_style = "SteadyBlock"
 config.force_reverse_video_cursor = true
-config.default_cursor_style = "BlinkingBlock"
+-- config.cursor_blink_rate = 800
 
 -- Bell
+---@diagnostic disable-next-line: assign-type-mismatch
 config.audible_bell = "Disabled"
+config.colors.visual_bell = "#2c2d2c"
 config.visual_bell = {
   fade_in_function = "Ease",
   fade_in_duration_ms = 75,
   fade_out_function = "Ease",
   fade_out_duration_ms = 75,
 }
-config.colors.visual_bell = "#2c2d2c"
 
--- Use scrollback buffer for scrolling through terminal history
+-- Scrollback
 config.scrollback_lines = 10000
 
--- Enable hardware acceleration if available
-config.animation_fps = 60
+-- Performance
+config.animation_fps = 120
+config.max_fps = 120
 config.front_end = "WebGpu"
 config.webgpu_power_preference = "HighPerformance"
 
--- Automatically reload config when it's changed
+-- Auto Update and Reload Config
 config.check_for_updates = true
 config.automatically_reload_config = true
 
--- Mouse
-config.swallow_mouse_click_on_pane_focus = true
-config.bypass_mouse_reporting_modifiers = "ALT"
+-- Charselect
+config.char_select_font_size = 15
+config.char_select_bg_color = "#282828"
+config.char_select_fg_color = "#ebdbb2"
 
--- Keys - Quick Reference:
--- CTRL + ;             Leader
--- ALT + t              New tab
--- ALT + w              Close tab
--- ALT + ] | [          Previous/Next tab
--- ALT + z              Toggle zoom
--- ALT + f              Toggle fullscreen
--- ALT + s              Show workspaces
--- ALT + q              Quit application
--- ALT + /              Searc/h
--- LEADER + r | d       Split horizontal/vertical
--- LEADER + hjkl        Navigate panes
--- LEADER + CTRL + hjkl Resize panes
+-- Command Palette
+config.command_palette_font_size = 15
+config.command_palette_bg_color = "#282828"
+config.command_palette_fg_color = "#ebdbb2"
 
+------------------------------ Key Mappings ------------------------------------
+
+-- CTRL + ;                     Leader
+
+------------------------ Tabs -----------------------------------
+-- LEADER | CMD + t             New tab
+-- LEADER | CMD + w             Close tab
+-- LEADER | CMD + ( 1-9 )       Activate a tab
+-- CMD + SHIFT + ( ] | [ )      Previous/Next tab
+
+------------------------ Panes ----------------------------------
+-- LEADER + z                   Toggle pane zoom
+-- LEADER + d | e               Split pane horizontal | vertical
+-- LEADER + hjkl                Navigate panes
+-- LEADER + CTRL + hjkl         Resize panes
+
+---------------------- Application ------------------------------
+-- LEADER | CMD + Enter         Toggle fullscreen
+-- LEADER | CMD + /             Searc/h
+-- LEADER | CMD + k             Clear scrollback
+-- LEADER | CMD + n             Spawn window
+-- LEADER | CMD + q             Quit application
+-- LEADER | CMD + r             Reload config
+-- LEADER | CMD + c             Copy
+-- LEADER | CMD + v             Paste
+-- LEADER + x                   Copy mode
+-- LEADER + s                   Show workspaces
+-- LEADER + Space               Quick select
+-- CMD + SHIFT +  u             Char select
+-- CMD + SHIFT + ( l | p )      Debug Overlay | Command Palette
+-- CMD + ( 0 | - | = )          Reset/Decrease/Increase font size
+
+config.disable_default_key_bindings = true
 config.leader = { key = ";", mods = "CTRL", timeout_milliseconds = 1000 }
 
-config.keys = {
-  -- Session/Window Management
-  {
-    key = "s",
-    mods = "ALT",
-    action = act.ShowLauncherArgs({ flags = "WORKSPACES" }),
-  }, -- Tab Management
-  { key = "t", mods = "ALT", action = act.SpawnTab("CurrentPaneDomain") },
-  { key = "w", mods = "ALT", action = act.CloseCurrentTab({ confirm = true }) },
-  { key = "]", mods = "ALT", action = act.ActivateTabRelative(1) },
-  { key = "[", mods = "ALT", action = act.ActivateTabRelative(-1) },
-
-  -- Pane Navigation
-  { key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
-  { key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
-  { key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
-  { key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
-
-  -- Pane Resizing
-  {
-    key = "h",
-    mods = "LEADER|CTRL",
-    action = act.AdjustPaneSize({ "Left", 5 }),
-  },
-  {
-    key = "j",
-    mods = "LEADER|CTRL",
-    action = act.AdjustPaneSize({ "Down", 5 }),
-  },
-  { key = "k", mods = "LEADER|CTRL", action = act.AdjustPaneSize({ "Up", 5 }) },
-  {
-    key = "l",
-    mods = "LEADER|CTRL",
-    action = act.AdjustPaneSize({ "Right", 5 }),
-  },
-  { key = "z", mods = "ALT", action = act.TogglePaneZoomState },
-
-  -- Quick Actions
-  { key = "d", mods = "LEADER", action = act.SplitVertical },
-  { key = "r", mods = "LEADER", action = act.SplitHorizontal },
-
-  { key = "q", mods = "ALT", action = act.QuitApplication },
-  { key = "Enter", mods = "ALT", action = act.ToggleFullScreen },
-
-  { key = "/", mods = "ALT", action = act.Search({ CaseInSensitiveString = "" }) },
-}
-
--- Workspace Layout Functions
--- local function single_editor(window, pane)
---     -- Main editor pane
---     pane:send_text("nvim .\n")
---
---     local right_pane = pane:split({direction = "Right", size = 0.3})
---
---     local bottom_right = right_pane:split({direction = "Bottom", size = 0.5})
---
---     -- Terminal commands
---     right_pane:send_text("lde status\n")
---     bottom_right:send_text("lde logs\n")
--- end
---
--- local function dual_editor(window, pane)
---     pane:send_text("nvim .\n")
---
---     -- Terminal on right
---     local right_pane = pane:split({direction = "Right", size = 0.3})
---
---     -- Bottom for git/utilities
---     local bottom_pane = right_pane:split({direction = "Bottom", size = 0.4})
---
---     -- Commands
---     right_pane:send_text("lde status\n")
---     bottom_pane:send_text("lde logs\n")
--- end
---
--- -- Add keys for layouts
--- table.insert(config.keys, {
---     key = "p",
---     mods = "ALT|SHIFT",
---     action = act.PromptInputLine({
---         description = "Enter project directory",
---         action = wezterm.action_callback(
---             function(window, pane, line)
---                 if line then
---                     -- Change to project directory
---                     pane:send_text("cd " .. line .. "\n")
---                     -- Show layout selector
---                     window:perform_action(act.InputSelector({
---                         title = "Select Layout",
---                         choices = {
---                             {label = "Single Editor", id = "single"},
---                             {label = "Dual Editor", id = "dual"}
---                         },
---                         action = wezterm.action_callback(
---                             function(inner_window, inner_pane, id, label)
---                                 if id == "single" then
---                                     single_editor(inner_window, inner_pane)
---                                 elseif id == "dual" then
---                                     dual_editor(inner_window, inner_pane)
---                                 end
---                             end)
---                     }))
---                 end
---             end)
---     })
--- })
---
--- -- Direct layout shortcuts
--- local layout_keys = {
---     {key = "1", mods = "ALT|SHIFT", layout = single_editor},
---     {key = "2", mods = "ALT|SHIFT", layout = dual_editor}
--- }
---
--- for _, layout_key in ipairs(layout_keys) do
---     table.insert(config.keys, {
---         key = layout_key.key,
---         mods = layout_key.mods,
---         action = wezterm.action_callback(
---             function(window, pane) layout_key.layout(window, pane) end)
---     })
--- end
---
--- -- Workspace Management
--- wezterm.on("format-window-title", function(tab, pane, tabs)
---     local zoomed = ""
---     if tab.active_pane.is_zoomed then zoomed = "[Z] " end
---
---     local index = ""
---     if #tabs > 1 then
---         index = string.format("[%d/%d] ", tab.tab_index + 1, #tabs)
---     end
---
---     return zoomed .. index .. tab.active_pane.title
--- end)
+local keymaps = require("keymaps")
+config.keys = keymaps.keys
+config.key_tables = keymaps.key_tables
 
 return config
