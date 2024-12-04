@@ -3,7 +3,7 @@ fd 10.2.0
 git 2.47.0
 golang 1.23.3
 jq 1.7.1
-lua 5.4.7
+lua 5.1.5
 luajit 2.1.0-beta3
 neovim 0.10.2
 nodejs 23.2.0
