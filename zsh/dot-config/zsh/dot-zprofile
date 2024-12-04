@@ -9,8 +9,15 @@ export VISUAL="$EDITOR"
 export PAGER='less'
 
 if [[ $(uname) == 'Darwin' ]]; then
-  cores="$(sysctl -n hw.logicalcpu)"
+  HOSTOS='Mac'
 elif [[ $(uname) == 'Linux' ]]; then
+  HOSTOS='Linux'
+fi
+export HOSTOS="$HOSTOS"
+
+if [[ "$HOSTOS" == 'Mac' ]]; then
+  cores="$(sysctl -n hw.logicalcpu)"
+elif [[ "$HOSTOS" == 'Linux' ]]; then
   cores="$(nproc)"
 fi
 export MACHINE_CORES="${cores:-4}"
@@ -29,8 +36,6 @@ if [[ ! -z "$ENV_DIRS" ]]; then
     fi
   done
 fi
-
-# Loop through each directory in ENV_DIRS
 
 # if command -v fc-cache &>/dev/null && [[ -d "$XDG_DATA_HOME/fonts" ]]; then
 #   fc-cache -f "$XDG_DATA_HOME/fonts"
