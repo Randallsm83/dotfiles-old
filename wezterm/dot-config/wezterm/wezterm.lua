@@ -55,11 +55,11 @@ wezterm.on("gui-startup", function(cmd)
 end)
 
 -- Window Opacity
-config.window_background_opacity = 0.92
-config.macos_window_background_blur = 30
+-- config.window_background_opacity = 0.9
+-- config.macos_window_background_blur = 15
 
 -- Window Padding
-config.window_padding = { top = 2, left = 2, right = 2, bottom = 2 }
+config.window_padding = { top = 2, left = 2, right = 0, bottom = 0 }
 
 -- Dim Inactive Panes
 config.inactive_pane_hsb = { saturation = 0.9, brightness = 0.8 }
@@ -94,7 +94,7 @@ config.visual_bell = {
 config.scrollback_lines = 10000
 
 -- Performance
-config.animation_fps = 120
+config.animation_fps = 60
 config.max_fps = 120
 config.front_end = "WebGpu"
 config.webgpu_power_preference = "HighPerformance"
