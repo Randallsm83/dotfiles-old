@@ -9,9 +9,7 @@ end
 -------------------- Colorscheme -----------------------------------------------
 
 local theme = "Gruvbox Material (Gogh)"
--- local theme = "Gruvbox Dark (Gogh)"
 local scheme = wezterm.color.get_builtin_schemes()[theme]
-
 config.color_scheme = theme
 
 -- So we can append keys instead of writing a whole new object later
@@ -19,9 +17,7 @@ config.colors = {}
 
 ------------------------- Font -------------------------------------------------
 
--- config.font_locator = "ConfigDirsOnly"
 config.font_dirs = { wezterm.home_dir .. "/.local/share/fonts" }
-
 config.font_size = 13
 config.line_height = 1.1
 config.use_cap_height_to_scale_fallback_fonts = true
@@ -36,7 +32,7 @@ config.font = wezterm.font_with_fallback({
 
 ------------------------- Tabs -------------------------------------------------
 
-local tab_bar = require("tabs")
+local tab_bar = require "tabs4"
 config = tab_bar.apply_to_config(config)
 
 ------------------ Windows and Panes -------------------------------------------
