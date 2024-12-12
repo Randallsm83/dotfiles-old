@@ -12,35 +12,33 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
 # ========================= Plugins Setup ======================================
 
-# ---- ZSH Syntax Theme -------
+# ZSH Syntax Theme
 [[ -r "$ZSH_SYNTAX_THEME" ]] && source "$ZSH_SYNTAX_THEME"
 
-# --- Package Managers --------
-zplug "plugins/asdf", from:oh-my-zsh
-
-# ---- Language Plugins -------
+# Language Plugins
 # zplug "lukechilds/zsh-nvm"
 # zplug "mattberther/zsh-pyenv"
 # zplug "DhavalKapil/luaver"
 # zplug "wushenrong/zsh-plenv"
 
-# ---- Supercrab Tree ----------
+# Supercrab Tree
 zplug "supercrabtree/k"
 
-# ---- FZF Setup ---------------
+# FZF Setup
 zplug "junegunn/fzf", use:"shell/*.zsh", hook-build:"./install --all"
 
-# ---- Diff So Fancy ---------
+# Diff So Fancy
 zplug "so-fancy/diff-so-fancy", as:command, use:"diff-so-fancy"
 
-# ---- Oh-My-Zsh Plugins ------
-zplug "plugins/git", from:oh-my-zsh
-zplug "plugins/npm", from:oh-my-zsh
-zplug "plugins/sudo", from:oh-my-zsh
-zplug "plugins/ssh-agent", from:oh-my-zsh
-zplug "plugins/common-aliases", from:oh-my-zsh
+# Oh-My-Zsh Plugins
+zplug "$ZDOTDIR/plugins/omz/asdf", from:local
+zplug "$ZDOTDIR/plugins/omz/common-aliases", from:local
+zplug "$ZDOTDIR/plugins/omz/git", from:local
+zplug "$ZDOTDIR/plugins/omz/npm", from:local
+zplug "$ZDOTDIR/plugins/omz/ssh-agent", from:local
+zplug "$ZDOTDIR/plugins/omz/gnu-utils", from:local
 
-# ---- Zsh Users Plugins -------
+# Zsh Users Plugins
 zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
@@ -53,8 +51,7 @@ fi
 
 zplug load
 
-# ========================= General Settings ===================================
-# -- History settings
+# ========================= History Settings ===================================
 ZSTATE="$XDG_STATE_HOME/zsh"
 
 if [[ ! -d $ZSTATE ]]; then
@@ -82,13 +79,14 @@ setopt HIST_EXPIRE_DUPS_FIRST # Expire a duplicate event first when trimming his
 # Emacs
 bindkey -e
 
-# -- History substring search
+# History substring search
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 # ========================= Visual Settings ====================================
 
-# -- Set dircolors and completion colors
+# Set dircolors and completion colors
+which gdircolors
 eval "$(dircolors --sh $ZDOTDIR/colors/gruvbox.default.dircolors)"
 
 # ========================= Completion Settings ================================
@@ -109,8 +107,7 @@ zstyle ':completion:*' verbose yes
 # zstyle ':completion:*:kill:*' command 'ps -u "$USER" -o pid,%cpu,tty,cputime,cmd'
 
 # Completion colors
-IFS=: read -rA ls_colors_array <<<"$LS_COLORS"
-zstyle ':completion:*' list-colors "${ls_colors_array[@]}"
+[[ -z "$LS_COLORS" ]] || zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # ========================= Set Machine Type ===================================
 fullname=$(hostname -f 2>/dev/null || hostname)
@@ -123,7 +120,7 @@ esac
 
 # ========================= Source The Things ==================================
 
-# -- Aliases and Functions
+# Aliases and Functions
 [[ -r "$ZDOTDIR/.aliases" ]] && source "$ZDOTDIR/.aliases"
 [[ -r "$ZDOTDIR/.functions" ]] && source "$ZDOTDIR/.functions"
 [[ -r "$ZDOTDIR/.aliases.$machine_type" ]] && source "$ZDOTDIR/.aliases.$machine_type"

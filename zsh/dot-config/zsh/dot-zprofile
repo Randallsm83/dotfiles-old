@@ -35,6 +35,7 @@ if [[ ! -z "$ENV_DIRS" ]]; then
       mkdir -p "$dir"
     fi
   done
+  unset ENV_DIRS
 fi
 
 # if command -v fc-cache &>/dev/null && [[ -d "$XDG_DATA_HOME/fonts" ]]; then

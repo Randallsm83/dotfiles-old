@@ -34,6 +34,7 @@ brew "readline"
 brew "tcl-tk"
 brew "utf8proc", args: ["HEAD"]
 brew "universal-ctags"
+brew "util-linux"
 brew "xz"
 brew "zlib"
 
@@ -56,6 +57,7 @@ brew "rsync"
 brew "unzip"
 
 brew "perltidy"
+brew "repomix"
 brew "stow"
 brew "thefuck"
 brew "tldr"
@@ -70,8 +72,9 @@ if OS.mac?
 
   brew "dreamhost/homebrew/lde", args: ["HEAD"]
 
-  cask "font-hack-nerd-font"
-  cask "font-fira-code-nerd-font"
+  cask "font-hack"
+  cask "font-fira-code"
+  cask "font-symbols-only-nerd-font"
   cask "font-new-york"
   cask "font-sf-mono"
   cask "font-sf-pro"
@@ -81,6 +84,7 @@ if OS.mac?
   cask "homerow"
   cask "iterm2"
   cask "google-chrome"
+  cask "firefox@developer-edition"
   cask "openvpn-connect"
   cask "orbstack"
   cask "postman"

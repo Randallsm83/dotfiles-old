@@ -38,8 +38,8 @@ alias aliasrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.aliases'
 alias ldelog='lde logs -ftall '
 
 # Nvim
-alias vi='nvim'
-alias vim='nvim'
+alias vi='${=EDITOR}'
+# alias vim='nvim'
 
 # Git
 alias gg='git grep -E'
@@ -61,8 +61,6 @@ alias displaykeys='source $HOME/ssh-key-manager.sh && display_public_keys'
 alias ard='arduino-cli'
 alias ardc='arduino-cloud-cli'
 
-# Spotify-player
-alias get_track="spotify_player get key playback | jq -r '.item.name // \'No track playing\''"
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-
 # vim: ft=zsh sw=2 ts=2 et

@@ -9,7 +9,7 @@ neovim 0.10.2
 nodejs 23.2.0
 perl 5.40.0
 php 8.4.0
-python 3.12.7
+python 3.13.1
 ripgrep 14.1.1
 ruby 3.3.6
 rust 1.82.0
