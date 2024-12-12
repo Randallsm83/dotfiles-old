@@ -51,7 +51,7 @@ alias zpui='zplug update && zplug install'
 alias stowdir='stow --no-folding --dotfiles --verbose=1 -R -t ~ '
 
 # ASDF
-alias asdfplugs='cut -d' ' -f1 $ASDF_DEFAULT_TOOL_VERSIONS_FILENAME|xargs -i asdf plugin add  {}'
+alias asdfplugs='cut -d" " -f1 $ASDF_DEFAULT_TOOL_VERSIONS_FILENAME|xargs -i asdf plugin add  {}'
 
 # SSH
 alias rotatekeys='source $HOME/ssh-key-manager.sh && rotate_keys'
