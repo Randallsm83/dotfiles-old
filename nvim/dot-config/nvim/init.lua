@@ -1268,9 +1268,12 @@ require('lazy').setup({
     -- automatically check for plugin updates
     enabled = true,
     notify = true, -- get a notification when new updates are found
-    frequency = 43200, -- check for updates every hour
+    frequency = 43200, -- check for updates every 12 hours
     check_pinned = false, -- check for pinned packages that can't be updated
   },
+  -- install = {
+  --   colorscheme = 'onedark',
+  -- },
   performance = {
     cache = {
       enabled = true,
