@@ -19,6 +19,7 @@ brew "lld"
 brew "m4"
 brew "make"
 brew "pkgconf"
+brew "re2c"
 
 brew "ca-certificates"
 brew "gettext"
