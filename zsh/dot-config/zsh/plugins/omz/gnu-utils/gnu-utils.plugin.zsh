@@ -31,6 +31,9 @@ __gnu_utils() {
   # can be built optionally
   gcmds+=('ghostname')
 
+  # custom
+  gcmds+=('gwhich' 'gawk')
+
   for gcmd in "${gcmds[@]}"; do
     # Do nothing if the command isn't found
     (( ${+commands[$gcmd]} )) || continue
