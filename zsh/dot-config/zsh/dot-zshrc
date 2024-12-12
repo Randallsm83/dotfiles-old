@@ -86,8 +86,11 @@ bindkey '^[[B' history-substring-search-down
 # ========================= Visual Settings ====================================
 
 # Set dircolors and completion colors
-which gdircolors
-eval "$(dircolors --sh $ZDOTDIR/colors/gruvbox.default.dircolors)"
+if (( $+commands[dircolors] )); then
+  eval "$(dircolors --sh $ZDOTDIR/colors/gruvbox.default.dircolors)"
+elif (( $+commands[gdircolors] )); then
+  eval "$(gdircolors --sh $ZDOTDIR/colors/gruvbox.default.dircolors)"
+fi
 
 # ========================= Completion Settings ================================
 
