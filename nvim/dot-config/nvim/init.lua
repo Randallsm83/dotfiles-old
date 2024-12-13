@@ -1271,9 +1271,9 @@ require('lazy').setup({
     frequency = 43200, -- check for updates every 12 hours
     check_pinned = false, -- check for pinned packages that can't be updated
   },
-  -- install = {
-  --   colorscheme = 'onedark',
-  -- },
+  install = {
+    colorscheme = { 'gruvbox_material' },
+  },
   performance = {
     cache = {
       enabled = true,
