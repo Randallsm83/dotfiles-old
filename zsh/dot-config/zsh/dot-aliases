@@ -5,15 +5,12 @@
 #############
 
 # List declared aliases, functions, paths
+alias paths='echo -e ${PATH//:/\\n}'
 alias aliases='alias | sed "s/=.*//"'
 alias functions='declare -f | grep "^[a-z].* ()" | sed "s/{$//"'
-alias paths='echo -e ${PATH//:/\\n}'
 
 # Has package
 alias has='curl -sL https://git.io/_has | bash -s '
-
-# Update
-alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup;'
 
 # Easy ls and set ls color
 alias l='ls -lah'
@@ -24,18 +21,34 @@ alias dh='cd $DHSPACE'
 alias dots='cd $DOTFILES'
 
 # Edit configs
-alias vrc='${=EDITOR} ~/.vimrc'
 alias nrc='${=EDITOR} $XDG_CONFIG_HOME/nvim/init.lua'
+alias vrc='${=EDITOR} $HOME/.vimrc'
 alias wrc='${=EDITOR} $XDG_CONFIG_HOME/wezterm/wezterm.lua'
-alias zenv='${=EDITOR} $HOME/.zshenv'
 alias zrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc'
+alias zenv='${=EDITOR} $HOME/.zshenv'
 alias zpro='${=EDITOR} ${ZDOTDIR:-$HOME}/.zprofile'
 
 # Edit aliases
 alias aliasrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.aliases'
 
+# Mac
+alias macupdate='sudo softwareupdate -i -a'
+
+# Brew
+alias brewupdate='brew update && brew upgrade && brew cleanup'
+
+# ASDF
+alias asdfplugadd='cut -d" " -f1 $ASDF_DEFAULT_TOOL_VERSIONS_FILENAME|xargs -i asdf plugin add  {}'
+alias asdfupdate='asdf update --head && asdf plugin update --all'
+
+# Zplug
+alias zplugupdate='zplug update && zplug install && zplug clean && zplug clear'
+
 # LDE
 alias ldelog='lde logs -ftall '
+
+# Stow
+alias stowdir='stow --no-folding --dotfiles --verbose=1 -R -t ~ '
 
 # Nvim
 alias vi='${=EDITOR}'
@@ -43,15 +56,6 @@ alias vi='${=EDITOR}'
 
 # Git
 alias gg='git grep -E'
-
-# Zplug
-alias zpui='zplug update && zplug install'
-
-# Stow
-alias stowdir='stow --no-folding --dotfiles --verbose=1 -R -t ~ '
-
-# ASDF
-alias asdfplugs='cut -d" " -f1 $ASDF_DEFAULT_TOOL_VERSIONS_FILENAME|xargs -i asdf plugin add  {}'
 
 # SSH
 alias rotatekeys='source $HOME/ssh-key-manager.sh && rotate_keys'

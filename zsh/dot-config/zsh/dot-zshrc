@@ -36,7 +36,6 @@ zplug "$ZDOTDIR/plugins/omz/common-aliases", from:local
 zplug "$ZDOTDIR/plugins/omz/git", from:local
 zplug "$ZDOTDIR/plugins/omz/npm", from:local
 zplug "$ZDOTDIR/plugins/omz/ssh-agent", from:local
-zplug "$ZDOTDIR/plugins/omz/gnu-utils", from:local
 
 # Zsh Users Plugins
 zplug "zsh-users/zsh-completions"
