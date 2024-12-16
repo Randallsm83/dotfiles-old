@@ -32,7 +32,7 @@ config.font = wezterm.font_with_fallback({
 
 ------------------------- Tabs -------------------------------------------------
 
-local tab_bar = require "tabs4"
+local tab_bar = require("tabs4")
 config = tab_bar.apply_to_config(config)
 
 ------------------ Windows and Panes -------------------------------------------
