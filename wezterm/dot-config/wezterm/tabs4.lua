@@ -61,7 +61,7 @@ end
 local function get_cwd(pane)
   local home = os.getenv("HOME") or ""
   local cwd = ""
-  local cwd_uri = pane.current_working_dir()
+  local cwd_uri = pane:get_current_working_dir()
 
   if cwd_uri then
     if type(cwd_uri) == "userdata" and cwd_uri.file_path then

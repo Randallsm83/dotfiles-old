@@ -65,7 +65,7 @@ config.inactive_pane_hsb = { saturation = 0.9, brightness = 0.8 }
 config.colors.split = scheme.ansi[4]
 
 -- Pane/Split Nav
-local smart_splits = wezterm.plugin.require('https://github.com/mrjones2014/smart-splits.nvim')
+local smart_splits = wezterm.plugin.require('http://github.com/mrjones2014/smart-splits.nvim')
 smart_splits.apply_to_config(config)
 
 ------------------------------ Misc --------------------------------------------
