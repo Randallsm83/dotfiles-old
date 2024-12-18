@@ -19,4 +19,13 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
+vim.keymap.set('n', '<C-A-h>', require('smart-splits').resize_left)
+vim.keymap.set('n', '<C-A-j>', require('smart-splits').resize_down)
+vim.keymap.set('n', '<C-A-k>', require('smart-splits').resize_up)
+vim.keymap.set('n', '<C-A-l>', require('smart-splits').resize_right)
+vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left)
+vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down)
+vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
+vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
+
 -- vim: ts=2 sts=2 sw=2 et

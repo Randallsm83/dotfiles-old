@@ -1,4 +1,5 @@
 local wezterm = require("wezterm") --[[@as Wezterm]]
+local os = require("os")
 local mux = wezterm.mux
 
 local config = {}
@@ -63,6 +64,10 @@ config.inactive_pane_hsb = { saturation = 0.9, brightness = 0.8 }
 -- Pane Split Color
 config.colors.split = scheme.ansi[4]
 
+-- Pane/Split Nav
+local smart_splits = wezterm.plugin.require('https://github.com/mrjones2014/smart-splits.nvim')
+smart_splits.apply_to_config(config)
+
 ------------------------------ Misc --------------------------------------------
 
 -- Mouse
@@ -109,6 +114,65 @@ config.command_palette_font_size = 15
 config.command_palette_bg_color = "#282828"
 config.command_palette_fg_color = "#ebdbb2"
 
+------------------------------ Wezterm.nvim ------------------------------------
+-- local move_around = function(window, pane, direction_wez, direction_nvim)
+--   local result =
+--     os.execute("env NVIM_LISTEN_ADDRESS=/tmp/nvim" .. pane:pane_id() .. " wezterm.nvim.navigator " .. direction_nvim)
+--   if result then
+--     window:perform_action(wezterm.action({ SendString = "\x17" .. direction_nvim }), pane)
+--   else
+--     window:perform_action(wezterm.action({ ActivatePaneDirection = direction_wez }), pane)
+--   end
+-- end
+--
+-- wezterm.on("move-left", function(window, pane)
+--   move_around(window, pane, "Left", "h")
+-- end)
+--
+-- wezterm.on("move-right", function(window, pane)
+--   move_around(window, pane, "Right", "l")
+-- end)
+--
+-- wezterm.on("move-up", function(window, pane)
+--   move_around(window, pane, "Up", "k")
+-- end)
+--
+-- wezterm.on("move-down", function(window, pane)
+--   move_around(window, pane, "Down", "j")
+-- end)
+--
+-- local vim_resize = function(window, pane, direction_wez, direction_nvim)
+--   local result = os.execute(
+--     "env NVIM_LISTEN_ADDRESS=/tmp/nvim"
+--       .. pane:pane_id()
+--       .. " "
+--       .. homedir
+--       .. "/.config/wezterm/"
+--       .. "wezterm.nvim.navigator "
+--       .. direction_nvim
+--   )
+--   if result then
+--     window:perform_action(wezterm.action({ SendString = "\x1b" .. direction_nvim }), pane)
+--   else
+--     window:perform_action(wezterm.action({ ActivatePaneDirection = direction_wez }), pane)
+--   end
+-- end
+--
+-- wezterm.on("resize-left", function(window, pane)
+--   vim_resize(window, pane, "Left", "h")
+-- end)
+--
+-- wezterm.on("resize-right", function(window, pane)
+--   vim_resize(window, pane, "Right", "l")
+-- end)
+--
+-- wezterm.on("resize-up", function(window, pane)
+--   vim_resize(window, pane, "Up", "k")
+-- end)
+--
+-- wezterm.on("resize-down", function(window, pane)
+--   vim_resize(window, pane, "Down", "j")
+-- end)
 ------------------------------ Key Mappings ------------------------------------
 
 -- CTRL + ;                     Leader
@@ -122,8 +186,8 @@ config.command_palette_fg_color = "#ebdbb2"
 ------------------------ Panes ----------------------------------
 -- LEADER + z                   Toggle pane zoom
 -- LEADER + d | e               Split pane horizontal | vertical
--- LEADER + hjkl                Navigate panes
--- LEADER + CTRL + hjkl         Resize panes
+-- CTRL + hjkl                  Navigate panes
+-- ALT + hjkl                   Resize panes
 
 ---------------------- Application ------------------------------
 -- LEADER | CMD + Enter         Toggle fullscreen

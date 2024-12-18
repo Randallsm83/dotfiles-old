@@ -1,25 +1,37 @@
-local wez = require "wezterm"
-local utils = require "utilities"
+local wez = require("wezterm")
+local utils = require("utilities")
 local M = {}
 
 -- Get username once since it won't change
-local username = os.getenv "USER" or os.getenv "LOGNAME" or os.getenv "USERNAME"
+local username = os.getenv("USER") or os.getenv("LOGNAME") or os.getenv("USERNAME")
 
 -- Process-specific icons
 local PROCESS_ICONS = {
-  ["vim"] = " ",
-  ["nvim"] = " ",
-  ["bash"] = " ",
-  ["zsh"] = " ",
-  ["fish"] = " ",
-  ["term"] = " ",
-  ["perl"] = " ",
-  ["python"] = " ",
-  ["node"] = " ",
-  ["ruby"] = " ",
-  ["go"] = " ",
-  ["lua"] = " ",
-  ["ssh"] = " ",
+  ["zsh"] = wez.nerdfonts.dev_terminal,
+  ["bash"] = wez.nerdfonts.cod_terminal_bash,
+  ["fish"] = wez.nerdfonts.dev_terminal,
+  ["term"] = wez.nerdfonts.dev_terminal,
+  ["ssh"] = wez.nerdfonts.cod_terminal_linux,
+  ["sudo"] = wez.nerdfonts.fa_hashtag,
+  ["docker"] = wez.nerdfonts.linux_docker,
+  ["docker-compose"] = wez.nerdfonts.linux_docker,
+  ["kuberlr"] = wez.nerdfonts.linux_docker,
+  ["kubectl"] = wez.nerdfonts.linux_docker,
+  ["make"] = wez.nerdfonts.seti_makefile,
+  ["htop"] = wez.nerdfonts.mdi_chart_donut_variant,
+  ["vim"] = wez.nerdfonts.custom_vim,
+  ["nvim"] = wez.nerdfonts.custom_vim,
+  ["git"] = wez.nerdfonts.dev_git,
+  ["wget"] = wez.nerdfonts.mdi_arrow_down_box,
+  ["curl"] = wez.nerdfonts.mdi_flattr,
+  ["gh"] = wez.nerdfonts.dev_github_badge,
+  ["node"] = wez.nerdfonts.dev_nodejs_small,
+  ["perl"] = wez.nerdfonts.dev_perl,
+  ["python"] = wez.nerdfonts.dev_python,
+  ["lua"] = wez.nerdfonts.seti_lua,
+  ["go"] = wez.nerdfonts.seti_go,
+  ["cargo"] = wez.nerdfonts.dev_rust,
+  ["ruby"] = wez.nerdfonts.cod_ruby,
 }
 
 -- Status bar icons
@@ -31,24 +43,32 @@ local ICONS = {
   clock = wez.nerdfonts.md_calendar_clock,
   user = wez.nerdfonts.fa_user,
   host = wez.nerdfonts.md_at,
-  default_process = " ", -- Default terminal icon
 }
 
+local function get_process(tab)
+  return tab.active_pane.foreground_process_name:match("([^/\\]+)%.exe$")
+    or tab.active_pane.foreground_process_name:match("([^/\\]+)$")
+end
+
 local function get_process_icon(process)
-  return PROCESS_ICONS[process:match("([^/]+)$")] or ICONS.default_process
+  return PROCESS_ICONS[process] or wez.nerdfonts.seti_checkbox_unchecked
+  -- Show activity marker for inactive tabs with unseen output
+  -- if not tab.is_active and active_pane.has_unseen_output then
+  -- print(wez.nerdfonts.cod_circled_filled  .. formatted_title)
+  -- end
 end
 
 local function get_cwd(pane)
   local home = os.getenv("HOME") or ""
   local cwd = ""
-  local cwd_uri = pane:get_current_working_dir()
+  local cwd_uri = pane.current_working_dir()
 
   if cwd_uri then
     if type(cwd_uri) == "userdata" and cwd_uri.file_path then
       cwd = cwd_uri.file_path
     else
       cwd_uri = cwd_uri:sub(8)
-      local slash = cwd_uri:find "/"
+      local slash = cwd_uri:find("/")
       if slash then
         cwd = cwd_uri:sub(slash):gsub("%%(%x%x)", function(hex)
           return string.char(tonumber(hex, 16))
@@ -60,6 +80,10 @@ local function get_cwd(pane)
   end
 
   return cwd
+end
+
+local function basename(path)
+  return path:match("[^/]+$") or path
 end
 
 function M.apply_to_config(config)
@@ -96,26 +120,18 @@ function M.apply_to_config(config)
 end
 
 wez.on("format-tab-title", function(tab, _, _, conf)
-  -- for i,v in ipairs(tab) do print(i"\n") print(v"\n") end
-  -- for i,v in ipairs(tab.active_pane) do print(i"\n") print(v"\n") end
-
-  local active_pane = tab.active_pane
-  local process = active_pane.foreground_process_name or "term"
+  local process = get_process(tab)
   local icon = get_process_icon(process)
   local index = tab.tab_index + 1
   local hostname = wez.hostname()
+  local dirname = "Unknown"
 
-  local formatted_title = string.format("%s %d %s [%s]",
-    icon,
-    index,
-    process:match("([^/]+)$"),
-    hostname
-  )
+  -- local curdir = tab.active_pane.get_current_working_dir
+  -- if #curdir > 0 then
+  --   dirname = basename(curdir)
+  -- end
 
-  -- Show activity marker for inactive tabs with unseen output
-  if not tab.is_active and active_pane.has_unseen_output then
-    -- print(wez.nerdfonts.cod_circled_filled  .. formatted_title)
-  end
+  local formatted_title = string.format("%s %d %s [%s]", icon, index, process, hostname)
 
   local width = conf.tab_max_width - 4
   if #formatted_title > conf.tab_max_width then
@@ -162,16 +178,14 @@ wez.on("update-status", function(window, pane)
   end
 
   -- user@host
-  table.insert(right_status, { Text = string.format(" %s  %s %s %s ",
-    ICONS.user,
-    username,
-    ICONS.host,
-    wez.hostname()
-  )})
+  table.insert(
+    right_status,
+    { Text = string.format(" %s  %s %s %s ", ICONS.user, username, ICONS.host, wez.hostname()) }
+  )
   table.insert(right_status, { Text = string.format(" %s ", ICONS.field) })
 
   -- Time
-  local time = wez.time.now():format "%H:%M"
+  local time = wez.time.now():format("%H:%M")
   table.insert(right_status, { Text = string.format(" %s  %s  ", ICONS.clock, time) })
 
   window:set_right_status(wez.format(right_status))

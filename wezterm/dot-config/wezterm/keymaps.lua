@@ -45,16 +45,16 @@ return {
     { key = "e", mods = "LEADER", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 
     -- Move Through Panes
-    { key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
-    { key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
-    { key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
-    { key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
+    -- { key = "h", mods = "CTRL", action = act({ EmitEvent = "move-left" }) },
+    -- { key = "l", mods = "CTRL", action = act({ EmitEvent = "move-right" }) },
+    -- { key = "k", mods = "CTRL", action = act({ EmitEvent = "move-up" }) },
+    -- { key = "j", mods = "CTRL", action = act({ EmitEvent = "move-down" }) },
 
     -- Adjust Pane Size
-    { key = "h", mods = "LEADER|CTRL", action = act.AdjustPaneSize({ "Left", 5 }) },
-    { key = "j", mods = "LEADER|CTRL", action = act.AdjustPaneSize({ "Down", 5 }) },
-    { key = "k", mods = "LEADER|CTRL", action = act.AdjustPaneSize({ "Up", 5 }) },
-    { key = "l", mods = "LEADER|CTRL", action = act.AdjustPaneSize({ "Right", 5 }) },
+    -- { key = "h", mods = "ALT", action = act({ EmitEvent = "resize-left" }) },
+    -- { key = "l", mods = "ALT", action = act({ EmitEvent = "resize-right" }) },
+    -- { key = "k", mods = "ALT", action = act({ EmitEvent = "resize-up" }) },
+    -- { key = "j", mods = "ALT", action = act({ EmitEvent = "resize-down" }) },
 
     -------------------------------- Application ---------------------------
     -- Toggle Fullscreen

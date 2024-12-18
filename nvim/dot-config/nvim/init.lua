@@ -2,18 +2,8 @@
 -- Nvim Config
 -- run `:checkhealth` for more info.
 
---  NOTE: Even though mini.basics does this, we need it for keymaps
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
-
--- [[ Setting options ]]
-require 'options'
-
--- [[ Basic Keymaps ]]
-require 'keymaps'
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -58,7 +48,7 @@ require('lazy').setup({
           -- Prefix for mappings that toggle common options ('wrap', 'spell', ...).
           option_toggle_prefix = [[,]],
           -- Window navigation with <C-hjkl>, resize with <C-arrow>
-          windows = true,
+          windows = false,
           -- Move cursor in Insert, Command, and Terminal mode with <M-hjkl>
           move_with_alt = true,
         },
@@ -1243,6 +1233,7 @@ require('lazy').setup({
       },
     },
   },
+  { 'mrjones2014/smart-splits.nvim' },
   ----------------------------------------------------------------------------
   -- INFO: Kickstart Plugins
 
@@ -1313,6 +1304,12 @@ require('lazy').setup({
   },
 })
 
+-- [[ Setting options ]]
+require 'options'
+
+-- [[ Basic Keymaps ]]
+require 'keymaps'
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -1372,6 +1369,4 @@ vim.api.nvim_create_user_command('FormatEnable', function(args)
 end, { desc = 'Re-enable autoformat-on-save' })
 
 ----------------------------------------------------------------------------
-
--- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

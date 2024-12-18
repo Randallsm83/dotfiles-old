@@ -484,7 +484,7 @@ projects:
       - DEBUG: "*"
       - LINK_LOCAL_PACKAGES: "false"
   email-service:
-    enable: false
+    enable: true
     repo: git@git.dreamhost.com:dreamhost/microservices/email-service.git
     path: "email-service"
     env_vars:
