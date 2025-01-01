@@ -12,9 +12,6 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
 # ========================= Plugins Setup ======================================
 
-# ZSH Syntax Theme
-[[ -r "$ZSH_SYNTAX_THEME" ]] && source "$ZSH_SYNTAX_THEME"
-
 # FZF Setup
 zplug "junegunn/fzf", use:"shell/*.zsh", hook-build:"./install --all"
 
@@ -44,14 +41,21 @@ zplug "$ZDOTDIR/plugins/eza", from:local
 # Zsh Users Plugins
 zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:2
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
 if ! zplug check --verbose; then
   echo; zplug install
 fi
 
 zplug load
+
+# ========================= Alias Finder Options ===============================
+
+zstyle ':alias-finder' longer true
+zstyle ':alias-finder' exact false
+zstyle ':alias-finder' cheaper true
+zstyle ':alias-finder' autoload true
 
 # ========================= Key Bindings =======================================
 
@@ -64,32 +68,15 @@ bindkey '^[[B' history-substring-search-down
 
 # ========================= Visual Settings ====================================
 
+# ZSH Syntax Theme
+[[ -r "$ZSH_SYNTAX_THEME" ]] && source "$ZSH_SYNTAX_THEME"
+
 # Set dircolors and completion colors
 if (( $+commands[dircolors] )); then
   eval "$(dircolors --sh $ZDOTDIR/colors/gruvbox.default.dircolors)"
 elif (( $+commands[gdircolors] )); then
   eval "$(gdircolors --sh $ZDOTDIR/colors/gruvbox.default.dircolors)"
 fi
-
-# ========================= Completion Settings ================================
-
-# zstyle ':completion:*' auto-description 'specify: %d'
-# zstyle ':completion:*' completer _expand _complete _correct _approximate
-# zstyle ':completion:*' format 'Completing %d'
-# zstyle ':completion:*' group-name ''
-# zstyle ':completion:*' menu select=2
-# zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-# zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-# zstyle ':completion:*' menu select=long
-# zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-# zstyle ':completion:*' use-compctl false
-# zstyle ':completion:*' verbose yes
-#
-# zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-# zstyle ':completion:*:kill:*' command 'ps -u "$USER" -o pid,%cpu,tty,cputime,cmd'
-#
-# # Completion colors
-# [[ -z "$LS_COLORS" ]] || zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # ========================= Set Machine Type ===================================
 fullname=$(hostname -f 2>/dev/null || hostname)
