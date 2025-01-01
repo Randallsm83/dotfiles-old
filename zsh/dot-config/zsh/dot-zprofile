@@ -33,10 +33,6 @@ if [[ ! -z "$ENV_DIRS" ]]; then
   unset ENV_DIRS
 fi
 
-# if command -v fc-cache &>/dev/null && [[ -d "$XDG_DATA_HOME/fonts" ]]; then
-#   fc-cache -f "$XDG_DATA_HOME/fonts"
-# fi
-
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.
 source ~/.orbstack/shell/init.zsh 2>/dev/null || :
