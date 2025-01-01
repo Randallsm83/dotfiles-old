@@ -1,89 +1,98 @@
+---@diagnostic disable: undefined-field
 local wez = require("wezterm")
 local utils = require("utilities")
 local M = {}
 
-local ICONS = {
-  workspace = wez.nerdfonts.cod_window,
-  process = wez.nerdfonts.cod_server_process,
-  arrow = wez.nerdfonts.md_greater_than,
-  field = wez.nerdfonts.indent_line,
-  dir = wez.nerdfonts.fa_folder,
-  clock = wez.nerdfonts.md_clock,
-  user = wez.nerdfonts.fa_user,
-  host = wez.nerdfonts.cod_terminal,
+-- Process-specific icons
+local PROCESS_ICONS = {
+  ["zsh"] = wez.nerdfonts.dev_terminal,
+  ["bash"] = wez.nerdfonts.cod_terminal_bash,
+  ["fish"] = wez.nerdfonts.dev_terminal,
+  ["term"] = wez.nerdfonts.dev_terminal,
+  ["ssh"] = wez.nerdfonts.cod_terminal_linux,
+  ["sudo"] = wez.nerdfonts.fa_hashtag,
+  ["docker"] = wez.nerdfonts.linux_docker,
+  ["docker-compose"] = wez.nerdfonts.linux_docker,
+  ["kuberlr"] = wez.nerdfonts.linux_docker,
+  ["kubectl"] = wez.nerdfonts.linux_docker,
+  ["make"] = wez.nerdfonts.seti_makefile,
+  ["htop"] = wez.nerdfonts.mdi_chart_donut_variant,
+  ["vim"] = wez.nerdfonts.custom_vim,
+  ["nvim"] = wez.nerdfonts.custom_vim,
+  ["git"] = wez.nerdfonts.dev_git,
+  ["wget"] = wez.nerdfonts.mdi_arrow_down_box,
+  ["curl"] = wez.nerdfonts.mdi_flattr,
+  ["gh"] = wez.nerdfonts.dev_github_badge,
+  ["node"] = wez.nerdfonts.dev_nodejs_small,
+  ["perl"] = wez.nerdfonts.dev_perl,
+  ["python"] = wez.nerdfonts.dev_python,
+  ["lua"] = wez.nerdfonts.seti_lua,
+  ["go"] = wez.nerdfonts.seti_go,
+  ["cargo"] = wez.nerdfonts.dev_rust,
+  ["ruby"] = wez.nerdfonts.cod_ruby,
+  ["ls"] = wez.nerdfonts.cod_list_tree,
+  ["eza"] = wez.nerdfonts.cod_list_tree,
 }
 
-local username = os.getenv("USER") or os.getenv("LOGNAME") or os.getenv("USERNAME")
+-- Status bar icons
+local ICONS = {
+  workspace = wez.nerdfonts.cod_window,
+  arrow = wez.nerdfonts.fa_long_arrow_right,
+  field = wez.nerdfonts.indent_line,
+  dir = wez.nerdfonts.oct_file_directory,
+  clock = wez.nerdfonts.md_calendar_clock,
+  user = wez.nerdfonts.fa_user,
+  host = wez.nerdfonts.md_at,
+}
+
+local function get_process_icon(process)
+  return PROCESS_ICONS[process] or wez.nerdfonts.dev_terminal
+end
 
 local function get_cwd(pane)
-  local home = os.getenv("HOME") or ""
+---@diagnostic disable-next-line: undefined-field
+  local home = wez.home_dir or ""
   local cwd = ""
-  local cwd_uri = pane:get_current_working_dir()
+  -- local cwd_uri = pane:get_current_working_dir()
+  local cwd_uri = pane.current_working_dir
 
   if cwd_uri then
-    if type(cwd_uri) == "userdata" and cwd_uri.file_path then
+    if cwd_uri.file_path then
       cwd = cwd_uri.file_path
-    else
-      cwd_uri = cwd_uri:sub(8)
-      local slash = cwd_uri:find "/"
-      if slash then
-        cwd = cwd_uri:sub(slash):gsub("%%(%x%x)", function(hex)
-          return string.char(tonumber(hex, 16))
-        end)
-      end
+    elseif cwd_uri.path then
+      cwd = cwd_uri.path
     end
-
-    cwd = cwd:gsub(home .. "(.-)$", "~%1")
   end
 
+  cwd = cwd:gsub(home .. "(.-)$", "~%1")
   return cwd
 end
 
-local function get_tab_title(tab_info)
-  local title = tab_info.tab_title
-  if title and #title > 0 then
-    return title
-  end
-  return utils.basename(tab_info.active_pane.title)
-end
-
-function M.apply_to_config(config)
-  config.enable_tab_bar = true
-  config.use_fancy_tab_bar = false
-  config.tab_bar_at_bottom = true
-  config.show_new_tab_button_in_tab_bar = false
-  config.hide_tab_bar_if_only_one_tab = false
-  config.tab_max_width = 32
-
-  local scheme = wez.color.get_builtin_schemes()[config.color_scheme]
-  if scheme == nil then
-    scheme = wez.color.get_default_colors()
-  end
-
-  local colors = {
-    tab_bar = {
-      background = scheme.background,
-      active_tab = {
-        bg_color = scheme.background,
-        fg_color = scheme.ansi[4],
-      },
-      inactive_tab = {
-        bg_color = scheme.background,
-        fg_color = scheme.ansi[8],
-      },
-    },
-  }
-
-  config.colors = config.colors or {}
-  config.colors = utils.merge(config.colors, colors)
-
-  return config
+local function basename(s)
+  return string.gsub(s, '(.*[/\\])(.*)', '%2')
 end
 
 wez.on("format-tab-title", function(tab, _, _, conf)
   local index = tab.tab_index + 1
-  local title = get_tab_title(tab)
-  local formatted_title = index .. utils.space(ICONS.arrow, 1) .. title
+  local pane = tab.active_pane
+  local process = basename(pane.foreground_process_name)
+  local icon = get_process_icon(process)
+  -- local curdir = get_cwd(pane)
+  local host = wez.hostname()
+  local ssh = pane.domain_name:match("^SSH[%w]*:(.+)$")
+  if ssh then
+    host = ssh
+    process = 'ssh'
+    icon = get_process_icon(process)
+  end
+  -- local location = string.format("%s:%s", host, curdir)
+
+  -- Show activity marker for inactive tabs with unseen output
+  -- if not tab.is_active and active_pane.has_unseen_output then
+  -- print(wez.nerdfonts.cod_circled_filled  .. formatted_title)
+  -- end
+
+  local formatted_title = string.format("%d: %s  %s [%s] ", index, icon, process, host)
 
   local width = conf.tab_max_width - 4
   if #formatted_title > conf.tab_max_width then
@@ -100,222 +109,82 @@ wez.on("format-tab-title", function(tab, _, _, conf)
     { Text = utils.space(formatted_title, 1, 1) },
   }
 end)
--- wez.on("format-tab-title", function(tab, tabs, _, conf)
---   local raw_title = tab.active_pane.title
---   local clean_title = utils.basename(raw_title) or utils.trim(raw_title)
---   local index = tostring(tab.tab_index + 1)
---
---   local formatted_title = utils.space(index .. ":" .. clean_title, 1, 1)
---
---   if #formatted_title > conf.tab_max_width then
---     formatted_title = wez.truncate_right(formatted_title, conf.tab_max_width - 1) .. "… "
---   end
---
---   local palette = conf.resolved_palette
---   local fg = tab.is_active and palette.tab_bar.active_tab.fg_color or palette.tab_bar.inactive_tab.fg_color
---   local bg = tab.is_active and palette.tab_bar.active_tab.bg_color or palette.tab_bar.inactive_tab.bg_color
---
---   return {
---     { Background = { Color = bg } },
---     { Foreground = { Color = fg } },
---     { Text = formatted_title },
---   }
--- end)
+
 wez.on("update-status", function(window, pane)
   local palette = window:effective_config().resolved_palette
   local background = palette.tab_bar.background
 
-  -- Left status: session/workspace context
+  -- Left status
   local left_status = {
     { Background = { Color = background } },
   }
 
-  -- Current directory
-  local cwd = get_cwd(pane)
-  if #cwd > 0 then
-    local width = window:effective_config().tab_max_width - 4
-    local formatted_cwd = utils.space(cwd, 1, 1)
-    if #formatted_cwd > window:effective_config().tab_max_width then
-      formatted_cwd = "…" .. wez.truncate_left(formatted_cwd, width)
-    end
-    table.insert(left_status, { Text = string.format(" %s %s%s ", ICONS.dir, formatted_cwd, ICONS.field) })
-    -- table.insert(right_status, { Text = string.format(" %s ", ICONS.field) })
-  end
-
-  -- -- Session/workspace name - primary context
-  -- local workspace = window:active_workspace()
-  -- table.insert(left_status, { Text = string.format(" %s %s ", ICONS.workspace, workspace) })
-  --
-  -- -- Process info - secondary context
-  -- local process = pane:get_foreground_process_name()
-  -- if process then
-  --   process = utils.basename(process)
-  --   table.insert(left_status, { Text = string.format(" %s %s", ICONS.process, process) })
-  -- end
-
   window:set_left_status(wez.format(left_status))
 
-  -- Right status: following classic user@host | location | time pattern
+  -- Right status
   local right_status = {
     { Background = { Color = background } },
   }
 
-  -- Session/workspace name - primary context
+  -- Workspace name
   local workspace = window:active_workspace()
-  table.insert(right_status, { Text = string.format(" %s %s ", ICONS.workspace, workspace) })
+  table.insert(right_status, { Text = string.format(" %s  %s ", ICONS.workspace, workspace) })
+  table.insert(right_status, { Text = string.format("%s ", ICONS.field) })
 
-  -- Process info - secondary context
-  local process = pane:get_foreground_process_name()
-  if process then
-    process = utils.basename(process)
-    table.insert(right_status, { Text = string.format(" %s %s", ICONS.process, process) })
-  end
-
-  -- user@host
-  table.insert(right_status, { Text = string.format("%s  %s %s  %s  %s %s ",
-    ICONS.user,
-    username,
-    ICONS.field,
-    ICONS.host,
-    wez.hostname(),
-    ICONS.field
-  )})
+  -- local user_vars = pane:get_user_vars()
+  -- local username = user_vars.WEZTERM_USER
+  -- local host = user_vars.WEZTERM_HOST
+  --
+  -- -- Current directory with icon
+  -- local cwd = get_cwd(pane)
+  -- table.insert(right_status, { Text = string.format(" %s  %s ", ICONS.dir, cwd) })
+  -- table.insert(right_status, { Text = string.format("%s ", ICONS.field) })
+  --
+  -- -- user@host
+  -- table.insert(
+  --   right_status,
+  --   { Text = string.format(" %s  %s %s %s ", ICONS.user, username, ICONS.host, host) }
+  -- )
   -- table.insert(right_status, { Text = string.format(" %s ", ICONS.field) })
-
-  -- Time - always last
-  local time = wez.time.now():format "%H:%M"
+  --
+  -- Time
+  local time = wez.time.now():format("%H:%M")
   table.insert(right_status, { Text = string.format(" %s  %s  ", ICONS.clock, time) })
 
   window:set_right_status(wez.format(right_status))
 end)
 
--- wez.on("update-status", function(window, pane)
---   local palette = window:effective_config().resolved_palette
---   local background = palette.tab_bar.background
---
---   -- Left status
---   local left_status = {
---     { Background = { Color = background } },
---   }
---
---   -- Workspace with icon
---   local workspace = window:active_workspace()
---   table.insert(left_status, { Text = string.format(" %s %s ", ICONS.workspace, workspace) })
---
---   -- Username
---   table.insert(left_status, { Text = string.format(" %s %s ", ICONS.user, username) })
---
---   -- Hostname
---   table.insert(left_status, { Text = string.format(" %s %s ", ICONS.host, wez.hostname()) })
---
---   -- Process
---   local process = pane:get_foreground_process_name()
---   if process then
---     table.insert(left_status, { Text = string.format(" %s %s ", ICONS.process, utils.basename(process)) })
---   end
---
---   window:set_left_status(wez.format(left_status))
---
---   -- Right status
---   local right_status = {
---     { Background = { Color = background } },
---   }
---
---   -- Directory
---   local cwd = get_cwd(pane)
---   if #cwd > 0 then
---     table.insert(right_status, { Text = string.format(" %s %s ", ICONS.dir, cwd) })
---   end
---
---   -- Add field separator
---   table.insert(right_status, { Text = string.format(" %s ", ICONS.field) })
---
---   -- Time with icon
---   local time = wez.time.now():format "%H:%M"
---   table.insert(right_status, { Text = string.format(" %s %s ", ICONS.clock, time) })
---
---   window:set_right_status(wez.format(right_status))
--- end)
--- wez.on("update-status", function(window, pane)
---   local palette = window:effective_config().resolved_palette
---   -- Left status
---   local left_status = {
---     { Background = { Color = palette.tab_bar.background } },
---   }
---
---   -- Workspace with icon
---   local workspace = window:active_workspace()
---   local formatted_workspace = utils.space(ICONS.workspace .. workspace, 1, 1)
---   table.insert(left_status, { Text = formatted_workspace })
---
---   -- Process
---   local process = pane:get_foreground_process_name()
---   if process then
---     process = utils.basename(process) or utils.trim(process)
---     local formatted_process = utils.space(ICONS.arrow .. process, 1, 1)
---     table.insert(left_status, { Text = formatted_process })
---   end
---
---   window:set_left_status(wez.format(left_status))
---
---   -- Right status
---   local right_status = {
---     { Background = { Color = palette.tab_bar.background } },
---   }
---
---   -- Directory
---   local cwd = get_cwd(pane)
---   if #cwd > 0 then
---     local formatted_cwd = utils.space(ICONS.dir .. cwd, 1, 1)
---     table.insert(right_status, { Text = formatted_cwd })
---   end
---
---   -- Time with icon
---   local time = wez.time.now():format "%H:%M"
---   local formatted_time = utils.space(ICONS.clock .. time, 1, 1)
---   table.insert(right_status, { Text = formatted_time })
---
---   window:set_right_status(wez.format(right_status))
--- end)
--- wez.on("update-status", function(window, pane)
---   -- Left status: workspace and current process
---   local left_status = {}
---
---   -- Workspace
---   local workspace = window:active_workspace()
---   table.insert(left_status, { Text = string.format(" %s %s ", ICONS.workspace, workspace) })
---
---   -- Current process
---   local process = pane:get_foreground_process_name()
---   if process then
---     table.insert(left_status, { Text = string.format(" %s %s ", ICONS.arrow, process) })
---   end
---
---   window:set_left_status(wez.format(left_status))
---
---   -- Right status: hostname, username, cwd, time
---   local right_status = {}
---
---   -- Hostname
---   table.insert(right_status, { Text = " " .. wez.hostname() .. " " })
---   table.insert(right_status, { Text = string.format(" %s %s ", ICONS.hostname, username) })
---
---   -- Username
---   if username then
---     table.insert(right_status, { Text = string.format(" %s %s ", ICONS.user, username) })
---   end
---
---   -- CWD
---   local cwd = get_cwd(pane)
---   if #cwd > 0 then
---     table.insert(right_status, { Text = string.format(" %s %s ", ICONS.dir, cwd) })
---   end
---
---   -- Time
---   local time = wez.time.now():format("%H:%M")
---   table.insert(right_status, { Text = string.format(" %s %s ", ICONS.clock, time) })
---
---   window:set_right_status(wez.format(right_status))
--- end)
+function M.apply_to_config(config)
+  config.enable_tab_bar = true
+  config.use_fancy_tab_bar = false
+  config.tab_bar_at_bottom = true
+  config.show_new_tab_button_in_tab_bar = false
+  config.hide_tab_bar_if_only_one_tab = false
+  config.tab_max_width = 60
+
+  local scheme = wez.color.get_builtin_schemes()[config.color_scheme]
+  if scheme == nil then
+    scheme = wez.color.get_default_colors()
+  end
+
+  local colors = {
+    tab_bar = {
+      background = scheme.background,
+      active_tab = {
+        bg_color = scheme.background,
+        fg_color = scheme.ansi[4],
+      },
+      inactive_tab = {
+        bg_color = scheme.background,
+        fg_color = scheme.ansi[6],
+      },
+    },
+  }
+
+  config.colors = config.colors or {}
+  config.colors = utils.merge(config.colors, colors)
+
+  return config
+end
 
 return M

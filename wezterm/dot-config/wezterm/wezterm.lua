@@ -1,5 +1,4 @@
 local wezterm = require("wezterm") --[[@as Wezterm]]
-local os = require("os")
 local mux = wezterm.mux
 
 local config = {}
@@ -19,21 +18,45 @@ config.colors = {}
 ------------------------- Font -------------------------------------------------
 
 config.font_dirs = { wezterm.home_dir .. "/.local/share/fonts" }
-config.font_size = 13
+config.font_size = 14
 config.line_height = 1.1
 config.use_cap_height_to_scale_fallback_fonts = true
 -- config.allow_square_glyphs_to_overflow_width = 'Never'
 
+-- Ligatures
+-- { 'calt=0', 'clig=0', 'liga=0' }
+-- config.harfbuzz_features = { 'calt=0' }
+
+-- All Fira Code Stylistic Sets
+-- a g i l r 0 3 4679
+-- {'cv01', 'cv02', 'cv03-06', 'cv07-10', 'ss01', 'zero|cv11-13', 'cv14', 'onum'}
+-- config.harfbuzz_features = {'cv02', 'cv03', 'cv07', 'ss01'}
+
+-- ~ @ $ % & * () {} |
+-- cv17 ss05 ss04 cv18 ss03 cv15-16 cv31 cv29 cv30
+-- config.harfbuzz_features = { "ss05", "ss04", "ss03", "cv15", "cv29" }
+
+-- <= >= <= >= == === != !== /= >>= <<= ||= |=
+-- ss02 cv19-20 cv23 cv21-22 ss08 cv24 ss09
+-- config.harfbuzz_features = { "ss02", "ss08", "cv24" }
+
+-- .- :- .= [] {. .} \\ =~ !~ Fl Tl fi fj fl ft
+-- cv25 cv26 cv32 cv27 cv28 ss06 ss07 s10
+-- config.harfbuzz_features = { "" }
+
+-- My Fira Code Choices
+config.harfbuzz_features = { "ss05", "ss04", "ss03", "cv15", "cv29", "ss02", "ss08", "cv24" }
+
 config.font = wezterm.font_with_fallback({
-  { family = "Hack", scale = 1.0 },
-  { family = "Fira Code", scale = 1.0 },
+  { family = "Fira Code", scale = 1.0, weight = "Medium" },
+  { family = "Hack", scale = 1.0, weight = "Bold" },
   { family = "Symbols Nerd Font Mono", scale = 1.1 },
   { family = "Noto Color Emoji", scale = 1.0 },
 })
 
 ------------------------- Tabs -------------------------------------------------
 
-local tab_bar = require("tabs4")
+local tab_bar = require("tabs")
 config = tab_bar.apply_to_config(config)
 
 ------------------ Windows and Panes -------------------------------------------
@@ -65,8 +88,18 @@ config.inactive_pane_hsb = { saturation = 0.9, brightness = 0.8 }
 config.colors.split = scheme.ansi[4]
 
 -- Pane/Split Nav
-local smart_splits = wezterm.plugin.require('http://github.com/mrjones2014/smart-splits.nvim')
-smart_splits.apply_to_config(config)
+local smart_splits = wezterm.plugin.require("http://github.com/mrjones2014/smart-splits.nvim")
+smart_splits.apply_to_config(config, {
+  -- directional keys to use in order of: left, down, up, right
+  direction_keys = { "h", "j", "k", "l" },
+  -- modifier keys to combine with direction_keys
+  modifiers = {
+    move = "CTRL",
+    resize = "CTRL|META",
+  },
+  -- log level to use: info, warn, error
+  log_level = "info",
+})
 
 ------------------------------ Misc --------------------------------------------
 
@@ -114,65 +147,6 @@ config.command_palette_font_size = 15
 config.command_palette_bg_color = "#282828"
 config.command_palette_fg_color = "#ebdbb2"
 
------------------------------- Wezterm.nvim ------------------------------------
--- local move_around = function(window, pane, direction_wez, direction_nvim)
---   local result =
---     os.execute("env NVIM_LISTEN_ADDRESS=/tmp/nvim" .. pane:pane_id() .. " wezterm.nvim.navigator " .. direction_nvim)
---   if result then
---     window:perform_action(wezterm.action({ SendString = "\x17" .. direction_nvim }), pane)
---   else
---     window:perform_action(wezterm.action({ ActivatePaneDirection = direction_wez }), pane)
---   end
--- end
---
--- wezterm.on("move-left", function(window, pane)
---   move_around(window, pane, "Left", "h")
--- end)
---
--- wezterm.on("move-right", function(window, pane)
---   move_around(window, pane, "Right", "l")
--- end)
---
--- wezterm.on("move-up", function(window, pane)
---   move_around(window, pane, "Up", "k")
--- end)
---
--- wezterm.on("move-down", function(window, pane)
---   move_around(window, pane, "Down", "j")
--- end)
---
--- local vim_resize = function(window, pane, direction_wez, direction_nvim)
---   local result = os.execute(
---     "env NVIM_LISTEN_ADDRESS=/tmp/nvim"
---       .. pane:pane_id()
---       .. " "
---       .. homedir
---       .. "/.config/wezterm/"
---       .. "wezterm.nvim.navigator "
---       .. direction_nvim
---   )
---   if result then
---     window:perform_action(wezterm.action({ SendString = "\x1b" .. direction_nvim }), pane)
---   else
---     window:perform_action(wezterm.action({ ActivatePaneDirection = direction_wez }), pane)
---   end
--- end
---
--- wezterm.on("resize-left", function(window, pane)
---   vim_resize(window, pane, "Left", "h")
--- end)
---
--- wezterm.on("resize-right", function(window, pane)
---   vim_resize(window, pane, "Right", "l")
--- end)
---
--- wezterm.on("resize-up", function(window, pane)
---   vim_resize(window, pane, "Up", "k")
--- end)
---
--- wezterm.on("resize-down", function(window, pane)
---   vim_resize(window, pane, "Down", "j")
--- end)
 ------------------------------ Key Mappings ------------------------------------
 
 -- CTRL + ;                     Leader
@@ -187,7 +161,7 @@ config.command_palette_fg_color = "#ebdbb2"
 -- LEADER + z                   Toggle pane zoom
 -- LEADER + d | e               Split pane horizontal | vertical
 -- CTRL + hjkl                  Navigate panes
--- ALT + hjkl                   Resize panes
+-- CTRL | ALT + hjkl            Resize panes
 
 ---------------------- Application ------------------------------
 -- LEADER | CMD + Enter         Toggle fullscreen

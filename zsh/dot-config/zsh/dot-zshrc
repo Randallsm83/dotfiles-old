@@ -15,27 +15,31 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 # ZSH Syntax Theme
 [[ -r "$ZSH_SYNTAX_THEME" ]] && source "$ZSH_SYNTAX_THEME"
 
-# Language Plugins
-# zplug "lukechilds/zsh-nvm"
-# zplug "mattberther/zsh-pyenv"
-# zplug "DhavalKapil/luaver"
-# zplug "wushenrong/zsh-plenv"
-
-# Supercrab Tree
-zplug "supercrabtree/k"
-
 # FZF Setup
 zplug "junegunn/fzf", use:"shell/*.zsh", hook-build:"./install --all"
 
 # Diff So Fancy
 zplug "so-fancy/diff-so-fancy", as:command, use:"diff-so-fancy"
 
-# Oh-My-Zsh Plugins
-zplug "$ZDOTDIR/plugins/omz/asdf", from:local
-zplug "$ZDOTDIR/plugins/omz/common-aliases", from:local
-zplug "$ZDOTDIR/plugins/omz/git", from:local
-zplug "$ZDOTDIR/plugins/omz/npm", from:local
-zplug "$ZDOTDIR/plugins/omz/ssh-agent", from:local
+# Custom Plugins
+zplug "$ZDOTDIR/plugins/bun", from:local
+zplug "$ZDOTDIR/plugins/npm", from:local
+zplug "$ZDOTDIR/plugins/git", from:local
+zplug "$ZDOTDIR/plugins/rust", from:local
+zplug "$ZDOTDIR/plugins/starship", from:local
+
+zplug "$ZDOTDIR/plugins/history", from:local
+zplug "$ZDOTDIR/plugins/ssh-agent", from:local
+zplug "$ZDOTDIR/plugins/completion", from:local
+zplug "$ZDOTDIR/plugins/common-aliases", from:local
+zplug "$ZDOTDIR/plugins/alias-finder", from:local
+# zplug "$ZDOTDIR/plugins/asdf", from:local
+
+# Rust Replacements
+# LS CD GREP CAT FIND SED PS DU MAN DIFF
+# EZA ZOXIDE RIPGREP BAT FD SD PROCS DUST TEALDEER DELTA
+zplug "z-shell/zsh-eza"
+zplug "$ZDOTDIR/plugins/eza", from:local
 
 # Zsh Users Plugins
 zplug "zsh-users/zsh-completions"
@@ -43,35 +47,11 @@ zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:2
 
-# ========================= Zplug Install and Load =============================
 if ! zplug check --verbose; then
   echo; zplug install
 fi
 
 zplug load
-
-# ========================= History Settings ===================================
-ZSTATE="$XDG_STATE_HOME/zsh"
-
-if [[ ! -d $ZSTATE ]]; then
-    echo "Creating directory: $ZSTATE"
-    mkdir -p "$ZSTATE" || { echo "Failed to create history dir: $ZSTATE" >&2; return 1; }
-fi
-
-HISTFILE="$ZSTATE/zsh_history"
-HISTSIZE=1000000
-SAVEHIST="$HISTSIZE"
-
-setopt SHARE_HISTORY          # Share history across all sessions
-setopt EXTENDED_HISTORY       # Record command execution time
-setopt HIST_VERIFY            # Don't execute immediately upon history expansion
-setopt HIST_REDUCE_BLANKS     # Remove unnecessary blanks
-setopt HIST_IGNORE_SPACE      # Ignore commands with leading spaces
-setopt HIST_IGNORE_DUPS       # Ignore duplicate commands
-setopt HIST_IGNORE_ALL_DUPS   # Delete old recorded entry if new entry is a duplicate.
-setopt HIST_FIND_NO_DUPS      # Do not display old duplicates in history search
-setopt HIST_SAVE_NO_DUPS      # Do not save duplicate commands in history
-setopt HIST_EXPIRE_DUPS_FIRST # Expire a duplicate event first when trimming history.
 
 # ========================= Key Bindings =======================================
 
@@ -93,23 +73,23 @@ fi
 
 # ========================= Completion Settings ================================
 
-zstyle ':completion:*' auto-description 'specify: %d'
-zstyle ':completion:*' completer _expand _complete _correct _approximate
-zstyle ':completion:*' format 'Completing %d'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' menu select=2
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-zstyle ':completion:*' menu select=long
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ':completion:*' use-compctl false
-zstyle ':completion:*' verbose yes
-
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*:kill:*' command 'ps -u "$USER" -o pid,%cpu,tty,cputime,cmd'
-
-# Completion colors
-[[ -z "$LS_COLORS" ]] || zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+# zstyle ':completion:*' auto-description 'specify: %d'
+# zstyle ':completion:*' completer _expand _complete _correct _approximate
+# zstyle ':completion:*' format 'Completing %d'
+# zstyle ':completion:*' group-name ''
+# zstyle ':completion:*' menu select=2
+# zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+# zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+# zstyle ':completion:*' menu select=long
+# zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+# zstyle ':completion:*' use-compctl false
+# zstyle ':completion:*' verbose yes
+#
+# zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+# zstyle ':completion:*:kill:*' command 'ps -u "$USER" -o pid,%cpu,tty,cputime,cmd'
+#
+# # Completion colors
+# [[ -z "$LS_COLORS" ]] || zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # ========================= Set Machine Type ===================================
 fullname=$(hostname -f 2>/dev/null || hostname)
@@ -128,14 +108,8 @@ esac
 [[ -r "$ZDOTDIR/.aliases.$machine_type" ]] && source "$ZDOTDIR/.aliases.$machine_type"
 [[ -r "$ZDOTDIR/.functions.$machine_type" ]] && source "$ZDOTDIR/.functions.$machine_type"
 
-# -- FZF
-[[ -r ~/.fzf.zsh ]] && source ~/.fzf.zsh
-
-# -- Direnv
-[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
-
-# -- Wezterm
-[[ -x "${XDG_CONFIG_HOME:-$HOME/.config}/wezterm/wezterm.sh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/wezterm/wezterm.sh"
+# -- Mise
+eval "$(mise activate zsh)"
 
 # -- Starship
 eval "$(starship init zsh)"
@@ -143,8 +117,14 @@ eval "$(starship init zsh)"
 # -- thefuck
 eval "$(thefuck --alias)"
 
-# -- Mise
-# eval "$(mise activate zsh)"
+# -- FZF
+[[ -r ~/.fzf.zsh ]] && source ~/.fzf.zsh
+
+# -- Wezterm
+[[ -x "${XDG_CONFIG_HOME:-$HOME/.config}/wezterm/wezterm.sh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/wezterm/wezterm.sh"
+
+# -- Direnv
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
 
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-

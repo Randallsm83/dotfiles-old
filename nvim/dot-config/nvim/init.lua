@@ -2,6 +2,9 @@
 -- Nvim Config
 -- run `:checkhealth` for more info.
 
+-- Prepend mise shims to PATH
+vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
+
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
@@ -891,8 +894,9 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      local perl_path = vim.fn.getenv 'ASDF_DATA_DIR'
-      perl_path = (perl_path and perl_path .. '/shims/perl') or '/usr/bin/env perl'
+      -- local perl_path = vim.fn.getenv 'ASDF_DATA_DIR'
+      local mise_path = vim.env.HOME .. "/.local/share/mise/"
+      local perl_path = (mise_path and mise_path .. '/shims/perl') or '/usr/bin/env perl'
 
       local servers = {
         -- See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -933,7 +937,7 @@ require('lazy').setup({
             Lua = {
               workspace = { checkThirdParty = false, library = vim.api.nvim_get_runtime_file('', true) },
               completion = { callSnippet = 'Both', keywordSnippet = 'Both' },
-              diagnostics = { disable = { 'missing-fields' }, gloabls = { 'vim' } },
+              diagnostics = { disable = { 'missing-fields' }, globals = { 'vim' } },
             },
           },
         },
@@ -1233,7 +1237,10 @@ require('lazy').setup({
       },
     },
   },
-  { 'mrjones2014/smart-splits.nvim' },
+  ----------------------------------------------------------------------------
+  { -- INFO: Smart Splits - navigate between term and nvim splits
+    'mrjones2014/smart-splits.nvim'
+  },
   ----------------------------------------------------------------------------
   -- INFO: Kickstart Plugins
 

@@ -12,10 +12,6 @@ alias functions='declare -f | grep "^[a-z].* ()" | sed "s/{$//"'
 # Has package
 alias has='curl -sL https://git.io/_has | bash -s '
 
-# Easy ls and set ls color
-alias l='ls -lah'
-alias ls='ls --color=auto'
-
 # CD Shortcuts
 alias dh='cd $DHSPACE'
 alias dots='cd $DOTFILES'
@@ -49,10 +45,11 @@ alias ldelog='lde logs -ftall '
 
 # Stow
 alias stowdir='stow --no-folding --dotfiles --verbose=1 -R -t ~ '
+alias unstowdir='stow --verbose=1 -D '
 
 # Nvim
 alias vi='${=EDITOR}'
-# alias vim='nvim'
+alias vim='${=EDITOR}'
 
 # Git
 alias gg='git grep -E'

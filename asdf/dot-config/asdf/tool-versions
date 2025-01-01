@@ -2,7 +2,7 @@ direnv 2.35.0
 fd 10.2.0
 git 2.47.1
 golang 1.23.4
-lua 5.4.7
+lua 5.1.5
 luajit 2.1.ROLLING
 neovim 0.10.2
 nodejs 23.4.0

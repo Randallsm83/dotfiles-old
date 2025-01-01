@@ -8,16 +8,11 @@ export EDITOR='nvim'
 export VISUAL="$EDITOR"
 export PAGER='less'
 
-if [[ $(uname) == 'Darwin' ]]; then
-  HOSTOS='Mac'
-elif [[ $(uname) == 'Linux' ]]; then
-  HOSTOS='Linux'
-fi
-export HOSTOS="$HOSTOS"
+export OSTYPE="$(uname)"
 
-if [[ "$HOSTOS" == 'Mac' ]]; then
+if [[ "$OSTYPE" == darwin* ]]; then
   cores="$(sysctl -n hw.logicalcpu)"
-elif [[ "$HOSTOS" == 'Linux' ]]; then
+elif [[ "$OSTYPE" == linux* ]]; then
   cores="$(nproc)"
 fi
 export MACHINE_CORES="${cores:-4}"

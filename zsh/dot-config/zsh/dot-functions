@@ -37,6 +37,16 @@ lpkgasdf() {
   asdf plugin list-all G "$1"
 }
 
+# Mise
+lpkgmise() {
+  mise registry G "$1"
+}
+
+# Cargo
+lpkgcargo() {
+  cargo search "$1"
+}
+
 check_repos() {
   # Base directory containing all service/repo folders
   base_dir="$1"
