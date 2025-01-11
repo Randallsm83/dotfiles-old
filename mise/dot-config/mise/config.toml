@@ -3,8 +3,10 @@
 # you can set these with `mise use -g`
 bun = "latest"
 cargo-binstall = "latest"
+"cargo:eza" = "latest"
+"cargo:fd-find" = "latest"
 direnv = "latest"
-fd = "latest"
+fzf = "latest"
 go = "latest"
 lua = "5.1.5"
 luajit = "2.1.0-beta3"

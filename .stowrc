@@ -12,3 +12,6 @@
 --ignore 'install.sh'
 --ignore 'iterm2'
 --ignore 'p10k'
+--ignore 'asdf'
+--ignore 'bin'
+--ignore 'nvm'

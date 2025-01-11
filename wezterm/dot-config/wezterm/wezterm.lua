@@ -87,20 +87,6 @@ config.inactive_pane_hsb = { saturation = 0.9, brightness = 0.8 }
 -- Pane Split Color
 config.colors.split = scheme.ansi[4]
 
--- Pane/Split Nav
-local smart_splits = wezterm.plugin.require("http://github.com/mrjones2014/smart-splits.nvim")
-smart_splits.apply_to_config(config, {
-  -- directional keys to use in order of: left, down, up, right
-  direction_keys = { "h", "j", "k", "l" },
-  -- modifier keys to combine with direction_keys
-  modifiers = {
-    move = "CTRL",
-    resize = "CTRL|META",
-  },
-  -- log level to use: info, warn, error
-  log_level = "info",
-})
-
 ------------------------------ Misc --------------------------------------------
 
 -- Mouse
@@ -161,12 +147,12 @@ config.command_palette_fg_color = "#ebdbb2"
 -- LEADER + z                   Toggle pane zoom
 -- LEADER + d | e               Split pane horizontal | vertical
 -- CTRL + hjkl                  Navigate panes
--- CTRL | ALT + hjkl            Resize panes
+-- META + hjkl                  Resize panes
 
 ---------------------- Application ------------------------------
 -- LEADER | CMD + Enter         Toggle fullscreen
 -- LEADER | CMD + /             Searc/h
--- LEADER | CMD + k             Clear scrollback
+-- LEADER | CMD + b             Clear scrollback
 -- LEADER | CMD + n             Spawn window
 -- LEADER | CMD + q             Quit application
 -- LEADER | CMD + r             Reload config
@@ -174,16 +160,12 @@ config.command_palette_fg_color = "#ebdbb2"
 -- LEADER | CMD + v             Paste
 -- LEADER + x                   Copy mode
 -- LEADER + s                   Show workspaces
+-- LEADER + u                   Char select
 -- LEADER + Space               Quick select
--- CMD + SHIFT +  u             Char select
 -- CMD + SHIFT + ( l | p )      Debug Overlay | Command Palette
 -- CMD + ( 0 | - | = )          Reset/Decrease/Increase font size
 
-config.disable_default_key_bindings = true
-config.leader = { key = ";", mods = "CTRL", timeout_milliseconds = 1000 }
-
 local keymaps = require("keymaps")
-config.keys = keymaps.keys
-config.key_tables = keymaps.key_tables
+config = keymaps.apply_to_config(config)
 
 return config

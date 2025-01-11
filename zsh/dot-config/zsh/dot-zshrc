@@ -1,117 +1,82 @@
 #!/usr/bin/env zsh
 
-# ========================= Zplug Setup ========================================
-if [[ ! -d ~/.zplug ]]; then
-  git clone https://github.com/zplug/zplug ~/.zplug
-  source ~/.zplug/init.zsh && zplug update --self
+# Emacs
+bindkey -e
+
+# Lazy-load (autoload) Zsh function files from a directory.
+# ZFUNCDIR="$ZDOTDIR/.zfunctions"
+# fpath=($ZFUNCDIR $fpath)
+# autoload -Uz $ZFUNCDIR/*(.:t)
+
+# Set any zstyles you might use for configuration.
+[[ -r "$ZDOTDIR/.zstyles" ]] && source "$ZDOTDIR/.zstyles"
+
+# Clone antidote if necessary.
+export ANTIDOTE_HOME="$ZDOTDIR/antidote"
+
+if [[ ! -d "$ANTIDOTE_HOME" ]]; then
+  git clone https://github.com/mattmc3/antidote "$ANTIDOTE_HOME"
 fi
 
-source ~/.zplug/init.zsh
+source "$ANTIDOTE_HOME/antidote.zsh"
+antidote load
 
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+for _rc in $ZDOTDIR/.zshrc.d/*.zsh; do
+  # Ignore tilde files.
+  if [[ $_rc:t != '~'* ]]; then
+    source "$_rc"
+  fi
+done
+unset _rc
+
+if [[ -n "$ENV_DIRS" ]]; then
+  for dir in ${(s/:/)ENV_DIRS}; do
+    [[ ! -d "$dir" ]] && mkdir -p "$dir"
+  done
+  unset ENV_DIRS
+fi
 
 # ========================= Plugins Setup ======================================
 
 # FZF Setup
-zplug "junegunn/fzf", use:"shell/*.zsh", hook-build:"./install --all"
-
-# Diff So Fancy
-zplug "so-fancy/diff-so-fancy", as:command, use:"diff-so-fancy"
-
-# Custom Plugins
-zplug "$ZDOTDIR/plugins/bun", from:local
-zplug "$ZDOTDIR/plugins/npm", from:local
-zplug "$ZDOTDIR/plugins/git", from:local
-zplug "$ZDOTDIR/plugins/rust", from:local
-zplug "$ZDOTDIR/plugins/starship", from:local
-
-zplug "$ZDOTDIR/plugins/history", from:local
-zplug "$ZDOTDIR/plugins/ssh-agent", from:local
-zplug "$ZDOTDIR/plugins/completion", from:local
-zplug "$ZDOTDIR/plugins/common-aliases", from:local
-zplug "$ZDOTDIR/plugins/alias-finder", from:local
-# zplug "$ZDOTDIR/plugins/asdf", from:local
-
-# Rust Replacements
-# LS CD GREP CAT FIND SED PS DU MAN DIFF
-# EZA ZOXIDE RIPGREP BAT FD SD PROCS DUST TEALDEER DELTA
-zplug "z-shell/zsh-eza"
-zplug "$ZDOTDIR/plugins/eza", from:local
-
-# Zsh Users Plugins
-zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-history-substring-search", defer:2
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-
-if ! zplug check --verbose; then
-  echo; zplug install
-fi
-
-zplug load
-
-# ========================= Alias Finder Options ===============================
-
-zstyle ':alias-finder' longer true
-zstyle ':alias-finder' exact false
-zstyle ':alias-finder' cheaper true
-zstyle ':alias-finder' autoload true
+# zplug "junegunn/fzf", use:"shell/*.zsh", hook-build:"./install --all"
 
 # ========================= Key Bindings =======================================
 
-# Emacs
-bindkey -e
-
-# History substring search
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+# # History substring search
+# bindkey '^[[A' history-substring-search-up
+# bindkey '^[[B' history-substring-search-down
 
 # ========================= Visual Settings ====================================
 
 # ZSH Syntax Theme
-[[ -r "$ZSH_SYNTAX_THEME" ]] && source "$ZSH_SYNTAX_THEME"
+zsh_syntax_theme="$ZDOTDIR/.config/zsh/colors/gruvbox.zsh-syntax-theme"
+[[ -r "$zsh_syntax_theme" ]] && source "$zsh_syntax_theme"
 
 # Set dircolors and completion colors
-if (( $+commands[dircolors] )); then
+if command -v dircolors >/dev/null 2>&1; then
   eval "$(dircolors --sh $ZDOTDIR/colors/gruvbox.default.dircolors)"
-elif (( $+commands[gdircolors] )); then
+elif command -v gdircolors >/dev/null 2>&1; then
   eval "$(gdircolors --sh $ZDOTDIR/colors/gruvbox.default.dircolors)"
 fi
 
 # ========================= Set Machine Type ===================================
-fullname=$(hostname -f 2>/dev/null || hostname)
-case $fullname in
-*dreamhost.com) ;&
-*newdream.net)
-  machine_type="ndn"
-  ;;
-esac
+# fullname=$(hostname -f 2>/dev/null || hostname)
+# case $fullname in
+# *dreamhost.com) ;&
+# *newdream.net)
+#   machine_type="ndn"
+#   ;;
+# esac
 
 # ========================= Source The Things ==================================
 
 # Aliases and Functions
-[[ -r "$ZDOTDIR/.aliases" ]] && source "$ZDOTDIR/.aliases"
-[[ -r "$ZDOTDIR/.functions" ]] && source "$ZDOTDIR/.functions"
-[[ -r "$ZDOTDIR/.aliases.$machine_type" ]] && source "$ZDOTDIR/.aliases.$machine_type"
-[[ -r "$ZDOTDIR/.functions.$machine_type" ]] && source "$ZDOTDIR/.functions.$machine_type"
-
-# -- Mise
-eval "$(mise activate zsh)"
-
-# -- Starship
-eval "$(starship init zsh)"
-
-# -- thefuck
-eval "$(thefuck --alias)"
-
-# -- FZF
-[[ -r ~/.fzf.zsh ]] && source ~/.fzf.zsh
-
-# -- Wezterm
-[[ -x "${XDG_CONFIG_HOME:-$HOME/.config}/wezterm/wezterm.sh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/wezterm/wezterm.sh"
-
-# -- Direnv
-[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
+# [[ -r "$ZDOTDIR/.aliases" ]] && source "$ZDOTDIR/.aliases"
+# [[ -r "$ZDOTDIR/.functions" ]] && source "$ZDOTDIR/.functions"
+# [[ -r "$ZDOTDIR/.aliases.$machine_type" ]] && source "$ZDOTDIR/.aliases.$machine_type"
+# [[ -r "$ZDOTDIR/.functions.$machine_type" ]] && source "$ZDOTDIR/.functions.$machine_type"
+#
 
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-

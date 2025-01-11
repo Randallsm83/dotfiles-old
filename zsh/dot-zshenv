@@ -4,9 +4,10 @@
 # so you cannot set paths reliably here.
 
 export ZDOTDIR="$HOME/.config/zsh"
-if [[ ! -d "$ZDOTDIR" ]]; then
-    mkdir -p "$ZDOTDIR" || { echo "Failed to create dir: $ZDOTDIR" >&2; return 1; }
-fi
+[[ -d "$ZDOTDIR" ]] || mkdir -p "$ZDOTDIR" || {
+  echo "Error: Failed to create dir: $ZDOTDIR" >&2
+  return 1
+}
 
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-

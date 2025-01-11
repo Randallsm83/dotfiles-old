@@ -1,8 +1,61 @@
 local wezterm = require("wezterm")
 local act = wezterm.action
+local M = {}
 
-return {
-  keys = {
+function M.apply_to_config(config)
+  config.enable_kitty_keyboard = true
+  config.disable_default_key_bindings = true
+  config.leader = { key = ";", mods = "CTRL", timeout_milliseconds = 1000 }
+
+  -- Pane/Split Nav
+  local smart_splits = wezterm.plugin.require("http://github.com/mrjones2014/smart-splits.nvim")
+
+  local function is_vim(pane)
+    -- this is set by the plugin, and unset on ExitPre in Neovim
+    return pane:get_user_vars().IS_NVIM == 'true'
+  end
+
+  local direction_keys = {
+    h = 'Left',
+    j = 'Down',
+    k = 'Up',
+    l = 'Right',
+  }
+
+  local function split_nav(resize_or_move, key)
+    return {
+      key = key,
+      mods = resize_or_move == 'resize' and 'META' or 'CTRL',
+      action = wezterm.action_callback(function(win, pane)
+        if is_vim(pane) then
+          -- pass the keys through to vim/nvim
+          win:perform_action({
+            SendKey = { key = key, mods = resize_or_move == 'resize' and 'META' or 'CTRL' },
+          }, pane)
+        else
+          if resize_or_move == 'resize' then
+            win:perform_action({ AdjustPaneSize = { direction_keys[key], 3 } }, pane)
+          else
+            win:perform_action({ ActivatePaneDirection = direction_keys[key] }, pane)
+          end
+        end
+      end),
+    }
+  end
+
+  -- smart_splits.apply_to_config(config, {
+  --   -- directional keys to use in order of: left, down, up, right
+  --   direction_keys = { "h", "j", "k", "l" },
+  --   -- modifier keys to combine with direction_keys
+  --   modifiers = {
+  --     move = "CTRL",
+  --     resize = "META",
+  --   },
+  --   -- log level to use: info, warn, error
+  --   log_level = "info",
+  -- })
+
+  config.keys = {
     --------------------------------- Tabs ---------------------------------
     -- New Tab
     { key = "t", mods = "SUPER", action = act.SpawnTab("CurrentPaneDomain") },
@@ -45,16 +98,32 @@ return {
     { key = "e", mods = "LEADER", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 
     -- Move Through Panes
-    { key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
-    { key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
-    { key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
-    { key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
+    -- { key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
+    -- { key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
+    -- { key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
+    -- { key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
+    -- { key = "h", mods = "CTRL", action = act.ActivatePaneDirection("Left") },
+    -- { key = "l", mods = "CTRL", action = act.ActivatePaneDirection("Right") },
+    -- { key = "k", mods = "CTRL", action = act.ActivatePaneDirection("Up") },
+    -- { key = "j", mods = "CTRL", action = act.ActivatePaneDirection("Down") },
 
     -- Adjust Pane Size
-    { key = "h", mods = "LEADER|ALT", action = act.AdjustPaneSize({ "Left", 5 }) },
-    { key = "l", mods = "LEADER|ALT", action = act.AdjustPaneSize({ "Right", 5 }) },
-    { key = "k", mods = "LEADER|ALT", action = act.AdjustPaneSize({ "Up", 5 }) },
-    { key = "j", mods = "LEADER|ALT", action = act.AdjustPaneSize({ "Down", 5 }) },
+    -- { key = "h", mods = "LEADER|ALT", action = act.AdjustPaneSize({ "Left", 5 }) },
+    -- { key = "l", mods = "LEADER|ALT", action = act.AdjustPaneSize({ "Right", 5 }) },
+    -- { key = "k", mods = "LEADER|ALT", action = act.AdjustPaneSize({ "Up", 5 }) },
+    -- { key = "j", mods = "LEADER|ALT", action = act.AdjustPaneSize({ "Down", 5 }) },
+
+    -- Handled by smart-splits
+    -- move between split panes
+    split_nav('move', 'h'),
+    split_nav('move', 'j'),
+    split_nav('move', 'k'),
+    split_nav('move', 'l'),
+    -- resize panes
+    split_nav('resize', 'h'),
+    split_nav('resize', 'j'),
+    split_nav('resize', 'k'),
+    split_nav('resize', 'l'),
 
     -------------------------------- Application ---------------------------
     -- Toggle Fullscreen
@@ -93,15 +162,15 @@ return {
     -- Show Workspaces
     { key = "s", mods = "LEADER", action = act.ShowLauncherArgs({ flags = "WORKSPACES" }) },
 
-    -- QuickSelect
-    { key = "phys:Space", mods = "LEADER", action = act.QuickSelect },
-
     -- CharSelect
     {
       key = "u",
-      mods = "SHIFT|SUPER",
+      mods = "LEADER",
       action = act.CharSelect({ copy_on_select = true, copy_to = "ClipboardAndPrimarySelection" }),
     },
+
+    -- QuickSelect
+    { key = "phys:Space", mods = "LEADER", action = act.QuickSelect },
 
     -- Command Palette and Debug Overlay
     { key = "l", mods = "SHIFT|SUPER", action = act.ShowDebugOverlay },
@@ -111,9 +180,9 @@ return {
     { key = "0", mods = "SUPER", action = act.ResetFontSize },
     { key = "=", mods = "SUPER", action = act.IncreaseFontSize },
     { key = "-", mods = "SUPER", action = act.DecreaseFontSize },
-  },
+  }
 
-  key_tables = {
+  config.key_tables = {
     copy_mode = {
       { key = "Tab", mods = "NONE", action = act.CopyMode("MoveForwardWord") },
       { key = "Tab", mods = "SHIFT", action = act.CopyMode("MoveBackwardWord") },
@@ -178,7 +247,6 @@ return {
       { key = "UpArrow", mods = "NONE", action = act.CopyMode("MoveUp") },
       { key = "DownArrow", mods = "NONE", action = act.CopyMode("MoveDown") },
     },
-
     search_mode = {
       { key = "Enter", mods = "NONE", action = act.CopyMode("PriorMatch") },
       { key = "Escape", mods = "NONE", action = act.CopyMode("Close") },
@@ -191,5 +259,9 @@ return {
       { key = "UpArrow", mods = "NONE", action = act.CopyMode("PriorMatch") },
       { key = "DownArrow", mods = "NONE", action = act.CopyMode("NextMatch") },
     },
-  },
-}
+  }
+
+  return config
+end
+
+return M

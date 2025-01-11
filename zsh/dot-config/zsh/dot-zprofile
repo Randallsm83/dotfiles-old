@@ -17,22 +17,6 @@ elif [[ "$OSTYPE" == linux* ]]; then
 fi
 export MACHINE_CORES="${cores:-4}"
 
-export ENV_DIR="$HOME/.config/env.d"
-if [[ -d "$ENV_DIR" ]]; then
-  for conf in "$ENV_DIR"/*.conf; do
-    [[ -r "$conf" ]] && source "$conf"
-  done
-fi
-
-if [[ ! -z "$ENV_DIRS" ]]; then
-  for dir in ${(s/:/)ENV_DIRS}; do
-    if [[ ! -d "$dir" ]]; then
-      mkdir -p "$dir"
-    fi
-  done
-  unset ENV_DIRS
-fi
-
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.
 source ~/.orbstack/shell/init.zsh 2>/dev/null || :

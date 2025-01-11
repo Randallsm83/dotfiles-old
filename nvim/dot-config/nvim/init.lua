@@ -3,7 +3,7 @@
 -- run `:checkhealth` for more info.
 
 -- Prepend mise shims to PATH
-vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
+vim.env.PATH = vim.env.HOME .. '/.local/share/mise/shims:' .. vim.env.PATH
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
@@ -143,16 +143,16 @@ require('lazy').setup({
         -- Module mappings. Use `''` (empty string) to disable one.
         mappings = {
           -- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
-          left = '<M-h>',
-          right = '<M-l>',
-          down = '<M-j>',
-          up = '<M-k>',
+          left = '<M-H>',
+          right = '<M-L>',
+          down = '<M-J>',
+          up = '<M-K>',
 
           -- Move current line in Normal mode
-          line_left = '<M-h>',
-          line_right = '<M-l>',
-          line_down = '<M-j>',
-          line_up = '<M-k>',
+          line_left = '<M-H>',
+          line_right = '<M-L>',
+          line_down = '<M-J>',
+          line_up = '<M-K>',
         },
 
         -- Options which control moving behavior
@@ -272,6 +272,11 @@ require('lazy').setup({
   -- Use `opts = {}` to force a plugin to be loaded.
   --
   ----------------------------------------------------------------------------
+  {
+    "ibhagwan/fzf-lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {}
+  },
   { -- INFO: Gitsigns
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -511,7 +516,7 @@ require('lazy').setup({
         },
       },
       formatters = {
-        shfmt = { args = { '-i 2 -ci -bn' } },
+        shfmt = { prepend_args = { '-i', '2', '-ci', '-bn' } },
       },
     },
     init = function()
@@ -895,7 +900,7 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       -- local perl_path = vim.fn.getenv 'ASDF_DATA_DIR'
-      local mise_path = vim.env.HOME .. "/.local/share/mise/"
+      local mise_path = vim.env.HOME .. '/.local/share/mise/'
       local perl_path = (mise_path and mise_path .. '/shims/perl') or '/usr/bin/env perl'
 
       local servers = {
@@ -1239,7 +1244,7 @@ require('lazy').setup({
   },
   ----------------------------------------------------------------------------
   { -- INFO: Smart Splits - navigate between term and nvim splits
-    'mrjones2014/smart-splits.nvim'
+    'mrjones2014/smart-splits.nvim',
   },
   ----------------------------------------------------------------------------
   -- INFO: Kickstart Plugins

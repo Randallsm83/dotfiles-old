@@ -50,7 +50,7 @@ local function get_process_icon(process)
 end
 
 local function get_cwd(pane)
----@diagnostic disable-next-line: undefined-field
+  ---@diagnostic disable-next-line: undefined-field
   local home = wez.home_dir or ""
   local cwd = ""
   -- local cwd_uri = pane:get_current_working_dir()
@@ -69,7 +69,7 @@ local function get_cwd(pane)
 end
 
 local function basename(s)
-  return string.gsub(s, '(.*[/\\])(.*)', '%2')
+  return string.gsub(s, "(.*[/\\])(.*)", "%2")
 end
 
 wez.on("format-tab-title", function(tab, _, _, conf)
@@ -82,7 +82,7 @@ wez.on("format-tab-title", function(tab, _, _, conf)
   local ssh = pane.domain_name:match("^SSH[%w]*:(.+)$")
   if ssh then
     host = ssh
-    process = 'ssh'
+    process = "ssh"
     icon = get_process_icon(process)
   end
   -- local location = string.format("%s:%s", host, curdir)
