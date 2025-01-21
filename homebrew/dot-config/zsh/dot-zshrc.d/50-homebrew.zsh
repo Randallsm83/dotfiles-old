@@ -3,29 +3,45 @@
 # This is NOT the typical brew.env mentioned in their docs, that file doesn't support shell expansion...
 # This is sourced to make things work better as expected
 
-(( $+commands[brew] )) || return 1
+if (( ! $+commands[brew] )); then
+  if [[ -n "$BREW_LOCATION" ]]; then
+    if [[ ! -x "$BREW_LOCATION" ]]; then
+      echo "$BREW_LOCATION is not executable"
+      return
+    fi
+  elif [[ -x /opt/homebrew/bin/brew ]]; then
+    BREW_LOCATION="/opt/homebrew/bin/brew"
+  elif [[ -x "${XDG_DATA_HOME:-$HOME/.local/share}/homebrew/bin/brew" ]]; then
+    BREW_LOCATION="${XDG_DATA_HOME:-$HOME/.local/share}/homebrew/bin/brew"
+  elif [[ -x "$HOME/.linuxbrew/bin/brew" ]]; then
+    BREW_LOCATION="$HOME/.linuxbrew/bin/brew"
+  else
+    return
+  fi
+
+  ## All handled by shellenv
+  # if [[ $(uname) == 'Darwin' ]]; then
+  #   export HOMEBREW_PREFIX="/opt/homebrew"
+  # else
+  #   export HOMEBREW_PREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/homebrew"
+  # fi
+
+  # export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
+  # export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX"
+  # export PATH="${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin${PATH+:$PATH}"
+  # export MANPATH="${HOMEBREW_PREFIX}/share/man${MANPATH+:$MANPATH}:"
+  # export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}"
+  # fpath[1,0]="${HOMEBREW_PREFIX}/share/zsh/site-functions"
+
+  eval "$("$BREW_LOCATION" shellenv)"
+  unset BREW_LOCATION
+fi
 
 export HOMEBREW_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/homebrew"
 export HOMEBREW_BUNDLE_FILE="${DOTFILES:-$HOME/.config/dotfiles}/homebrew/dot-config/homebrew/Brewfile"
 export HOMEBREW_BUNDLE_USER_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/homebrew"
 export HOMEBREW_LOGS="${XDG_CACHE_HOME:-$HOME/.cache}/homebrew/logs"
 export HOMEBREW_TEMP="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/homebrew"
-
-eval $(brew shellenv)
-
-## All handled by shellenv
-# if [[ $(uname) == 'Darwin' ]]; then
-#   export HOMEBREW_PREFIX="/opt/homebrew"
-# else
-#   export HOMEBREW_PREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/homebrew"
-# fi
-
-# export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
-# export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX"
-# export PATH="${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin${PATH+:$PATH}"
-# export MANPATH="${HOMEBREW_PREFIX}/share/man${MANPATH+:$MANPATH}:"
-# export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}"
-# fpath[1,0]="${HOMEBREW_PREFIX}/share/zsh/site-functions"
 
 # Performance and behavior options
 export HOMEBREW_COLOR=1

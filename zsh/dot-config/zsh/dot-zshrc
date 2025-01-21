@@ -39,6 +39,7 @@ antidote load
 #   # Ignore tilde files.
 #   if [[ $_rc:t != '~'* ]]; then
 #     source "$_rc"
+#     echo "$_rc"
 #   fi
 # done
 # unset _rc
