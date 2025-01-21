@@ -70,7 +70,7 @@ local function basename(s)
   return string.gsub(s, "(.*[/\\])(.*)", "%2")
 end
 
-wez.on("format-tab-title", function(tab, _, _, conf)
+wez.on("format-tab-title", function(tab, tabs, _, conf)
   local index = tab.tab_index + 1
   local pane = tab.active_pane
   local process = basename(pane.foreground_process_name)
@@ -95,6 +95,10 @@ wez.on("format-tab-title", function(tab, _, _, conf)
     formatted_title = wez.truncate_right(formatted_title, width) .. "…"
   end
 
+  if index < #tabs then
+    formatted_title = string.format("%s %s ", formatted_title, ICONS.field)
+  end
+
   local palette = conf.resolved_palette
   local fg = tab.is_active and palette.tab_bar.active_tab.fg_color or palette.tab_bar.inactive_tab.fg_color
   local bg = palette.tab_bar.background
@@ -105,8 +109,6 @@ wez.on("format-tab-title", function(tab, _, _, conf)
     { Text = string.format(" %s  ", icon) },
     { Foreground = { Color = fg } },
     { Text = formatted_title },
-    { Foreground = { Color = palette.ansi[3] } },
-    { Text = string.format(" %s ", ICONS.field) },
   }
 end)
 
@@ -162,7 +164,7 @@ wez.on("update-status", function(window, pane)
   }
 
   -- Mode status
-  table.insert(left_status, { Text = string.format(" %s  %s ", status_settings[status].icon, status_settings[status].text) })
+  table.insert(left_status, { Text = string.format("  %s  %s ", status_settings[status].icon, status_settings[status].text) })
   table.insert(left_status, { Foreground = { Color = status_settings[status].color } })
   table.insert(left_status, { Background = { Color = background } })
   table.insert(left_status, { Text = string.format("%s ", wez.nerdfonts.pl_left_hard_divider)})

@@ -66,15 +66,10 @@ config.font = wezterm.font_with_fallback({
     harfbuzz_features = { "ss05", "ss04", "ss03", "cv15", "cv29", "ss02", "ss08", "cv24" }
   },
   {
-    family = "Symbols Nerd Font",
-    scale = 1.4,
+    family = "Symbols Nerd Font Mono",
+    scale = 1.3,
     weight = "Medium"
   },
-  -- {
-  -- --   family = "Symbols Nerd Font Mono",
-  --   scale = 1.3,
-  --   weight = "Medium"
-  -- },
   {
     family = "Noto Color Emoji",
     scale = 1.0
