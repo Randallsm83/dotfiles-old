@@ -1,12 +1,26 @@
 #!/usr/bin/env zsh
 
+if [[ -n "$ZSH_DEBUG" ]]; then
+  zmodload zsh/zprof
+fi
+
 # Emacs
 bindkey -e
 
+if [[ -n "$ENV_DIRS" ]]; then
+  for dir in ${(s/:/)ENV_DIRS}; do
+    [[ ! -d "$dir" ]] && mkdir -p "$dir"
+  done
+  unset ENV_DIRS
+fi
+
+# ZSH Syntax Theme
+[[ -r "$ZDOTDIR/.config/zsh/colors/gruvbox.zsh-syntax-theme" ]] && source "$ZDOTDIR/.config/zsh/colors/gruvbox.zsh-syntax-theme"
+
 # Lazy-load (autoload) Zsh function files from a directory.
-# ZFUNCDIR="$ZDOTDIR/.zfunctions"
+export ZFUNCDIR="$ZDOTDIR/.zfunctions"
 # fpath=($ZFUNCDIR $fpath)
-# autoload -Uz $ZFUNCDIR/*(.:t)
+# autoload -Uz $ZFUNCDIR/*(-.N)
 
 # Set any zstyles you might use for configuration.
 [[ -r "$ZDOTDIR/.zstyles" ]] && source "$ZDOTDIR/.zstyles"
@@ -21,37 +35,15 @@ fi
 source "$ANTIDOTE_HOME/antidote.zsh"
 antidote load
 
-for _rc in $ZDOTDIR/.zshrc.d/*.zsh; do
-  # Ignore tilde files.
-  if [[ $_rc:t != '~'* ]]; then
-    source "$_rc"
-  fi
-done
-unset _rc
-
-if [[ -n "$ENV_DIRS" ]]; then
-  for dir in ${(s/:/)ENV_DIRS}; do
-    [[ ! -d "$dir" ]] && mkdir -p "$dir"
-  done
-  unset ENV_DIRS
-fi
-
-# ========================= Plugins Setup ======================================
-
-# FZF Setup
-# zplug "junegunn/fzf", use:"shell/*.zsh", hook-build:"./install --all"
-
-# ========================= Key Bindings =======================================
-
-# # History substring search
-# bindkey '^[[A' history-substring-search-up
-# bindkey '^[[B' history-substring-search-down
+# for _rc in $ZDOTDIR/.zshrc.d/*.zsh; do
+#   # Ignore tilde files.
+#   if [[ $_rc:t != '~'* ]]; then
+#     source "$_rc"
+#   fi
+# done
+# unset _rc
 
 # ========================= Visual Settings ====================================
-
-# ZSH Syntax Theme
-zsh_syntax_theme="$ZDOTDIR/.config/zsh/colors/gruvbox.zsh-syntax-theme"
-[[ -r "$zsh_syntax_theme" ]] && source "$zsh_syntax_theme"
 
 # Set dircolors and completion colors
 if command -v dircolors >/dev/null 2>&1; then
@@ -60,23 +52,9 @@ elif command -v gdircolors >/dev/null 2>&1; then
   eval "$(gdircolors --sh $ZDOTDIR/colors/gruvbox.default.dircolors)"
 fi
 
-# ========================= Set Machine Type ===================================
-# fullname=$(hostname -f 2>/dev/null || hostname)
-# case $fullname in
-# *dreamhost.com) ;&
-# *newdream.net)
-#   machine_type="ndn"
-#   ;;
-# esac
-
-# ========================= Source The Things ==================================
-
-# Aliases and Functions
-# [[ -r "$ZDOTDIR/.aliases" ]] && source "$ZDOTDIR/.aliases"
-# [[ -r "$ZDOTDIR/.functions" ]] && source "$ZDOTDIR/.functions"
-# [[ -r "$ZDOTDIR/.aliases.$machine_type" ]] && source "$ZDOTDIR/.aliases.$machine_type"
-# [[ -r "$ZDOTDIR/.functions.$machine_type" ]] && source "$ZDOTDIR/.functions.$machine_type"
-#
+if [[ -n "$ZSH_DEBUG" ]]; then
+  zprof
+fi
 
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-

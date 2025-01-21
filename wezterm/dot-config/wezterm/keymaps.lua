@@ -43,18 +43,6 @@ function M.apply_to_config(config)
     }
   end
 
-  -- smart_splits.apply_to_config(config, {
-  --   -- directional keys to use in order of: left, down, up, right
-  --   direction_keys = { "h", "j", "k", "l" },
-  --   -- modifier keys to combine with direction_keys
-  --   modifiers = {
-  --     move = "CTRL",
-  --     resize = "META",
-  --   },
-  --   -- log level to use: info, warn, error
-  --   log_level = "info",
-  -- })
-
   config.keys = {
     --------------------------------- Tabs ---------------------------------
     -- New Tab
@@ -98,6 +86,7 @@ function M.apply_to_config(config)
     { key = "e", mods = "LEADER", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 
     -- Move Through Panes
+    -- Handled by smart-splits
     -- { key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
     -- { key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
     -- { key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
@@ -106,20 +95,16 @@ function M.apply_to_config(config)
     -- { key = "l", mods = "CTRL", action = act.ActivatePaneDirection("Right") },
     -- { key = "k", mods = "CTRL", action = act.ActivatePaneDirection("Up") },
     -- { key = "j", mods = "CTRL", action = act.ActivatePaneDirection("Down") },
+    split_nav('move', 'h'),
+    split_nav('move', 'j'),
+    split_nav('move', 'k'),
+    split_nav('move', 'l'),
 
     -- Adjust Pane Size
     -- { key = "h", mods = "LEADER|ALT", action = act.AdjustPaneSize({ "Left", 5 }) },
     -- { key = "l", mods = "LEADER|ALT", action = act.AdjustPaneSize({ "Right", 5 }) },
     -- { key = "k", mods = "LEADER|ALT", action = act.AdjustPaneSize({ "Up", 5 }) },
     -- { key = "j", mods = "LEADER|ALT", action = act.AdjustPaneSize({ "Down", 5 }) },
-
-    -- Handled by smart-splits
-    -- move between split panes
-    split_nav('move', 'h'),
-    split_nav('move', 'j'),
-    split_nav('move', 'k'),
-    split_nav('move', 'l'),
-    -- resize panes
     split_nav('resize', 'h'),
     split_nav('resize', 'j'),
     split_nav('resize', 'k'),

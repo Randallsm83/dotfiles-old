@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-if [[ -n "$OSTYPE" && "$OSTYPE" == darwin* ]]; then
+if [[ -n "$OSTYPE" && "${(L)OSTYPE}" == *darwin* ]]; then
   export MACOSX_DEPLOYMENT_TARGET=$(sw_vers -productVersion)
 fi
 
@@ -12,8 +12,6 @@ export LESSHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/less/history"
 
 export MYSQL_HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/mysql/history"
 
-export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/ripgreprc"
-
 export TLDR_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/tldr"
 
 env_dirs=(
@@ -23,7 +21,6 @@ env_dirs=(
   "$GNUPGHOME"
   "$(dirname "$LESSHISTFILE")"
   "$(dirname "$MYSQL_HISTFILE")"
-  "$(dirname "$RIPGREP_CONFIG_PATH")"
 )
 
 export ENV_DIRS="${(j/:/)env_dirs}"

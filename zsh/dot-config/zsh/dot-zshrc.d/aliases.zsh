@@ -25,7 +25,7 @@ alias zenv='${=EDITOR} $HOME/.zshenv'
 alias zpro='${=EDITOR} ${ZDOTDIR:-$HOME}/.zprofile'
 
 # Edit aliases
-alias aliasrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.aliases'
+alias aliasrc='${=EDITOR} $ZDOTDIR/.zshrc.d/aliases.zsh'
 
 # Mac
 alias macupdate='sudo softwareupdate -i -a'
@@ -39,6 +39,10 @@ alias asdfupdate='asdf update --head && asdf plugin update --all'
 
 # Zplug
 alias zplugupdate='zplug update && zplug install && zplug clean && zplug clear'
+
+# ZSH Profiling
+alias zdebug="time ZSH_DEBUG=1 zsh -i -c exit"
+alias zbench='$XDG_DATA_HOME/zsh-bench/zsh-bench'
 
 # LDE
 alias ldelog='lde logs -ftall '

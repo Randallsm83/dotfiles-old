@@ -23,13 +23,14 @@ fi
 
 # Check and handle `rustc`
 if (( $+commands[rustc] )); then
-  if [[ ! -f "$ZSH_CACHE_DIR/completions/_rustc" ]]; then
-    autoload -Uz _rustc
-    typeset -g -A _comps
-    _comps[rustc]=_rustc
-  fi
-  cat "$(dirname "${0:A}")/_rustc" >| "$ZSH_CACHE_DIR/completions/_rustc" &
-  disown
+  # Copied from stow package
+  # if [[ ! -f "$ZSH_CACHE_DIR/completions/_rustc" ]]; then
+  #   autoload -Uz _rustc
+  #   typeset -g -A _comps
+  #   _comps[rustc]=_rustc
+  # fi
+  # cat "$(dirname "${0:A}")/_rustc" >| "$ZSH_CACHE_DIR/completions/_rustc" &
+  # disown
 
   # Check and handle `cargo`
   if (( $+commands[cargo] )); then

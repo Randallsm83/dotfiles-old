@@ -14,7 +14,7 @@ path=(
 
 fpath+=("${ZSH_COMPLETION_DIR:-}")
 
-if [[ -n "$OSTYPE" && "$OSTYPE" == darwin* ]]; then
+if [[ -n "$OSTYPE" && "${(L)OSTYPE}" == *darwin* ]]; then
   export SDKROOT=$(xcrun --show-sdk-path)
 fi
 

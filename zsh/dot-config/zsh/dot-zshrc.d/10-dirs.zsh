@@ -20,6 +20,8 @@ export BUILD_STATE_DIR="$XDG_STATE_HOME/build"
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 export ZSH_COMPLETION_DIR="$ZSH_CACHE_DIR/completions"
 
+export SSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/ssh"
+
 export MYSPACE="$HOME/Dev"
 export DHSPACE="$HOME/projects/"
 
@@ -39,6 +41,7 @@ env_dirs=(
   "$BUILD_STATE_DIR"
   "$ZSH_CACHE_DIR"
   "$ZSH_COMPLETION_DIR"
+  "$SSH_CACHE_DIR"
 )
 
 export ENV_DIRS="${(j/:/)env_dirs}"

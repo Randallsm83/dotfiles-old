@@ -17,12 +17,6 @@ config.colors = {}
 
 ------------------------- Font -------------------------------------------------
 
-config.font_dirs = { wezterm.home_dir .. "/.local/share/fonts" }
-config.font_size = 14
-config.line_height = 1.1
-config.use_cap_height_to_scale_fallback_fonts = true
--- config.allow_square_glyphs_to_overflow_width = 'Never'
-
 -- Ligatures
 -- { 'calt=0', 'clig=0', 'liga=0' }
 -- config.harfbuzz_features = { 'calt=0' }
@@ -44,14 +38,47 @@ config.use_cap_height_to_scale_fallback_fonts = true
 -- cv25 cv26 cv32 cv27 cv28 ss06 ss07 s10
 -- config.harfbuzz_features = { "" }
 
--- My Fira Code Choices
-config.harfbuzz_features = { "ss05", "ss04", "ss03", "cv15", "cv29", "ss02", "ss08", "cv24" }
+config.dpi = 144.0
+config.font_size = 13.0
+config.line_height = 1.1
+config.display_pixel_geometry = "RGB"
+config.freetype_load_target = "Light"
+config.freetype_render_target = "HorizontalLcd"
+config.freetype_interpreter_version = 40
+config.freetype_load_flags = "NO_HINTING"
+config.custom_block_glyphs = true
+config.anti_alias_custom_block_glyphs = true
+config.use_cap_height_to_scale_fallback_fonts = true
+-- config.allow_square_glyphs_to_overflow_width = "Never"
+
+config.font_dirs = { wezterm.home_dir .. "/.local/share/fonts" }
 
 config.font = wezterm.font_with_fallback({
-  { family = "Fira Code", scale = 1.0, weight = "Medium" },
-  { family = "Hack", scale = 1.0, weight = "Bold" },
-  { family = "Symbols Nerd Font Mono", scale = 1.1 },
-  { family = "Noto Color Emoji", scale = 1.0 },
+  {
+    family = "Hack",
+    scale = 1.1,
+    weight = "Bold",
+  },
+  {
+    family = "Fira Code",
+    scale = 1.1,
+    weight = "Bold",
+    harfbuzz_features = { "ss05", "ss04", "ss03", "cv15", "cv29", "ss02", "ss08", "cv24" }
+  },
+  {
+    family = "Symbols Nerd Font",
+    scale = 1.4,
+    weight = "Medium"
+  },
+  -- {
+  -- --   family = "Symbols Nerd Font Mono",
+  --   scale = 1.3,
+  --   weight = "Medium"
+  -- },
+  {
+    family = "Noto Color Emoji",
+    scale = 1.0
+  },
 })
 
 ------------------------- Tabs -------------------------------------------------
@@ -114,8 +141,8 @@ config.visual_bell = {
 config.scrollback_lines = 10000
 
 -- Performance
-config.animation_fps = 60
 config.max_fps = 120
+config.animation_fps = 60
 config.front_end = "WebGpu"
 config.webgpu_power_preference = "HighPerformance"
 

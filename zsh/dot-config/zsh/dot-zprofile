@@ -10,12 +10,14 @@ export PAGER='less'
 
 export OSTYPE="$(uname)"
 
-if [[ "$OSTYPE" == darwin* ]]; then
+if [[ "${(L)OSTYPE}" == *darwin* ]]; then
   cores="$(sysctl -n hw.logicalcpu)"
-elif [[ "$OSTYPE" == linux* ]]; then
+elif [[ "${(L)OSTYPE}" == *linux* ]]; then
   cores="$(nproc)"
 fi
 export MACHINE_CORES="${cores:-4}"
+
+export SHORT_HOST=$(hostname -s 2>/dev/null || uname -n | cut -d. -f1)
 
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.

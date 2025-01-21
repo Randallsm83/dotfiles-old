@@ -208,6 +208,8 @@ require('lazy').setup({
       }
     end,
   },
+  -- INFO: Smartyank
+  { 'ibhagwan/smartyank.nvim' },
   ----------------------------------------------------------------------------
   -- INFO: Colorschemes
   {

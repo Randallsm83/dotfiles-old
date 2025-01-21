@@ -27,7 +27,7 @@ M.trim = function(s)
 end
 
 -- merges two tables
-function M.merge(t1, t2)
+M.merge = function(t1, t2)
   for k, v in pairs(t2) do
     if type(v) == "table" then
       if type(t1[k] or false) == "table" then
