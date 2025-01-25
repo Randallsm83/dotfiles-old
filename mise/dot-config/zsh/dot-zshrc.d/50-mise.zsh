@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
 
-(( $+commands[mise] )) || return 1
-
 export MISE_CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export MISE_RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
+
+(( $+commands[mise] )) || return 1
 
 eval "$(mise activate zsh)"
 

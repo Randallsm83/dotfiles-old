@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
 
-(( $+commands[starship] )) || return 1
-
 export STARSHIP_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/starship/starship.toml"
 export STARSHIP_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/starship"
+
+(( $+commands[starship] )) || return 1
 
 eval "$(starship init zsh)"
 

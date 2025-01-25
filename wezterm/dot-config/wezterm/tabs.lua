@@ -1,65 +1,63 @@
 ---@diagnostic disable: undefined-field
 
-local wez = require("wezterm")
-local utils = require("utilities")
+local wezterm = require("wezterm")
 local M = {}
 
 -- Status bar icons
 local ICONS = {
-  left_hard = wez.nerdfonts.pl_left_hard_divider,
-  left_soft = wez.nerdfonts.pl_left_soft_divider,
-  right_hard = wez.nerdfonts.pl_right_hard_divider,
-  right_soft = wez.nerdfonts.pl_right_soft_divider,
-  honeycomb = wez.nerdfonts.ple_honeycomb,
-  honeycomb_outlne = wez.nerdfonts.ple_honeycomb_outline,
-  arrow = wez.nerdfonts.fa_long_arrow_right,
-  field = wez.nerdfonts.indent_line,
-  workspace = wez.nerdfonts.cod_window,
-  dir = wez.nerdfonts.oct_file_directory,
-  clock = wez.nerdfonts.md_calendar_clock,
-  user = wez.nerdfonts.fa_user,
-  host = wez.nerdfonts.md_at,
-  hourglass = wez.nerdfonts.fa_hourglass,
-  dev_terminal = wez.nerdfonts.dev_terminal,
-  fa_terminal = wez.nerdfonts.fa_terminal,
-  oct_terminal = wez.nerdfonts.fa_terminal,
-  tab = wez.nerdfonts.oct_tab,
-  copy = wez.nerdfonts.oct_copy,
-  resize = wez.nerdfonts.oct_arrow_up_right,
-  leader = wez.nerdfonts.oct_rocket,
-  search = wez.nerdfonts.cod_search
+  left_hard = wezterm.nerdfonts.pl_left_hard_divider,
+  left_soft = wezterm.nerdfonts.pl_left_soft_divider,
+  right_hard = wezterm.nerdfonts.pl_right_hard_divider,
+  right_soft = wezterm.nerdfonts.pl_right_soft_divider,
+  honeycomb = wezterm.nerdfonts.ple_honeycomb,
+  honeycomb_outlne = wezterm.nerdfonts.ple_honeycomb_outline,
+  arrow = wezterm.nerdfonts.fa_long_arrow_right,
+  field = wezterm.nerdfonts.indent_line,
+  workspace = wezterm.nerdfonts.cod_window,
+  dir = wezterm.nerdfonts.oct_file_directory,
+  clock = wezterm.nerdfonts.md_calendar_clock,
+  user = wezterm.nerdfonts.fa_user,
+  host = wezterm.nerdfonts.md_at,
+  hourglass = wezterm.nerdfonts.fa_hourglass,
+  dev_terminal = wezterm.nerdfonts.dev_terminal,
+  fa_terminal = wezterm.nerdfonts.fa_terminal,
+  oct_terminal = wezterm.nerdfonts.fa_terminal,
+  tab = wezterm.nerdfonts.oct_tab,
+  copy = wezterm.nerdfonts.oct_copy,
+  resize = wezterm.nerdfonts.oct_arrow_up_right,
+  leader = wezterm.nerdfonts.oct_rocket,
+  search = wezterm.nerdfonts.cod_search,
 }
 
 -- Process-specific icons
 local PROCESS_ICONS = {
-  ["debug"] = wez.nerdfonts.cod_debug_console,
-  ["zsh"] = wez.nerdfonts.oct_terminal,
-  ["bash"] = wez.nerdfonts.cod_terminal_bash,
-  ["fish"] = wez.nerdfonts.dev_terminal,
-  ["term"] = wez.nerdfonts.dev_terminal,
-  ["ssh"] = wez.nerdfonts.cod_terminal_linux,
-  ["sudo"] = wez.nerdfonts.fa_hashtag,
-  ["docker"] = wez.nerdfonts.linux_docker,
-  ["docker-compose"] = wez.nerdfonts.linux_docker,
-  ["kuberlr"] = wez.nerdfonts.linux_docker,
-  ["kubectl"] = wez.nerdfonts.linux_docker,
-  ["make"] = wez.nerdfonts.seti_makefile,
-  ["htop"] = wez.nerdfonts.mdi_chart_donut_variant,
-  ["vim"] = wez.nerdfonts.custom_vim,
-  ["nvim"] = wez.nerdfonts.custom_vim,
-  ["git"] = wez.nerdfonts.dev_git,
-  ["wget"] = wez.nerdfonts.mdi_arrow_down_box,
-  ["curl"] = wez.nerdfonts.mdi_flattr,
-  ["gh"] = wez.nerdfonts.dev_github_badge,
-  ["node"] = wez.nerdfonts.dev_nodejs_small,
-  ["perl"] = wez.nerdfonts.dev_perl,
-  ["python"] = wez.nerdfonts.dev_python,
-  ["lua"] = wez.nerdfonts.seti_lua,
-  ["go"] = wez.nerdfonts.seti_go,
-  ["cargo"] = wez.nerdfonts.dev_rust,
-  ["ruby"] = wez.nerdfonts.cod_ruby,
-  ["ls"] = wez.nerdfonts.cod_list_tree,
-  ["eza"] = wez.nerdfonts.cod_list_tree,
+  ["debug"] = wezterm.nerdfonts.cod_debug_console,
+  ["zsh"] = wezterm.nerdfonts.oct_terminal,
+  ["bash"] = wezterm.nerdfonts.cod_terminal_bash,
+  ["fish"] = wezterm.nerdfonts.dev_terminal,
+  ["term"] = wezterm.nerdfonts.dev_terminal,
+  ["ssh"] = wezterm.nerdfonts.cod_terminal_linux,
+  ["sudo"] = wezterm.nerdfonts.fa_hashtag,
+  ["kuberlr"] = wezterm.nerdfonts.linux_docker,
+  ["kubectl"] = wezterm.nerdfonts.linux_docker,
+  ["make"] = wezterm.nerdfonts.seti_makefile,
+  ["htop"] = wezterm.nerdfonts.mdi_chart_donut_variant,
+  ["vim"] = wezterm.nerdfonts.custom_vim,
+  ["nvim"] = wezterm.nerdfonts.custom_vim,
+  ["git"] = wezterm.nerdfonts.dev_git,
+  ["wget"] = wezterm.nerdfonts.mdi_arrow_down_box,
+  ["curl"] = wezterm.nerdfonts.mdi_flattr,
+  ["gh"] = wezterm.nerdfonts.dev_github_badge,
+  ["node"] = wezterm.nerdfonts.dev_nodejs_small,
+  ["perl"] = wezterm.nerdfonts.dev_perl,
+  ["python"] = wezterm.nerdfonts.dev_python,
+  ["lua"] = wezterm.nerdfonts.seti_lua,
+  ["go"] = wezterm.nerdfonts.seti_go,
+  ["cargo"] = wezterm.nerdfonts.dev_rust,
+  ["ruby"] = wezterm.nerdfonts.cod_ruby,
+  ["ls"] = wezterm.nerdfonts.cod_list_tree,
+  ["eza"] = wezterm.nerdfonts.cod_list_tree,
+  ["docker"] = wezterm.nerdfonts.linux_docker,
 }
 
 local function get_process_icon(process)
@@ -67,15 +65,18 @@ local function get_process_icon(process)
 end
 
 local function basename(s)
+  if type(s) ~= "string" then
+    return nil
+  end
   return string.gsub(s, "(.*[/\\])(.*)", "%2")
 end
 
-wez.on("format-tab-title", function(tab, tabs, _, conf)
+wezterm.on("format-tab-title", function(tab, tabs, _, conf)
   local index = tab.tab_index + 1
   local pane = tab.active_pane
   local process = basename(pane.foreground_process_name)
   local icon = get_process_icon(process)
-  local host = wez.hostname()
+  local host = wezterm.hostname()
   local ssh = pane.domain_name:match("^SSH[%w]*:(.+)$")
   if ssh then
     host = ssh
@@ -88,65 +89,166 @@ wez.on("format-tab-title", function(tab, tabs, _, conf)
   -- print(wez.nerdfonts.cod_circled_filled  .. formatted_title)
   -- end
 
-  local formatted_title = string.format("%s [%s]", process, host)
+  local formatted_title = string.format("%s ", process)
 
   local width = conf.tab_max_width - 4
   if #formatted_title > conf.tab_max_width then
-    formatted_title = wez.truncate_right(formatted_title, width) .. "…"
-  end
-
-  if index < #tabs then
-    formatted_title = string.format("%s %s ", formatted_title, ICONS.field)
+    formatted_title = wezterm.truncate_right(formatted_title, width) .. "…"
   end
 
   local palette = conf.resolved_palette
-  local fg = tab.is_active and palette.tab_bar.active_tab.fg_color or palette.tab_bar.inactive_tab.fg_color
-  local bg = palette.tab_bar.background
+  -- print(palette)
+  local colors = {
+    bg_dim = wezterm.color.parse("#1b1b1b"),
+    tab_fg = tab.is_active and wezterm.color.parse(palette.ansi[3]) or wezterm.color.parse(palette.foreground),
+    bg0 = wezterm.color.parse("#282828"),
+    bg1 = wezterm.color.parse("#32302f"),
+    bg2 = wezterm.color.parse("#32302f"),
+    bg3 = wezterm.color.parse("#45403d"),
+    bg4 = wezterm.color.parse("#45403d"),
+    bg5 = wezterm.color.parse("#5a524c"),
+    fg0 = wezterm.color.parse("#e2cca9"),
+    fg1 = wezterm.color.parse("#e2cca9"),
+    red = wezterm.color.parse("#f2594b"),
+    orange = wezterm.color.parse("#f28534"),
+    yellow = wezterm.color.parse("#e9b143"),
+    green = wezterm.color.parse("#b0b846"),
+    aqua = wezterm.color.parse("#8bba7f"),
+    blue = wezterm.color.parse("#80aa9e"),
+    purple = wezterm.color.parse("#d3869b"),
+    bg_statusline1 = wezterm.color.parse("#32302f"),
+    bg_statusline2 = wezterm.color.parse("#3a3735"),
+    bg_statusline3 = wezterm.color.parse("#504945"),
+    bg_diff_green = wezterm.color.parse("#34381b"),
+    bg_visual_green = wezterm.color.parse("#3b4439"),
+    bg_diff_red = wezterm.color.parse("#402120"),
+    bg_visual_red = wezterm.color.parse("#4c3432"),
+    bg_diff_blue = wezterm.color.parse("#0e363e"),
+    bg_visual_blue = wezterm.color.parse("#374141"),
+    bg_visual_yellow = wezterm.color.parse("#4f422e"),
+    bg_current_word = wezterm.color.parse("#3c3836"),
+    bg_red = wezterm.color.parse("#db4740"),
+    bg_green = wezterm.color.parse("#b0b846"),
+    bg_yellow = wezterm.color.parse("#e9b143"),
+  }
+  -- local colors = {
+  --   tab_fg = tab.is_active and wezterm.color.parse(palette.ansi[3]) or wezterm.color.parse(palette.foreground),
+  --   fg0    = wezterm.color.parse(palette.foreground),
+  --   fg1    = wezterm.color.parse("ddc7a1"),
+  --   bg0    = wezterm.color.parse(palette.background),
+  --   bg1    = wezterm.color.parse(palette.ansi[1]),
+  --   bg2    = wezterm.color.parse("#665c54"),
+  --   red    = wezterm.color.parse(palette.ansi[2]),
+  --   green  = wezterm.color.parse(palette.ansi[3]),
+  --   yellow = wezterm.color.parse(palette.ansi[4]),
+  --   blue   = wezterm.color.parse(palette.ansi[5]),
+  --   pink   = wezterm.color.parse(palette.ansi[6]),
+  --   cyan   = wezterm.color.parse(palette.ansi[7]),
+  --   white  = wezterm.color.parse(palette.ansi[8]),
+  --   orange = wezterm.color.parse("#e78a4e"),
+  -- }
+  print(colors)
+
+  if index < #tabs then
+    return {
+      -- { Background = { Color = colors.other_bg:darken(.2) } },
+      { Background = { Color = colors.bg_statusline3 } },
+      { Foreground = { Color = colors.aqua } },
+      { Text = string.format("%s ", icon) },
+      { Foreground = { Color = colors.tab_fg } },
+      { Text = formatted_title },
+      { Foreground = { Color = colors.orange } },
+      { Text = string.format("[", host) },
+      { Foreground = { Color = colors.tab_fg } },
+      { Text = string.format("%s", host) },
+      { Foreground = { Color = colors.orange } },
+      { Text = string.format("] ", host) },
+      { Foreground = { Color = colors.fg0 } },
+      { Text = string.format("%s ", ICONS.left_soft) },
+    }
+  end
 
   return {
-    { Background = { Color = bg } },
-    { Foreground = { Color = palette.ansi[6] } },
-    { Text = string.format(" %s  ", icon) },
-    { Foreground = { Color = fg } },
+    { Background = { Color = colors.bg2:darken(0.2) } },
+    { Foreground = { Color = colors.green } },
+    { Text = string.format("%s ", icon) },
+    { Foreground = { Color = colors.tab_fg } },
     { Text = formatted_title },
+    { Foreground = { Color = colors.orange } },
+    { Text = string.format("[", host) },
+    { Foreground = { Color = colors.tab_fg } },
+    { Text = string.format("%s", host) },
+    { Foreground = { Color = colors.orange } },
+    { Text = string.format("] ", host) },
+    { Foreground = { Color = colors.fg0 } },
+    { Foreground = { Color = colors.bg2:darken(0.2) } },
+    { Background = { Color = colors.bg0 } },
+    -- { Text       = string.format("%s ", ICONS.left_soft) },
+    -- -- { Background = { Color = colors.other_bg:darken(.18) } },
+    -- -- { Foreground = { Color = colors.cyan:saturate(.25) } },
+    -- { Text       = string.format("%s ", icon) },
+    -- -- { Foreground = { Color = colors.tab_fg } },
+    -- { Text       = formatted_title },
+    -- -- { Foreground = { Color = colors.orange } },
+    -- { Text       = string.format("[", host) },
+    -- -- { Foreground = { Color = colors.fg } },
+    -- { Text       = string.format("%s", host) },
+    -- -- { Foreground = { Color = colors.orange } },
+    -- { Text       = string.format("] ", host) },
+    -- -- { Foreground = { Color = colors.light_bg:lighten(.15) } },
+    -- -- { Background = { Color = colors.dark_bg } },
+    { Text = string.format("%s ", ICONS.left_hard) },
   }
 end)
 
-wez.on("update-status", function(window, pane)
+wezterm.on("update-status", function(window, pane)
   local palette = window:effective_config().resolved_palette
-  local background = palette.tab_bar.background
+  local colors = {
+    fg = wezterm.color.parse(palette.foreground),
+    dark_bg = wezterm.color.parse(palette.background),
+    light_bg = wezterm.color.parse(palette.ansi[1]),
+    red = wezterm.color.parse(palette.ansi[2]),
+    green = wezterm.color.parse(palette.ansi[3]),
+    yellow = wezterm.color.parse(palette.ansi[4]),
+    blue = wezterm.color.parse(palette.ansi[5]),
+    pink = wezterm.color.parse(palette.ansi[6]),
+    cyan = wezterm.color.parse(palette.ansi[7]),
+    white = wezterm.color.parse(palette.ansi[8]),
+    orange = wezterm.color.parse("#d65d0e"),
+    other_bg = wezterm.color.parse("#665c54"),
+  }
 
   -- TODO: figure out quick select, debug and command palette modes? emit events?
   local status_settings = {
     normal = {
       icon = ICONS.fa_terminal,
-      color = palette.ansi[5],
+      color = colors.fg:desaturate(0.6):darken(0.2),
       text = "NORMAL",
     },
     leader = {
       icon = ICONS.leader,
-      color = palette.ansi[6],
+      color = colors.pink:saturate(0.25),
       text = "LEADER",
     },
     copy_mode = {
       icon = ICONS.copy,
-      color = palette.ansi[7],
-      text = "COPY  ",
+      color = colors.blue,
+      text = " COPY ",
     },
     search_mode = {
       icon = ICONS.search,
-      color = palette.ansi[4],
+      color = colors.cyan,
       text = "SEARCH",
     },
     resize_pane = {
       icon = ICONS.resize,
-      color = palette.ansi[7],
+      color = colors.cyan,
       text = "RESIZE",
     },
     move_tab = {
       icon = ICONS.tab,
-      color = palette.ansi[7],
-      text = "MOVE  ",
+      color = colors.cyan,
+      text = " MOVE ",
     },
   }
 
@@ -158,77 +260,62 @@ wez.on("update-status", function(window, pane)
   end
 
   -- Left status
-  local left_status = {
-    { Foreground = { Color = background } },
-    { Background = { Color = status_settings[status].color } },
-  }
+  local left_status = {}
 
   -- Mode status
-  table.insert(left_status, { Text = string.format("  %s  %s ", status_settings[status].icon, status_settings[status].text) })
+  table.insert(left_status, { Foreground = { Color = colors.dark_bg } })
+  table.insert(left_status, { Background = { Color = status_settings[status].color } })
+  -- table.insert(left_status, { Text       = string.format(" %s ", status_settings[status].icon) })
+  table.insert(left_status, { Attribute = { Intensity = "Bold" } })
+  table.insert(left_status, { Text = string.format(" %s ", status_settings[status].text) })
   table.insert(left_status, { Foreground = { Color = status_settings[status].color } })
-  table.insert(left_status, { Background = { Color = background } })
-  table.insert(left_status, { Text = string.format("%s ", wez.nerdfonts.pl_left_hard_divider)})
+  table.insert(left_status, { Background = { Color = colors.other_bg:darken(0.2) } })
+  table.insert(left_status, { Text = string.format("%s ", ICONS.left_hard) })
 
-  window:set_left_status(wez.format(left_status))
+  window:set_left_status(wezterm.format(left_status))
 
   -- Right status
-  local right_status = {
-    { Background = { Color = background } },
-  }
-
-  -- TODO: move to left side with soft divider like right side of lualine. or maybe hard div i dunno
-
-  -- Mux tardiness
-  local meta = pane:get_metadata() or {}
-  local secs = 0
-  if meta.is_tardy then
-    secs = meta.since_last_response_ms / 1000.0
-  end
-  table.insert(right_status, { Text = string.format(" %s%5.1fs ", ICONS.hourglass, secs) })
-  table.insert(right_status, { Text = string.format("%s ", ICONS.field) })
+  local right_status = {}
 
   -- Workspace name
   local workspace = window:active_workspace()
-  table.insert(right_status, { Text = string.format(" %s  %s ", ICONS.workspace, workspace) })
-  table.insert(right_status, { Text = string.format("%s ", ICONS.field) })
+  table.insert(right_status, { Background = { Color = colors.dark_bg } })
+  table.insert(right_status, { Foreground = { Color = colors.other_bg:darken(0.2) } })
+  table.insert(right_status, { Text = string.format("%s", ICONS.right_hard) })
+  table.insert(right_status, { Background = { Color = colors.other_bg:darken(0.2) } })
+  table.insert(right_status, { Foreground = { Color = colors.blue:saturate(0.5) } })
+  table.insert(right_status, { Text = string.format(" %s ", ICONS.workspace) })
+  table.insert(right_status, { Foreground = { Color = colors.fg } })
+  table.insert(right_status, { Text = string.format(" %s ", workspace) })
 
   -- Time
-  local time = wez.strftime '%m-%d-%y %H:%M'
-  table.insert(right_status, { Text = string.format(" %s  %s  ", ICONS.clock, time) })
+  local time = wezterm.strftime("%m-%d %H:%M")
+  table.insert(right_status, { Foreground = { Color = colors.fg:desaturate(0.1) } })
+  table.insert(right_status, { Text = string.format("%s", ICONS.right_hard) })
+  table.insert(right_status, { Background = { Color = colors.fg:desaturate(0.1) } })
+  table.insert(right_status, { Attribute = { Intensity = "Bold" } })
+  table.insert(right_status, { Foreground = { Color = colors.dark_bg } })
+  table.insert(right_status, { Text = string.format(" %s ", time) })
 
-  window:set_right_status(wez.format(right_status))
+  window:set_right_status(wezterm.format(right_status))
 end)
 
 function M.apply_to_config(config)
-  print(config.key_tables)
   config.tab_max_width = 32
   config.enable_tab_bar = true
   config.use_fancy_tab_bar = false
   config.tab_bar_at_bottom = true
-  config.show_new_tab_button_in_tab_bar = false
   config.hide_tab_bar_if_only_one_tab = false
+  config.show_new_tab_button_in_tab_bar = false
 
-  local scheme = wez.color.get_builtin_schemes()[config.color_scheme]
+  local scheme = wezterm.color.get_builtin_schemes()[config.color_scheme]
   if scheme == nil then
-    scheme = wez.color.get_default_colors()
+    scheme = wezterm.color.get_default_colors()
   end
 
-  local colors = {
-    tab_bar = {
-      background = scheme.background,
-      active_tab = {
-        bg_color = scheme.background,
-        fg_color = scheme.ansi[4],
-      },
-      inactive_tab = {
-        bg_color = scheme.background,
-        fg_color = scheme.ansi[8],
-      },
-    },
+  config.colors.tab_bar = {
+    background = scheme.background,
   }
-
-  config.colors = config.colors or {}
-  config.colors = utils.merge(config.colors, colors)
 
   return config
 end

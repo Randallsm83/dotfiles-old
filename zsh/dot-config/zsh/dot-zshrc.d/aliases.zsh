@@ -40,8 +40,9 @@ alias asdfupdate='asdf update --head && asdf plugin update --all'
 # Zplug
 alias zplugupdate='zplug update && zplug install && zplug clean && zplug clear'
 
-# ZSH Profiling
-alias zdebug="time ZSH_DEBUG=1 zsh -i -c exit"
+# ZSH
+alias ztrace="zsh -ixc : 2>&1"
+alias ztime="time ZSH_DEBUG=1 zsh -i -c exit"
 alias zbench='$XDG_DATA_HOME/zsh-bench/zsh-bench'
 
 # LDE

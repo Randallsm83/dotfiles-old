@@ -48,7 +48,7 @@ alias scdb="${DEV_ENV} perl -d ${HOME}/projects/ndn/dh/bin/servicectl"
 alias domy="${DEV_ENV}"
 alias ndntest="${DEV_ENV} prove -v"
 alias vix="vi ${HOME}/bin/scratchpad/x.pl"
-alias x="perl ${HOME}/bin/scratchpad/x.pl"
+alias x="sudo perl ${HOME}/bin/scratchpad/x.pl"
 
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-

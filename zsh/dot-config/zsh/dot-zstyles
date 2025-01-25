@@ -7,18 +7,15 @@ zstyle ':plugin:ez-compinit' 'compstyle' 'zshzoo'
 zstyle ':antidote:bundle' use-friendly-names 'yes'
 
 # Alias Finder
-zstyle ':alias-finder' longer true
-zstyle ':alias-finder' exact false
-zstyle ':alias-finder' cheaper true
+# alias a=abc where abc = source and a = destination
+zstyle ':alias-finder' longer true # true include aliases where the source is longer than the input
+zstyle ':alias-finder' exact false # true to avoid aliases where the source is shorter than the input
+zstyle ':alias-finder' cheaper true # true to avoid aliases where the destination is longer than the input
 zstyle ':alias-finder' autoload true
 
 # Ssh-agent
-# Set the environment cache file
-zstyle ':ssh-agent' env-cache "${SSH_CACHE_DIR:-$HOME/.cache/ssh}/environment-${SHORT_HOST:-default}"
-# Set the agent lifetime
-zstyle ':ssh-agent' lifetime "12h"
-# Set specific identities to load not in .ssh/config
-# zstyle ':ssh-agent' identities dhgit esstudy github ldap porky yakko
+zstyle ':ssh-agent' debug false # Enable debug output
+zstyle ':ssh-agent' identities #ldap #id_rsa # Load other identities not found in .ssh/config
 
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-

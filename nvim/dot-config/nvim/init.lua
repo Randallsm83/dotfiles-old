@@ -219,8 +219,13 @@ require('lazy').setup({
     priority = 1000,
     config = function()
       vim.o.background = 'dark'
-      vim.g.gruvbox_material_enable_italic = true
-      vim.g.gruvbox_material_background = 'hard'
+      vim.g.gruvbox_material_background = 'medium' -- hard, medium, soft
+      vim.g.gruvbox_material_foreground = 'mix' -- material, mix, original
+      vim.g.gruvbox_material_enable_italic = 1
+      vim.g.gruvbox_material_disable_italic_comment = 1
+      vim.g.gruvbox_material_visual = 'reverse'
+      vim.g.gruvbox_material_menu_selection_background = 'orange'
+      vim.g.gruvbox_material_current_word = 'high contrast background'
       vim.cmd [[colorscheme gruvbox-material]]
     end,
   },
@@ -511,6 +516,12 @@ require('lazy').setup({
           stop_after_first = true,
         },
         typescript = {
+          'eslint_d',
+          'prettierd',
+          'prettier',
+          stop_after_first = true,
+        },
+        typescriptreact = {
           'eslint_d',
           'prettierd',
           'prettier',
@@ -1277,7 +1288,7 @@ require('lazy').setup({
     check_pinned = false, -- check for pinned packages that can't be updated
   },
   install = {
-    colorscheme = { 'gruvbox_material' },
+    colorscheme = { 'gruvbox-material' },
   },
   performance = {
     cache = {
@@ -1326,17 +1337,6 @@ require 'keymaps'
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
-
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-})
 
 -- Async formatting with conform, supporting ranges
 vim.api.nvim_create_user_command('Format', function(args)

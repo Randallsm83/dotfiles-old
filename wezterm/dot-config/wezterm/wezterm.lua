@@ -9,8 +9,19 @@ end
 -------------------- Colorscheme -----------------------------------------------
 
 local theme = "Gruvbox Material (Gogh)"
+-- local theme = "Gruvbox Dark (Gogh)"
+-- local theme = "Gruvbox dark, hard (base16)"
+-- local theme = "Gruvbox dark, medium (base16)"
+-- local theme = "Gruvbox dark, soft (base16)"
+-- local theme = "Gruvbox dark, pale (base16)"
+-- local theme = "GruvboxDark"
+-- local theme = "GruvboxDarkHard"
 local scheme = wezterm.color.get_builtin_schemes()[theme]
-config.color_scheme = theme
+if scheme == nil then
+  scheme = wezterm.color.get_default_colors()
+else
+  config.color_scheme = theme
+end
 
 -- So we can append keys instead of writing a whole new object later
 config.colors = {}
@@ -39,8 +50,8 @@ config.colors = {}
 -- config.harfbuzz_features = { "" }
 
 config.dpi = 144.0
-config.font_size = 13.0
-config.line_height = 1.1
+config.font_size = 14.0
+config.line_height = 1.2
 config.display_pixel_geometry = "RGB"
 config.freetype_load_target = "Light"
 config.freetype_render_target = "HorizontalLcd"
@@ -49,26 +60,27 @@ config.freetype_load_flags = "NO_HINTING"
 config.custom_block_glyphs = true
 config.anti_alias_custom_block_glyphs = true
 config.use_cap_height_to_scale_fallback_fonts = true
--- config.allow_square_glyphs_to_overflow_width = "Never"
+---@diagnostic disable-next-line: assign-type-mismatch
+config.allow_square_glyphs_to_overflow_width = "Always"
 
 config.font_dirs = { wezterm.home_dir .. "/.local/share/fonts" }
 
 config.font = wezterm.font_with_fallback({
   {
     family = "Hack",
-    scale = 1.1,
-    weight = "Bold",
+    scale = 1.0,
+    weight = "Medium",
   },
   {
     family = "Fira Code",
-    scale = 1.1,
-    weight = "Bold",
+    scale = 1.0,
+    weight = "Medium",
     harfbuzz_features = { "ss05", "ss04", "ss03", "cv15", "cv29", "ss02", "ss08", "cv24" }
   },
   {
     family = "Symbols Nerd Font Mono",
-    scale = 1.3,
-    weight = "Medium"
+    scale = 0.9,
+    weight = "Regular"
   },
   {
     family = "Noto Color Emoji",
@@ -101,13 +113,13 @@ end)
 -- config.macos_window_background_blur = 15
 
 -- Window Padding
-config.window_padding = { top = 2, left = 2, right = 0, bottom = 0 }
+config.window_padding = { top = 0, left = 0, right = 0, bottom = 0 }
 
 -- Dim Inactive Panes
 config.inactive_pane_hsb = { saturation = 0.9, brightness = 0.8 }
 
 -- Pane Split Color
-config.colors.split = scheme.ansi[4]
+config.colors.split = scheme.ansi[8]
 
 ------------------------------ Misc --------------------------------------------
 
@@ -162,8 +174,8 @@ config.command_palette_fg_color = "#ebdbb2"
 ------------------------ Tabs -----------------------------------
 -- LEADER | CMD + t             New tab
 -- LEADER | CMD + w             Close tab
--- LEADER | CMD + ( 1-9 )       Activate a tab
--- CMD + SHIFT + ( ] | [ )      Previous/Next tab
+-- LEADER | CMD + 1-9           Activate a tab
+-- CMD + SHIFT + ] | [          Previous/Next tab
 
 ------------------------ Panes ----------------------------------
 -- LEADER + z                   Toggle pane zoom
@@ -184,8 +196,8 @@ config.command_palette_fg_color = "#ebdbb2"
 -- LEADER + s                   Show workspaces
 -- LEADER + u                   Char select
 -- LEADER + Space               Quick select
--- CMD + SHIFT + ( l | p )      Debug Overlay | Command Palette
--- CMD + ( 0 | - | = )          Reset/Decrease/Increase font size
+-- CMD + SHIFT + l | p          Debug Overlay | Command Palette
+-- CMD + 0 | - | =              Reset/Decrease/Increase font size
 
 local keymaps = require("keymaps")
 config = keymaps.apply_to_config(config)

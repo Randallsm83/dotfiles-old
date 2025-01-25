@@ -37,6 +37,8 @@ if (( ! $+commands[brew] )); then
   unset BREW_LOCATION
 fi
 
+(( $+commands[brew] )) || return 1
+
 export HOMEBREW_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/homebrew"
 export HOMEBREW_BUNDLE_FILE="${DOTFILES:-$HOME/.config/dotfiles}/homebrew/dot-config/homebrew/Brewfile"
 export HOMEBREW_BUNDLE_USER_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/homebrew"
@@ -53,6 +55,8 @@ export HOMEBREW_DISPLAY_INSTALL_TIMES=1
 export HOMEBREW_FORCE_BREWED_CURL=1
 export HOMEBREW_FORCE_BREWED_CA_CERTIFICATES=1
 export HOMEBREW_MAKE_JOBS="${MACHINE_CORES:-4}"
+export APPIMAGE_EXTRACT_AND_RUN=1
+export NO_CLEANUP=1
 
 # Custom paths
 HOMEBREW_OPT="${HOMEBREW_PREFIX}/opt"

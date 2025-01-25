@@ -2,7 +2,7 @@
 	name = Randall Miller
 	email = randallsm83@gmail.com
 [core]
-	editor = vim
+	editor = nvim
 	pager = diff-so-fancy | less --tabs=4 -RFX
 [init]
 	defaultBranch = main
