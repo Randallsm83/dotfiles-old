@@ -9,14 +9,37 @@ export ZSH_THEME_VAGRANT_PROMPT_POWEROFF="%{$fg_no_bold[red]%}●"
 export ZSH_THEME_VAGRANT_PROMPT_SUSPENDED="%{$fg_no_bold[yellow]%}●"
 export ZSH_THEME_VAGRANT_PROMPT_NOT_CREATED="%{$fg_no_bold[white]%}○"
 
-function vagrant_prompt_info() {
-  if [[ ! -d .vagrant || ! -f Vagrantfile ]]; then
+vagrant_prompt_info() {
+  # check if this is a vagrant environment
+  if [[ ! -f vagrantfile ]]; then
+    return
+  fi
+
+  if (( $+commands[starship] )); then
+    # get the vagrant state
+    local state
+    state=$(vagrant status --machine-readable | awk -f, '$3 == "state-human-short" { print $4 }')
+
+    # map the state to symbols
+    case "$state" in
+      running)
+        echo "󰄾 running"
+        ;;
+      poweroff)
+        echo "󰤄 powered off"
+        ;;
+      "not created")
+        echo " not created"
+        ;;
+      *)
+        echo "󰘔 unknown"
+        ;;
+    esac
     return
   fi
 
   local vm_states vm_state
   vm_states=(${(f)"$(vagrant status 2> /dev/null | sed -nE 's/^[^ ]* *([[:alnum:] ]*) \([[:alnum:]_]+\)$/\1/p')"})
-  printf '%s' 'OK'
   printf '%s' $ZSH_THEME_VAGRANT_PROMPT_PREFIX
   for vm_state in $vm_states; do
     case "$vm_state" in

@@ -28,7 +28,7 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 -- INFO: [[ Plugins ]]
---
+
 require('lazy').setup({
   ----------------------------------------------------------------------------
   { -- INFO: Collection of various small independent plugins/modules
@@ -43,7 +43,7 @@ require('lazy').setup({
           -- Extra UI features ('winblend', 'cmdheight=0', ...)
           extra_ui = true,
           -- Presets for window borders ('single', 'double', ...)
-          win_borders = 'default',
+            win_borders = 'dot',
         },
         mappings = {
           -- Basic mappings (better 'jk', save with Ctrl+S, ...)
@@ -58,9 +58,9 @@ require('lazy').setup({
         -- Autocommands. Set to `false` to disable
         autocommands = {
           -- Basic autocommands (highlight on yank, start Insert in terminal, ...)
-          basic = true,
+          basic = false,
           -- Set 'relativenumber' only in linewise and blockwise Visual mode
-          relnum_in_visual_mode = false,
+          relnum_in_visual_mode = true,
         },
         -- Whether to disable showing non-error feedback
         silent = false,
@@ -1078,7 +1078,7 @@ require('lazy').setup({
             luasnip.lsp_expand(args.body)
           end,
         },
-        completion = { completeopt = 'menu,menuone,noinsert' },
+        completion = { completeopt = 'menu,noinsert,menuone' },
 
         -- For an understanding of why these mappings were
         -- chosen, you will need to read `:help ins-completion`
@@ -1176,6 +1176,9 @@ require('lazy').setup({
     opts = {},
   },
   ----------------------------------------------------------------------------
+  { -- INFO: Treesitter external playground module
+    'nvim-treesitter/playground'
+  },
   { -- INFO: Treesitter - Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
@@ -1207,6 +1210,7 @@ require('lazy').setup({
         'vim',
         'vimdoc',
         'yaml',
+        'zig'
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
@@ -1218,6 +1222,24 @@ require('lazy').setup({
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
+      playground = {
+        enable = true,
+        disable = {},
+        updatetime = 25,
+        persist_queries = false,
+        keybindings = {
+          toggle_query_editor = 'o',
+          toggle_hl_groups = 'i',
+          toggle_injected_languages = 't',
+          toggle_anonymous_nodes = 'a',
+          toggle_language_display = 'I',
+          focus_language = 'f',
+          unfocus_language = 'F',
+          update = 'R',
+          goto_node = '<cr>',
+          show_help = '?',
+        },
+      },
     },
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
@@ -1284,7 +1306,7 @@ require('lazy').setup({
     -- automatically check for plugin updates
     enabled = true,
     notify = true, -- get a notification when new updates are found
-    frequency = 43200, -- check for updates every 12 hours
+    frequency = 259,200, -- check for updates every 12 hours
     check_pinned = false, -- check for pinned packages that can't be updated
   },
   install = {
@@ -1298,8 +1320,8 @@ require('lazy').setup({
       disabled_plugins = {
         -- Add disabled plugins here
         'gzip',
-        -- "matchit",
-        -- "matchparen",
+        "matchit",
+        "matchparen",
         'netrwPlugin',
         'tarPlugin',
         'tohtml',

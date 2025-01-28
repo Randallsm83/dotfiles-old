@@ -50,8 +50,8 @@ config.colors = {}
 -- config.harfbuzz_features = { "" }
 
 config.dpi = 144.0
-config.font_size = 14.0
-config.line_height = 1.2
+config.font_size = 12.0
+config.line_height = 1.1
 config.display_pixel_geometry = "RGB"
 config.freetype_load_target = "Light"
 config.freetype_render_target = "HorizontalLcd"
@@ -68,7 +68,7 @@ config.font_dirs = { wezterm.home_dir .. "/.local/share/fonts" }
 config.font = wezterm.font_with_fallback({
   {
     family = "Hack",
-    scale = 1.0,
+    scale = 1.1,
     weight = "Medium",
   },
   {
@@ -79,7 +79,7 @@ config.font = wezterm.font_with_fallback({
   },
   {
     family = "Symbols Nerd Font Mono",
-    scale = 0.9,
+    scale = 1.0,
     weight = "Regular"
   },
   {
@@ -113,7 +113,7 @@ end)
 -- config.macos_window_background_blur = 15
 
 -- Window Padding
-config.window_padding = { top = 0, left = 0, right = 0, bottom = 0 }
+config.window_padding = { top = 9, left = 0, right = 0, bottom = 0 }
 
 -- Dim Inactive Panes
 config.inactive_pane_hsb = { saturation = 0.9, brightness = 0.8 }

@@ -3,22 +3,30 @@
 format = """
 [ ](bg:color_orange)\
 $os\
+$hostname\
 $username\
+$sudo\
 [](bg:color_yellow fg:color_orange)\
 $directory\
 [](fg:color_yellow bg:color_aqua)\
 $git_branch\
 $git_status\
+$git_state\
 [](fg:color_aqua bg:color_blue)\
-$c\
-$rust\
-$golang\
 $nodejs\
+$perl\
+$python\
+$rust\
+$zig\
+$ruby\
+$golang\
+$lua\
 $php\
 $java\
+$c\
 $kotlin\
 $haskell\
-$python\
+$package\
 $vagrant\
 [](fg:color_blue bg:color_bg3)\
 $conda\
@@ -26,6 +34,7 @@ $docker_context\
 ${custom.vagrant_context}\
 [](fg:color_bg3 bg:color_bg1)\
 $time\
+$cmd_duration\
 [](fg:color_bg1)\
 $line_break$character"""
 
@@ -33,6 +42,7 @@ palette = 'gruvbox_dark'
 
 [palettes.gruvbox_dark]
 color_fg0 = '#fbf1c7'
+color_fg1 = "#e2cca9"
 color_bg0 = '#282828'
 color_bg1 = '#3c3836'
 color_bg3 = '#665c54'
@@ -72,7 +82,7 @@ color_orange = '#f28534'
 
 [os]
 disabled = false
-style = "bg:color_orange fg:color_fg0"
+style = "bg:color_orange fg:color_fg1"
 
 [os.symbols]
 Windows = "󰍲"
@@ -97,11 +107,23 @@ Redhat = "󱄛"
 RedHatEnterprise = "󱄛"
 Pop = ""
 
+[hostname]
+disabled = false
+ssh_only = false
+style = "bg:color_orange fg:color_fg1"
+format = '[[ on](fg:color_bg0 bg:color_orange) $hostname]($style)'
+
 [username]
 show_always = true
-style_user = "bg:color_orange fg:color_fg0"
-style_root = "bg:color_orange fg:color_fg0"
-format = '[ $user ]($style)'
+style_user = "bg:color_orange fg:color_fg1"
+style_root = "bg:color_orange fg:color_bg0"
+format = '[[ as](fg:color_bg0 bg:color_orange) $user]($style)'
+
+[sudo]
+disabled = false
+style = "bg:color_orange fg:color_bg0"
+symbol = '  '
+format = "[$symbol]($style)"
 
 [directory]
 style = "fg:color_fg0 bg:color_yellow"
@@ -125,55 +147,84 @@ format = '[[ $symbol $branch ](fg:color_fg0 bg:color_aqua)]($style)'
 style = "bg:color_aqua"
 format = '[[($all_status$ahead_behind )](fg:color_fg0 bg:color_aqua)]($style)'
 
+[git_state]
+style = "fg:#45403d bg:color_aqua"
+format = '[\($state($progress_current of $progress_total)\)]($style)'
+
 [nodejs]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
 
 [c]
 symbol = " "
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
 
 [rust]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+
+[perl]
+symbol = ""
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+
+[ruby]
+symbol = ""
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+
+[lua]
+symbol = ""
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+
+[zig]
+symbol = ""
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
 
 [golang]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
 
 [php]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
 
 [java]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
 
 [kotlin]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
 
 [haskell]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
 
 [python]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
 
 [vagrant]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+
+[package]
+symbol = ""
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
 
 [docker_context]
 symbol = ""
@@ -181,10 +232,25 @@ style = "bg:color_bg3"
 format = '[[ $symbol( $context) ](fg:#83a598 bg:color_bg3)]($style)'
 
 [custom.vagrant_context]
-shell = ["zsh"]
-# command = 'vagrant_prompt_info'
-command = ". ~/.zshenv; echo $(vagrant_prompt_info)"
-detect_files = ["Vagrantfile"]
+command = """
+local state
+state=$(vagrant status --machine-readable | awk -F, '$3 == "state-human-short" { print $4 }')
+case "$state" in
+  running)
+    echo -e "Running" # Ensure UTF-8 characters are properly encoded
+    ;;
+  poweroff)
+    echo -e "Powered Off"
+    ;;
+  "not created")
+    echo -e "Not Created"
+    ;;
+  *)
+    echo -e "Unknown"
+    ;;
+esac
+"""
+detect_files = ['Vagrantfile']
 symbol = ""
 style = "bg:color_bg3"
 format = '[[ $symbol( $output) ](fg:#83a598 bg:color_bg3)]($style)'
@@ -198,6 +264,11 @@ disabled = true
 time_format = "%R"
 style = "bg:color_bg1"
 format = '[[  $time ](fg:color_fg0 bg:color_bg1)]($style)'
+
+[cmd_duration]
+min_time = 500
+style = "bg:color_bg1"
+format = '[ 󰔟 $duration ](fg:color_fg1 bg:color_bg1)($style)'
 
 [line_break]
 disabled = false

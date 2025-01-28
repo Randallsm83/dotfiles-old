@@ -1,9 +1,7 @@
 -- [[ Vim Opts ]]
 
-vim.opt.relativenumber = true
-
 -- Wildmenu
-vim.opt.wildmode = "full"
+vim.opt.wildmode = "longest:full,full"
 vim.opt.wildoptions = "pum,tagfile,fuzzy"
 vim.opt.wildignorecase = true
 
@@ -25,8 +23,7 @@ vim.opt.timeoutlen = 300
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
-vim.opt.list = true
-vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+vim.opt.listchars = 'tab:> ,extends:…,precedes:…,nbsp:␣,trail:.'
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
@@ -40,5 +37,8 @@ vim.opt.smoothscroll = true
 
 -- Window title
 vim.opt.title = true
+
+-- Hide cmd bar
+vim.opt.cmdheight = 0
 
 -- vim: ts=2 sts=2 sw=2 et

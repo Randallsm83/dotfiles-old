@@ -97,108 +97,195 @@ wezterm.on("format-tab-title", function(tab, tabs, _, conf)
   end
 
   local palette = conf.resolved_palette
-  -- print(palette)
-  local colors = {
-    bg_dim = wezterm.color.parse("#1b1b1b"),
-    tab_fg = tab.is_active and wezterm.color.parse(palette.ansi[3]) or wezterm.color.parse(palette.foreground),
-    bg0 = wezterm.color.parse("#282828"),
-    bg1 = wezterm.color.parse("#32302f"),
-    bg2 = wezterm.color.parse("#32302f"),
-    bg3 = wezterm.color.parse("#45403d"),
-    bg4 = wezterm.color.parse("#45403d"),
-    bg5 = wezterm.color.parse("#5a524c"),
-    fg0 = wezterm.color.parse("#e2cca9"),
-    fg1 = wezterm.color.parse("#e2cca9"),
-    red = wezterm.color.parse("#f2594b"),
-    orange = wezterm.color.parse("#f28534"),
-    yellow = wezterm.color.parse("#e9b143"),
-    green = wezterm.color.parse("#b0b846"),
-    aqua = wezterm.color.parse("#8bba7f"),
-    blue = wezterm.color.parse("#80aa9e"),
-    purple = wezterm.color.parse("#d3869b"),
-    bg_statusline1 = wezterm.color.parse("#32302f"),
-    bg_statusline2 = wezterm.color.parse("#3a3735"),
-    bg_statusline3 = wezterm.color.parse("#504945"),
-    bg_diff_green = wezterm.color.parse("#34381b"),
-    bg_visual_green = wezterm.color.parse("#3b4439"),
-    bg_diff_red = wezterm.color.parse("#402120"),
-    bg_visual_red = wezterm.color.parse("#4c3432"),
-    bg_diff_blue = wezterm.color.parse("#0e363e"),
-    bg_visual_blue = wezterm.color.parse("#374141"),
-    bg_visual_yellow = wezterm.color.parse("#4f422e"),
-    bg_current_word = wezterm.color.parse("#3c3836"),
-    bg_red = wezterm.color.parse("#db4740"),
-    bg_green = wezterm.color.parse("#b0b846"),
-    bg_yellow = wezterm.color.parse("#e9b143"),
-  }
-  -- local colors = {
-  --   tab_fg = tab.is_active and wezterm.color.parse(palette.ansi[3]) or wezterm.color.parse(palette.foreground),
-  --   fg0    = wezterm.color.parse(palette.foreground),
-  --   fg1    = wezterm.color.parse("ddc7a1"),
-  --   bg0    = wezterm.color.parse(palette.background),
-  --   bg1    = wezterm.color.parse(palette.ansi[1]),
-  --   bg2    = wezterm.color.parse("#665c54"),
-  --   red    = wezterm.color.parse(palette.ansi[2]),
-  --   green  = wezterm.color.parse(palette.ansi[3]),
-  --   yellow = wezterm.color.parse(palette.ansi[4]),
-  --   blue   = wezterm.color.parse(palette.ansi[5]),
-  --   pink   = wezterm.color.parse(palette.ansi[6]),
-  --   cyan   = wezterm.color.parse(palette.ansi[7]),
-  --   white  = wezterm.color.parse(palette.ansi[8]),
-  --   orange = wezterm.color.parse("#e78a4e"),
-  -- }
-  print(colors)
 
-  if index < #tabs then
+  local colors = {
+  --  MEDIUM MIX
+    -- tab_fg = tab.is_active and wezterm.color.parse(palette.ansi[3]) or wezterm.color.parse(palette.foreground),
+    --
+    -- fg0 = wezterm.color.parse("#e2cca9"),
+    -- fg1 = wezterm.color.parse("#e2cca9"),
+    -- red = wezterm.color.parse("#f2594b"),
+    -- green = wezterm.color.parse("#b0b846"),
+    -- yellow = wezterm.color.parse("#e9b143"),
+    -- blue = wezterm.color.parse("#80aa9e"),
+    -- purple = wezterm.color.parse("#d3869b"),
+    --    cyan = wezterm.color.parse("#8bba7f"),
+    -- orange = wezterm.color.parse("#f28534"),
+    -- bg_red = wezterm.color.parse("#db4740"),
+    -- bg_green = wezterm.color.parse("#b0b846"),
+    -- bg_yellow = wezterm.color.parse("#e9b143"),
+    --
+    -- bg_dim = wezterm.color.parse("#1b1b1b"),
+    -- bg0 = wezterm.color.parse("#282828"),
+    -- bg1 = wezterm.color.parse("#32302f"),
+    -- bg2 = wezterm.color.parse("#32302f"),
+    -- bg3 = wezterm.color.parse("#45403d"),
+    -- bg4 = wezterm.color.parse("#45403d"),
+    -- bg5 = wezterm.color.parse("#5a524c"),
+    -- bg_statusline1 = wezterm.color.parse("#32302f"),
+    -- bg_statusline2 = wezterm.color.parse("#3a3735"),
+    -- bg_statusline3 = wezterm.color.parse("#504945"),
+    -- bg_diff_green = wezterm.color.parse("#34381b"),
+    -- bg_visual_green = wezterm.color.parse("#3b4439"),
+    -- bg_diff_red = wezterm.color.parse("#402120"),
+    -- bg_visual_red = wezterm.color.parse("#4c3432"),
+    -- bg_diff_blue = wezterm.color.parse("#0e363e"),
+    -- bg_visual_blue = wezterm.color.parse("#374141"),
+    -- bg_visual_yellow = wezterm.color.parse("#4f422e"),
+    -- bg_current_word = wezterm.color.parse("#3c3836"),
+
+    -- DARK MEDIUM BG
+    bg_dim           = wezterm.color.parse('#1b1b1b'),
+    bg0              = wezterm.color.parse('#282828'),
+    bg1              = wezterm.color.parse('#32302f'),
+    bg2              = wezterm.color.parse('#32302f'),
+    bg3              = wezterm.color.parse('#45403d'),
+    bg4              = wezterm.color.parse('#45403d'),
+    bg5              = wezterm.color.parse('#5a524c'),
+    bg_statusline1   = wezterm.color.parse('#32302f'),
+    bg_statusline2   = wezterm.color.parse('#3a3735'),
+    bg_statusline3   = wezterm.color.parse('#504945'),
+    bg_diff_green    = wezterm.color.parse('#34381b'),
+    bg_visual_green  = wezterm.color.parse('#3b4439'),
+    bg_diff_red      = wezterm.color.parse('#402120'),
+    bg_visual_red    = wezterm.color.parse('#4c3432'),
+    bg_diff_blue     = wezterm.color.parse('#0e363e'),
+    bg_visual_blue   = wezterm.color.parse('#374141'),
+    bg_visual_yellow = wezterm.color.parse('#4f422e'),
+    bg_current_word  = wezterm.color.parse( '#3c3836'),
+
+    -- DARK MATERIAL FG
+    fg0        = wezterm.color.parse('#d4be98'),
+    fg1        = wezterm.color.parse('#ddc7a1'),
+    red        = wezterm.color.parse('#ea6962'),
+    orange     = wezterm.color.parse('#e78a4e'),
+    yellow     = wezterm.color.parse('#d8a657'),
+    green      = wezterm.color.parse('#a9b665'),
+    aqua       = wezterm.color.parse('#89b482'),
+    blue       = wezterm.color.parse('#7daea3'),
+    purple     = wezterm.color.parse('#d3869b'),
+    bg_red     = wezterm.color.parse('#ea6962'),
+    bg_green   = wezterm.color.parse('#a9b665'),
+    bg_yellow  = wezterm.color.parse('#d8a657'),
+    -- fg0 = wezterm.color.parse(palette.ansi[8]),
+    -- fg1 = wezterm.color.parse("ddc7a1"),
+    -- bg0 = wezterm.color.parse("#282828"),
+    -- bg1 = wezterm.color.parse("#32302f"),
+    -- bg2 = wezterm.color.parse("#45403d"),
+    -- bg3 = wezterm.color.parse("#5a524c"),
+    -- tab_bg1 = wezterm.color.parse("#32302f"),
+    -- tab_bg2 = wezterm.color.parse("#3a3735"),
+    -- tab_bg3 = wezterm.color.parse("#504945"),
+    -- grey = wezterm.color.parse(palette.ansi[1]),
+    -- red = wezterm.color.parse(palette.ansi[2]),
+    -- green = wezterm.color.parse(palette.ansi[3]),
+    -- yellow = wezterm.color.parse(palette.ansi[4]),
+    -- blue = wezterm.color.parse(palette.ansi[5]),
+    -- purple = wezterm.color.parse(palette.ansi[6]),
+    -- cyan = wezterm.color.parse(palette.ansi[7]),
+    -- white = wezterm.color.parse(palette.ansi[8]),
+    -- orange = wezterm.color.parse("#e78a4e"),
+
+    -- DARK MIX FG
+  }
+  print(palette)
+
+  colors.tab_fg = tab.is_active and colors.fg0 or colors.fg0:darken(.1)
+  colors.tab_bg = tab.is_active and colors.bg2:lighten(.1) or colors.bg2:darken(.1)
+  colors.separator_bg = tab.is_active and colors.bg2:darken(.1) or colors.bg2:lighten(.1)
+
+  if index == 1 then
+    -- First tab
     return {
-      -- { Background = { Color = colors.other_bg:darken(.2) } },
-      { Background = { Color = colors.bg_statusline3 } },
-      { Foreground = { Color = colors.aqua } },
-      { Text = string.format("%s ", icon) },
-      { Foreground = { Color = colors.tab_fg } },
-      { Text = formatted_title },
-      { Foreground = { Color = colors.orange } },
-      { Text = string.format("[", host) },
-      { Foreground = { Color = colors.tab_fg } },
-      { Text = string.format("%s", host) },
-      { Foreground = { Color = colors.orange } },
-      { Text = string.format("] ", host) },
-      { Foreground = { Color = colors.fg0 } },
-      { Text = string.format("%s ", ICONS.left_soft) },
+        { Background = { Color = colors.tab_bg } },
+        -- { Foreground = { Color = colors.green:saturate(.1) } },
+        { Foreground = { Color = colors.fg0:darken(.2) } },
+        { Text = string.format("%s ", ICONS.left_hard) },
+        { Text = string.format("%s ", icon) },
+        { Text = formatted_title },
+        { Foreground = { Color = colors.orange } },
+        { Text = string.format("[", host) },
+        { Foreground = { Color = colors.tab_fg } },
+        { Text = string.format("%s", host) },
+        { Foreground = { Color = colors.orange } },
+        { Text = string.format("] ", host) },
+        { Foreground = { Color = colors.tab_bg } },
+        { Background = { Color = colors.separator_bg } },
+        { Text = string.format("%s ", ICONS.left_hard) },
     }
+  elseif index < #tabs then
+    -- Middle tabs
+    return {
+        { Background = { Color = colors.tab_bg } },
+        { Foreground = { Color = colors.tab_bg } },
+        { Text = string.format("%s ", ICONS.left_hard) },
+        { Foreground = { Color = colors.green:saturate(.1) } },
+        { Text = string.format("%s ", icon) },
+        { Foreground = { Color = colors.tab_fg } },
+        { Text = formatted_title },
+        { Foreground = { Color = colors.orange } },
+        { Text = string.format("[", host) },
+        { Foreground = { Color = colors.tab_fg } },
+        { Text = string.format("%s", host) },
+        { Foreground = { Color = colors.orange } },
+        { Text = string.format("] ", host) },
+        { Background = { Color = colors.separator_bg } },
+    }
+  else
+    -- Last tab
   end
 
-  return {
-    { Background = { Color = colors.bg2:darken(0.2) } },
-    { Foreground = { Color = colors.green } },
-    { Text = string.format("%s ", icon) },
-    { Foreground = { Color = colors.tab_fg } },
-    { Text = formatted_title },
-    { Foreground = { Color = colors.orange } },
-    { Text = string.format("[", host) },
-    { Foreground = { Color = colors.tab_fg } },
-    { Text = string.format("%s", host) },
-    { Foreground = { Color = colors.orange } },
-    { Text = string.format("] ", host) },
-    { Foreground = { Color = colors.fg0 } },
-    { Foreground = { Color = colors.bg2:darken(0.2) } },
-    { Background = { Color = colors.bg0 } },
-    -- { Text       = string.format("%s ", ICONS.left_soft) },
-    -- -- { Background = { Color = colors.other_bg:darken(.18) } },
-    -- -- { Foreground = { Color = colors.cyan:saturate(.25) } },
-    -- { Text       = string.format("%s ", icon) },
-    -- -- { Foreground = { Color = colors.tab_fg } },
-    -- { Text       = formatted_title },
-    -- -- { Foreground = { Color = colors.orange } },
-    -- { Text       = string.format("[", host) },
-    -- -- { Foreground = { Color = colors.fg } },
-    -- { Text       = string.format("%s", host) },
-    -- -- { Foreground = { Color = colors.orange } },
-    -- { Text       = string.format("] ", host) },
-    -- -- { Foreground = { Color = colors.light_bg:lighten(.15) } },
-    -- -- { Background = { Color = colors.dark_bg } },
-    { Text = string.format("%s ", ICONS.left_hard) },
-  }
+  -- if index < #tabs then
+  --   return {
+  --     { Background = { Color = colors.tab_bg } },
+  --     { Foreground = { Color = colors.green:saturate(.1) } },
+  --     { Text = string.format("%s ", icon) },
+  --     { Foreground = { Color = colors.tab_fg } },
+  --     { Text = formatted_title },
+  --     { Foreground = { Color = colors.orange } },
+  --     { Text = string.format("[", host) },
+  --     { Foreground = { Color = colors.tab_fg } },
+  --     { Text = string.format("%s", host) },
+  --     { Foreground = { Color = colors.orange } },
+  --     { Text = string.format("] ", host) },
+  --     { Foreground = { Color = colors.tab_bg } },
+  --     { Background = { Color = colors.separator_bg } },
+  --     { Text = string.format("%s ", ICONS.left_hard) },
+  --   }
+  -- end
+  -- return {
+  --   { Background = { Color = colors.tab_bg } },
+  --   { Foreground = { Color = colors.green:saturate(.1) } },
+  --   { Text = string.format("%s ", icon) },
+  --   { Foreground = { Color = colors.tab_fg } },
+  --   { Text = formatted_title },
+  --   { Foreground = { Color = colors.orange } },
+  --   { Text = string.format("[", host) },
+  --   { Foreground = { Color = colors.tab_fg } },
+  --   { Text = string.format("%s", host) },
+  --   { Foreground = { Color = colors.orange } },
+  --   { Text = string.format("] ", host) },
+  --   { Background = { Color = colors.bg0 } },
+  --   { Foreground = { Color = colors.tab_bg } },
+  --   { Text = string.format("%s ", ICONS.left_hard) },
+  -- }
+  --   return {
+  --     { Background = { Color = colors.tab_bg } },
+  --     { Foreground = { Color = colors.green:saturate(.1) } },
+  --     { Text = string.format("%s ", icon) },
+  --     { Foreground = { Color = colors.tab_fg } },
+  --     { Text = formatted_title },
+  --     { Foreground = { Color = colors.orange } },
+  --     { Text = string.format("[", host) },
+  --     { Foreground = { Color = colors.tab_fg } },
+  --     { Text = string.format("%s", host) },
+  --     { Foreground = { Color = colors.orange } },
+  --     { Text = string.format("] ", host) },
+  --     { Foreground = { Color = colors.fg0:lighten(.4) } },
+  --     { Background = { Color = colors.separator_bg } },
+  --     { Text = string.format("%s ", ICONS.left_soft) },
+  --   }
+  --
 end)
 
 wezterm.on("update-status", function(window, pane)
@@ -265,28 +352,27 @@ wezterm.on("update-status", function(window, pane)
   -- Mode status
   table.insert(left_status, { Foreground = { Color = colors.dark_bg } })
   table.insert(left_status, { Background = { Color = status_settings[status].color } })
-  -- table.insert(left_status, { Text       = string.format(" %s ", status_settings[status].icon) })
   table.insert(left_status, { Attribute = { Intensity = "Bold" } })
   table.insert(left_status, { Text = string.format(" %s ", status_settings[status].text) })
   table.insert(left_status, { Foreground = { Color = status_settings[status].color } })
   table.insert(left_status, { Background = { Color = colors.other_bg:darken(0.2) } })
   table.insert(left_status, { Text = string.format("%s ", ICONS.left_hard) })
 
+  -- Workspace name
+  local workspace = window:active_workspace()
+  -- table.insert(left_status, { Background = { Color = colors.dark_bg } })
+  -- table.insert(left_status, { Background = { Color = colors.other_bg:darken(0.2) } })
+  -- table.insert(left_status, { Text = string.format("%s", ICONS.left_hard) })
+  table.insert(left_status, { Background = { Color = colors.other_bg:darken(0.2) } })
+  table.insert(left_status, { Foreground = { Color = colors.blue:saturate(0.5) } })
+  table.insert(left_status, { Text = string.format("%s ", ICONS.workspace) })
+  table.insert(left_status, { Foreground = { Color = colors.fg } })
+  table.insert(left_status, { Text = string.format(" %s ", workspace) })
+
   window:set_left_status(wezterm.format(left_status))
 
   -- Right status
   local right_status = {}
-
-  -- Workspace name
-  local workspace = window:active_workspace()
-  table.insert(right_status, { Background = { Color = colors.dark_bg } })
-  table.insert(right_status, { Foreground = { Color = colors.other_bg:darken(0.2) } })
-  table.insert(right_status, { Text = string.format("%s", ICONS.right_hard) })
-  table.insert(right_status, { Background = { Color = colors.other_bg:darken(0.2) } })
-  table.insert(right_status, { Foreground = { Color = colors.blue:saturate(0.5) } })
-  table.insert(right_status, { Text = string.format(" %s ", ICONS.workspace) })
-  table.insert(right_status, { Foreground = { Color = colors.fg } })
-  table.insert(right_status, { Text = string.format(" %s ", workspace) })
 
   -- Time
   local time = wezterm.strftime("%m-%d %H:%M")

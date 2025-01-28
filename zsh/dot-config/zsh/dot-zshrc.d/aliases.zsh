@@ -15,6 +15,7 @@ alias has='curl -sL https://git.io/_has | bash -s '
 # CD Shortcuts
 alias dh='cd $DHSPACE'
 alias dots='cd $DOTFILES'
+alias notes='cd ~/vaults/'
 
 # Edit configs
 alias nrc='${=EDITOR} $XDG_CONFIG_HOME/nvim/init.lua'
@@ -32,6 +33,9 @@ alias macupdate='sudo softwareupdate -i -a'
 
 # Brew
 alias brewupdate='brew update && brew upgrade && brew cleanup'
+
+# Mise
+alias miseupdate='mise up'
 
 # ASDF
 alias asdfplugadd='cut -d" " -f1 $ASDF_DEFAULT_TOOL_VERSIONS_FILENAME|xargs -i asdf plugin add  {}'
