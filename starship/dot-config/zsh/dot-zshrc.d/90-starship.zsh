@@ -3,9 +3,9 @@
 export STARSHIP_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/starship/starship.toml"
 export STARSHIP_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/starship"
 
-(( $+commands[starship] )) || return 1
-
 eval "$(starship init zsh)"
+
+(( $+commands[starship] )) || return 1
 
 if [[ ! -f "$ZSH_CACHE_DIR/completions/_starship" ]]; then
   typeset -g -A _comps

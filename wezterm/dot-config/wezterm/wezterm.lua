@@ -172,9 +172,9 @@ config.command_palette_fg_color = "#ebdbb2"
 -- CTRL + ;                     Leader
 
 ------------------------ Tabs -----------------------------------
--- LEADER | CMD + t             New tab
--- LEADER | CMD + w             Close tab
--- LEADER | CMD + 1-9           Activate a tab
+-- CMD + t                      New tab
+-- CMD + w                      Close tab
+-- CMD + 1-9                    Activate a tab
 -- CMD + SHIFT + ] | [          Previous/Next tab
 
 ------------------------ Panes ----------------------------------
@@ -201,5 +201,14 @@ config.command_palette_fg_color = "#ebdbb2"
 
 local keymaps = require("keymaps")
 config = keymaps.apply_to_config(config)
+
+config.ssh_domains = {
+  {
+    name = "yakko",
+    remote_address = "yakko.sd.dreamhost.com",
+    username = "rmiller",
+    local_echo_threshold_ms = 300
+  },
+}
 
 return config

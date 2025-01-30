@@ -395,6 +395,7 @@ function M.apply_to_config(config)
   config.show_new_tab_button_in_tab_bar = false
 
   local scheme = wezterm.color.get_builtin_schemes()[config.color_scheme]
+  print(scheme)
   if scheme == nil then
     scheme = wezterm.color.get_default_colors()
   end
