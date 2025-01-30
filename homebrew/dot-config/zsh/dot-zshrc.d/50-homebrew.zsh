@@ -3,39 +3,33 @@
 # This is NOT the typical brew.env mentioned in their docs, that file doesn't support shell expansion...
 # This is sourced to make things work better as expected
 
-if [[ -n "$BREW_LOCATION" ]]; then
-  if [[ ! -x "$BREW_LOCATION" ]]; then
-    echo "$BREW_LOCATION is not executable"
+if (( ! $+commands[brew] )); then
+  if [[ -x /opt/homebrew/bin/brew ]]; then
+    BREW_LOCATION="/opt/homebrew/bin/brew"
+  elif [[ -x "${XDG_DATA_HOME:-$HOME/.local/share}/homebrew/bin/brew" ]]; then
+#   export HOMEBREW_PREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/homebrew"
+    BREW_LOCATION="${XDG_DATA_HOME:-$HOME/.local/share}/homebrew/bin/brew"
+  else
     return
   fi
-elif [[ -x /opt/homebrew/bin/brew ]]; then
-  BREW_LOCATION="/opt/homebrew/bin/brew"
-elif [[ -x "${XDG_DATA_HOME:-$HOME/.local/share}/homebrew/bin/brew" ]]; then
-  BREW_LOCATION="${XDG_DATA_HOME:-$HOME/.local/share}/homebrew/bin/brew"
-elif [[ -x "$HOME/.linuxbrew/bin/brew" ]]; then
-  BREW_LOCATION="$HOME/.linuxbrew/bin/brew"
-else
-  return
+
+  # Only add Homebrew installation to PATH, MANPATH, and INFOPATH if brew is
+  # not already on the path, to prevent duplicate entries. This aligns with
+  # the behavior of the brew installer.sh post-install steps.
+  eval "$("$BREW_LOCATION" shellenv)"
+  unset BREW_LOCATION
 fi
 
-## All handled by shellenv
-# if [[ $(uname) == 'Darwin' ]]; then
-#   export HOMEBREW_PREFIX="/opt/homebrew"
-# else
-#   export HOMEBREW_PREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/homebrew"
-# fi
+if [[ -z "$HOMEBREW_PREFIX" ]]; then
+  # Maintain compatibility with potential custom user profiles, where we had
+  # previously relied on always sourcing shellenv. OMZ plugins should not rely
+  # on this to be defined due to out of order processing.
+  export HOMEBREW_PREFIX="$(brew --prefix)"
+fi
 
-# export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
-# export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX"
-# export PATH="${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin${PATH+:$PATH}"
-# export MANPATH="${HOMEBREW_PREFIX}/share/man${MANPATH+:$MANPATH}:"
-# export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}"
-# fpath[1,0]="${HOMEBREW_PREFIX}/share/zsh/site-functions"
-
-eval "$("$BREW_LOCATION" shellenv)"
-unset BREW_LOCATION
-
-(( $+commands[brew] )) || return 1
+if [[ -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
+  fpath+=("$HOMEBREW_PREFIX/share/zsh/site-functions")
+fi
 
 export HOMEBREW_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/homebrew"
 export HOMEBREW_BUNDLE_FILE="${DOTFILES:-$HOME/.config/dotfiles}/homebrew/dot-config/homebrew/Brewfile"
@@ -47,14 +41,15 @@ export HOMEBREW_TEMP="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/homebrew"
 export HOMEBREW_COLOR=1
 export HOMEBREW_EDITOR="nvim"
 export HOMEBREW_NO_ANALYTICS=1
-export HOMEBREW_CURL_RETRIES=3
+export HOMEBREW_NO_ENV_HINTS=1
+export HOMEBREW_NO_ENV_FILTERING=1
 export HOMEBREW_NO_INSECURE_REDIRECT=1
-export HOMEBREW_DISPLAY_INSTALL_TIMES=1
+export HOMEBREW_CURL_RETRIES=3
 export HOMEBREW_FORCE_BREWED_CURL=1
 export HOMEBREW_FORCE_BREWED_CA_CERTIFICATES=1
 export HOMEBREW_MAKE_JOBS="${MACHINE_CORES:-4}"
-export APPIMAGE_EXTRACT_AND_RUN=1
-export NO_CLEANUP=1
+export HOMEBREW_DISPLAY_INSTALL_TIMES=1
+export HOMEBREW_BAT=1
 
 # Custom paths
 HOMEBREW_OPT="${HOMEBREW_PREFIX}/opt"
@@ -102,16 +97,14 @@ COMMON_LIB_PATHS=(
   "${HOMEBREW_OPT}/curl/lib"
   "${HOMEBREW_OPT}/ncurses/lib"
   "${HOMEBREW_OPT}/readline/lib"
+  "${HOMEBREW_PREFIX}/lib"
 )
 for lib_path in "${COMMON_LIB_PATHS[@]}"; do
   export LDFLAGS="-L$lib_path ${LDFLAGS:-}"
   export LIBRARY_PATH="$lib_path${LIBRARY_PATH+:$LIBRARY_PATH}"
   export LD_LIBRARY_PATH="$lib_path${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
+  export CMAKE_LIBRARY_PATH="$lib_path${CMAKE_LIBRARY_PATH+:$CMAKE_LIBRARY_PATH}"
 done
-
-# export LDFLAGS="-L${HOMEBREW_PREFIX}/lib ${LDFLAGS:-}"
-# export LIBRARY_PATH="${HOMEBREW_PREFIX}/lib${LIBRARY_PATH+:$LIBRARY_PATH}"
-# export LD_LIBRARY_PATH="${HOMEBREW_PREFIX}/lib${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
 
 COMMON_INCLUDE_PATHS=(
   "${HOMEBREW_OPT}/flex/include"
@@ -127,6 +120,7 @@ COMMON_INCLUDE_PATHS=(
   "${HOMEBREW_OPT}/curl/include"
   "${HOMEBREW_OPT}/ncurses/include"
   "${HOMEBREW_OPT}/readline/include"
+  "${HOMEBREW_PREFIX}/include"
 )
 for include_path in "${COMMON_INCLUDE_PATHS[@]}"; do
   export CFLAGS="-I$include_path ${CFLAGS:-}"
@@ -135,19 +129,20 @@ for include_path in "${COMMON_INCLUDE_PATHS[@]}"; do
   export C_PATH="$include_path${C_PATH+:$C_PATH}"
   export C_INCLUDE_PATH="$include_path${C_INCLUDE_PATH+:$C_INCLUDE_PATH}"
   export CPLUS_INCLUDE_PATH="$include_path${CPLUS_INCLUDE_PATH+:$CPLUS_INCLUDE_PATH}"
+  export CMAKE_INCLUDE_PATH="$include_path${CMAKE_INCLUDE_PATH+:$CMAKE_INCLUDE_PATH}"
 done
 
-# export CFLAGS="-I${HOMEBREW_PREFIX}/include ${CFLAGS:-}"
-# export CPPFLAGS="-I${HOMEBREW_PREFIX}/include ${CPPFLAGS:-}"
-# export CXXFLAGS="-I${HOMEBREW_PREFIX}/include ${CXXFLAGS:-}"
-# export C_PATH="${HOMEBREW_PREFIX}/include${C_PATH+:$C_PATH}"
-# export C_INCLUDE_PATH="${HOMEBREW_PREFIX}/include${C_INCLUDE_PATH+:$C_INCLUDE_PATH}"
-# export CPLUS_INCLUDE_PATH="${HOMEBREW_PREFIX}/include${CPLUS_INCLUDE_PATH+:$CPLUS_INCLUDE_PATH}"
+export CMAKE_PREFIX_PATH="${HOMEBREW_PREFIX}${CMAKE_PREFIX_PATH+:$CMAKE_PREFIX_PATH}"
+export CMAKE_INSTALL_PREFIX="${XDG_DATA_HOME:-$HOME/.local/share}"
+export CMAKE_C_COMPILER_LAUNCHER="${HOMEBREW_PREFIX}/bin/gcc-14"
+export CMAKE_CXX_COMPILER_LAUNCHER="${HOMEBREW_PREFIX}/bin/g++-14"
 
+export PKG_CONFIG_PATH="${HOMEBREW_OPT}/cunit/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_OPT}/curl/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_OPT}/icu4c/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_OPT}/jpeg/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_OPT}/krb5/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
+export PKG_CONFIG_PATH="${HOMEBREW_OPT}/libatomic_ops/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_OPT}/libedit/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_OPT}/libpq/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_OPT}/libressl/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
@@ -155,16 +150,17 @@ export PKG_CONFIG_PATH="${HOMEBREW_OPT}/libxml2/lib/pkgconfig${PKG_CONFIG_PATH+:
 export PKG_CONFIG_PATH="${HOMEBREW_OPT}/openssl/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_OPT}/ncurses/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_OPT}/readline/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
-export PKG_CONFIG_PATH="${HOMEBREW_PREFIX}/lib/pkgconfig/${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
+export PKG_CONFIG_PATH="${HOMEBREW_PREFIX}/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
+export PKG_CONFIG_PATH="${HOMEBREW_PREFIX}/share/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 
-unset HOMEBREW_OPT
-unset COMMON_LIB_PATHS
-unset COMMON_INCLUDE_PATHS
+if [[ -n "$SHORT_HOST" && "$SHORT_HOST" == 'yakko' ]]; then
+  export PKG_CONFIG_PATH="${PKG_CONFIG_PATH:+$PKG_CONFIG_PATH:}/usr/lib/x86_64-linux-gnu/pkgconfig"
+fi
 
-## Unused for now
+export PKG_CONFIG_LIBDIR="${PKG_CONFIG_PATH}${PKG_CONFIG_LIBDIR+:$PKG_CONFIG_LIBDIR}"
 
-# Linux only
-# if [[ $(uname) != 'Darwin' ]]; then
+if [[ $OSTYPE != 'Darwin' ]]; then
+  # Linux only
   # export PATH="$HOMEBREW_OPT/glibc/bin${PATH+:$PATH}"
   # export PATH="$HOMEBREW_OPT/glibc/sbin${PATH+:$PATH}"
   # export LDFLAGS="-L$HOMEBREW_OPT/glibc/lib ${LDFLAGS:-}"
@@ -176,84 +172,14 @@ unset COMMON_INCLUDE_PATHS
   # export C_PATH="$HOMEBREW_OPT/glibc/include${C_PATH+:$C_PATH}"
   # export C_INCLUDE_PATH="$HOMEBREW_OPT/glibc/include${C_INCLUDE_PATH+:$C_INCLUDE_PATH}"
   # export CPLUS_INCLUDE_PATH="$HOMEBREW_OPT/glibc/include${CPLUS_INCLUDE_PATH+:$CPLUS_INCLUDE_PATH}"
-# fi
+elif [[ $OSTYPE == 'Darwin' ]]; then
+  # export CLANG_CONFIG_FILE_SYSTEM_DIR="$HOMEBREW_PREFIX/etc/clang"
+  # export CLANG_CONFIG_FILE_USER_DIR="$XDG_CONFIG_HOME/clang"
+fi
 
-# export PATH="$HOMEBREW_OPT/llvm/bin${PATH+:$PATH}"
-# export PATH="$HOMEBREW_OPT/libtool/libexec/gnubin${PATH+:$PATH}"
-# export PATH="$HOMEBREW_OPT/binutils/bin${PATH+:$PATH}"
-# export PATH="$HOMEBREW_OPT/openldap/bin${PATH+:$PATH}"
-# export PATH="$HOMEBREW_OPT/openldap/sbin${PATH+:$PATH}"
-
-# export LIBRARY_PATH="$HOMEBREW_OPT/llvm/lib${LIBRARY_PATH+:$LIBRARY_PATH}"
-# export LIBRARY_PATH="$HOMEBREW_OPT/openssl/lib${LIBRARY_PATH+:$LIBRARY_PATH}"
-# export LIBRARY_PATH="$HOMEBREW_OPT/zlib/lib${LIBRARY_PATH+:$LIBRARY_PATH}"
-# export LIBRARY_PATH="$HOMEBREW_OPT/binutils/lib${LIBRARY_PATH+:$LIBRARY_PATH}"
-# export LIBRARY_PATH="$HOMEBREW_OPT/libiconv/lib${LIBRARY_PATH+:$LIBRARY_PATH}"
-# export LIBRARY_PATH="$HOMEBREW_OPT/libxml2/lib${LIBRARY_PATH+:$LIBRARY_PATH}"
-# export LIBRARY_PATH="$HOMEBREW_OPT/openldap/lib${LIBRARY_PATH+:$LIBRARY_PATH}"
-
-# export LD_LIBRARY_PATH="$HOMEBREW_OPT/llvm/lib${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
-# export LD_LIBRARY_PATH="$HOMEBREW_OPT/openssl/lib${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
-# export LD_LIBRARY_PATH="$HOMEBREW_OPT/zlib/lib${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
-# export LD_LIBRARY_PATH="$HOMEBREW_OPT/binutils/lib${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
-# export LD_LIBRARY_PATH="$HOMEBREW_OPT/libiconv/lib${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
-# export LD_LIBRARY_PATH="$HOMEBREW_OPT/libxml2/lib${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
-# export LD_LIBRARY_PATH="$HOMEBREW_OPT/openldap/lib${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
-
-# export C_PATH="$HOMEBREW_OPT/llvm/include${C_PATH+:$C_PATH}"
-# export C_PATH="$HOMEBREW_OPT/openssl/include${C_PATH+:$C_PATH}"
-# export C_PATH="$HOMEBREW_OPT/zlib/include${C_PATH+:$C_PATH}"
-# export C_PATH="$HOMEBREW_OPT/binutils/include${C_PATH+:$C_PATH}"
-# export C_PATH="$HOMEBREW_OPT/libiconv/include${C_PATH+:$C_PATH}"
-# export C_PATH="$HOMEBREW_OPT/libxml2/include${C_PATH+:$C_PATH}"
-# export C_PATH="$HOMEBREW_OPT/openldap/include${C_PATH+:$C_PATH}"
-
-# export C_INCLUDE_PATH="$HOMEBREW_OPT/llvm/include${C_INCLUDE_PATH+:$C_INCLUDE_PATH}"
-# export C_INCLUDE_PATH="$HOMEBREW_OPT/openssl/include${C_INCLUDE_PATH+:$C_INCLUDE_PATH}"
-# export C_INCLUDE_PATH="$HOMEBREW_OPT/zlib/include${C_INCLUDE_PATH+:$C_INCLUDE_PATH}"
-# export C_INCLUDE_PATH="$HOMEBREW_OPT/binutils/include${C_INCLUDE_PATH+:$C_INCLUDE_PATH}"
-# export C_INCLUDE_PATH="$HOMEBREW_OPT/libiconv/include${C_INCLUDE_PATH+:$C_INCLUDE_PATH}"
-# export C_INCLUDE_PATH="$HOMEBREW_OPT/libxml2/include${C_INCLUDE_PATH+:$C_INCLUDE_PATH}"
-# export C_INCLUDE_PATH="$HOMEBREW_OPT/openldap/include${C_INCLUDE_PATH+:$C_INCLUDE_PATH}"
-
-# export CPLUS_INCLUDE_PATH="$HOMEBREW_OPT/llvm/include${CPLUS_INCLUDE_PATH+:$CPLUS_INCLUDE_PATH}"
-# export CPLUS_INCLUDE_PATH="$HOMEBREW_OPT/openssl/include${CPLUS_INCLUDE_PATH+:$CPLUS_INCLUDE_PATH}"
-# export CPLUS_INCLUDE_PATH="$HOMEBREW_OPT/zlib/include${CPLUS_INCLUDE_PATH+:$CPLUS_INCLUDE_PATH}"
-# export CPLUS_INCLUDE_PATH="$HOMEBREW_OPT/binutils/include${CPLUS_INCLUDE_PATH+:$CPLUS_INCLUDE_PATH}"
-# export CPLUS_INCLUDE_PATH="$HOMEBREW_OPT/libiconv/include${CPLUS_INCLUDE_PATH+:$CPLUS_INCLUDE_PATH}"
-# export CPLUS_INCLUDE_PATH="$HOMEBREW_OPT/libxml2/include${CPLUS_INCLUDE_PATH+:$CPLUS_INCLUDE_PATH}"
-# export CPLUS_INCLUDE_PATH="$HOMEBREW_OPT/openldap/include${CPLUS_INCLUDE_PATH+:$CPLUS_INCLUDE_PATH}"
-#
-# export LDFLAGS="-L$HOMEBREW_OPT/llvm/lib ${LDFLAGS:-}"
-# export LDFLAGS="-L$HOMEBREW_OPT/openssl/lib ${LDFLAGS:-}"
-# export LDFLAGS="-L$HOMEBREW_OPT/zlib/lib ${LDFLAGS:-}"
-# export LDFLAGS="-L$HOMEBREW_OPT/binutils/lib ${LDFLAGS:-}"
-#
-# export CFLAGS="-I$HOMEBREW_OPT/binutils/include ${CFLAGS:-}"
-# export CFLAGS="-I$HOMEBREW_OPT/llvm/include ${CFLAGS:-}"
-# export CFLAGS="-I$HOMEBREW_OPT/openssl/include ${CFLAGS:-}"
-# export CFLAGS="-I$HOMEBREW_OPT/zlib/include ${CFLAGS:-}"
-
-# export CPPFLAGS="-I$HOMEBREW_OPT/llvm/include ${CPPFLAGS:-}"
-# export CPPFLAGS="-I$HOMEBREW_OPT/openssl/include ${CPPFLAGS:-}"
-# export CPPFLAGS="-I$HOMEBREW_OPT/zlib/include ${CPPFLAGS:-}"
-# export CPPFLAGS="-I$HOMEBREW_OPT/binutils/include ${CPPFLAGS:-}"
-#
-# export CXXFLAGS="-I$HOMEBREW_OPT/llvm/include ${CXXFLAGS:-}"
-# export CXXFLAGS="-I$HOMEBREW_OPT/openssl/include ${CXXFLAGS:-}"
-# export CXXFLAGS="-I$HOMEBREW_OPT/zlib/include ${CXXFLAGS:-}"
-# export CXXFLAGS="-I$HOMEBREW_OPT/binutils/include ${CXXFLAGS:-}"
-
-# export PKG_CONFIG_PATH="$HOMEBREW_OPT/openssl/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
-# export PKG_CONFIG_PATH="$HOMEBREW_OPT/zlib/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
-# export PKG_CONFIG_PATH="$HOMEBREW_OPT/openldap/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
-
-# export CLANG_CONFIG_FILE_SYSTEM_DIR="$HOMEBREW_PREFIX/etc/clang"
-# export CLANG_CONFIG_FILE_USER_DIR="$XDG_CONFIG_HOME/clang"
-#
-# export GUILE_LOAD_PATH="$HOMEBREW_PREFIX/share/guile/site/3.0"
-# export GUILE_LOAD_COMPILED_PATH="$HOMEBREW_PREFIX/lib/guile/3.0/site-ccache"
-# export GUILE_SYSTEM_EXTENSIONS_PATH="$HOMEBREW_PREFIX/lib/guile/3.0/extensions"
+unset HOMEBREW_OPT
+unset COMMON_LIB_PATHS
+unset COMMON_INCLUDE_PATHS
 
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-

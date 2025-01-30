@@ -3,13 +3,7 @@
 
 export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/ripgreprc"
 
-env_dirs=(
-  "$ENV_DIRS"
-  "$(dirname "$RIPGREP_CONFIG_PATH")"
-)
-
-export ENV_DIRS="${(j/:/)env_dirs}"
-unset env_dirs
+export ENV_DIRS="$ENV_DIRS:$(dirname $RIPGREP_CONFIG_PATH)"
 
 (( $+commands[rg] )) || return 1
 

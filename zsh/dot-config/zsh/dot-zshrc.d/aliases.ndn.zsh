@@ -49,6 +49,7 @@ alias domy="${DEV_ENV}"
 alias ndntest="${DEV_ENV} prove -v"
 alias vix="vi ${HOME}/bin/scratchpad/x.pl"
 alias x="sudo perl ${HOME}/bin/scratchpad/x.pl"
+alias dhperl="/usr/bin/env DH_TEMPLATE_PREFIX=/home/rmiller/projects/ndn PERL5LIB=/home/rmiller/projects/ndn/perl perl"
 
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-

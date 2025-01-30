@@ -44,6 +44,7 @@ env_dirs=(
   "$SSH_CACHE_DIR"
 )
 
+env_dirs=(${(@)env_dirs:#""})
 export ENV_DIRS="${(j/:/)env_dirs}"
 unset env_dirs
 

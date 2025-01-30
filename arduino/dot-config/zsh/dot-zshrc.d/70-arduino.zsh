@@ -17,6 +17,7 @@ env_dirs=(
   "$(dirname "$ARDUINO_LOGGING_FILE")"
 )
 
+env_dirs=(${(@)env_dirs:#""})
 export ENV_DIRS="${(j/:/)env_dirs}"
 unset env_dirs
 

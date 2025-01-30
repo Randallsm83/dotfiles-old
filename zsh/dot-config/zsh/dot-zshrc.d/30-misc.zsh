@@ -23,6 +23,7 @@ env_dirs=(
   "$(dirname "$MYSQL_HISTFILE")"
 )
 
+env_dirs=(${(@)env_dirs:#""})
 export ENV_DIRS="${(j/:/)env_dirs}"
 unset env_dirs
 
