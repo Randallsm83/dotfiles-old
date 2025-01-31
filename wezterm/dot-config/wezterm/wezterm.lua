@@ -8,7 +8,7 @@ end
 
 -------------------- Colorscheme -----------------------------------------------
 
-local theme = "Gruvbox Material (Gogh)"
+-- local theme = "Gruvbox Material (Gogh)"
 -- local theme = "Gruvbox Dark (Gogh)"
 -- local theme = "Gruvbox dark, hard (base16)"
 -- local theme = "Gruvbox dark, medium (base16)"
@@ -16,7 +16,21 @@ local theme = "Gruvbox Material (Gogh)"
 -- local theme = "Gruvbox dark, pale (base16)"
 -- local theme = "GruvboxDark"
 -- local theme = "GruvboxDarkHard"
-local scheme = wezterm.color.get_builtin_schemes()[theme]
+
+-- local theme = 'GruvboxDarkHardMaterial'
+-- local theme = 'GruvboxDarkHardOrig'
+-- local theme = 'GruvboxDarkHardMix'
+-- local theme = 'GruvboxDarkMediumMaterial'
+-- local theme = 'GruvboxDarkMediumOrig'
+local theme = 'GruvboxDarkMediumMix'
+
+-- Builtin
+-- local scheme = wezterm.color.get_builtin_schemes()[theme]
+
+-- Custom
+local scheme = wezterm.color.load_scheme(wezterm.config_dir .. "/colors/" .. theme .. ".toml")
+print(scheme)
+
 if scheme == nil then
   scheme = wezterm.color.get_default_colors()
 else
@@ -95,12 +109,6 @@ config = tab_bar.apply_to_config(config)
 
 ------------------ Windows and Panes -------------------------------------------
 
--- Window Configuration
-config.enable_scroll_bar = false
-config.window_decorations = "RESIZE"
-config.native_macos_fullscreen_mode = false
-config.adjust_window_size_when_changing_font_size = false
-
 wezterm.on("gui-startup", function(cmd)
   ---@diagnostic disable-next-line: unused-local
   local tab, pane, window = mux.spawn_window(cmd or {})
@@ -108,9 +116,18 @@ wezterm.on("gui-startup", function(cmd)
   window:gui_window():set_inner_size(5120, 3240)
 end)
 
+config.initial_cols = 320
+config.initial_rows = 94
+
+-- Window Configuration
+config.enable_scroll_bar = false
+config.window_decorations = "RESIZE"
+config.native_macos_fullscreen_mode = false
+config.adjust_window_size_when_changing_font_size = false
+
 -- Window Opacity
--- config.window_background_opacity = 0.9
--- config.macos_window_background_blur = 15
+-- config.window_background_opacity = 0.95
+-- config.macos_window_background_blur = 35
 
 -- Window Padding
 config.window_padding = { top = 9, left = 0, right = 0, bottom = 0 }
@@ -201,14 +218,5 @@ config.command_palette_fg_color = "#ebdbb2"
 
 local keymaps = require("keymaps")
 config = keymaps.apply_to_config(config)
-
-config.ssh_domains = {
-  {
-    name = "yakko",
-    remote_address = "yakko.sd.dreamhost.com",
-    username = "rmiller",
-    local_echo_threshold_ms = 300
-  },
-}
 
 return config

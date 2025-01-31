@@ -97,6 +97,7 @@ wezterm.on("format-tab-title", function(tab, tabs, _, conf)
   end
 
   local palette = conf.resolved_palette
+  print(palette)
 
   local colors = {
   --  MEDIUM MIX
@@ -188,7 +189,6 @@ wezterm.on("format-tab-title", function(tab, tabs, _, conf)
 
     -- DARK MIX FG
   }
-  print(palette)
 
   colors.tab_fg = tab.is_active and colors.fg0 or colors.fg0:darken(.1)
   colors.tab_bg = tab.is_active and colors.bg2:lighten(.1) or colors.bg2:darken(.1)
@@ -395,7 +395,6 @@ function M.apply_to_config(config)
   config.show_new_tab_button_in_tab_bar = false
 
   local scheme = wezterm.color.get_builtin_schemes()[config.color_scheme]
-  print(scheme)
   if scheme == nil then
     scheme = wezterm.color.get_default_colors()
   end

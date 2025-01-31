@@ -1,5 +1,5 @@
 # Define the environment cache file for the SSH agent
-ssh_env_cache="${SSH_CACHE_DIR:-$HOME/.cache/ssh}/environment-${SHORT_HOST:-default}"
+ssh_env_cache="${SSH_CACHE_DIR:-$HOME/.cache/ssh}/agent.env"
 
 # Start the SSH agent
 function _start_agent() {
@@ -21,11 +21,6 @@ function _start_agent() {
     fi
   fi
 
-  if [[ ! -d "$HOME/.ssh" ]]; then
-    echo "Error: ~/.ssh directory is missing" >&2
-    return 1
-  fi
-
   zstyle -t ':ssh-agent' debug && echo "Starting ssh-agent..."
   eval $(ssh-agent -s -t 8h)  | sed '/^echo/d' >! "$ssh_env_cache"
   chmod 600 "$ssh_env_cache"
@@ -36,11 +31,6 @@ function _add_identities() {
   local id file sig
   local -a config_files config_identities zstyle_identities all_identities not_loaded
   local -A loaded_fingerprints
-
-  if [[ ! -d "$HOME/.ssh" ]]; then
-    echo "No ~/.ssh directory found."
-    return
-  fi
 
   # Parse IdentityFile entries from ~/.ssh/config
   config_files=($HOME/.ssh/config)
@@ -112,6 +102,11 @@ function _setup_agent_symlink() {
     zstyle -t ':ssh-agent' debug && echo "Agent socket linked to $link"
   fi
 }
+
+if [[ ! -d "$HOME/.ssh" ]]; then
+  echo "No ~/.ssh directory found."
+  return 1
+fi
 
 # Main logic
 _start_agent
