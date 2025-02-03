@@ -41,4 +41,10 @@ vim.opt.title = true
 -- Hide cmd bar
 vim.opt.cmdheight = 0
 
+-- Don't show what me what I'm typing
+vim.opt.showcmd = false
+
+-- Show matching brackets
+vim.opt.showmatch = true
+
 -- vim: ts=2 sts=2 sw=2 et

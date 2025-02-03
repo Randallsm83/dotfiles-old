@@ -96,8 +96,9 @@ wezterm.on("format-tab-title", function(tab, tabs, _, conf)
     formatted_title = wezterm.truncate_right(formatted_title, width) .. "…"
   end
 
+  -- print(conf)
   local palette = conf.resolved_palette
-  print(palette)
+  -- print(palette)
 
   local colors = {
   --  MEDIUM MIX
@@ -389,21 +390,18 @@ end)
 function M.apply_to_config(config)
   config.tab_max_width = 32
   config.enable_tab_bar = true
-  config.use_fancy_tab_bar = false
   config.tab_bar_at_bottom = true
+  config.use_fancy_tab_bar = false
+  config.status_update_interval = 500
+  config.show_tab_index_in_tab_bar = true
   config.hide_tab_bar_if_only_one_tab = false
   config.show_new_tab_button_in_tab_bar = false
-
-  local scheme = wezterm.color.get_builtin_schemes()[config.color_scheme]
-  if scheme == nil then
-    scheme = wezterm.color.get_default_colors()
-  end
+  config.switch_to_last_active_tab_when_closing_tab = false
 
   config.colors.tab_bar = {
-    background = scheme.background,
+    background = wezterm.GLOBAL.scheme.background,
   }
 
-  return config
 end
 
 return M

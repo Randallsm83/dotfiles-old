@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 
-
 export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/ripgreprc"
 
 export ENV_DIRS="$ENV_DIRS:$(dirname $RIPGREP_CONFIG_PATH)"

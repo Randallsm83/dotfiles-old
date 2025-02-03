@@ -28,6 +28,62 @@ cursor_border = '#ebdbb2'
 selection_bg = '#ebdbb2'
 selection_fg = '#3c3836' #bg3/4
 
+# [copy_mode]
+# a = {
+#   bg = '#e9b143',
+#   fg = '#282828'
+# }
+# b = {
+#   bg = '#',
+#   fg =
+# }
+# c = {
+#   bg = ,
+#   fg =
+# }
+#
+# [normal_mode]
+# a = {
+#   bg = ,
+#   fg =
+# }
+# b = {
+#   bg = ,
+#   fg =
+# }
+# c = {
+#   bg = ,
+#   fg =
+# }
+#
+# [search_mode]
+# a = {
+#   bg = ,
+#   fg =
+# }
+# b = {
+#   bg = ,
+#   fg =
+# }
+# c = {
+#   bg = ,
+#   fg =
+# }
+#
+# [tab]
+# active = {
+#   bg = ,
+#   fg =
+# }
+# inactive = {
+#   bg = ,
+#   fg =
+# }
+# inactive_hover = {
+#   bg = ,
+#   fg =
+# }
+
 [colors.indexed]
 
 [metadata]

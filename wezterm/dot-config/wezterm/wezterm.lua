@@ -6,35 +6,40 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
+config.set_environment_variables = {
+  PATH = "/opt/homebrew/bin:" .. wezterm.home_dir .. "/.local/bin" .. os.getenv("PATH"),
+}
+
 -------------------- Colorscheme -----------------------------------------------
 
--- local theme = "Gruvbox Material (Gogh)"
--- local theme = "Gruvbox Dark (Gogh)"
--- local theme = "Gruvbox dark, hard (base16)"
--- local theme = "Gruvbox dark, medium (base16)"
--- local theme = "Gruvbox dark, soft (base16)"
--- local theme = "Gruvbox dark, pale (base16)"
--- local theme = "GruvboxDark"
--- local theme = "GruvboxDarkHard"
+-- wezterm.GLOBAL.theme = "Gruvbox Material (Gogh)"
+-- wezterm.GLOBAL.theme = "Gruvbox Dark (Gogh)"
+-- wezterm.GLOBAL.theme = "Gruvbox dark, hard (base16)"
+-- wezterm.GLOBAL.theme = "Gruvbox dark, medium (base16)"
+-- wezterm.GLOBAL.theme = "Gruvbox dark, soft (base16)"
+-- wezterm.GLOBAL.theme = "Gruvbox dark, pale (base16)"
+-- wezterm.GLOBAL.theme = "GruvboxDark"
+-- wezterm.GLOBAL.theme = "GruvboxDarkHard"
 
--- local theme = 'GruvboxDarkHardMaterial'
--- local theme = 'GruvboxDarkHardOrig'
--- local theme = 'GruvboxDarkHardMix'
--- local theme = 'GruvboxDarkMediumMaterial'
--- local theme = 'GruvboxDarkMediumOrig'
-local theme = 'GruvboxDarkMediumMix'
+--- My custom themes
+-- wezterm.GLOBAL.theme = 'GruvboxDarkHardMaterial'
+-- wezterm.GLOBAL.theme = 'GruvboxDarkHardOrig'
+-- wezterm.GLOBAL.theme = 'GruvboxDarkHardMix'
+-- wezterm.GLOBAL.theme = 'GruvboxDarkMediumMaterial'
+-- wezterm.GLOBAL.theme = 'GruvboxDarkMediumOrig'
+-- wezterm.GLOBAL.theme = "GruvboxDarkMediumMix"
+
+wezterm.GLOBAL.theme = "Gruvbox Material (Gogh)"
+config.color_scheme = wezterm.GLOBAL.theme
 
 -- Builtin
--- local scheme = wezterm.color.get_builtin_schemes()[theme]
+wezterm.GLOBAL.scheme = wezterm.color.get_builtin_schemes()[wezterm.GLOBAL.theme]
 
 -- Custom
-local scheme = wezterm.color.load_scheme(wezterm.config_dir .. "/colors/" .. theme .. ".toml")
-print(scheme)
+-- wezterm.GLOBAL.scheme = wezterm.color.load_scheme( wezterm.config_dir .. "/colors/" .. wezterm.GLOBAL.theme .. ".toml")
 
-if scheme == nil then
-  scheme = wezterm.color.get_default_colors()
-else
-  config.color_scheme = theme
+if wezterm.GLOBAL.scheme == nil then
+  wezterm.GLOBAL.scheme = wezterm.color.get_default_colors()
 end
 
 -- So we can append keys instead of writing a whole new object later
@@ -64,8 +69,8 @@ config.colors = {}
 -- config.harfbuzz_features = { "" }
 
 config.dpi = 144.0
-config.font_size = 12.0
-config.line_height = 1.1
+config.font_size = 13.0
+config.line_height = 1.2
 config.display_pixel_geometry = "RGB"
 config.freetype_load_target = "Light"
 config.freetype_render_target = "HorizontalLcd"
@@ -82,7 +87,7 @@ config.font_dirs = { wezterm.home_dir .. "/.local/share/fonts" }
 config.font = wezterm.font_with_fallback({
   {
     family = "Hack",
-    scale = 1.1,
+    scale = 1.0,
     weight = "Medium",
   },
   {
@@ -104,9 +109,65 @@ config.font = wezterm.font_with_fallback({
 
 ------------------------- Tabs -------------------------------------------------
 
-local tab_bar = require("tabs")
-config = tab_bar.apply_to_config(config)
+-- local tab_bar = require("tabs")
+-- tab_bar.apply_to_config(config)
+config.tab_max_width = 32
+config.enable_tab_bar = true
+config.tab_bar_at_bottom = true
+config.use_fancy_tab_bar = false
+config.status_update_interval = 500
+config.show_tab_index_in_tab_bar = true
+config.hide_tab_bar_if_only_one_tab = false
+config.show_new_tab_button_in_tab_bar = false
+config.switch_to_last_active_tab_when_closing_tab = false
+local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+tabline.setup({
+  options = {
+    icons_enabled = true,
+    tabs_enabled = true,
+    theme = wezterm.GLOBAL.theme,
+    theme_overrides = {},
+    section_separators = {
+      left = wezterm.nerdfonts.pl_left_hard_divider,
+      right = wezterm.nerdfonts.pl_right_hard_divider,
+    },
+    component_separators = {
+      left = wezterm.nerdfonts.pl_left_soft_divider,
+      right = wezterm.nerdfonts.pl_right_soft_divider,
+    },
+    tab_separators = {
+      left = wezterm.nerdfonts.pl_left_hard_divider,
+      right = wezterm.nerdfonts.pl_right_hard_divider,
+    },
+  },
+  sections = {
+    tabline_a = {
+      { 'mode', padding = 1 }
+    },
+    tabline_b = {
+      { 'hostname', padding = 1, icon = wezterm.nerdfonts.fa_desktop },
+      { 'workspace', padding = 1 }
+    },
+    tabline_c = { '' },
+    tab_active = {
+      { 'zoomed', padding = 1 },
+      { 'output', padding = 1 },
+      ' .../',
+      { 'cwd', padding = 0 },
+      { 'process', padding = 1 },
+    },
+    tab_inactive = {
+      { 'output', padding = 2 },
+      { 'process', padding = 2 }
+    },
+    tabline_x = { '' },
+    tabline_y = { 'ram', 'cpu', 'battery' },
+    tabline_z = { 'datetime' },
+  },
+  extensions = {},
+})
 
+print(tabline.get_colors())
 ------------------ Windows and Panes -------------------------------------------
 
 wezterm.on("gui-startup", function(cmd)
@@ -130,13 +191,13 @@ config.adjust_window_size_when_changing_font_size = false
 -- config.macos_window_background_blur = 35
 
 -- Window Padding
-config.window_padding = { top = 9, left = 0, right = 0, bottom = 0 }
+config.window_padding = { top = 2, left = 2, right = 2, bottom = 2 }
 
 -- Dim Inactive Panes
 config.inactive_pane_hsb = { saturation = 0.9, brightness = 0.8 }
 
 -- Pane Split Color
-config.colors.split = scheme.ansi[8]
+config.colors.split = wezterm.GLOBAL.scheme.ansi[8]
 
 ------------------------------ Misc --------------------------------------------
 
@@ -165,8 +226,8 @@ config.visual_bell = {
 config.scrollback_lines = 10000
 
 -- Performance
-config.max_fps = 120
-config.animation_fps = 60
+config.max_fps = 144
+config.animation_fps = 72
 config.front_end = "WebGpu"
 config.webgpu_power_preference = "HighPerformance"
 
@@ -217,6 +278,6 @@ config.command_palette_fg_color = "#ebdbb2"
 -- CMD + 0 | - | =              Reset/Decrease/Increase font size
 
 local keymaps = require("keymaps")
-config = keymaps.apply_to_config(config)
+keymaps.apply_to_config(config)
 
 return config

@@ -220,12 +220,13 @@ require('lazy').setup({
     config = function()
       vim.o.background = 'dark'
       vim.g.gruvbox_material_background = 'medium' -- hard, medium, soft
-      vim.g.gruvbox_material_foreground = 'mix' -- material, mix, original
+      vim.g.gruvbox_material_foreground = 'material' -- material, mix, original
       vim.g.gruvbox_material_enable_italic = 1
       vim.g.gruvbox_material_disable_italic_comment = 1
       vim.g.gruvbox_material_visual = 'reverse'
       vim.g.gruvbox_material_menu_selection_background = 'orange'
       vim.g.gruvbox_material_current_word = 'high contrast background'
+      vim.g.gruvbox_material_ui_contrast = 'low'
       vim.cmd [[colorscheme gruvbox-material]]
     end,
   },

@@ -97,6 +97,7 @@ COMMON_LIB_PATHS=(
   "${HOMEBREW_OPT}/curl/lib"
   "${HOMEBREW_OPT}/ncurses/lib"
   "${HOMEBREW_OPT}/readline/lib"
+  "${HOMEBREW_OPT}/zlib/lib"
   "${HOMEBREW_PREFIX}/lib"
 )
 for lib_path in "${COMMON_LIB_PATHS[@]}"; do
@@ -120,6 +121,7 @@ COMMON_INCLUDE_PATHS=(
   "${HOMEBREW_OPT}/curl/include"
   "${HOMEBREW_OPT}/ncurses/include"
   "${HOMEBREW_OPT}/readline/include"
+  "${HOMEBREW_OPT}/zlib/include"
   "${HOMEBREW_PREFIX}/include"
 )
 for include_path in "${COMMON_INCLUDE_PATHS[@]}"; do
@@ -150,6 +152,7 @@ export PKG_CONFIG_PATH="${HOMEBREW_OPT}/libxml2/lib/pkgconfig${PKG_CONFIG_PATH+:
 export PKG_CONFIG_PATH="${HOMEBREW_OPT}/openssl/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_OPT}/ncurses/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_OPT}/readline/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
+export PKG_CONFIG_PATH="${HOMEBREW_OPT}/zlib/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_PREFIX}/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_PREFIX}/share/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 
