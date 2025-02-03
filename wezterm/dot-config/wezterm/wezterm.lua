@@ -12,16 +12,20 @@ config.set_environment_variables = {
 
 -------------------- Colorscheme -----------------------------------------------
 
+-- Builtin
 -- wezterm.GLOBAL.theme = "Gruvbox Material (Gogh)"
 -- wezterm.GLOBAL.theme = "Gruvbox Dark (Gogh)"
 -- wezterm.GLOBAL.theme = "Gruvbox dark, hard (base16)"
--- wezterm.GLOBAL.theme = "Gruvbox dark, medium (base16)"
+wezterm.GLOBAL.theme = "Gruvbox dark, medium (base16)"
 -- wezterm.GLOBAL.theme = "Gruvbox dark, soft (base16)"
 -- wezterm.GLOBAL.theme = "Gruvbox dark, pale (base16)"
 -- wezterm.GLOBAL.theme = "GruvboxDark"
 -- wezterm.GLOBAL.theme = "GruvboxDarkHard"
 
---- My custom themes
+-- Load Scheme Here
+wezterm.GLOBAL.scheme = wezterm.color.get_builtin_schemes()[wezterm.GLOBAL.theme]
+
+--- Custom
 -- wezterm.GLOBAL.theme = 'GruvboxDarkHardMaterial'
 -- wezterm.GLOBAL.theme = 'GruvboxDarkHardOrig'
 -- wezterm.GLOBAL.theme = 'GruvboxDarkHardMix'
@@ -29,14 +33,11 @@ config.set_environment_variables = {
 -- wezterm.GLOBAL.theme = 'GruvboxDarkMediumOrig'
 -- wezterm.GLOBAL.theme = "GruvboxDarkMediumMix"
 
-wezterm.GLOBAL.theme = "Gruvbox Material (Gogh)"
-config.color_scheme = wezterm.GLOBAL.theme
-
--- Builtin
-wezterm.GLOBAL.scheme = wezterm.color.get_builtin_schemes()[wezterm.GLOBAL.theme]
-
--- Custom
+-- Load Scheme Here
 -- wezterm.GLOBAL.scheme = wezterm.color.load_scheme( wezterm.config_dir .. "/colors/" .. wezterm.GLOBAL.theme .. ".toml")
+
+-- Enable Theme Here
+config.color_scheme = wezterm.GLOBAL.theme
 
 if wezterm.GLOBAL.scheme == nil then
   wezterm.GLOBAL.scheme = wezterm.color.get_default_colors()

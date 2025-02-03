@@ -23,7 +23,7 @@ export ZSH_COMPLETION_DIR="$ZSH_CACHE_DIR/completions"
 export SSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/ssh"
 
 export MYSPACE="$HOME/Dev"
-export DHSPACE="$HOME/projects/"
+export DHSPACE="$HOME/projects"
 
 export DOTFILES="$XDG_CONFIG_HOME/dotfiles"
 

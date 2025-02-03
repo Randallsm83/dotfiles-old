@@ -8,7 +8,7 @@ vim.env.PATH = vim.env.HOME .. '/.local/share/mise/shims:' .. vim.env.PATH
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
--- [[ Install `lazy.nvim` plugin manager ]]
+-- INFO: [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -26,6 +26,30 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
+
+-- INFO: Colorscheme
+local theme_script_path = vim.fn.expand(vim.env.HOME .. "/.local/share/tinted-theming/tinty/base16-vim-colors-file.vim")
+
+local function file_exists(file_path)
+  return vim.fn.filereadable(file_path) == 1 and true or false
+end
+
+local function handle_focus_gained()
+  if file_exists(theme_script_path) then
+      vim.cmd("source " .. theme_script_path)
+  end
+end
+
+if file_exists(theme_script_path) then
+  vim.o.termguicolors = true
+  vim.g.tinted_colorspace = 256
+
+  vim.cmd("source " .. theme_script_path)
+
+  vim.api.nvim_create_autocmd("FocusGained", {
+    callback = handle_focus_gained,
+  })
+end
 
 -- INFO: [[ Plugins ]]
 
@@ -227,7 +251,7 @@ require('lazy').setup({
       vim.g.gruvbox_material_menu_selection_background = 'orange'
       vim.g.gruvbox_material_current_word = 'high contrast background'
       vim.g.gruvbox_material_ui_contrast = 'low'
-      vim.cmd [[colorscheme gruvbox-material]]
+      -- vim.cmd [[colorscheme gruvbox-material]]
     end,
   },
   {
