@@ -28,7 +28,7 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 -- INFO: Colorscheme
-local theme_script_path = vim.fn.expand(vim.env.HOME .. "/.local/share/tinted-theming/tinty/base16-vim-colors-file.vim")
+local theme_script_path = vim.fn.expand(vim.env.HOME .. "/.local/share/tinted-theming/tinty/tinted-vim-colors-file.vim")
 
 local function file_exists(file_path)
   return vim.fn.filereadable(file_path) == 1 and true or false
@@ -234,6 +234,8 @@ require('lazy').setup({
   },
   -- INFO: Smartyank
   { 'ibhagwan/smartyank.nvim' },
+  -- INFO: Colorizer
+  { 'norcalli/nvim-colorizer.lua' },
   ----------------------------------------------------------------------------
   -- INFO: Colorschemes
   {

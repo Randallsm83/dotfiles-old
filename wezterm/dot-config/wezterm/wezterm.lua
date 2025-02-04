@@ -1,3 +1,13 @@
+--
+-- ██╗    ██╗███████╗███████╗████████╗███████╗██████╗ ███╗   ███╗
+-- ██║    ██║██╔════╝╚══███╔╝╚══██╔══╝██╔════╝██╔══██╗████╗ ████║
+-- ██║ █╗ ██║█████╗    ███╔╝    ██║   █████╗  ██████╔╝██╔████╔██║
+-- ██║███╗██║██╔══╝   ███╔╝     ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║
+-- ╚███╔███╔╝███████╗███████╗   ██║   ███████╗██║  ██║██║ ╚═╝ ██║
+--  ╚══╝╚══╝ ╚══════╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝
+-- A GPU-accelerated cross-platform terminal emulator
+-- https://wezfurlong.org/wezterm/
+
 local wezterm = require("wezterm") --[[@as Wezterm]]
 local mux = wezterm.mux
 
@@ -13,6 +23,12 @@ config.set_environment_variables = {
 -------------------- Colorscheme -----------------------------------------------
 
 -- Builtin
+-- wezterm.GLOBAL.theme = "Espresso (base16)"
+
+-- wezterm.GLOBAL.theme = "Catppuccin Mocha"
+-- wezterm.GLOBAL.theme = "Catppuccin Macchiato"
+-- wezterm.GLOBAL.theme = "Catppuccin Frappe"
+
 -- wezterm.GLOBAL.theme = "Gruvbox Material (Gogh)"
 -- wezterm.GLOBAL.theme = "Gruvbox Dark (Gogh)"
 -- wezterm.GLOBAL.theme = "Gruvbox dark, hard (base16)"
