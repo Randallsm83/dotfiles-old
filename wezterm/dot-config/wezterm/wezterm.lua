@@ -163,7 +163,7 @@ tabline.setup({
     },
     tabline_b = {
       { 'hostname', padding = 1, icon = wezterm.nerdfonts.fa_desktop },
-      { 'workspace', padding = 1 }
+      { 'workspace', padding = 1 },
     },
     tabline_c = { '' },
     tab_active = {

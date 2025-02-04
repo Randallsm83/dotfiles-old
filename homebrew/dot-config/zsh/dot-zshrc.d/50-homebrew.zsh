@@ -87,17 +87,17 @@ COMMON_LIB_PATHS=(
   "${HOMEBREW_OPT}/flex/lib"
   "${HOMEBREW_OPT}/icu4c/lib"
   "${HOMEBREW_OPT}/jpeg/lib"
-  "${HOMEBREW_OPT}/krb5/lib"
-  "${HOMEBREW_OPT}/libedit/lib"
+  # "${HOMEBREW_OPT}/krb5/lib"
+  # "${HOMEBREW_OPT}/libedit/lib"
   "${HOMEBREW_OPT}/libiconv/lib"
   "${HOMEBREW_OPT}/libpq/lib"
   "${HOMEBREW_OPT}/libressl/lib"
   "${HOMEBREW_OPT}/libxml2/lib"
-  "${HOMEBREW_OPT}/openssl/lib"
+  # "${HOMEBREW_OPT}/openssl/lib"
   "${HOMEBREW_OPT}/curl/lib"
-  "${HOMEBREW_OPT}/ncurses/lib"
-  "${HOMEBREW_OPT}/readline/lib"
-  "${HOMEBREW_OPT}/zlib/lib"
+  # "${HOMEBREW_OPT}/ncurses/lib"
+  # "${HOMEBREW_OPT}/readline/lib"
+  # "${HOMEBREW_OPT}/zlib/lib"
   "${HOMEBREW_PREFIX}/lib"
 )
 for lib_path in "${COMMON_LIB_PATHS[@]}"; do
@@ -111,17 +111,17 @@ COMMON_INCLUDE_PATHS=(
   "${HOMEBREW_OPT}/flex/include"
   "${HOMEBREW_OPT}/icu4c/include"
   "${HOMEBREW_OPT}/jpeg/include"
-  "${HOMEBREW_OPT}/krb5/include"
-  "${HOMEBREW_OPT}/libedit/include"
+  # "${HOMEBREW_OPT}/krb5/include"
+  # "${HOMEBREW_OPT}/libedit/include"
   "${HOMEBREW_OPT}/libiconv/include"
   "${HOMEBREW_OPT}/libpq/include"
   "${HOMEBREW_OPT}/libressl/include"
   "${HOMEBREW_OPT}/libxml2/include"
-  "${HOMEBREW_OPT}/openssl/include"
+  # "${HOMEBREW_OPT}/openssl/include"
   "${HOMEBREW_OPT}/curl/include"
-  "${HOMEBREW_OPT}/ncurses/include"
-  "${HOMEBREW_OPT}/readline/include"
-  "${HOMEBREW_OPT}/zlib/include"
+  # "${HOMEBREW_OPT}/ncurses/include"
+  # "${HOMEBREW_OPT}/readline/include"
+  # "${HOMEBREW_OPT}/zlib/include"
   "${HOMEBREW_PREFIX}/include"
 )
 for include_path in "${COMMON_INCLUDE_PATHS[@]}"; do
@@ -132,6 +132,21 @@ for include_path in "${COMMON_INCLUDE_PATHS[@]}"; do
   export C_INCLUDE_PATH="$include_path${C_INCLUDE_PATH+:$C_INCLUDE_PATH}"
   export CPLUS_INCLUDE_PATH="$include_path${CPLUS_INCLUDE_PATH+:$CPLUS_INCLUDE_PATH}"
   export CMAKE_INCLUDE_PATH="$include_path${CMAKE_INCLUDE_PATH+:$CMAKE_INCLUDE_PATH}"
+done
+
+COMMON_PKG_CONFIG_PATHS=(
+  "openssl"
+  "ncurses"
+  "readline"
+  "zlib"
+  "krb5"
+  "libedit"
+)
+for item in "${COMMON_PKG_CONFIG_PATHS[@]}"; do
+  export LDFLAGS="$(pkg-config --libs-only-L $item) ${LDFLAGS:-}"
+  export CFLAGS="$(pkg-config --cflags $item) ${CFLAGS:-}"
+  export CPPFLAGS="$(pkg-config --cflags $item) ${CPPFLAGS:-}"
+  export CXXFLAGS="$(pkg-config --cflags $item) ${CXXFLAGS:-}"
 done
 
 export CMAKE_PREFIX_PATH="${HOMEBREW_PREFIX}${CMAKE_PREFIX_PATH+:$CMAKE_PREFIX_PATH}"
@@ -183,6 +198,7 @@ fi
 unset HOMEBREW_OPT
 unset COMMON_LIB_PATHS
 unset COMMON_INCLUDE_PATHS
+unset COMMON_PKG_CONFIG_PATHS
 
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-

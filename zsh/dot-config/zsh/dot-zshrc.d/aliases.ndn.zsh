@@ -1,16 +1,22 @@
 #!/usr/bin/env zsh
 
 # NDN Aliases
-alias dh-cluster='sudo /dh/bin/dh-cluster'
+alias dhdb='sudo /dh/bin/dh-db'
+alias dhd='sudo /dh/bin/dh-domain'
+alias dhc='sudo /dh/bin/dhcat'
+alias dhip='sudo /dh/bin/dh-ip'
+alias dhm='sudo /dh/bin/dh-machine'
+alias dhq='sudo /dh/bin/dhqsearch'
+alias dhd='sudo /dh/bin/dh-domain'
 alias dh-db='sudo /dh/bin/dh-db'
+alias dhcat='sudo /dh/bin/dhcat'
 alias dh-domain='sudo /dh/bin/dh-domain'
 alias dh-ip='sudo /dh/bin/dh-ip'
 alias dh-machine='sudo /dh/bin/dh-machine'
-alias dh-watcher.pl='sudo /dh/bin/dh-watcher.pl'
-alias dhd='sudo /dh/bin/dh-domain'
-alias dhm='sudo /dh/bin/dh-machine'
+alias dhqsearch='sudo /dh/bin/dhqsearch'
 alias dhsh.pl='sudo /dh/bin/dhsh.pl'
-alias dip="sudo /dh/bin/dh-ip"
+alias dh-cluster='sudo /dh/bin/dh-cluster'
+alias dh-watcher.pl='sudo /dh/bin/dh-watcher.pl'
 alias enableactt='sc yakko reenabler reenable'
 alias firewall.pl='sudo /dh/bin/firewall.pl'
 alias loady.pl='sudo /dh/bin/loady.pl'
@@ -49,7 +55,7 @@ alias domy="${DEV_ENV}"
 alias ndntest="${DEV_ENV} prove -v"
 alias vix="vi ${HOME}/bin/scratchpad/x.pl"
 alias x="sudo perl ${HOME}/bin/scratchpad/x.pl"
-alias dhperl="/usr/bin/env DH_TEMPLATE_PREFIX=/home/rmiller/projects/ndn PERL5LIB=/home/rmiller/projects/ndn/perl perl"
+alias dhperl="${DEV_ENV} /usr/bin/perl -I${HOME}/projects/ndn/perl"
 
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-

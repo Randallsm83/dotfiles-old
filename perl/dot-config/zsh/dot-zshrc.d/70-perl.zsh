@@ -3,6 +3,10 @@
 export PKG_INSTALL_LIST="${PKG_INSTALL_LIST:-}:perl"
 export PERL_CPANM_HOME="${XDG_CACHE_HOME:-$HOME/.cache}/cpanm"
 
+if [[ -n "$SHORT_HOST" && "$SHORT_HOST" == 'yakko' ]]; then
+  # export PERL5LIB="${HOME}/projects/ndn/perl"
+fi
+
 export ENV_DIRS="$ENV_DIRS:$PERL_CPANM_HOME"
 
 # -------------------------------------------------------------------------------------------------
