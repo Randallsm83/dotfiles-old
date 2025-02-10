@@ -134,21 +134,6 @@ for include_path in "${COMMON_INCLUDE_PATHS[@]}"; do
   export CMAKE_INCLUDE_PATH="$include_path${CMAKE_INCLUDE_PATH+:$CMAKE_INCLUDE_PATH}"
 done
 
-COMMON_PKG_CONFIG_PATHS=(
-  "openssl"
-  "ncurses"
-  "readline"
-  "zlib"
-  "krb5"
-  "libedit"
-)
-for item in "${COMMON_PKG_CONFIG_PATHS[@]}"; do
-  export LDFLAGS="$(pkg-config --libs-only-L $item) ${LDFLAGS:-}"
-  export CFLAGS="$(pkg-config --cflags $item) ${CFLAGS:-}"
-  export CPPFLAGS="$(pkg-config --cflags $item) ${CPPFLAGS:-}"
-  export CXXFLAGS="$(pkg-config --cflags $item) ${CXXFLAGS:-}"
-done
-
 export CMAKE_PREFIX_PATH="${HOMEBREW_PREFIX}${CMAKE_PREFIX_PATH+:$CMAKE_PREFIX_PATH}"
 export CMAKE_INSTALL_PREFIX="${XDG_DATA_HOME:-$HOME/.local/share}"
 export CMAKE_C_COMPILER_LAUNCHER="${HOMEBREW_PREFIX}/bin/gcc-14"
@@ -170,6 +155,21 @@ export PKG_CONFIG_PATH="${HOMEBREW_OPT}/readline/lib/pkgconfig${PKG_CONFIG_PATH+
 export PKG_CONFIG_PATH="${HOMEBREW_OPT}/zlib/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_PREFIX}/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 export PKG_CONFIG_PATH="${HOMEBREW_PREFIX}/share/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
+
+COMMON_PKG_CONFIG_PATHS=(
+  "openssl"
+  "ncurses"
+  "readline"
+  "zlib"
+  "krb5"
+  "libedit"
+)
+for item in "${COMMON_PKG_CONFIG_PATHS[@]}"; do
+  export LDFLAGS="$(pkg-config --libs-only-L $item) ${LDFLAGS:-}"
+  export CFLAGS="$(pkg-config --cflags $item) ${CFLAGS:-}"
+  export CPPFLAGS="$(pkg-config --cflags $item) ${CPPFLAGS:-}"
+  export CXXFLAGS="$(pkg-config --cflags $item) ${CXXFLAGS:-}"
+done
 
 if [[ -n "$SHORT_HOST" && "$SHORT_HOST" == 'yakko' ]]; then
   export PKG_CONFIG_PATH="${PKG_CONFIG_PATH:+$PKG_CONFIG_PATH:}/usr/lib/x86_64-linux-gnu/pkgconfig"

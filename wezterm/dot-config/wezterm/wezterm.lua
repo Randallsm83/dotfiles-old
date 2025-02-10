@@ -29,10 +29,10 @@ config.set_environment_variables = {
 -- wezterm.GLOBAL.theme = "Catppuccin Macchiato"
 -- wezterm.GLOBAL.theme = "Catppuccin Frappe"
 
--- wezterm.GLOBAL.theme = "Gruvbox Material (Gogh)"
+wezterm.GLOBAL.theme = "Gruvbox Material (Gogh)"
 -- wezterm.GLOBAL.theme = "Gruvbox Dark (Gogh)"
 -- wezterm.GLOBAL.theme = "Gruvbox dark, hard (base16)"
-wezterm.GLOBAL.theme = "Gruvbox dark, medium (base16)"
+-- wezterm.GLOBAL.theme = "Gruvbox dark, medium (base16)"
 -- wezterm.GLOBAL.theme = "Gruvbox dark, soft (base16)"
 -- wezterm.GLOBAL.theme = "Gruvbox dark, pale (base16)"
 -- wezterm.GLOBAL.theme = "GruvboxDark"
@@ -85,8 +85,8 @@ config.colors = {}
 -- cv25 cv26 cv32 cv27 cv28 ss06 ss07 s10
 -- config.harfbuzz_features = { "" }
 
-config.dpi = 144.0
-config.font_size = 13.0
+config.dpi = 140.0
+config.font_size = 14.0
 config.line_height = 1.2
 config.display_pixel_geometry = "RGB"
 config.freetype_load_target = "Light"
@@ -159,32 +159,32 @@ tabline.setup({
   },
   sections = {
     tabline_a = {
-      { 'mode', padding = 1 }
+      { "mode", padding = 1 },
     },
     tabline_b = {
-      { 'hostname', padding = 1, icon = wezterm.nerdfonts.fa_desktop },
-      { 'workspace', padding = 1 },
+      { "hostname", padding = 1, icon = wezterm.nerdfonts.fa_desktop },
+      { "workspace", padding = 1 },
     },
-    tabline_c = { '' },
+    tabline_c = { "" },
     tab_active = {
-      { 'zoomed', padding = 1 },
-      { 'output', padding = 1 },
-      ' .../',
-      { 'cwd', padding = 0 },
-      { 'process', padding = 1 },
+      { "zoomed", padding = 1 },
+      { "output", padding = 1 },
+      -- " .../",
+      -- { "cwd", padding = 0 },
+      { "process", padding = 1 },
     },
     tab_inactive = {
-      { 'output', padding = 2 },
-      { 'process', padding = 2 }
+      { "output", padding = 2 },
+      { "process", padding = 2 },
     },
-    tabline_x = { '' },
-    tabline_y = { 'ram', 'cpu', 'battery' },
-    tabline_z = { 'datetime' },
+    tabline_x = { "" },
+    tabline_y = { "ram", "cpu", "battery" },
+    tabline_z = { "datetime" },
   },
   extensions = {},
 })
 
-print(tabline.get_colors())
+-- print(tabline.get_colors())
 ------------------ Windows and Panes -------------------------------------------
 
 wezterm.on("gui-startup", function(cmd)
@@ -208,7 +208,7 @@ config.adjust_window_size_when_changing_font_size = false
 -- config.macos_window_background_blur = 35
 
 -- Window Padding
-config.window_padding = { top = 2, left = 2, right = 2, bottom = 2 }
+config.window_padding = { top = 0, left = 0, right = 0, bottom = 0 }
 
 -- Dim Inactive Panes
 config.inactive_pane_hsb = { saturation = 0.9, brightness = 0.8 }
@@ -226,7 +226,6 @@ config.bypass_mouse_reporting_modifiers = "ALT"
 ---@diagnostic disable-next-line: assign-type-mismatch
 config.default_cursor_style = "SteadyBlock"
 config.force_reverse_video_cursor = true
--- config.cursor_blink_rate = 800
 
 -- Bell
 ---@diagnostic disable-next-line: assign-type-mismatch
@@ -253,12 +252,12 @@ config.check_for_updates = true
 config.automatically_reload_config = true
 
 -- Charselect
-config.char_select_font_size = 15
+config.char_select_font_size = 16
 config.char_select_bg_color = "#282828"
 config.char_select_fg_color = "#ebdbb2"
 
 -- Command Palette
-config.command_palette_font_size = 15
+config.command_palette_font_size = 16
 config.command_palette_bg_color = "#282828"
 config.command_palette_fg_color = "#ebdbb2"
 

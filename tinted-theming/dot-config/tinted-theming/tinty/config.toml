@@ -1,5 +1,5 @@
 shell = "zsh -c '{}'"
-default-scheme = "base16-gruvbox-dark-medium"
+default-scheme = "base24-gruvbox-dark-medium"
 
 [[items]]
 name = "tinted-shell"

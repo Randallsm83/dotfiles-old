@@ -26,7 +26,7 @@ export ZFUNCDIR="$ZDOTDIR/.zfunctions"
 [[ -r "$ZDOTDIR/.zstyles" ]] && source "$ZDOTDIR/.zstyles"
 
 # Clone antidote if necessary.
-export ANTIDOTE_HOME="$ZDOTDIR/antidote"
+export ANTIDOTE_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/antidote"
 
 if [[ ! -d "$ANTIDOTE_HOME" ]]; then
   git clone https://github.com/mattmc3/antidote "$ANTIDOTE_HOME"

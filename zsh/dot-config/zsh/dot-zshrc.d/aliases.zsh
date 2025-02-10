@@ -19,7 +19,7 @@ alias notes='cd ~/vaults/'
 
 # Edit configs
 alias nrc='${=EDITOR} $XDG_CONFIG_HOME/nvim/init.lua'
-alias vrc='${=EDITOR} $HOME/.vimrc'
+alias vrc='${=EDITOR} $XDG_CONFIG_HOME/vim/vimrc'
 alias wrc='${=EDITOR} $XDG_CONFIG_HOME/wezterm/wezterm.lua'
 alias zrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc'
 alias zenv='${=EDITOR} $HOME/.zshenv'
@@ -70,6 +70,9 @@ alias displaykeys='source $HOME/ssh-key-manager.sh && display_public_keys'
 # Arduino
 alias ard='arduino-cli'
 alias ardc='arduino-cloud-cli'
+
+# Wget
+alias wget='wget --hsts-file=$XDG_CACHE_HOME/wget/wget-hsts'
 
 # -------------------------------------------------------------------------------------------------
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-

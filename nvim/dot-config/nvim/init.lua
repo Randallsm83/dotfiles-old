@@ -28,6 +28,11 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 -- INFO: Colorscheme
+
+-- vim.g.tinted_shell_path = vim.env.HOME .. '/.local/share/tinted-theming/tinty/repos/tinted-shell/scripts'
+-- vim.g.tinted_colorspace = 256
+-- vim.cmd.colorscheme('base24-gruvbox-dark-medium')
+
 local theme_script_path = vim.fn.expand(vim.env.HOME .. "/.local/share/tinted-theming/tinty/tinted-vim-colors-file.vim")
 
 local function file_exists(file_path)
@@ -67,7 +72,7 @@ require('lazy').setup({
           -- Extra UI features ('winblend', 'cmdheight=0', ...)
           extra_ui = true,
           -- Presets for window borders ('single', 'double', ...)
-            win_borders = 'dot',
+          win_borders = 'dot',
         },
         mappings = {
           -- Basic mappings (better 'jk', save with Ctrl+S, ...)
@@ -238,23 +243,24 @@ require('lazy').setup({
   { 'norcalli/nvim-colorizer.lua' },
   ----------------------------------------------------------------------------
   -- INFO: Colorschemes
+  { 'tinted-theming/tinted-vim' },
   {
     'sainnhe/gruvbox-material',
     name = 'gruvbox_material',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.o.background = 'dark'
-      vim.g.gruvbox_material_background = 'medium' -- hard, medium, soft
-      vim.g.gruvbox_material_foreground = 'material' -- material, mix, original
-      vim.g.gruvbox_material_enable_italic = 1
-      vim.g.gruvbox_material_disable_italic_comment = 1
-      vim.g.gruvbox_material_visual = 'reverse'
-      vim.g.gruvbox_material_menu_selection_background = 'orange'
-      vim.g.gruvbox_material_current_word = 'high contrast background'
-      vim.g.gruvbox_material_ui_contrast = 'low'
-      -- vim.cmd [[colorscheme gruvbox-material]]
-    end,
+    lazy = true,
+    -- priority = 1000,
+  --   config = function()
+  --     vim.o.background = 'dark'
+  --     vim.g.gruvbox_material_background = 'medium' -- hard, medium, soft
+  --     vim.g.gruvbox_material_foreground = 'material' -- material, mix, original
+  --     vim.g.gruvbox_material_enable_italic = 1
+  --     vim.g.gruvbox_material_disable_italic_comment = 1
+  --     vim.g.gruvbox_material_visual = 'reverse'
+  --     vim.g.gruvbox_material_menu_selection_background = 'orange'
+  --     vim.g.gruvbox_material_current_word = 'high contrast background'
+  --     vim.g.gruvbox_material_ui_contrast = 'low'
+  --     -- vim.cmd [[colorscheme gruvbox-material]]
+  --   end,
   },
   {
     'ellisonleao/gruvbox.nvim',
@@ -307,9 +313,9 @@ require('lazy').setup({
   --
   ----------------------------------------------------------------------------
   {
-    "ibhagwan/fzf-lua",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {}
+    'ibhagwan/fzf-lua',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    opts = {},
   },
   { -- INFO: Gitsigns
     'lewis6991/gitsigns.nvim',
@@ -1204,7 +1210,7 @@ require('lazy').setup({
   },
   ----------------------------------------------------------------------------
   { -- INFO: Treesitter external playground module
-    'nvim-treesitter/playground'
+    'nvim-treesitter/playground',
   },
   { -- INFO: Treesitter - Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
@@ -1237,7 +1243,7 @@ require('lazy').setup({
         'vim',
         'vimdoc',
         'yaml',
-        'zig'
+        'zig',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
@@ -1331,7 +1337,7 @@ require('lazy').setup({
 }, {
   checker = {
     -- automatically check for plugin updates
-    enabled = true,
+    -- enabled = true,
     notify = true, -- get a notification when new updates are found
     frequency = 259,200, -- check for updates every 12 hours
     check_pinned = false, -- check for pinned packages that can't be updated
@@ -1347,8 +1353,8 @@ require('lazy').setup({
       disabled_plugins = {
         -- Add disabled plugins here
         'gzip',
-        "matchit",
-        "matchparen",
+        'matchit',
+        'matchparen',
         'netrwPlugin',
         'tarPlugin',
         'tohtml',

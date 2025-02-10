@@ -47,4 +47,7 @@ vim.opt.showcmd = false
 -- Show matching brackets
 vim.opt.showmatch = true
 
+-- Allow conceal syntax
+vim.opt.conceallevel = 1
+
 -- vim: ts=2 sts=2 sw=2 et

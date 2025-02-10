@@ -8,11 +8,11 @@ $username\
 $sudo\
 [](bg:color_yellow fg:color_orange)\
 $directory\
-[](fg:color_yellow bg:color_aqua)\
+[](fg:color_yellow bg:color_green)\
 $git_branch\
 $git_status\
 $git_state\
-[](fg:color_aqua bg:color_blue)\
+[](fg:color_green bg:color_blue)\
 $nodejs\
 $perl\
 $python\
@@ -28,31 +28,41 @@ $kotlin\
 $haskell\
 $package\
 $vagrant\
-[](fg:color_blue bg:color_bg3)\
+[](fg:color_blue bg:color_bg2)\
 $conda\
 $docker_context\
 ${custom.vagrant_context}\
-[](fg:color_bg3 bg:color_bg1)\
+[](fg:color_bg2 bg:color_bg1)\
 $time\
 $cmd_duration\
 [](fg:color_bg1)\
 $line_break$character"""
 
-palette = 'gruvbox_dark'
+palette = 'gruvbox_dark_medium'
 
-[palettes.gruvbox_dark]
-color_fg0    = '#fbf1c7'
-color_fg1    = "#e2cca9"
-color_bg0    = '#282828'
-color_bg1    = '#3c3836'
-color_bg3    = '#665c54'
-color_red    = '#cc241d'
-color_green  = '#98971a'
-color_yellow = '#d79921'
-color_blue   = '#458588'
-color_purple = '#b16286'
-color_aqua   = '#689d6a'
-color_orange = '#d65d0e'
+[palettes.gruvbox_dark_medium]
+color_bg0           = '#282828'
+color_bg1           = '#3c3836'
+color_bg2           = '#504945'
+color_bg3           = '#665c54'
+color_bg4           = '#bdae93'
+color_fg0           = '#d5c4a1'
+color_fg1           = '#ebdbb2'
+color_white         = '#fbf1c7'
+color_red           = '#cc241d'
+color_orange        = '#d65d0e'
+color_yellow        = '#d79921'
+color_green         = '#98971a'
+color_cyan          = '#689d6a'
+color_blue          = '#458588'
+color_purple        = '#b16286'
+color_bright_red    = '#fb4934'
+color_bright_orange = '#fe8019'
+color_bright_yellow = '#fabd2f'
+color_bright_green  = '#b8bb26'
+color_bright_cyan   = '#8ec07c'
+color_bright_blue   = '#83a598'
+color_bright_purple = '#d3869b'
 
 [palettes.gruvbox_dark_material]
 color_fg0    = '#d4be98'
@@ -65,7 +75,7 @@ color_green  = '#a9b665'
 color_yellow = '#d8a657'
 color_blue   = '#7daea3'
 color_purple = '#d3869b'
-color_aqua   = '#89b482'
+color_cyan   = '#89b482'
 color_orange = '#e37933'
 
 [palettes.gruvbox_dark_material_mix]
@@ -78,7 +88,7 @@ color_green  = '#b0b846'
 color_yellow = '#e9b143'
 color_blue   = '#80aa9e'
 color_purple = '#d3869b'
-color_aqua   = '#8bba7f'
+color_cyan   = '#8bba7f'
 color_orange = '#f28534'
 
 [os]
@@ -112,13 +122,13 @@ Pop = ""
 disabled = false
 ssh_only = false
 style = "bg:color_orange fg:color_fg1"
-format = '[[  on](fg:color_bg0 bg:color_orange) $hostname]($style)'
+format = '[[  on ](fg:color_bg0 bg:color_orange)$hostname]($style)'
 
 [username]
 show_always = true
 style_user = "bg:color_orange fg:color_fg1"
 style_root = "bg:color_orange fg:color_bg0"
-format = '[[ as](fg:color_bg0 bg:color_orange) $user]($style)'
+format = '[[ as ](fg:color_bg0 bg:color_orange)$user ]($style)'
 
 [sudo]
 disabled = false
@@ -127,7 +137,7 @@ symbol = '  '
 format = "[$symbol]($style)"
 
 [directory]
-style = "fg:color_fg0 bg:color_yellow"
+style = "fg:color_fg1 bg:color_yellow"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
@@ -141,96 +151,96 @@ truncation_symbol = "…/"
 
 [git_branch]
 symbol = ""
-style = "bg:color_aqua"
-format = '[[ $symbol $branch ](fg:color_fg0 bg:color_aqua)]($style)'
+style = "bg:color_green"
+format = '[[ $symbol $branch ](fg:color_fg1 bg:color_green)]($style)'
 
 [git_status]
-style = "bg:color_aqua"
-format = '[[($all_status$ahead_behind )](fg:color_fg0 bg:color_aqua)]($style)'
+style = "bg:color_green"
+format = '[[($all_status$ahead_behind )](fg:color_fg1 bg:color_green)]($style)'
 
 [git_state]
-style = "fg:#45403d bg:color_aqua"
+style = "fg:color_bg1 bg:color_green"
 format = '[\($state($progress_current of $progress_total)\)]($style)'
 
 [nodejs]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [c]
 symbol = " "
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [rust]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [perl]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [ruby]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [lua]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [zig]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [golang]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [php]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [java]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [kotlin]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [haskell]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [python]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [vagrant]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [package]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_blue)]($style)'
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [docker_context]
 symbol = ""
-style = "bg:color_bg3"
-format = '[[ $symbol( $context) ](fg:#83a598 bg:color_bg3)]($style)'
+style = "bg:color_bg2"
+format = '[[ $symbol( $context) ](fg:color_cyan bg:color_bg2)]($style)'
 
 [custom.vagrant_context]
 command = """
@@ -253,23 +263,23 @@ esac
 """
 detect_files = ['Vagrantfile']
 symbol = ""
-style = "bg:color_bg3"
-format = '[[ $symbol( $output) ](fg:#83a598 bg:color_bg3)]($style)'
+style = "bg:color_bg2"
+format = '[[ $symbol( $output) ](fg:color_cyan bg:color_bg2)]($style)'
 
 [conda]
-style = "bg:color_bg3"
-format = '[[ $symbol( $environment) ](fg:#83a598 bg:color_bg3)]($style)'
+style = "bg:color_bg2"
+format = '[[ $symbol( $environment) ](fg:color_cyan bg:color_bg2)]($style)'
 
 [time]
 disabled = true
 time_format = "%R"
 style = "bg:color_bg1"
-format = '[[  $time ](fg:color_fg0 bg:color_bg1)]($style)'
+format = '[[  $time ](fg:color_purple bg:color_bg1)]($style)'
 
 [cmd_duration]
 min_time = 500
 style = "bg:color_bg1"
-format = '[ 󰔟 $duration ](fg:color_fg1 bg:color_bg1)($style)'
+format = '[ 󰔟 $duration ](fg:color_purple bg:color_bg1)($style)'
 
 [line_break]
 disabled = false
