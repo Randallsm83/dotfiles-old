@@ -17,8 +17,10 @@ if wezterm.config_builder then
 end
 
 config.set_environment_variables = {
-  PATH = "/opt/homebrew/bin:" .. wezterm.home_dir .. "/.local/bin" .. os.getenv("PATH"),
+  PATH = "/opt/homebrew/bin:" .. wezterm.home_dir .. "/.local/bin:" .. os.getenv("PATH"),
 }
+
+config.term = 'wezterm'
 
 -------------------- Colorscheme -----------------------------------------------
 
