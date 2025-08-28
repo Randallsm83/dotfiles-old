@@ -1,12 +1,14 @@
 #!/usr/bin/env zsh
 
 # NDN Aliases
+# alias dbc='sudo /dh/bin/dbc'
+alias dbc='/usr/bin/perl /dh/bin/dbc'
 alias dhdb='sudo /dh/bin/dh-db'
 alias dhd='sudo /dh/bin/dh-domain'
 alias dhc='sudo /dh/bin/dhcat'
 alias dhip='sudo /dh/bin/dh-ip'
 alias dhm='sudo /dh/bin/dh-machine'
-alias dhq='sudo /dh/bin/dhqsearch'
+alias dhq='sudo /dh/bin/dhq'
 alias dhd='sudo /dh/bin/dh-domain'
 alias dh-db='sudo /dh/bin/dh-db'
 alias dhcat='sudo /dh/bin/dhcat'

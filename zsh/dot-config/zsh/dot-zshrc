@@ -48,9 +48,9 @@ antidote load
 
 # Set dircolors and completion colors
 if command -v dircolors >/dev/null 2>&1; then
-  eval "$(dircolors --sh $ZDOTDIR/colors/gruvbox.default.dircolors)"
+  eval "$(dircolors --sh $ZDOTDIR/colors/onedarkpro.dircolors)"
 elif command -v gdircolors >/dev/null 2>&1; then
-  eval "$(gdircolors --sh $ZDOTDIR/colors/gruvbox.default.dircolors)"
+  eval "$(gdircolors --sh $ZDOTDIR/colors/onedarkpro.dircolors)"
 fi
 
 if [[ -n "$ZSH_DEBUG" ]]; then

@@ -18,6 +18,9 @@ end
 
 config.set_environment_variables = {
   PATH = "/opt/homebrew/bin:" .. wezterm.home_dir .. "/.local/bin:" .. os.getenv("PATH"),
+  TERMINFO = wezterm.home_dir .. "/.local/share/terminfo",
+  TERMINFO_DIRS = wezterm.home_dir .. "/.local/share/terminfo:/usr/share/terminfo",
+  COLORTERM = 'truecolor'
 }
 
 config.term = 'wezterm'

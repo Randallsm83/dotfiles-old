@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 export LOCAL_DIR="$HOME/.local"
+export TMPDIR="${TMPDIR:-/tmp}"
 
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$LOCAL_DIR/share}"
@@ -12,7 +13,6 @@ export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-$TMPDIR}"
 export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg}"
 export XDG_DATA_DIRS="${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}"
 
-export TMPDIR="${TMPDIR:-/tmp}"
 export BIN_DIR="${XDG_BIN_HOME:-$HOME/.local/bin}"
 export BUILD_DIR="$XDG_CACHE_HOME/build"
 export BUILD_STATE_DIR="$XDG_STATE_HOME/build"
