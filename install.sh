@@ -226,67 +226,61 @@ install_stow() {
   fi
 }
 
-install_asdf() {
-  log "Setting up ASDF version manager..."
+install_mise() {
+  log "Setting up mise version manager..."
 
-  export ASDF_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
+  export MISE_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mise"
+  export MISE_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/mise"
+  export MISE_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/mise"
+  export MISE_STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/mise"
 
-  # Clone ASDF
-  if [ ! -d "$ASDF_DATA_DIR" ]; then
-    log "Cloning ASDF..."
-    if ! git clone https://github.com/asdf-vm/asdf.git "$ASDF_DATA_DIR"; then
-      log "Failed to clone ASDF"
-      return 1
-    fi
-  else
-    log "ASDF already installed, updating..."
-    if ! (git -C "$ASDF_DATA_DIR" pull origin master); then
-      log "Failed to update ASDF"
-      return 1
-    fi
-  fi
-
-  # Source ASDF
-  . "$ASDF_DATA_DIR/asdf.sh"
-
-  # Install plugins and versions from your tool-versions file
-  local failed_plugins=()
-  while IFS= read -r line || [[ -n "$line" ]]; do
-    if [[ $line =~ ^[^#] ]]; then
-      plugin=$(echo "$line" | cut -d' ' -f1)
-      if ! asdf plugin list | grep -q "^$plugin$"; then
-        log "Installing ASDF plugin: $plugin"
-        if ! asdf plugin add "$plugin"; then
-          failed_plugins+=("$plugin")
-          log "Failed to install plugin: $plugin"
-          continue
+  # Install mise using the official installer
+  if ! command -v mise >/dev/null 2>&1; then
+    log "Installing mise..."
+    if ! curl https://mise.run | sh; then
+      log "Failed to install mise, trying alternative method..."
+      # Try cargo install as fallback
+      if command -v cargo >/dev/null 2>&1; then
+        if ! cargo install mise; then
+          log "Failed to install mise via cargo"
+          return 1
         fi
+      else
+        log "Failed to install mise. Please install manually: https://mise.jdx.dev"
+        return 1
       fi
     fi
-  done <"$XDG_CONFIG_HOME/asdf/tool-versions"
 
-  if [ ${#failed_plugins[@]} -gt 0 ]; then
-    log "Warning: Failed to install plugins: ${failed_plugins[*]}"
-    log "You may need to install them manually"
+    # Add mise to PATH for current session
+    export PATH="$HOME/.local/bin:$PATH"
+  else
+    log "mise already installed, updating..."
+    mise self-update || log "Could not auto-update mise"
   fi
 
-  log "Installing tool versions..."
-  asdf install
+  # Verify mise is available
+  if ! command -v mise >/dev/null 2>&1; then
+    log "mise installation failed or not in PATH"
+    return 1
+  fi
 
-  # Install shell completions
-  # local shell
-  # shell=$(basename "$SHELL")
-  # local completion_dir="$XDG_DATA_HOME/completions"
-  # mkdir -p "$completion_dir"
-  #
-  # case "$shell" in
-  # bash)
-  #   cp "$ASDF_DATA_DIR/completions/asdf.bash" "$completion_dir/"
-  #   ;;
-  # zsh)
-  #   cp "$ASDF_DATA_DIR/completions/asdf.zsh" "$completion_dir/"
-  #   ;;
-  # esac
+  log "mise version: $(mise --version)"
+
+  # Install tools from config
+  if [ -f "$MISE_CONFIG_DIR/config.toml" ]; then
+    log "Installing tools from config.toml..."
+    if ! mise install; then
+      log "Some tools failed to install, continuing..."
+    fi
+  else
+    log "No mise config.toml found, skipping tool installation"
+  fi
+
+  # Trust the dotfiles config if it exists
+  if [ -f "$DOTFILES/.mise.toml" ] || [ -f "$DOTFILES/mise.toml" ]; then
+    log "Trusting dotfiles mise config..."
+    mise trust
+  fi
 }
 
 check_glibc_headers() {
@@ -429,8 +423,8 @@ main() {
   #   fi
   # done
 
-  # Install asdf and other tools
-  install_asdf
+  # Install mise and other tools
+  install_mise
 
   if git -C "$DOTFILES" status --porcelain | grep -q '^'; then
     log "There are uncommitted changes in your dotfiles repo. Please review with 'git diff' and commit if happy."

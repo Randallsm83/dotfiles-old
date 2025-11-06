@@ -1,30 +1,40 @@
 #!/usr/bin/env zsh
-
-export EZA_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/eza"
+# eza integration with layered config support
 
 [[ $TERM == 'dumb' ]] && return 1
 
-if (( $+commands[eza] )); then
-  typeset -ag eza_params
+# Ensure LS_COLORS is loaded from vivid if generated
+: ${XDG_CONFIG_HOME:=${HOME}/.config}
+if [ -z "$LS_COLORS" ] && [ -f "$XDG_CONFIG_HOME/lscolors/${VIVID_THEME:-one-dark}.txt" ]; then
+  export LS_COLORS="$(< "$XDG_CONFIG_HOME/lscolors/${VIVID_THEME:-one-dark}.txt")"
+fi
 
-  eza_params=(
-    '--git' '--icons' '--group' '--group-directories-first'
-    '--time-style=long-iso' '--color-scale=all'
-  )
+_has() { command -v "$1" >/dev/null 2>&1; }
 
-  [[ ! -z $_EZA_PARAMS ]] && eza_params=($_EZA_PARAMS)
+_eza_flags_file() {
+  local base="$XDG_CONFIG_HOME/eza"
+  for f in "flags.${HOST}.txt" "flags.zsh.txt" "flags.local.txt" "flags.txt"; do
+    [ -f "$base/$f" ] && { printf '%s' "$base/$f"; return; }
+  done
+  printf '%s' "$base/flags.txt"
+}
 
-  alias ls='eza $eza_params'
-  alias l='eza --git-ignore $eza_params'
-  alias ll='eza --all --header --long $eza_params'
-  alias llm='eza --all --header --long --sort=modified $eza_params'
-  alias la='eza -lbhHigUmuSa'
-  alias lx='eza -lbhHigUmuSa@'
-  alias lt='eza --tree $eza_params'
-  alias tree='eza --tree $eza_params'
+_eza_build_flags() {
+  local f="$(_eza_flags_file)"
+  local flags=()
+  [ -f "$f" ] && flags+=("${(f)$(<"$f")}")
+  [ -n "$EZA_DISABLE_GDF" ] && flags=(${flags:#--group-directories-first})
+  [ -n "$EZA_FLAGS_EXTRA" ] && flags+=(${=EZA_FLAGS_EXTRA})
+  echo "${(j: :)flags}"
+}
 
+if _has eza; then
+  ls() { command eza $(_eza_build_flags) -- "$@"; }
+  ll() { command eza $(_eza_build_flags) -l -- "$@"; }
+  la() { command eza $(_eza_build_flags) -la -- "$@"; }
+  lt() { command eza $(_eza_build_flags) --tree -- "$@"; }
 else
-  print "Please install eza before using this plugin." >&2
+  print "eza not found. Install with mise: mise use -g cargo:eza" >&2
   return 1
 fi
 

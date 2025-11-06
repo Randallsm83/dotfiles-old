@@ -1,0 +1,5 @@
+--group-directories-first
+--icons
+--git
+--time-style=long-iso
+--color-scale=all
