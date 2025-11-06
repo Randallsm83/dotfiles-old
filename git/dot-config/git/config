@@ -43,3 +43,8 @@
 	prompt = false
 [mergetool "nvim"]
 	cmd = "nvim -d -c \"wincmd l\" -c \"norm ]c\" \"$LOCAL\" \"$MERGED\" \"$REMOTE\""
+
+# Windows-specific configuration (only present on Windows installations)
+# Git silently ignores this if the file doesn't exist
+[include]
+	path = ~/.config/git/windows.gitconfig
