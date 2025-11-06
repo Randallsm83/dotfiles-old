@@ -16,14 +16,31 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
-config.set_environment_variables = {
-  PATH = "/opt/homebrew/bin:" .. wezterm.home_dir .. "/.local/bin:" .. os.getenv("PATH"),
-  TERMINFO = wezterm.home_dir .. "/.local/share/terminfo",
-  TERMINFO_DIRS = wezterm.home_dir .. "/.local/share/terminfo:/usr/share/terminfo",
-  COLORTERM = 'truecolor'
-}
+-- Platform detection
+local is_windows = wezterm.target_triple:find("windows") ~= nil
+local is_linux = wezterm.target_triple:find("linux") ~= nil
+local is_mac = wezterm.target_triple:find("apple") ~= nil
 
-config.term = 'wezterm'
+-- Environment setup
+if is_windows then
+  -- Windows: default to WSL, add user bin to PATH
+  config.default_prog = { "wsl.exe", "-d", "Ubuntu" }
+  config.set_environment_variables = {
+    PATH = wezterm.home_dir .. "\\bin;" .. os.getenv("PATH"),
+    COLORTERM = "truecolor",
+  }
+elseif is_linux or is_mac then
+  -- Unix: setup PATH and terminfo
+  local path_prefix = is_mac and "/opt/homebrew/bin:" or ""
+  config.set_environment_variables = {
+    PATH = path_prefix .. wezterm.home_dir .. "/.local/bin:" .. os.getenv("PATH"),
+    TERMINFO = wezterm.home_dir .. "/.local/share/terminfo",
+    TERMINFO_DIRS = wezterm.home_dir .. "/.local/share/terminfo:/usr/share/terminfo",
+    COLORTERM = "truecolor",
+  }
+end
+
+config.term = "wezterm"
 
 -------------------- Colorscheme -----------------------------------------------
 
