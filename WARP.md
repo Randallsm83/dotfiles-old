@@ -116,23 +116,32 @@ for d in */; do [ -d "$d" ] && ~/.local/bin/stow -R "${d%/}"; done
 ~/.local/bin/stow -D PACKAGE_NAME
 ```
 
-### ASDF Version Manager
+### mise Version Manager
 
-**Initialize ASDF for current shell:**
+**Install mise (if not already installed):**
 ```bash
-. "$XDG_DATA_HOME/asdf/asdf.sh"
+curl https://mise.run | sh
 ```
 
-**Install all tools from tool-versions:**
+**Activate mise for current shell:**
 ```bash
-asdf install
+eval "$(mise activate bash)"  # or zsh
 ```
 
-**Add plugin and set version:**
+**Install all tools from config:**
 ```bash
-asdf plugin add PLUGIN_NAME
-echo "PLUGIN_NAME VERSION" >> "$XDG_CONFIG_HOME/asdf/tool-versions"
-asdf install
+mise install
+```
+
+**Add a tool globally:**
+```bash
+mise use -g node@latest
+mise use -g python@3.12
+```
+
+**List installed tools:**
+```bash
+mise list
 ```
 
 ### Utility Scripts
@@ -175,7 +184,8 @@ display_public_keys   # Show public keys for remote services
 - Build cache: `$XDG_CACHE_HOME/build/dotfiles` (typically `~/.cache/build/dotfiles`)
 - Logs: `$XDG_STATE_HOME/build/dotfiles/logs` (typically `~/.local/state/build/dotfiles/logs`)
 - Stow binary: `$HOME/.local/bin/stow`
-- ASDF: `$XDG_DATA_HOME/asdf` (typically `~/.local/share/asdf`)
+- mise: `$XDG_DATA_HOME/mise` (typically `~/.local/share/mise`)
+- mise config: `$XDG_CONFIG_HOME/mise` (typically `~/.config/mise`)
 
 ### Platform-Specific Notes
 
@@ -202,7 +212,7 @@ This repository provides configurations for:
 - **Terminal:** wezterm (with Gruvbox Material theme)
 - **Shell:** starship prompt, bash/zsh integration
 - **Tools:** git, bat, ripgrep, fzf
-- **Languages:** npm/node/typescript, perl, rust
+- **Languages:** npm/node/typescript, perl, rust (managed via mise)
 - **Fonts:** Nerd Fonts (Hack, Fira Code)
 - **Optional:** Windows Terminal settings, VS Code settings
 
