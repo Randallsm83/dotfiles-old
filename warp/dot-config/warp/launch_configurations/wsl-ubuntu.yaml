@@ -1,0 +1,73 @@
+# Warp Launch Configuration
+# WSL Ubuntu Development Setup
+#
+# This configuration provides a comprehensive Ubuntu WSL environment
+# with tabs for home, projects, and development tools.
+#
+# Note: To use WSL in launch configurations, you must set WSL as your 
+# default shell in Warp Settings > Features > Session > Startup shell.
+#
+# Customize paths and commands below for your workflow.
+
+---
+name: WSL Ubuntu Development
+active_window_index: 0
+windows:
+  - active_tab_index: 1
+    tabs:
+      # Tab 1: Home Directory with System Monitoring
+      - title: Home
+        layout:
+          split_direction: vertical
+          panes:
+            - cwd: /home/ranmil
+              is_focused: true
+              commands:
+                - exec: echo "=== System Info ==="
+                - exec: uname -a
+                - exec: echo ""
+                - exec: echo "=== Development Tools ==="
+                - exec: which mise && mise list || echo "mise not installed"
+                - exec: which brew && echo "Homebrew: $(brew --version)" || echo "Homebrew not installed"
+                - exec: git --version
+            - cwd: /home/ranmil
+              commands:
+                - exec: "htop || top -bn1 | head -20"
+        color: cyan
+
+      # Tab 2: Projects - Main development workspace (active by default)
+      - title: Projects
+        layout:
+          split_direction: horizontal
+          panes:
+            - cwd: /home/ranmil/projects
+              is_focused: true
+              commands:
+                - exec: ls -lah
+                - exec: echo ""
+                - exec: "[ -d .git ] && git status || echo 'Not a git repository'"
+            - cwd: /home/ranmil/projects
+              commands:
+                - exec: echo "=== Testing & Debugging Area ==="
+                - exec: echo "Run tests or debug commands here"
+        color: green
+
+      # Tab 3: Development Tools & Version Management
+      - title: Dev Tools
+        layout:
+          cwd: /home/ranmil
+          commands:
+            - exec: echo "=== Language Versions (via mise) ==="
+            - exec: which mise && mise list || echo "mise not installed - install with 'curl https://mise.run | sh'"
+            - exec: echo ""
+            - exec: echo "=== Node.js ==="
+            - exec: which node && node --version || echo "Node.js not installed"
+            - exec: which npm && npm --version || echo "npm not installed"
+            - exec: echo ""
+            - exec: echo "=== Python ==="
+            - exec: which python3 && python3 --version || echo "Python not installed"
+            - exec: echo ""
+            - exec: echo "=== Other Tools ==="
+            - exec: which zsh && zsh --version || echo "zsh not installed"
+            - exec: which cargo && cargo --version || echo "Rust/Cargo not installed"
+        color: yellow
