@@ -9,6 +9,21 @@ alias paths='echo -e ${PATH//:/\\n}'
 alias aliases='alias | sed "s/=.*//"'
 alias functions='declare -f | grep "^[a-z].* ()" | sed "s/{$//"'
 
+# Navigate to projects root
+alias cdp='cd /home/rmiller/projects'
+
+# Quick navigation to repos
+alias cdn='cd $HOME/projects/ndn'
+alias cdapi='cd $HOME/projects/api-gateway'
+alias cdcdn='cd $HOME/projects/cdn-service'
+
+# Run command in all repos
+function dhgitall() {
+    for dir in /home/rmiller/projects/*/; do
+        (cd "$dir" && echo "=== $(basename $dir) ===" && git "$@")
+    done
+}
+
 # Has package
 alias has='curl -sL https://git.io/_has | bash -s '
 

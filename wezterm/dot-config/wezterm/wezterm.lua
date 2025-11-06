@@ -91,7 +91,7 @@ config.colors = {}
 -- config.harfbuzz_features = { "" }
 
 config.dpi = 140.0
-config.font_size = 14.0
+config.font_size = 16.0
 config.line_height = 1.2
 config.display_pixel_geometry = "RGB"
 config.freetype_load_target = "Light"
