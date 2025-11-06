@@ -1,0 +1,200 @@
+# EzaProfile.psm1
+# PowerShell module for eza integration with layered config support
+
+# Ensure XDG config home is set
+if (-not $env:XDG_CONFIG_HOME) {
+    $env:XDG_CONFIG_HOME = Join-Path $env:USERPROFILE '.config'
+}
+
+function Get-EzaFlagsFile {
+    <#
+    .SYNOPSIS
+        Find the appropriate eza flags file using layered resolution
+    
+    .DESCRIPTION
+        Checks for flags files in order:
+        1. flags.$COMPUTERNAME.txt (host-specific)
+        2. flags.powershell.txt (shell-specific)
+        3. flags.local.txt (local overrides, gitignored)
+        4. flags.txt (default)
+    #>
+    
+    $base = Join-Path $env:XDG_CONFIG_HOME 'eza'
+    $candidates = @(
+        "flags.$env:COMPUTERNAME.txt",
+        'flags.powershell.txt',
+        'flags.local.txt',
+        'flags.txt'
+    )
+    
+    foreach ($name in $candidates) {
+        $path = Join-Path $base $name
+        if (Test-Path $path) {
+            return $path
+        }
+    }
+    
+    # Return default path even if it doesn't exist
+    return (Join-Path $base 'flags.txt')
+}
+
+function Get-EzaDefaultFlags {
+    <#
+    .SYNOPSIS
+        Build eza flags from config file with env var overrides
+    #>
+    
+    $flags = @()
+    $file = Get-EzaFlagsFile
+    
+    # Read flags from file
+    if (Test-Path $file) {
+        $flags = Get-Content -Path $file | Where-Object { 
+            $_ -and $_.Trim() -ne '' -and -not $_.Trim().StartsWith('#')
+        }
+    }
+    
+    # Apply env var overrides
+    if ($env:EZA_DISABLE_GDF) {
+        $flags = $flags | Where-Object { $_ -ne '--group-directories-first' }
+    }
+    
+    if ($env:EZA_FLAGS_EXTRA) {
+        $flags += ($env:EZA_FLAGS_EXTRA -split '\s+')
+    }
+    
+    , $flags
+}
+
+# Load LS_COLORS from generated file if available
+$theme = if ($env:VIVID_THEME) { $env:VIVID_THEME } else { 'one-dark' }
+$lscolorsFile = Join-Path $env:XDG_CONFIG_HOME "lscolors/$theme.txt"
+
+if (-not $env:LS_COLORS -and (Test-Path $lscolorsFile)) {
+    $env:LS_COLORS = Get-Content -Raw -Path $lscolorsFile
+}
+
+function Invoke-Eza {
+    <#
+    .SYNOPSIS
+        Invoke eza with default flags
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(ValueFromRemainingArguments = $true)]
+        [string[]]$Args
+    )
+    
+    $flags = Get-EzaDefaultFlags
+    
+    # Check if eza is available
+    if (-not (Get-Command eza -ErrorAction SilentlyContinue)) {
+        Write-Warning "eza not found. Install with: scoop install eza"
+        return
+    }
+    
+    & eza @flags @Args
+}
+
+# Remove the built-in ls alias (aliased to Get-ChildItem) so our function can take precedence
+Remove-Item -Path alias:ls -ErrorAction SilentlyContinue
+
+# Shell functions (exported at module level, will be available in caller's scope)
+function ls {
+    [CmdletBinding()]
+    param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Args)
+    if (-not $Args) { 
+        $Args = @('.') 
+    } else {
+        # Expand ~ to home directory for compatibility with eza
+        $Args = $Args | ForEach-Object { 
+            if ($_ -eq '~') { 
+                $HOME 
+            } elseif ($_.StartsWith('~/') -or $_.StartsWith('~\')) {
+                $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($_)
+            } else { 
+                $_ 
+            }
+        }
+    }
+    Invoke-Eza @Args
+}
+
+function ll {
+    [CmdletBinding()]
+    param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Args)
+    if (-not $Args) { 
+        $Args = @('.') 
+    } else {
+        # Expand ~ to home directory for compatibility with eza
+        $Args = $Args | ForEach-Object { 
+            if ($_ -eq '~') { 
+                $HOME 
+            } elseif ($_.StartsWith('~/') -or $_.StartsWith('~\')) {
+                $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($_)
+            } elseif ($_.EndsWith('/*')) {
+                # Handle wildcard pattern to list contents of each directory
+                $basePath = $_.Substring(0, $_.Length - 2)
+                if ($basePath.StartsWith('~/') -or $basePath.StartsWith('~\')) {
+                    $basePath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($basePath)
+                }
+                if (Test-Path $basePath) {
+                    (Get-ChildItem $basePath -Directory).FullName
+                } else {
+                    $_
+                }
+            } else { 
+                $_ 
+            }
+        }
+        # Flatten the array in case wildcard expansion returned multiple paths
+        $Args = $Args | ForEach-Object { $_ }
+    }
+    Invoke-Eza -l --all --header @Args
+}
+
+function la {
+    [CmdletBinding()]
+    param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Args)
+    if (-not $Args) { 
+        $Args = @('.') 
+    } else {
+        # Expand ~ to home directory for compatibility with eza
+        $Args = $Args | ForEach-Object { 
+            if ($_ -eq '~') { 
+                $HOME 
+            } elseif ($_.StartsWith('~/') -or $_.StartsWith('~\')) {
+                $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($_)
+            } else { 
+                $_ 
+            }
+        }
+    }
+    Invoke-Eza -la @Args
+}
+
+function lt {
+    [CmdletBinding()]
+    param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Args)
+    if (-not $Args) { 
+        $Args = @('.') 
+    } else {
+        # Expand ~ to home directory for compatibility with eza
+        $Args = $Args | ForEach-Object { 
+            if ($_ -eq '~') { 
+                $HOME 
+            } elseif ($_.StartsWith('~/') -or $_.StartsWith('~\')) {
+                $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($_)
+            } else { 
+                $_ 
+            }
+        }
+    }
+    Invoke-Eza --tree @Args
+}
+
+# Direct alias for bypassing wrappers
+Set-Alias -Name 'eza!' -Value Invoke-Eza -Scope Global -Option AllScope -Force
+
+# Export all functions and alias
+Export-ModuleMember -Function Get-EzaFlagsFile, Get-EzaDefaultFlags, Invoke-Eza, ls, ll, la, lt -Alias eza!

@@ -1,0 +1,21 @@
+# Windows-specific Git configuration
+# Included conditionally from main git config
+
+[core]
+	# Use 'input' to normalize line endings in the repo but keep checkout as-is
+	# Combined with .gitattributes, this keeps LF in repo
+	autocrlf = input
+	# Disable file mode tracking on Windows (no chmod)
+	filemode = false
+	# Enable long path support (>260 characters)
+	longpaths = true
+
+[credential]
+	# Use Git Credential Manager for Windows
+	helper = manager
+
+[init]
+	defaultBranch = main
+
+[color]
+	ui = auto
