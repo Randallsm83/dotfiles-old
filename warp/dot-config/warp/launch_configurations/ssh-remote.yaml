@@ -1,0 +1,111 @@
+# Warp Launch Configuration
+# Remote SSH Session Template
+#
+# This configuration provides a template for SSH remote connections
+# with split panes for remote work and local file operations.
+#
+# IMPORTANT: Before using this configuration:
+# 1. Replace 'user@remote.server.com' with your actual SSH credentials
+# 2. Update remote working directories (/path/to/remote/project)
+# 3. Set up SSH key authentication for passwordless login:
+#    - Generate key: ssh-keygen -t ed25519 -C "your_email@example.com"
+#    - Copy to server: ssh-copy-id user@remote.server.com
+#    - Test connection: ssh user@remote.server.com
+# 4. Customize file sync commands if using rsync/scp
+#
+# Note: Commands after SSH connections may not execute as expected
+# because SSH creates an interactive session. You may need to run
+# commands manually or use SSH command execution syntax.
+
+---
+name: Remote SSH Session
+active_window_index: 0
+windows:
+  - active_tab_index: 0
+    tabs:
+      # Tab 1: SSH Connection with Local Operations
+      - title: SSH Connection
+        layout:
+          split_direction: horizontal
+          panes:
+            # Top pane: SSH remote session
+            - cwd: C:\Users\Randall
+              is_focused: true
+              commands:
+                # Replace with your actual SSH connection
+                # Example: ssh user@192.168.1.100
+                # Example: ssh -i ~/.ssh/id_ed25519 user@remote.server.com
+                - exec: echo "╔════════════════════════════════════════════════════════════╗"
+                - exec: echo "║  EDIT THIS FILE TO ADD YOUR SSH CONNECTION COMMAND        ║"
+                - exec: echo "║  Replace the echo commands below with:                    ║"
+                - exec: echo "║    - exec: ssh user@your-remote-server.com                ║"
+                - exec: echo "╚════════════════════════════════════════════════════════════╝"
+                - exec: echo ""
+                - exec: echo "Example SSH commands:"
+                - exec: echo "  ssh user@192.168.1.100"
+                - exec: echo "  ssh -i ~/.ssh/id_rsa user@remote.server.com"
+                - exec: echo "  ssh -p 2222 user@remote.server.com"
+                - exec: echo ""
+                - exec: echo "After connecting, you may want to run:"
+                - exec: echo "  cd /path/to/your/project"
+                - exec: echo "  git status"
+                - exec: echo "  mise list  # or other version manager commands"
+                
+                # Uncomment and modify one of these for your SSH connection:
+                # - exec: ssh user@remote.server.com
+                # - exec: ssh -i ~/.ssh/id_ed25519 user@remote.server.com
+                # - exec: ssh -p 2222 user@remote.server.com
+                
+                # Note: Commands after SSH won't execute automatically
+                # You'll need to run them manually in the remote session
+                # Or use: ssh user@host 'cd /project && bash'
+            
+            # Bottom pane: Local monitoring and file operations
+            - cwd: C:\Users\Randall
+              commands:
+                - exec: echo "=== Local Operations ==="
+                - exec: echo "Monitor connection status, transfer files, or watch logs"
+                - exec: echo ""
+                - exec: echo "Current directory:"
+                - exec: Get-Location
+                - exec: echo ""
+                - exec: echo "Tip: Use this pane for scp, rsync, or local tasks while connected via SSH above"
+        color: blue
+
+      # Tab 2: File Sync and Logs
+      - title: Local Operations
+        layout:
+          split_direction: vertical
+          panes:
+            # Left pane: File sync operations
+            - cwd: C:\Users\Randall
+              commands:
+                - exec: echo "=== File Sync Operations ==="
+                - exec: echo ""
+                - exec: echo "Example rsync commands (using WSL):"
+                - exec: echo "  wsl rsync -avz --progress /mnt/c/Users/Randall/project/ user@remote:/path/to/remote/"
+                - exec: echo "  wsl rsync -avz --progress user@remote:/path/to/remote/ /mnt/c/Users/Randall/project/"
+                - exec: echo ""
+                - exec: echo "Example scp commands:"
+                - exec: echo "  scp file.txt user@remote:/path/to/destination/"
+                - exec: echo "  scp user@remote:/path/to/file.txt ."
+                - exec: echo "  scp -r folder/ user@remote:/path/to/destination/"
+                - exec: echo ""
+                - exec: echo "Watch file transfers:"
+                - exec: echo "  wsl watch -n 1 'ls -lh /mnt/c/Users/Randall/project'"
+            
+            # Right pane: Log monitoring
+            - cwd: C:\Users\Randall
+              commands:
+                - exec: echo "=== Log Monitoring ==="
+                - exec: echo ""
+                - exec: echo "View SSH logs (if available):"
+                - exec: echo "  Get-Content $env:USERPROFILE\\.ssh\\known_hosts -Tail 10"
+                - exec: echo ""
+                - exec: echo "Monitor network connections:"
+                - exec: echo "  netstat -an | Select-String ':22'"
+                - exec: echo ""
+                - exec: echo "Or watch local application logs"
+                - exec: echo ""
+                - exec: echo "Tip: Modify this pane to tail your specific log files"
+        color: green
