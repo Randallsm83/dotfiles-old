@@ -15,3 +15,5 @@
 --ignore 'asdf'
 --ignore 'bin'
 --ignore 'nvm'
+--ignore 'windows'
+--ignore 'wsl'
