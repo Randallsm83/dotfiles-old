@@ -92,6 +92,7 @@ REQUIRED_SECTIONS=(
     "CLEANUP AND ERROR HANDLING"
     "UTILITY FUNCTIONS"
     "WSL DETECTION"
+    "DISTRIBUTION DETECTION"
     "BASE SYSTEM PACKAGES"
     "HOMEBREW INSTALLATION"
     "GNU STOW INSTALLATION"
@@ -119,6 +120,9 @@ REQUIRED_FUNCTIONS=(
     "command_exists"
     "homebrew_installed"
     "stow_version_check"
+    "detect_distro"
+    "package_installed"
+    "install_packages"
     "cleanup"
     "log"
     "success"
@@ -148,6 +152,7 @@ REQUIRED_VARS=(
     "LOG_DIR"
     "LOG_FILE"
     "DOTFILES_DIR"
+    "DISTRO"
     "BLACKLIST"
 )
 
