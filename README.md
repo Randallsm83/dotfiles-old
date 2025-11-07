@@ -42,20 +42,47 @@ cd $env:USERPROFILE\.config\dotfiles
 
 ### WSL2 (Ubuntu)
 
-**Prerequisites:**
-- WSL2 with Ubuntu installed
-- Clone inside WSL home directory (not `/mnt/c`)
+**Fresh Install - Fully Automated:**
 
 ```bash
-# Clone the repo
+# Clone inside WSL home directory (NOT /mnt/c)
 git clone https://github.com/Randallsm83/dotfiles.git ~/.config/dotfiles
 cd ~/.config/dotfiles
 
-# Run WSL setup script
+# Run the automated setup script
 ./wsl/setup.sh
+```
 
-# Or manually stow packages
-stow git nvim starship wezterm bat zsh
+**What it does:**
+1. ✓ Installs base system dependencies (git, build-essential)
+2. ✓ Installs Homebrew for Linux
+3. ✓ Installs GNU Stow 2.4+ (via Homebrew or source build)
+4. ✓ Stows all dotfiles with conflict detection & resolution
+5. ✓ Installs mise version manager
+6. ✓ Installs all tools from mise config (Node, Python, Rust, CLI tools)
+7. ✓ Configures 1Password SSH agent integration
+8. ✓ Fixes zsh directory permissions
+9. ✓ Comprehensive logging to `~/.local/state/wsl-setup/logs/`
+
+**Manual Setup (Advanced):**
+
+For manual control over the process:
+
+```bash
+# Install Homebrew first
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+eval "$(brew shellenv)"
+
+# Install stow
+brew install stow
+
+# Stow packages
+cd ~/.config/dotfiles
+stow --dotfiles git nvim starship wezterm bat zsh mise
+
+# Install mise and tools
+curl https://mise.run | sh
+mise install
 ```
 
 ### Linux / macOS
@@ -111,19 +138,23 @@ For symlinks without admin privileges:
 
 Or run bootstrap as administrator (it can enable it for you).
 
-### Package Managers
+### Package Managers & Tool Hierarchy
 
 **Windows:**
 - **winget** - Built-in Windows Package Manager (recommended)
 - **scoop** - CLI-focused package manager
-- Fonts install via winget/scoop Nerd Fonts packages
+- Fonts via winget/scoop Nerd Fonts packages
 
-**Linux/WSL:**
-- **apt** - Ubuntu/Debian package manager
-- **Starship** - Installed via curl script
+**Linux/WSL (Installation Priority):**
+1. **mise** → Primary for CLI tools & language runtimes
+2. **Homebrew** → For packages not in mise (e.g., stow)
+3. **Build from source** → Last resort with XDG compliance
+4. **apt** → Only for base system essentials (git, build-essential)
 
-**macOS:**
-- **Homebrew** - The missing package manager for macOS
+**macOS (Installation Priority):**
+1. **mise** → Primary for CLI tools & language runtimes  
+2. **Homebrew** → Secondary package manager
+3. **Build from source** → When necessary
 
 ## Structure
 
@@ -177,13 +208,30 @@ Directories/files prefixed with `dot-` are converted to `.` by GNU Stow:
 
 ### WSL
 
+**Setup script logs:**
+- Location: `~/.local/state/wsl-setup/logs/setup_YYYYMMDD_HHMMSS.log`
+- Check if installation fails: `tail -100 ~/.local/state/wsl-setup/logs/setup_*.log`
+- Script is idempotent (safe to re-run)
+
 **Permission issues:**
-- Don't clone under `/mnt/c` - use `~/.config/dotfiles` instead
-- WSL filesystem permissions differ from Windows filesystem
+- ⚠️ Clone inside WSL (`~/.config/dotfiles`), NOT under `/mnt/c`
+- Windows filesystem causes permission/symlink issues
+- Setup script automatically fixes zsh insecure directory warnings
+
+**Stow version issues:**
+- Requires GNU Stow >= 2.4.0 for proper XDG support
+- Setup script ensures correct version (Homebrew or source build)
+- Check version: `stow --version`
+
+**Tool installation:**
+- Tools installed via mise from `~/.config/mise/config.toml`
+- Verify: `mise doctor` or `mise list`
+- Update tools: `mise upgrade` or `mise install`
 
 **Fonts not rendering:**
-- Install Nerd Fonts on Windows side
+- Install Nerd Fonts on Windows (not in WSL)
 - Configure Windows Terminal to use them
+- Recommended: FiraCode Nerd Font, JetBrainsMono Nerd Font
 
 ### Git Line Endings
 

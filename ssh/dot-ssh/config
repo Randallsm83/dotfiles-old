@@ -2,6 +2,10 @@
 # Works across Windows, WSL, macOS, and Linux
 # Uses 1Password agent for key management with per-host restrictions
 
+# Platform-specific configuration (WSL, macOS, etc.)
+# Create ~/.ssh/config.d/<platform> files as needed
+Include config.d/*
+
 # Global defaults - security hardening and reliability
 Host *
   # Security settings
