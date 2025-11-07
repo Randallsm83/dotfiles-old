@@ -120,6 +120,72 @@ stow_version_check() {
     return 1
 }
 
+# Detect Linux distribution
+detect_distro() {
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        echo "$ID"
+    elif [ -f /etc/arch-release ]; then
+        echo "arch"
+    elif [ -f /etc/debian_version ]; then
+        echo "debian"
+    else
+        echo "unknown"
+    fi
+}
+
+# Check if package is installed (distro-agnostic)
+package_installed() {
+    local pkg="$1"
+    local distro="$2"
+    
+    case "$distro" in
+        arch|manjaro)
+            pacman -Q "$pkg" &>/dev/null
+            ;;
+        ubuntu|debian|pop)
+            dpkg -l "$pkg" 2>/dev/null | grep -q "^ii"
+            ;;
+        fedora|rhel|centos)
+            rpm -q "$pkg" &>/dev/null
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+# Install packages (distro-agnostic)
+install_packages() {
+    local distro="$1"
+    shift
+    local packages=("$@")
+    
+    case "$distro" in
+        arch|manjaro)
+            log "Installing packages via pacman..."
+            sudo pacman -Sy --noconfirm "${packages[@]}"
+            ;;
+        ubuntu|debian|pop)
+            log "Installing packages via apt..."
+            sudo apt-get update
+            sudo apt-get install -y "${packages[@]}"
+            ;;
+        fedora|rhel|centos)
+            log "Installing packages via dnf/yum..."
+            if command_exists dnf; then
+                sudo dnf install -y "${packages[@]}"
+            else
+                sudo yum install -y "${packages[@]}"
+            fi
+            ;;
+        *)
+            error "Unsupported distribution: $distro"
+            return 1
+            ;;
+    esac
+}
+
 # ============================================================================
 # WSL DETECTION AND ENVIRONMENT SETUP
 # ============================================================================
@@ -154,35 +220,89 @@ success "Environment setup complete"
 echo ""
 
 # ============================================================================
-# BASE SYSTEM PACKAGES (APT)
+# DISTRIBUTION DETECTION
 # ============================================================================
 
-log "Installing base system dependencies via apt..."
-info "This includes: git, build-essential, curl, perl, dpkg-dev"
+DISTRO=$(detect_distro)
+log "Detected distribution: $DISTRO"
 
-# Only install essential build tools via apt
-BASE_PACKAGES=(
-    "git"
-    "build-essential"
-    "curl"
-    "perl"
-    "dpkg-dev"
-)
+case "$DISTRO" in
+    arch|manjaro)
+        info "Using pacman package manager"
+        ;;
+    ubuntu|debian|pop)
+        info "Using apt package manager"
+        ;;
+    fedora|rhel|centos)
+        info "Using dnf/yum package manager"
+        ;;
+    *)
+        warn "Unknown distribution, will attempt to continue"
+        ;;
+esac
+
+echo ""
+
+# ============================================================================
+# BASE SYSTEM PACKAGES
+# ============================================================================
+
+log "Installing base system dependencies..."
+
+# Define base packages per distribution
+case "$DISTRO" in
+    arch|manjaro)
+        BASE_PACKAGES=(
+            "git"
+            "base-devel"
+            "curl"
+            "perl"
+        )
+        info "Packages: ${BASE_PACKAGES[*]}"
+        ;;
+    ubuntu|debian|pop)
+        BASE_PACKAGES=(
+            "git"
+            "build-essential"
+            "curl"
+            "perl"
+            "dpkg-dev"
+        )
+        info "Packages: ${BASE_PACKAGES[*]}"
+        ;;
+    fedora|rhel|centos)
+        BASE_PACKAGES=(
+            "git"
+            "gcc"
+            "gcc-c++"
+            "make"
+            "curl"
+            "perl"
+        )
+        info "Packages: ${BASE_PACKAGES[*]}"
+        ;;
+    *)
+        error "Cannot determine base packages for distribution: $DISTRO"
+        exit 1
+        ;;
+esac
 
 MISSING_BASE=()
 
 for pkg in "${BASE_PACKAGES[@]}"; do
-    if ! dpkg -l | grep -q "^ii  $pkg"; then
+    if ! package_installed "$pkg" "$DISTRO"; then
         MISSING_BASE+=("$pkg")
     fi
 done
 
 if [ ${#MISSING_BASE[@]} -gt 0 ]; then
     warn "Missing base packages: ${MISSING_BASE[*]}"
-    log "Running apt update and installing packages..."
-    sudo apt-get update
-    sudo apt-get install -y "${MISSING_BASE[@]}"
-    success "Base system packages installed"
+    if install_packages "$DISTRO" "${MISSING_BASE[@]}"; then
+        success "Base system packages installed"
+    else
+        error "Failed to install base packages"
+        exit 1
+    fi
 else
     success "All base system packages already installed"
 fi
