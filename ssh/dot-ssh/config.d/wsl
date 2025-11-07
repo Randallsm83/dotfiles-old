@@ -1,0 +1,6 @@
+# WSL-specific SSH configuration
+# Use Windows 1Password SSH agent via named pipe
+
+Host *
+  # 1Password agent on Windows uses OpenSSH named pipe
+  IdentityAgent //./pipe/openssh-ssh-agent
