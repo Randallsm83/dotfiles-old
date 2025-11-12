@@ -1,19 +1,30 @@
+# =============================================================================
+# PLATFORM-SPECIFIC PACKAGE MANAGEMENT STRATEGY
+# =============================================================================
+# Windows:
+#   - mise: Language runtimes ONLY (node, python, ruby, go, rust, lua, etc.)
+#   - scoop: ALL CLI tools (bat, eza, fd, ripgrep, starship, neovim, etc.)
+#   - winget: GUI applications only
+#
+# Linux/WSL/macOS:
+#   - mise: EVERYTHING (CLI tools via cargo + language runtimes)
+#   - homebrew: Bootstrap only (stow installation)
+#
+# The cargo:* tools below are for Linux/WSL/macOS only.
+# On Windows, these tools are installed via scoop instead (better Windows builds).
+# =============================================================================
+
 [tools]
-bat-extras = "latest"
+# === CLI Tools (Linux/WSL/macOS only - Windows uses scoop) ===
+bat-extras = "latest"     # Wrapper scripts for bat (bash-dependent, Linux/WSL/macOS only)
 btop = "latest"
-# global tool versions go here
-# you can set these with `mise use -g`
 bun = "latest"
 cargo-binstall = "latest"
-"cargo:bat" = "latest"
-"cargo:eza" = "latest"
-"cargo:fd-find" = "latest"
-"cargo:vivid" = "latest"
-"cargo:ripgrep" = "14.1.1"
-"cargo:starship" = "latest"
-"cargo:tinty" = "latest"
-direnv = "latest"
+"cargo:bat" = "latest"        # Linux/WSL/macOS - Windows uses scoop
+"cargo:eza" = "latest"        # Linux/WSL/macOS - Windows uses scoop
+"cargo:fd-find" = "latest"    # Linux/WSdirenv = "latest"
 fzf = "latest"
+git = "latest"             # Linux/WSL/macOS: installed after bootstrap. Windows uses scoop.
 go = "latest"
 lua = "5.4.7"
 luajit = "2.1.0-beta3"
