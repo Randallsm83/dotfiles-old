@@ -244,6 +244,78 @@ esac
 echo ""
 
 # ============================================================================
+# SYSTEM UPGRADE (OPTIONAL)
+# ============================================================================
+
+log "Checking for system updates..."
+
+# Check if user has sudo access
+if sudo -n true 2>/dev/null; then
+    info "Sudo access available (passwordless)"
+    PERFORM_UPGRADE=true
+else
+    warn "Passwordless sudo not available"
+    read -rp "Enter sudo password to upgrade system packages? (y/N) " choice
+    if [[ "$choice" =~ ^[Yy]$ ]]; then
+        # Verify sudo access with password
+        if sudo -v; then
+            info "Sudo access granted"
+            PERFORM_UPGRADE=true
+        else
+            warn "Sudo authentication failed"
+            PERFORM_UPGRADE=false
+        fi
+    else
+        info "Skipping system upgrade"
+        PERFORM_UPGRADE=false
+    fi
+fi
+
+if [ "$PERFORM_UPGRADE" = true ]; then
+    case "$DISTRO" in
+        arch|manjaro)
+            log "Upgrading system packages via pacman..."
+            if sudo pacman -Syu --noconfirm >> "$LOG_FILE" 2>&1; then
+                success "System packages upgraded"
+            else
+                warn "System upgrade failed or was partially completed"
+            fi
+            ;;
+        ubuntu|debian|pop)
+            log "Upgrading system packages via apt..."
+            if sudo apt-get update >> "$LOG_FILE" 2>&1 && sudo apt-get upgrade -y >> "$LOG_FILE" 2>&1; then
+                success "System packages upgraded"
+            else
+                warn "System upgrade failed or was partially completed"
+            fi
+            ;;
+        fedora|rhel|centos)
+            log "Upgrading system packages via dnf/yum..."
+            if command_exists dnf; then
+                if sudo dnf upgrade -y >> "$LOG_FILE" 2>&1; then
+                    success "System packages upgraded"
+                else
+                    warn "System upgrade failed or was partially completed"
+                fi
+            else
+                if sudo yum update -y >> "$LOG_FILE" 2>&1; then
+                    success "System packages upgraded"
+                else
+                    warn "System upgrade failed or was partially completed"
+                fi
+            fi
+            ;;
+        *)
+            info "Skipping system upgrade for unknown distribution"
+            ;;
+    esac
+else
+    info "System upgrade skipped"
+fi
+
+echo ""
+
+# ============================================================================
 # BASE SYSTEM PACKAGES
 # ============================================================================
 
@@ -257,16 +329,19 @@ case "$DISTRO" in
             "base-devel"
             "curl"
             "perl"
+            "less"
+            "vim"
         )
         info "Packages: ${BASE_PACKAGES[*]}"
         ;;
     ubuntu|debian|pop)
         BASE_PACKAGES=(
             "git"
+            "dpkg-dev"
             "build-essential"
             "curl"
             "perl"
-            "dpkg-dev"
+    		"less"
         )
         info "Packages: ${BASE_PACKAGES[*]}"
         ;;
@@ -278,6 +353,7 @@ case "$DISTRO" in
             "make"
             "curl"
             "perl"
+    		"less"
         )
         info "Packages: ${BASE_PACKAGES[*]}"
         ;;
@@ -323,18 +399,19 @@ if homebrew_installed; then
 else
     log "Installing Homebrew for Linux..."
     info "This may take several minutes..."
+    info "Installing to user directory: $HOME/.linuxbrew"
     
-    # Install Homebrew non-interactively
-    if NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
+    # Install Homebrew non-interactively to user's home directory
+    if NONINTERACTIVE=1 HOMEBREW_PREFIX="$HOME/.linuxbrew" /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
         success "Homebrew installed successfully"
         
-        # Add to PATH for current session
-        if [ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
-            eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-            info "Homebrew location: /home/linuxbrew/.linuxbrew"
-        elif [ -x "$HOME/.linuxbrew/bin/brew" ]; then
+        # Add to PATH for current session (prioritize user installation)
+        if [ -x "$HOME/.linuxbrew/bin/brew" ]; then
             eval "$("$HOME/.linuxbrew/bin/brew" shellenv)"
             info "Homebrew location: $HOME/.linuxbrew"
+        elif [ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
+            eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+            info "Homebrew location: /home/linuxbrew/.linuxbrew"
         fi
         
         # Verify installation
