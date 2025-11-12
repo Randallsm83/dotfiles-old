@@ -9,7 +9,6 @@
   "apps": [
     "git",
     "neovim",
-    "wezterm",
     "pwsh",
     "starship",
     "mise",
