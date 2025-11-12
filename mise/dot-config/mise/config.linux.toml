@@ -1,0 +1,24 @@
+# =============================================================================
+# MISE CONFIGURATION - LINUX/MACOS SPECIFIC
+# =============================================================================
+# This file is automatically loaded on Linux/macOS systems only.
+# On Windows, these tools are installed via scoop instead.
+# =============================================================================
+
+[tools]
+# === CLI Tools (Linux/WSL/macOS only) ===
+# Terminal utilities
+"cargo:bat" = "latest"
+"cargo:eza" = "latest"
+"cargo:fd-find" = "latest"
+"cargo:ripgrep" = "latest"
+bat-extras = "latest"     # Bash-dependent wrapper scripts
+btop = "latest"
+starship = "latest"       # Cross-shell prompt
+
+# Build tools
+cargo-binstall = "latest"
+
+# Editors
+neovim = "latest"
+vim = "latest"

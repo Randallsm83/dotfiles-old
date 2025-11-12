@@ -1,44 +1,42 @@
 # =============================================================================
-# PLATFORM-SPECIFIC PACKAGE MANAGEMENT STRATEGY
+# MISE CONFIGURATION - BASE (ALL PLATFORMS)
 # =============================================================================
-# Windows:
-#   - mise: Language runtimes ONLY (node, python, ruby, go, rust, lua, etc.)
-#   - scoop: ALL CLI tools (bat, eza, fd, ripgrep, starship, neovim, etc.)
-#   - winget: GUI applications only
+# Platform-specific tool management strategy:
 #
-# Linux/WSL/macOS:
-#   - mise: EVERYTHING (CLI tools via cargo + language runtimes)
-#   - homebrew: Bootstrap only (stow installation)
+#   Windows:
+#     - mise: Language runtimes (node, python, ruby, go, rust, lua, etc.)
+#     - scoop: CLI tools (bat, eza, fd, ripgrep, starship, neovim, etc.)
+#     - winget: GUI applications
 #
-# The cargo:* tools below are for Linux/WSL/macOS only.
-# On Windows, these tools are installed via scoop instead (better Windows builds).
+#   Linux/WSL/macOS:
+#     - mise: Everything (CLI tools + language runtimes)
+#     - homebrew: Bootstrap only (for installing stow)
+#
+# Configuration files:
+#   - config.toml (this file): Universal tools and language runtimes (all platforms)
+#   - config.linux.toml: Linux/macOS-specific CLI tools (auto-loaded on Linux/macOS)
+#   - config.windows.toml: Windows-specific overrides (auto-loaded on Windows)
+#
+# Mise automatically loads the appropriate platform config based on your OS.
 # =============================================================================
 
 [tools]
-# === CLI Tools (Linux/WSL/macOS only - Windows uses scoop) ===
-bat-extras = "latest"     # Wrapper scripts for bat (bash-dependent, Linux/WSL/macOS only)
-btop = "latest"
+# === Language Runtimes (All Platforms) ===
 bun = "latest"
-cargo-binstall = "latest"
-"cargo:bat" = "latest"        # Linux/WSL/macOS - Windows uses scoop
-"cargo:eza" = "latest"        # Linux/WSL/macOS - Windows uses scoop
-"cargo:fd-find" = "latest"    # Linux/WSL/macOS - Windows uses scoop
-"cargo:ripgrep" = "latest"    # Linux/WSL/macOS - Windows uses scoop
-direnv = "latest"
-fzf = "latest"
 go = "latest"
 lua = "5.4.7"
 luajit = "2.1.0-beta3"
-neovim = "latest"
 node = "23.7.0"
 python = "latest"
 ruby = "latest"
 rust = "1.79.0"
+
+# === Universal Tools (All Platforms) ===
+direnv = "latest"
+fzf = "latest"
 sqlite = "latest"
-starship = "latest"        # Prompt - Linux/WSL/macOS - Windows uses scoop
 usage = "latest"
-uv = "latest"
-vim = "latest"
+uv = "latest"     # Python package installer
 yarn = "latest"
 
 [settings]
