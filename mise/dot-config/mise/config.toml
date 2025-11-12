@@ -22,9 +22,10 @@ bun = "latest"
 cargo-binstall = "latest"
 "cargo:bat" = "latest"        # Linux/WSL/macOS - Windows uses scoop
 "cargo:eza" = "latest"        # Linux/WSL/macOS - Windows uses scoop
-"cargo:fd-find" = "latest"    # Linux/WSdirenv = "latest"
+"cargo:fd-find" = "latest"    # Linux/WSL/macOS - Windows uses scoop
+"cargo:ripgrep" = "latest"    # Linux/WSL/macOS - Windows uses scoop
+direnv = "latest"
 fzf = "latest"
-git = "latest"             # Linux/WSL/macOS: installed after bootstrap. Windows uses scoop.
 go = "latest"
 lua = "5.4.7"
 luajit = "2.1.0-beta3"
@@ -34,10 +35,12 @@ python = "latest"
 ruby = "latest"
 rust = "1.79.0"
 sqlite = "latest"
+starship = "latest"        # Prompt - Linux/WSL/macOS - Windows uses scoop
 usage = "latest"
 uv = "latest"
 vim = "latest"
 yarn = "latest"
+zsh = "latest"
 
 [settings]
 # plugins can read the versions files used by other version managers (if enabled by the plugin)
