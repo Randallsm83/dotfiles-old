@@ -345,6 +345,13 @@ function Install-WingetPackages {
 function Install-ScoopPackages {
     Write-Host "`n--- Installing packages via scoop ---`n" -ForegroundColor Cyan
     
+    # Note: On Windows, package management is split:
+    # - scoop: CLI tools (git, neovim, bat, ripgrep, starship, etc.) + mise
+    # - winget: GUI applications only
+    # - mise: Language runtimes ONLY (node, python, ruby, go, rust, etc.)
+    #
+    # This differs from Linux/WSL/macOS where mise handles both CLI tools and language runtimes.
+    
     # Install scoop if not present
     if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
         Write-Status "Installing scoop..." -Type Info
@@ -370,7 +377,13 @@ function Install-ScoopPackages {
     # Install apps
     foreach ($app in $config.apps) {
         if (-not (scoop list $app 2>$null)) {
-            Write-Status "Installing: $app" -Type Info
+            # Special message for mise
+            if ($app -eq 'mise') {
+                Write-Status "Installing mise (for language runtimes only)..." -Type Info
+                Write-Host "  Note: CLI tools are managed by scoop on Windows" -ForegroundColor DarkGray
+            } else {
+                Write-Status "Installing: $app" -Type Info
+            }
             scoop install $app
         }
     }
