@@ -18,6 +18,9 @@
 *.psm1 text eol=crlf
 *.psd1 text eol=crlf
 
+# Windows-specific configuration files that require CRLF
+windows/wsl/.wslconfig text eol=crlf
+
 # Binary files
 *.png binary
 *.jpg binary
