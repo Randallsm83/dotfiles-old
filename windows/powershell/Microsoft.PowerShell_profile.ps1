@@ -26,6 +26,10 @@ foreach ($dir in $xdgDirs) {
 # 1Password exposes the agent via a named pipe on Windows
 $env:SSH_AUTH_SOCK = "\\.\pipe\openssh-ssh-agent"
 
+# Configure Git to use Windows native SSH (not Git Bash SSH)
+# This is required for Git to work with 1Password SSH agent
+$env:GIT_SSH_COMMAND = "C:/Windows/System32/OpenSSH/ssh.exe"
+
 # ================================================================================================
 # PATH Management
 # ================================================================================================
