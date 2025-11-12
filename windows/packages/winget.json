@@ -8,40 +8,16 @@
           "PackageIdentifier": "Git.Git"
         },
         {
-          "PackageIdentifier": "Neovim.Neovim"
-        },
-        {
           "PackageIdentifier": "wez.wezterm"
         },
         {
           "PackageIdentifier": "Microsoft.PowerShell"
         },
         {
-          "PackageIdentifier": "Starship.Starship"
-        },
-        {
-          "PackageIdentifier": "BurntSushi.ripgrep.MSVC"
-        },
-        {
-          "PackageIdentifier": "sharkdp.bat"
-        },
-        {
-          "PackageIdentifier": "sharkdp.fd"
-        },
-        {
-          "PackageIdentifier": "junegunn.fzf"
-        },
-        {
           "PackageIdentifier": "Microsoft.GitCredentialManagerCore"
         },
         {
-          "PackageIdentifier": "ajeetdsouza.zoxide"
-        },
-        {
           "PackageIdentifier": "7zip.7zip"
-        },
-        {
-          "PackageIdentifier": "gerardog.gsudo"
         },
         {
           "PackageIdentifier": "Microsoft.WindowsTerminal"
