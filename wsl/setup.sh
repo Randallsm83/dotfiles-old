@@ -686,26 +686,48 @@ fi
 echo ""
 
 # ============================================================================
-# 1PASSWORD SSH AGENT INTEGRATION
+# 1PASSWORD SSH AGENT INTEGRATION (WSL)
 # ============================================================================
 
 log "Setting up 1Password SSH agent for WSL..."
+info "Using official WSL integration: https://developer.1password.com/docs/ssh/integrations/wsl"
 
-SSH_AGENT_SOCK="/mnt/wsl/1password/agent.sock"
-if [ -S "$SSH_AGENT_SOCK" ]; then
-    success "1Password SSH agent socket found at $SSH_AGENT_SOCK"
+# Check if ssh.exe is available (Windows OpenSSH)
+if command -v ssh.exe &>/dev/null; then
+    log "Testing 1Password SSH agent via ssh.exe..."
     
-    # Check if already configured
-    if grep -q "SSH_AUTH_SOCK.*1password" "$HOME/.zshenv" 2>/dev/null; then
-        info "SSH_AUTH_SOCK already configured in .zshenv"
+    # Test if 1Password SSH agent is accessible from WSL
+    if ssh-add.exe -l &>/dev/null; then
+        KEY_COUNT=$(ssh-add.exe -l 2>/dev/null | wc -l)
+        success "1Password SSH agent is accessible from WSL"
+        info "Found $KEY_COUNT SSH key(s) in 1Password"
+        
+        # Configure Git to use ssh.exe globally
+        log "Configuring Git to use ssh.exe for SSH operations..."
+        git config --global core.sshCommand "ssh.exe"
+        success "Git configured to use Windows SSH (ssh.exe)"
+        
+        info "SSH requests from WSL will now be handled by Windows ssh.exe"
+        info "This allows 1Password SSH agent integration without additional setup"
+        info ""
+        info "To sign Git commits with SSH:"
+        info "  1. Open 1Password on Windows"
+        info "  2. Select your SSH key → ⋯ → Configure Commit Signing"
+        info "  3. Check 'Configure for WSL' and copy the snippet"
+        info "  4. Paste into your ~/.gitconfig"
     else
-        echo "export SSH_AUTH_SOCK='$SSH_AGENT_SOCK'" >> "$HOME/.zshenv"
-        success "SSH_AUTH_SOCK configured in .zshenv"
+        warn "1Password SSH agent not accessible from WSL"
+        warn "Make sure:"
+        warn "  1. 1Password is running on Windows"
+        warn "  2. SSH agent is enabled: Settings → Developer → Use the SSH agent"
+        warn "  3. You have SSH keys stored in 1Password"
+        
+        info "You can test with: ssh-add.exe -l"
     fi
 else
-    warn "1Password SSH agent socket not found at $SSH_AGENT_SOCK"
-    warn "Make sure 1Password desktop app is running on Windows with SSH agent enabled"
-    info "Settings → Developer → SSH Agent → Enable"
+    warn "ssh.exe not found - Windows OpenSSH may not be installed"
+    warn "Install OpenSSH on Windows to use 1Password SSH agent with WSL"
+    info "Settings → Apps → Optional Features → Add OpenSSH Client"
 fi
 
 echo ""
