@@ -92,11 +92,12 @@ mise install
 git clone https://github.com/Randallsm83/dotfiles.git ~/.config/dotfiles
 cd ~/.config/dotfiles
 
-# Manual stow (preferred)
-stow git nvim starship wezterm bat zsh
+# Install mise and tools
+curl https://mise.run | sh
+mise install
 
-# Or use install script (may need updates)
-bash <(wget -qO- https://raw.githubusercontent.com/Randallsm83/dotfiles/refs/heads/main/install.sh)
+# Manual stow
+stow git nvim starship wezterm bat zsh mise
 ```
 
 ## What Gets Installed
