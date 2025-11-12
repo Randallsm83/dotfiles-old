@@ -1,12 +1,12 @@
 ---
-name: Remote SSH Session
+name: WSL Arch Development
 active_window_index: 0
 windows:
   - active_tab_index: 0
     tabs:
-      - title: SSH Remote
+      - title: WSL Arch
         layout:
           cwd: C:\Users\Randall
           commands:
-            - exec: echo "SSH Remote - add your connection here"
-        color: blue
+            - exec: wsl -d archlinux
+        color: cyan
