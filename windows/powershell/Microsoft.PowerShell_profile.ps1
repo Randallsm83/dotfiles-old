@@ -167,6 +167,11 @@ if (Test-Path $ezaModulePath) {
     Import-Module $ezaModulePath -Force
 }
 
+# WSLTabCompletion (WSL command completion)
+if (Get-Module -ListAvailable -Name WSLTabCompletion) {
+    Import-Module WSLTabCompletion
+}
+
 # Custom completions (auto-load all .ps1 files from completions directory)
 $completionsPath = "$env:XDG_CONFIG_HOME\powershell\Completions"
 if (Test-Path $completionsPath) {
