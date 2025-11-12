@@ -19,6 +19,9 @@
 .PARAMETER IncludeVSCode
     Include VS Code settings and extensions
 
+.PARAMETER Import
+    Import current system configurations into dotfiles (one-time setup)
+
 .PARAMETER WhatIf
     Show what would be done without making changes
 
@@ -46,6 +49,8 @@ param(
     [switch]$LinkOnly,
     
     [switch]$IncludeVSCode,
+    
+    [switch]$Import,
     
     [switch]$Force
 )
@@ -233,6 +238,68 @@ function New-Link {
     }
     
     return $false
+}
+
+function Test-VSCodeSettingsSync {
+    <#
+    .SYNOPSIS
+        Check if VS Code Settings Sync is enabled
+    #>
+    $vscodeSettings = "$env:APPDATA\Code\User\settings.json"
+    
+    if (-not (Test-Path $vscodeSettings)) {
+        return $false
+    }
+    
+    try {
+        $settings = Get-Content $vscodeSettings -Raw | ConvertFrom-Json
+        
+        # Check if settingsSync.enable exists and is true
+        if ($settings.PSObject.Properties['settingsSync.enable']) {
+            return $settings.'settingsSync.enable' -eq $true
+        }
+        
+        # If property doesn't exist, assume sync might be enabled (default behavior)
+        return $false
+    } catch {
+        Write-Verbose "Could not parse VS Code settings: $_"
+        return $false
+    }
+}
+
+function Show-VSCodeSyncWarning {
+    <#
+    .SYNOPSIS
+        Display warning about VS Code Settings Sync conflict
+    #>
+    Write-Host ""
+    Write-Host "========================================" -ForegroundColor Yellow
+    Write-Host " WARNING: VS Code Settings Sync Detected" -ForegroundColor Yellow
+    Write-Host "========================================" -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "VS Code Settings Sync appears to be enabled." -ForegroundColor Yellow
+    Write-Host "This conflicts with dotfiles management!" -ForegroundColor Red
+    Write-Host ""
+    Write-Host "You must choose ONE method:" -ForegroundColor White
+    Write-Host "  1. Dotfiles (recommended for cross-platform)" -ForegroundColor Cyan
+    Write-Host "     - Settings in Git with version history"
+    Write-Host "     - Consistent with your other configs (Neovim, Git, etc.)"
+    Write-Host ""
+    Write-Host "  2. VS Code Settings Sync" -ForegroundColor Cyan
+    Write-Host "     - Cloud-based sync via Microsoft/GitHub"
+    Write-Host "     - Separate from your dotfiles workflow"
+    Write-Host ""
+    Write-Host "Using BOTH will cause conflicts!" -ForegroundColor Red
+    Write-Host ""
+    Write-Host "To use dotfiles, disable Settings Sync in VS Code:" -ForegroundColor White
+    Write-Host "  Settings > Turn Off Settings Sync" -ForegroundColor Gray
+    Write-Host ""
+    
+    $response = Read-Host "Continue anyway? (y/N)"
+    if ($response -ne 'y') {
+        Write-Host "Aborting. Please disable Settings Sync first." -ForegroundColor Yellow
+        exit 1
+    }
 }
 
 # ================================================================================================
@@ -515,17 +582,51 @@ function New-WindowsLinks {
         New-Link -Source $wtSettingsSource -Target $wtSettingsTarget -Type File
     }
     
+    # WSL configuration
+    $wslConfigSource = Join-Path $PSScriptRoot 'wsl\.wslconfig'
+    $wslConfigTarget = "$env:USERPROFILE\.wslconfig"
+    
+    if (Test-Path $wslConfigSource) {
+        New-Link -Source $wslConfigSource -Target $wslConfigTarget -Type File
+    }
+    
+    # PowerShell configuration
+    $pwshConfigSource = Join-Path $PSScriptRoot 'powershell\powershell.config.json'
+    $pwshConfigTarget = "$env:USERPROFILE\Documents\PowerShell\powershell.config.json"
+    
+    if (Test-Path $pwshConfigSource) {
+        New-Link -Source $pwshConfigSource -Target $pwshConfigTarget -Type File
+    }
+    
     # VS Code (if requested)
     if ($IncludeVSCode) {
+        # Check for Settings Sync conflict
+        if (Test-VSCodeSettingsSync) {
+            Show-VSCodeSyncWarning
+        }
+        
         $vscodeSource = Join-Path $PSScriptRoot 'vscode'
         $vscodeTarget = "$env:APPDATA\Code\User"
         
+        # Link VS Code settings
         if (Test-Path (Join-Path $vscodeSource 'settings.json')) {
             New-Link -Source (Join-Path $vscodeSource 'settings.json') -Target (Join-Path $vscodeTarget 'settings.json') -Type File
         }
         
         if (Test-Path (Join-Path $vscodeSource 'keybindings.json')) {
             New-Link -Source (Join-Path $vscodeSource 'keybindings.json') -Target (Join-Path $vscodeTarget 'keybindings.json') -Type File
+        }
+        
+        if (Test-Path (Join-Path $vscodeSource 'mcp.json')) {
+            New-Link -Source (Join-Path $vscodeSource 'mcp.json') -Target (Join-Path $vscodeTarget 'mcp.json') -Type File
+        }
+        
+        # Install VS Code extensions
+        $extensionsScript = Join-Path $vscodeSource 'extensions-install.ps1'
+        if (Test-Path $extensionsScript) {
+            Write-Host ""
+            Write-Status "Installing VS Code extensions..." -Type Info
+            & $extensionsScript
         }
     }
     

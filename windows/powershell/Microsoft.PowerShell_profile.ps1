@@ -170,6 +170,7 @@ if (Test-Path $ezaModulePath) {
 # WSLTabCompletion (WSL command completion)
 if (Get-Module -ListAvailable -Name WSLTabCompletion) {
     Import-Module WSLTabCompletion
+    Register-WSLArgumentCompleter
 }
 
 # Custom completions (auto-load all .ps1 files from completions directory)

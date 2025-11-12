@@ -89,6 +89,27 @@
             Type = "File"
             Conditional = "VSCode"
         }
+
+        @{
+            Source = "windows\vscode\mcp.json"
+            Target = "$env:APPDATA\Code\User\mcp.json"
+            Type = "File"
+            Conditional = "VSCode"
+        }
+
+        # WSL Configuration
+        @{
+            Source = "windows\wsl\.wslconfig"
+            Target = "$env:USERPROFILE\.wslconfig"
+            Type = "File"
+        }
+
+        # PowerShell Configuration
+        @{
+            Source = "windows\powershell\powershell.config.json"
+            Target = "$env:USERPROFILE\Documents\PowerShell\powershell.config.json"
+            Type = "File"
+        }
     )
 
     # Legacy shims (optional compatibility links)
