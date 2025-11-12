@@ -117,6 +117,12 @@
                 "hidden": false,
                 "name": "Ubuntu",
                 "source": "Microsoft.WSL"
+            },
+            {
+                "guid": "{a632ebb8-2211-5996-a783-0b995cc1a7c2}",
+                "hidden": false,
+                "name": "archlinux",
+                "source": "Microsoft.WSL"
             }
         ]
     },
