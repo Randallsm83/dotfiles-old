@@ -40,7 +40,6 @@ usage = "latest"
 uv = "latest"
 vim = "latest"
 yarn = "latest"
-zsh = "latest"
 
 [settings]
 # plugins can read the versions files used by other version managers (if enabled by the plugin)

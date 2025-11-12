@@ -539,7 +539,10 @@ BLACKLIST=(
 STOWABLE_PACKAGES=()
 SKIPPED_PACKAGES=()
 
-for dir in "$DOTFILES_DIR"*/; do
+# Change to dotfiles directory first to ensure glob works correctly
+cd "$DOTFILES_DIR"
+
+for dir in */; do
     if [ -d "$dir" ]; then
         pkg=$(basename "$dir")
         
@@ -616,6 +619,74 @@ fi
 echo ""
 
 # ============================================================================
+# ZSH INSTALLATION
+# ============================================================================
+
+log "Installing zsh shell..."
+
+if command_exists zsh; then
+    success "zsh already installed"
+    info "Version: $(zsh --version)"
+else
+    log "Installing zsh via pacman..."
+    
+    case "$DISTRO" in
+        arch|manjaro)
+            if sudo pacman -S --noconfirm zsh; then
+                success "zsh installed successfully"
+                info "Version: $(zsh --version)"
+            else
+                error "Failed to install zsh"
+                exit 1
+            fi
+            ;;
+        ubuntu|debian|pop)
+            if sudo apt-get install -y zsh; then
+                success "zsh installed successfully"
+                info "Version: $(zsh --version)"
+            else
+                error "Failed to install zsh"
+                exit 1
+            fi
+            ;;
+        fedora|rhel|centos)
+            if command_exists dnf; then
+                if sudo dnf install -y zsh; then
+                    success "zsh installed successfully"
+                    info "Version: $(zsh --version)"
+                else
+                    error "Failed to install zsh"
+                    exit 1
+                fi
+            else
+                if sudo yum install -y zsh; then
+                    success "zsh installed successfully"
+                    info "Version: $(zsh --version)"
+                else
+                    error "Failed to install zsh"
+                    exit 1
+                fi
+            fi
+            ;;
+        *)
+            warn "Unknown distribution, attempting to install zsh via pacman..."
+            if sudo pacman -S --noconfirm zsh 2>/dev/null || \
+               sudo apt-get install -y zsh 2>/dev/null || \
+               sudo dnf install -y zsh 2>/dev/null || \
+               sudo yum install -y zsh 2>/dev/null; then
+                success "zsh installed successfully"
+                info "Version: $(zsh --version)"
+            else
+                error "Failed to install zsh - please install manually"
+                exit 1
+            fi
+            ;;
+    esac
+fi
+
+echo ""
+
+# ============================================================================
 # MISE VERSION MANAGER INSTALLATION
 # ============================================================================
 
@@ -667,8 +738,10 @@ if [ -f "$MISE_CONFIG_DIR/config.toml" ]; then
     # Install tools from config
     log "Installing tools from mise config.toml..."
     info "This may take several minutes depending on which tools need to be installed"
+    info "Note: zsh is already installed via system package manager and will be skipped"
     
-    if mise install; then
+    # Run mise install, ignoring zsh errors since it's installed via pacman
+    if mise install 2>&1 | grep -v "zsh not found in mise tool registry"; then
         success "Tools installed successfully"
         
         # List installed tools
@@ -677,6 +750,7 @@ if [ -f "$MISE_CONFIG_DIR/config.toml" ]; then
     else
         warn "Some mise tools may have failed to install"
         warn "You can retry later with: mise install"
+        info "Note: zsh errors can be ignored as it's installed via pacman"
     fi
 else
     warn "No mise config.toml found at $MISE_CONFIG_DIR"
@@ -765,7 +839,8 @@ if command_exists zsh; then
         success "No insecure directories found"
     fi
 else
-    info "zsh not yet installed (will be handled by mise)"
+    warn "zsh should have been installed earlier in this script"
+    warn "Please install zsh manually: sudo pacman -S zsh (or equivalent for your distro)"
 fi
 
 echo ""
