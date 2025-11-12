@@ -686,122 +686,26 @@ fi
 echo ""
 
 # ============================================================================
-# SSH AGENT BRIDGE SETUP (Windows → WSL)
+# 1PASSWORD SSH AGENT INTEGRATION
 # ============================================================================
 
-log "Setting up SSH agent bridge for WSL..."
+log "Setting up 1Password SSH agent for WSL..."
 
-# Install socat and unzip if needed
-MISSING_TOOLS=()
-for tool in socat unzip; do
-    if ! command_exists "$tool"; then
-        MISSING_TOOLS+=("$tool")
-    fi
-done
-
-if [ ${#MISSING_TOOLS[@]} -gt 0 ]; then
-    log "Installing required tools: ${MISSING_TOOLS[*]}"
-    if install_packages "$DISTRO" "${MISSING_TOOLS[@]}"; then
-        success "Tools installed"
+SSH_AGENT_SOCK="/mnt/wsl/1password/agent.sock"
+if [ -S "$SSH_AGENT_SOCK" ]; then
+    success "1Password SSH agent socket found at $SSH_AGENT_SOCK"
+    
+    # Check if already configured
+    if grep -q "SSH_AUTH_SOCK.*1password" "$HOME/.zshenv" 2>/dev/null; then
+        info "SSH_AUTH_SOCK already configured in .zshenv"
     else
-        warn "Failed to install some tools, SSH agent bridge may not work"
-    fi
-fi
-
-# Download and install npiperelay if not present
-NPIPERELAY_PATH="/mnt/c/Users/$USER/.local/bin/npiperelay.exe"
-if [ ! -f "$NPIPERELAY_PATH" ]; then
-    log "Installing npiperelay..."
-    info "This bridges Windows SSH agent to WSL"
-    
-    TEMP_DIR=$(mktemp -d)
-    cd "$TEMP_DIR"
-    
-    if curl -L https://github.com/jstarks/npiperelay/releases/latest/download/npiperelay_windows_amd64.zip -o npiperelay.zip; then
-        if unzip -o npiperelay.zip; then
-            mkdir -p "/mnt/c/Users/$USER/.local/bin"
-            cp npiperelay.exe "$NPIPERELAY_PATH"
-            chmod +x "$NPIPERELAY_PATH"
-            success "npiperelay installed to $NPIPERELAY_PATH"
-        else
-            error "Failed to extract npiperelay"
-        fi
-    else
-        error "Failed to download npiperelay"
-    fi
-    
-    cd "$DOTFILES_DIR"
-    rm -rf "$TEMP_DIR"
-else
-    success "npiperelay already installed"
-fi
-
-# Create SSH agent bridge startup script
-mkdir -p "$HOME/.ssh"
-SSH_AGENT_SCRIPT="$HOME/.ssh/start-ssh-agent.sh"
-
-cat > "$SSH_AGENT_SCRIPT" << 'SSHEOF'
-#!/usr/bin/env bash
-# Start SSH agent bridge for WSL
-
-export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
-
-# Kill existing socat process if running
-pkill -f "socat.*npiperelay" 2>/dev/null
-
-# Remove old socket
-rm -f "$SSH_AUTH_SOCK"
-
-# Start socat bridge in background
-setsid socat UNIX-LISTEN:"$SSH_AUTH_SOCK,fork" \
-    EXEC:"/mnt/c/Users/$USER/.local/bin/npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork \
-    >/dev/null 2>&1 &
-
-# Wait a moment for socket to be created
-sleep 0.5
-
-if [ -S "$SSH_AUTH_SOCK" ]; then
-    echo "SSH agent bridge started successfully"
-else
-    echo "Failed to start SSH agent bridge" >&2
-    exit 1
-fi
-SSHEOF
-
-chmod +x "$SSH_AGENT_SCRIPT"
-success "SSH agent bridge script created at $SSH_AGENT_SCRIPT"
-
-# Add to shell config if not already there
-for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
-    if [ -f "$rc" ] && ! grep -q "start-ssh-agent.sh" "$rc"; then
-        echo '' >> "$rc"
-        echo '# Start SSH agent bridge' >> "$rc"
-        echo 'if [ -f "$HOME/.ssh/start-ssh-agent.sh" ]; then' >> "$rc"
-        echo '    source "$HOME/.ssh/start-ssh-agent.sh"' >> "$rc"
-        echo 'fi' >> "$rc"
-        info "Added SSH agent bridge to $(basename $rc)"
-    fi
-done
-
-# Start the bridge for current session
-log "Starting SSH agent bridge..."
-if bash "$SSH_AGENT_SCRIPT"; then
-    export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
-    success "SSH agent bridge running"
-    
-    # Test the connection
-    if ssh-add -l &>/dev/null; then
-        success "SSH agent is working - keys available:"
-        ssh-add -l | while read -r line; do
-            info "  $line"
-        done
-    else
-        warn "SSH agent bridge is running but no keys found"
-        info "Make sure you have SSH keys in 1Password or Windows SSH agent"
+        echo "export SSH_AUTH_SOCK='$SSH_AGENT_SOCK'" >> "$HOME/.zshenv"
+        success "SSH_AUTH_SOCK configured in .zshenv"
     fi
 else
-    warn "Failed to start SSH agent bridge"
-    info "You can manually start it later with: $SSH_AGENT_SCRIPT"
+    warn "1Password SSH agent socket not found at $SSH_AGENT_SOCK"
+    warn "Make sure 1Password desktop app is running on Windows with SSH agent enabled"
+    info "Settings → Developer → SSH Agent → Enable"
 fi
 
 echo ""
