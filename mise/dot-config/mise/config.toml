@@ -21,20 +21,17 @@
 # =============================================================================
 
 [tools]
-# === Language Runtimes (All Platforms) ===
+# === Language Runtimes (Cross-Platform) ===
 bun = "latest"
 go = "latest"
-lua = "5.4.7"
-luajit = "2.1.0-beta3"
 node = "23.7.0"
 python = "latest"
 ruby = "latest"
 rust = "1.79.0"
 
-# === Universal Tools (All Platforms) ===
+# === Universal Tools (Cross-Platform) ===
 direnv = "latest"
 fzf = "latest"
-sqlite = "latest"
 usage = "latest"
 uv = "latest"     # Python package installer
 yarn = "latest"

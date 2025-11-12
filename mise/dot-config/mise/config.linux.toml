@@ -6,6 +6,10 @@
 # =============================================================================
 
 [tools]
+# === Language Runtimes (Linux/macOS only) ===
+lua = "5.4.7"
+luajit = "2.1.0-beta3"
+
 # === CLI Tools (Linux/WSL/macOS only) ===
 # Terminal utilities
 "cargo:bat" = "latest"
@@ -15,6 +19,7 @@
 bat-extras = "latest"     # Bash-dependent wrapper scripts
 btop = "latest"
 starship = "latest"       # Cross-shell prompt
+sqlite = "latest"
 
 # Build tools
 cargo-binstall = "latest"
