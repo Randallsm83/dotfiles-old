@@ -123,6 +123,12 @@
                 "hidden": false,
                 "name": "archlinux",
                 "source": "Microsoft.WSL"
+            },
+            {
+                "guid": "{1729e1a5-58a5-56d7-8774-a6512a9caedb}",
+                "hidden": false,
+                "name": "archlinux",
+                "source": "Microsoft.WSL"
             }
         ]
     },

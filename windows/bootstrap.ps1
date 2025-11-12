@@ -473,9 +473,13 @@ function Install-ScoopPackages {
 function Invoke-Stow {
     Write-Host "`n--- Creating symlinks (Stow-like) ---`n" -ForegroundColor Cyan
     
+    # Exclude Unix-only packages that don't run on Windows
+    $excludePackages = @('zsh', 'bash', 'iterm2', 'homebrew')
+    
     # Get all packages with dot-config or dot-local directories
     $packages = Get-ChildItem -Path $Script:DotfilesRoot -Directory | Where-Object {
-        (Test-Path (Join-Path $_.FullName 'dot-config')) -or (Test-Path (Join-Path $_.FullName 'dot-local'))
+        ((Test-Path (Join-Path $_.FullName 'dot-config')) -or (Test-Path (Join-Path $_.FullName 'dot-local'))) -and
+        ($_.Name -notin $excludePackages)
     }
     
     foreach ($pkg in $packages) {
