@@ -37,8 +37,8 @@ windows:
         layout:
           cwd: /home/rmiller/projects
           commands:
-            # Using SSH key authentication
-            - exec: ssh -i ~/.ssh/id_rsa_dev rmiller@dev.example.com
+            # 1Password handles authentication automatically
+            - exec: ssh dev
             - exec: cd ~/projects && ls -la
         color: green
 
@@ -46,8 +46,8 @@ windows:
       - title: Production
         layout:
           commands:
-            # Custom port example
-            - exec: ssh -p 2222 rmiller@prod.example.com
+            # Use SSH config for custom ports and settings
+            - exec: ssh prod
             - exec: echo "⚠️  PRODUCTION ENVIRONMENT - Be careful!"
         color: red
 
@@ -55,8 +55,8 @@ windows:
       - title: Internal Server
         layout:
           commands:
-            # Jump/bastion host connection
-            - exec: ssh -J jumphost.example.com rmiller@internal-server.local
+            # Jump host configured in SSH config
+            - exec: ssh internal
         color: yellow
 
       # Database Server
