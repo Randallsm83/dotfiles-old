@@ -38,6 +38,25 @@ if (Test-Path $userBin) {
 }
 
 # ================================================================================================
+# Custom Aliases
+# ================================================================================================
+
+# Source custom aliases file
+# This must be loaded AFTER XDG variables are set but BEFORE tool integrations
+$env:DOTFILES = "$env:USERPROFILE\.config\dotfiles"
+$aliasesPath = "$env:DOTFILES\windows\powershell\aliases.ps1"
+if (Test-Path $aliasesPath) {
+    try {
+        . $aliasesPath
+    }
+    catch {
+        Write-Warning "Failed to load aliases from $aliasesPath : $_"
+    }
+} else {
+    Write-Warning "Aliases file not found at $aliasesPath"
+}
+
+# ================================================================================================
 # PSReadLine Configuration
 # ================================================================================================
 
