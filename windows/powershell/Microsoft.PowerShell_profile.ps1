@@ -53,9 +53,24 @@ if (Test-Path $userBin) {
 # Custom Aliases
 # ================================================================================================
 
-# Source custom aliases file
+# Source custom files
 # This must be loaded AFTER XDG variables are set but BEFORE tool integrations
 $env:DOTFILES = "$env:USERPROFILE\.config\dotfiles"
+
+# Load functions
+$functionsPath = "$env:DOTFILES\windows\powershell\functions.ps1"
+if (Test-Path $functionsPath) {
+    try {
+        . $functionsPath
+    }
+    catch {
+        Write-Warning "Failed to load functions from $functionsPath : $_"
+    }
+} else {
+    Write-Warning "Functions file not found at $functionsPath"
+}
+
+# Load aliases
 $aliasesPath = "$env:DOTFILES\windows\powershell\aliases.ps1"
 if (Test-Path $aliasesPath) {
     try {
@@ -219,89 +234,10 @@ if ((Test-Path $vsDevCmdPath) -and (Get-Command Import-BatchEnvironment -ErrorAc
     } catch {}
 }
 
-# ================================================================================================
-# Aliases
-# ================================================================================================
-
-# Unix-like commands
-Set-Alias -Name grep -Value Select-String -ErrorAction SilentlyContinue
-Set-Alias -Name which -Value Get-Command -ErrorAction SilentlyContinue
-
-# Process management aliases
-Set-Alias -Name ps -Value Get-Process -ErrorAction SilentlyContinue
-Set-Alias -Name kill -Value Stop-Process -ErrorAction SilentlyContinue
-
-# Replace built-in scoop search (if scoop-search is available)
-if (Get-Command scoop-search -ErrorAction SilentlyContinue) {
-    try {
-        Invoke-Expression (&scoop-search --hook)
-    } catch {}
-}
-
-# Common shortcuts
-if (Get-Command nvim -ErrorAction SilentlyContinue) {
-    function vim { & nvim $args }
-    function vi { & nvim $args }
-}
-
-# Git shortcuts
-function gs { git status $args }
-function ga { git add $args }
-function gc { git commit $args }
-function gp { git push $args }
-function gl { git pull $args }
-function gd { git diff $args }
-function gco { git checkout $args }
-function glog { git log --oneline --graph --decorate $args }
-
-# Directory navigation
-function .. { Set-Location .. }
-function ... { Set-Location ..\.. }
-function .... { Set-Location ..\..\.. }
-
-# bat (better cat)
-if (Get-Command bat -ErrorAction SilentlyContinue) {
-    Remove-Alias -Name cat -Force -ErrorAction SilentlyContinue
-    function cat { & bat $args }
-}
 
 # ================================================================================================
-# Utility Functions
+# OSC7 Terminal Integration
 # ================================================================================================
-
-# Reload profile
-function Reload-Profile {
-    . $PROFILE
-    Write-Host "Profile reloaded!" -ForegroundColor Green
-}
-Set-Alias -Name reload -Value Reload-Profile
-
-# Quick edit profile
-function Edit-Profile {
-    if (Get-Command nvim -ErrorAction SilentlyContinue) {
-        nvim $PROFILE
-    } else {
-        notepad $PROFILE
-    }
-}
-Set-Alias -Name ep -Value Edit-Profile
-
-# Touch command
-function touch {
-    param([string]$file)
-    if (Test-Path $file) {
-        (Get-Item $file).LastWriteTime = Get-Date
-    } else {
-        New-Item -ItemType File -Path $file | Out-Null
-    }
-}
-
-# mkcd - make directory and change into it
-function mkcd {
-    param([string]$path)
-    New-Item -ItemType Directory -Path $path -Force | Out-Null
-    Set-Location $path
-}
 
 # OSC7 terminal integration for WezTerm
 function Set-EnvVar {
