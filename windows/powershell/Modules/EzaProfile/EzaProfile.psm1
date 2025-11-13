@@ -106,16 +106,38 @@ function ls {
     if (-not $Args) { 
         $Args = @('.') 
     } else {
-        # Expand ~ to home directory for compatibility with eza
-        $Args = $Args | ForEach-Object { 
-            if ($_ -eq '~') { 
-                $HOME 
-            } elseif ($_.StartsWith('~/') -or $_.StartsWith('~\')) {
-                $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($_)
+        # Expand globs and ~ to home directory for compatibility with eza
+        $expandedArgs = @()
+        foreach ($arg in $Args) {
+            # Check for globs first (before tilde expansion)
+            if ($arg -match '[*?\[\]]') {
+                # If it has a glob, expand tilde first if present, then expand glob
+                $pathToExpand = $arg
+                if ($arg -eq '~') {
+                    $pathToExpand = $HOME
+                } elseif ($arg.StartsWith('~/') -or $arg.StartsWith('~\')) {
+                    $pathToExpand = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($arg)
+                }
+                # Now expand the glob
+                try {
+                    $matches = @(Get-ChildItem -Path $pathToExpand -ErrorAction Stop | Select-Object -ExpandProperty FullName)
+                    if ($matches.Count -gt 0) {
+                        $expandedArgs += $matches
+                    }
+                    # If no matches, skip (don't add anything) like PowerShell does
+                } catch {
+                    # Pattern error or no access, skip
+                    Write-Warning "Could not expand pattern: $arg"
+                }
+            } elseif ($arg -eq '~') { 
+                $expandedArgs += $HOME 
+            } elseif ($arg.StartsWith('~/') -or $arg.StartsWith('~\')) {
+                $expandedArgs += $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($arg)
             } else { 
-                $_ 
+                $expandedArgs += $arg 
             }
         }
+        $Args = $expandedArgs
     }
     Invoke-Eza @Args
 }
@@ -126,29 +148,38 @@ function ll {
     if (-not $Args) { 
         $Args = @('.') 
     } else {
-        # Expand ~ to home directory for compatibility with eza
-        $Args = $Args | ForEach-Object { 
-            if ($_ -eq '~') { 
-                $HOME 
-            } elseif ($_.StartsWith('~/') -or $_.StartsWith('~\')) {
-                $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($_)
-            } elseif ($_.EndsWith('/*')) {
-                # Handle wildcard pattern to list contents of each directory
-                $basePath = $_.Substring(0, $_.Length - 2)
-                if ($basePath.StartsWith('~/') -or $basePath.StartsWith('~\')) {
-                    $basePath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($basePath)
+        # Expand globs and ~ to home directory for compatibility with eza
+        $expandedArgs = @()
+        foreach ($arg in $Args) {
+            # Check for globs first (before tilde expansion)
+            if ($arg -match '[*?\[\]]') {
+                # If it has a glob, expand tilde first if present, then expand glob
+                $pathToExpand = $arg
+                if ($arg -eq '~') {
+                    $pathToExpand = $HOME
+                } elseif ($arg.StartsWith('~/') -or $arg.StartsWith('~\')) {
+                    $pathToExpand = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($arg)
                 }
-                if (Test-Path $basePath) {
-                    (Get-ChildItem $basePath -Directory).FullName
-                } else {
-                    $_
+                # Now expand the glob
+                try {
+                    $matches = @(Get-ChildItem -Path $pathToExpand -ErrorAction Stop | Select-Object -ExpandProperty FullName)
+                    if ($matches.Count -gt 0) {
+                        $expandedArgs += $matches
+                    }
+                    # If no matches, skip (don't add anything) like PowerShell does
+                } catch {
+                    # Pattern error or no access, skip
+                    Write-Warning "Could not expand pattern: $arg"
                 }
+            } elseif ($arg -eq '~') { 
+                $expandedArgs += $HOME 
+            } elseif ($arg.StartsWith('~/') -or $arg.StartsWith('~\')) {
+                $expandedArgs += $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($arg)
             } else { 
-                $_ 
+                $expandedArgs += $arg 
             }
         }
-        # Flatten the array in case wildcard expansion returned multiple paths
-        $Args = $Args | ForEach-Object { $_ }
+        $Args = $expandedArgs
     }
     Invoke-Eza -l --all --header @Args
 }
