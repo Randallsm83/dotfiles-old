@@ -192,8 +192,130 @@ function strc {
 }
 
 # ================================================================================================
+# Unix-like Command Aliases
+# ================================================================================================
+
+Set-Alias -Name grep -Value Select-String -ErrorAction SilentlyContinue
+Set-Alias -Name which -Value Get-Command -ErrorAction SilentlyContinue
+Set-Alias -Name ps -Value Get-Process -ErrorAction SilentlyContinue
+Set-Alias -Name kill -Value Stop-Process -ErrorAction SilentlyContinue
+
+# Replace built-in scoop search (if scoop-search is available)
+if (Test-CommandExists 'scoop-search') {
+    try {
+        Invoke-Expression (&scoop-search --hook)
+    } catch {}
+}
+
+# ================================================================================================
+# Editor Shortcuts
+# ================================================================================================
+
+if (Test-CommandExists 'nvim') {
+    function vim { & nvim $args }
+    function vi { & nvim $args }
+}
+
+# ================================================================================================
+# Git Shortcuts
+# ================================================================================================
+
+function gs { git status $args }
+function gst { git status $args }
+function ga { git add $args }
+function gc { git commit $args }
+function gp { git push $args }
+function gl { git pull $args }
+function gd { git diff $args }
+function gco { git checkout $args }
+function glog { git log --oneline --graph --decorate $args }
+
+# ================================================================================================
+# Directory Navigation Shortcuts
+# ================================================================================================
+
+function .. { Set-Location .. }
+function ... { Set-Location ..\.. }
+function .... { Set-Location ..\..\.. }
+
+# ================================================================================================
+# Profile Management
+# ================================================================================================
+
+function Reload-Profile {
+    . $PROFILE
+    Write-Host "Profile reloaded!" -ForegroundColor Green
+}
+Set-Alias -Name reload -Value Reload-Profile
+
+function Edit-Profile {
+    if (Test-CommandExists 'nvim') {
+        nvim $PROFILE
+    } else {
+        notepad $PROFILE
+    }
+}
+Set-Alias -Name ep -Value Edit-Profile
+
+# ================================================================================================
+# File System Utilities
+# ================================================================================================
+
+function touch {
+    param([string]$file)
+    if (Test-Path $file) {
+        (Get-Item $file).LastWriteTime = Get-Date
+    } else {
+        New-Item -ItemType File -Path $file | Out-Null
+    }
+}
+
+function mkcd {
+    param([string]$path)
+    New-Item -ItemType Directory -Path $path -Force | Out-Null
+    Set-Location $path
+}
+
+# ================================================================================================
 # Tool Aliases
 # ================================================================================================
+
+# bat (better cat) with tilde and glob expansion
+if (Test-CommandExists 'bat.exe') {
+    Remove-Alias -Name cat -Force -ErrorAction SilentlyContinue
+    
+    function bat {
+        $expandedPaths = @()
+        foreach ($arg in $args) {
+            # Skip non-path arguments (flags/options starting with -)
+            if ($arg -match '^-') {
+                $expandedPaths += $arg
+                continue
+            }
+            
+            # Expand tilde to home directory
+            if ($arg -match '^~') {
+                $arg = $arg -replace '^~', $HOME
+            }
+            
+            # Expand globs if path contains wildcards
+            if ($arg -match '[*?\[\]]') {
+                $resolved = @(Resolve-Path -Path $arg -ErrorAction SilentlyContinue)
+                if ($resolved.Count -gt 0) {
+                    $expandedPaths += $resolved | ForEach-Object { $_.Path }
+                } else {
+                    # If glob doesn't match anything, pass it through
+                    $expandedPaths += $arg
+                }
+            } else {
+                $expandedPaths += $arg
+            }
+        }
+        & (Get-Command bat.exe) @expandedPaths
+    }
+    
+    function cat { bat @args }
+}
 
 # Mise update
 if (Test-CommandExists 'mise') {
@@ -212,6 +334,105 @@ if (Test-CommandExists 'arduino-cloud-cli') {
 # ================================================================================================
 # Git Aliases
 # ================================================================================================
+# Comprehensive git aliases matching zsh configuration
+
+if (Test-CommandExists 'git') {
+    # Status
+    function gs { git status $args }
+    function gst { git status $args }
+    function gss { git status --short $args }
+    function gsb { git status --short --branch $args }
+    
+    # Add
+    function ga { git add $args }
+    function gaa { git add --all $args }
+    function gapa { git add --patch $args }
+    function gau { git add --update $args }
+    
+    # Branch
+    function gb { git branch $args }
+    function gba { git branch --all $args }
+    function gbd { git branch --delete $args }
+    function gbD { git branch --delete --force $args }
+    
+    # Commit
+    function gc { git commit --verbose $args }
+    function gcmsg { git commit --message $args }
+    function gca { git commit --verbose --all $args }
+    function gcam { git commit --all --message $args }
+    function gcs { git commit --gpg-sign $args }
+    
+    # Checkout
+    function gco { git checkout $args }
+    function gcb { git checkout -b $args }
+    function gcm { git checkout (git symbolic-ref refs/remotes/origin/HEAD --short 2>$null).Replace('origin/', '') }
+    
+    # Clone
+    function gcl { git clone --recurse-submodules $args }
+    
+    # Diff
+    function gd { git diff $args }
+    function gds { git diff --staged $args }
+    function gdw { git diff --word-diff $args }
+    
+    # Fetch
+    function gf { git fetch $args }
+    function gfa { git fetch --all --prune $args }
+    
+    # Log
+    function glog { git log --oneline --graph --decorate $args }
+    function gloga { git log --oneline --graph --decorate --all $args }
+    function glo { git log --oneline $args }
+    
+    # Pull
+    function gl { git pull $args }
+    function gup { git pull --rebase $args }
+    function gpr { git pull --rebase $args }
+    
+    # Push
+    function gp { git push $args }
+    function gpf { git push --force-with-lease $args }
+    function gpsup { git push --set-upstream origin (git symbolic-ref --short HEAD) }
+    
+    # Rebase
+    function grb { git rebase $args }
+    function grba { git rebase --abort $args }
+    function grbc { git rebase --continue $args }
+    function grbi { git rebase --interactive $args }
+    
+    # Reset
+    function grh { git reset $args }
+    function grhh { git reset --hard $args }
+    function grhs { git reset --soft $args }
+    
+    # Restore
+    function grs { git restore $args }
+    function grst { git restore --staged $args }
+    
+    # Show
+    function gsh { git show $args }
+    
+    # Stash
+    function gsta { git stash push $args }
+    function gstaa { git stash apply $args }
+    function gstd { git stash drop $args }
+    function gstl { git stash list $args }
+    function gstp { git stash pop $args }
+    function gsts { git stash show --patch $args }
+    
+    # Switch
+    function gsw { git switch $args }
+    function gswc { git switch --create $args }
+    
+    # Remote
+    function gr { git remote $args }
+    function grv { git remote --verbose $args }
+    function gra { git remote add $args }
+    
+    # Tag
+    function gt { git tag $args }
+    function gta { git tag --annotate $args }
+}
 
 <#
 .SYNOPSIS
