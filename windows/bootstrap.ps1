@@ -473,8 +473,9 @@ function Install-ScoopPackages {
 function Invoke-Stow {
     Write-Host "`n--- Creating symlinks (Stow-like) ---`n" -ForegroundColor Cyan
     
-    # Exclude Unix-only packages that don't run on Windows
-    $excludePackages = @('zsh', 'bash', 'iterm2', 'homebrew')
+    # Exclude Unix-only packages and packages with Windows-specific locations
+    # warp: Windows uses AppData, not ~/.config/warp - handled in New-WindowsLinks
+    $excludePackages = @('zsh', 'bash', 'iterm2', 'homebrew', 'warp')
     
     # Get all packages with dot-config or dot-local directories
     $packages = Get-ChildItem -Path $Script:DotfilesRoot -Directory | Where-Object {
@@ -562,13 +563,6 @@ function Invoke-Stow {
 function New-WindowsLinks {
     Write-Host "`n--- Creating Windows-specific links ---`n" -ForegroundColor Cyan
     
-    # Windows-specific git config
-    $gitConfigSource = Join-Path $PSScriptRoot 'dot-config\git\windows.gitconfig'
-    $gitConfigTarget = "$env:USERPROFILE\.config\git\windows.gitconfig"
-    if (Test-Path $gitConfigSource) {
-        New-Link -Source $gitConfigSource -Target $gitConfigTarget -Type File
-    }
-    
     # PowerShell profiles
     $profileSource = Join-Path $PSScriptRoot 'powershell\Microsoft.PowerShell_profile.ps1'
     
@@ -635,8 +629,8 @@ function New-WindowsLinks {
     }
     
     # Warp launch configurations
-    # Note: Stow links warp configs to ~/.config/warp/, but Warp looks in AppData
-    $warpConfigSource = "$env:USERPROFILE\.config\warp\launch_configurations"
+    # Link directly from dotfiles to AppData (skip ~/.config/warp intermediate link)
+    $warpConfigSource = Join-Path $Script:DotfilesRoot 'warp\dot-config\warp\launch_configurations'
     $warpLaunchTarget = "$env:APPDATA\warp\Warp\data\launch_configurations"
     
     if (Test-Path $warpConfigSource) {
@@ -647,7 +641,7 @@ function New-WindowsLinks {
             New-Item -ItemType Directory -Path $warpLaunchTarget -Force | Out-Null
         }
         
-        # Link each launch configuration file
+        # Link each launch configuration file directly from dotfiles
         Get-ChildItem -Path $warpConfigSource -Filter '*.yaml' | ForEach-Object {
             $source = $_.FullName
             $target = Join-Path $warpLaunchTarget $_.Name
