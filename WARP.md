@@ -4,128 +4,226 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ---
 
-Title: Project Rules — dotfiles
+## Repository Overview
 
-1) Scope and precedence
-- These rules apply to this repository. If subdirectory rules are added later, subdirectory WARP.md overrides the root WARP.md. When multiple rules conflict, later rules take precedence over earlier ones. Project rules override personal/global rules when both apply.
+This is a cross-platform dotfiles repository supporting:
+- **Windows** (Native PowerShell)
+- **WSL2** (Ubuntu, Arch)
+- **Linux** (Ubuntu, Arch, other distributions)
+- **macOS**
 
-2) Supported platforms and shells
-- Primary target: WSL2 Ubuntu on Windows. Also support native Linux and macOS.
-- Excluded: Git Bash/MSYS2/Cygwin.
-- Shells: PowerShell (pwsh) on Windows, zsh/bash in WSL. Provide PowerShell guidance where relevant, but not exclusively.
-
-3) Package managers and installs
-- Windows: prefer winget; scoop/chocolatey acceptable when needed. Keep installs idempotent, non-interactive when possible.
-- macOS: use Homebrew.
-- Linux/WSL: prefer the system package manager for prerequisites; respect XDG locations.
-- Avoid sudo unless explicitly required and called out; explain side effects before running.
-
-4) Symlinks and GNU Stow policy
-- Manage dotfiles with GNU Stow into $HOME using XDG-style layouts (dot-config/, dot-local/, etc.).
-- On Windows, enabling Developer Mode for symlinks is acceptable when needed.
-- Conflict handling should follow the repo's scripted approach: first detect regular-file conflicts (stow -nv), then adopt with --adopt only when explicitly approved. Prefer safe, reviewable operations.
-
-5) Bootstrap flow (installer and behavior)
-- Preferred bootstrap: the README one-liner invokes install.sh.
-- install.sh behavior (summary):
-  - Creates XDG directory structure and logs to ~/.local/state/build/dotfiles/logs.
-  - Clones/pulls the dotfiles repo to ~/.config/dotfiles.
-  - Sources environment files from ~/.config/env.d and package-specific env.conf files if present.
-  - Ensures build tools. On Linux it verifies dev headers (glibc) and expects required CLI tools; on macOS it can install via Homebrew.
-  - Builds and installs GNU Stow to ~/.local if not present.
-  - Runs stow across each top-level package, handling conflicts as above.
-  - Installs asdf, adds plugins from ~/.config/asdf/tool-versions, and runs asdf install.
-
-6) XDG Base Directory compliance
-- Place configs under XDG paths (XDG_CONFIG_HOME, XDG_DATA_HOME, XDG_STATE_HOME, XDG_CACHE_HOME). Prefer these locations in commands and examples.
-
-7) Managed tools and configs
-- This repo manages configs and/or bootstrap for: neovim, wezterm, starship, git, bat, ripgrep, fzf, npm/node, fonts, and (optionally) Windows Terminal and VS Code settings. Prefer practical, minimal steps that keep these in XDG paths when supported.
-
-8) Git configuration
-- Prefer conditional includes for Windows-specific options. Keep cross-platform settings sane (e.g., symlinks-friendly where applicable). Favor LF line endings in repo unless a file type needs otherwise; consider enforcing via .gitattributes if needed.
-
-9) WezTerm defaults (reference for agent outputs)
-- Default theme: "Gruvbox Material (Gogh)". Prefer Nerd Fonts fallback stack (Hack, Fira Code, Symbols Nerd Font, Noto Color Emoji). Agents should avoid overriding these in examples unless requested.
-
-10) Agent response guidelines (terminal tasks)
-- Provide commands for the appropriate shell and platform (pwsh on Windows, bash/zsh on WSL/Linux/macOS). Avoid Git Bash/MSYS2/Cygwin.
-- Use absolute paths or environment-variable-anchored paths; avoid implicit cd when possible.
-- Avoid interactive/fullscreen commands. Prefer non-paginated output and --no-pager for Git.
-- Favor idempotent steps; explain destructive actions and obtain confirmation.
-- Use HTTPS for downloads; verify sources; avoid executing untrusted scripts without review.
-
-11) Privacy and secrets
-- Do not log, echo, or commit secrets/tokens. Prefer environment variables or OS keychains.
-
-12) Rule conflicts
-- If conflicts arise, prefer rules closest to the work area (future subdirectory rules) over root, and prefer later statements in this document over earlier ones.
-
-Post-change note
-- Placing this WARP.md in the repo root is sufficient for assistants to apply these rules automatically when operating within this project.
+The repository manages configurations for 40+ tools/packages using GNU Stow with XDG Base Directory compliance.
 
 ---
 
-## Repository-Specific Commands and Architecture
+## Bootstrap Commands
 
-### Bootstrap Commands
+### Windows (PowerShell)
 
-**Recommended bootstrap from repo root:**
+From repository root (`C:\Users\Randall\.config\dotfiles`):
 
-Linux/WSL:
-```bash
-bash -lc ". ./install.sh; main"
+```powershell
+# Preview changes (recommended first run)
+.\windows\bootstrap.ps1 -WhatIf
+
+# Full setup (scoop + winget + symlinks)
+.\windows\bootstrap.ps1
+
+# scoop only (no winget)
+.\windows\bootstrap.ps1 -Packages scoop
+
+# Symlinks only (skip package installation)
+.\windows\bootstrap.ps1 -LinkOnly
+
+# Force overwrite existing files
+.\windows\bootstrap.ps1 -Force
 ```
 
-macOS:
+**Prerequisites:**
+- PowerShell 7+ or PowerShell 5.1
+- Enable Developer Mode for symlinks (or run as admin)
+- winget or scoop installed
+
+### WSL2 (Ubuntu/Arch)
+
+From repository root (`~/.config/dotfiles`):
+
 ```bash
-bash -lc ". ./install.sh; main"
+# Fully automated setup
+./wsl/setup.sh
 ```
 
-**Notes:**
-- install.sh defines functions and runs main() at the end automatically
-- For manual step-by-step: source install.sh, then call functions in sequence: `ensure_build_tools`, `install_stow`, `stow_dotfiles`
-- Logs written to `$XDG_STATE_HOME/build/dotfiles/logs` with timestamped filenames
-- Stow installs to `$HOME/.local/bin/stow` and is invoked explicitly by path inside the script
+**What it does:**
+1. Installs system dependencies (git, build-essential)
+2. Installs Homebrew for Linux
+3. Installs GNU Stow 2.4+ (via Homebrew or source build)
+4. Stows all dotfiles with conflict detection
+5. Installs mise version manager
+6. Installs all tools from mise config
+7. Configures 1Password SSH agent integration (if available)
+8. Fixes zsh directory permissions
 
-### GNU Stow Operations
+**Logs:** `~/.local/state/wsl-setup/logs/setup_YYYYMMDD_HHMMSS.log`
 
-**Preview changes without modifying files:**
+**Critical:** Clone inside WSL (`~/.config/dotfiles`), NOT under `/mnt/c` to avoid permission/symlink issues.
+
+### Linux / macOS (Manual)
+
 ```bash
-~/.local/bin/stow -nv PACKAGE_NAME
+# Install Homebrew (if not present)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+eval "$(brew shellenv)"
+
+# Install stow
+brew install stow
+
+# Stow all packages (from dotfiles root)
+cd ~/.config/dotfiles
+for d in */; do stow --dotfiles "${d%/}"; done
+
+# Install mise
+curl https://mise.run | sh
+
+# Install tools from mise config
+mise install
 ```
 
-**Adopt existing files into repo (when conflicts are regular files):**
-```bash
-~/.local/bin/stow --adopt PACKAGE_NAME
-git status && git diff  # Review before committing
+---
+
+## Verification
+
+### Windows
+
+```powershell
+# Basic verification
+.\windows\verify.ps1
+
+# Detailed output
+.\windows\verify.ps1 -Detailed
+
+# Include VS Code checks
+.\windows\verify.ps1 -IncludeVSCode -Detailed
 ```
 
-**Restow a single package:**
+### Linux / WSL / macOS
+
 ```bash
-~/.local/bin/stow -R PACKAGE_NAME
+# Basic verification
+./verify.sh
+
+# Detailed output
+./verify.sh --detailed
+
+# Include optional tools
+./verify.sh --detailed --optional
 ```
 
-**Restow all packages from repo root:**
+**What gets verified:**
+- Environment variables (XDG_*)
+- Package managers (scoop/winget/brew/mise)
+- Core tools (git, stow, zsh, nvim, starship)
+- Symlinks point to correct targets
+- Config file content
+- Shell integration (starship, mise activation)
+- Fonts (Nerd Fonts)
+
+---
+
+## Package Management Strategy
+
+### Windows
+
+| Manager | Purpose | Tools |
+|---------|---------|-------|
+| **scoop** | CLI tools | git, neovim, starship, mise, bat, eza, fd, ripgrep, fzf, zoxide, delta, btop, gh, lazygit, make, curl, wget, jq, yq, 7zip, gsudo |
+| **winget** | GUI apps | Git.Git (GCM), PowerShell, WezTerm, Windows Terminal, VS Code, 7zip GUI |
+| **mise** | Language runtimes | node, python, ruby, go, rust, bun, uv, yarn, direnv, fzf, usage |
+
+**Fonts via scoop:** FiraCode-NF, Hack-NF, JetBrainsMono-NF, CascadiaCode-NF
+
+**Package files:**
+- `windows/packages/scoop.json`
+- `windows/packages/winget.json`
+- `mise/dot-config/mise/config.toml`
+- `mise/dot-config/mise/config.windows.toml`
+
+### Linux / WSL / macOS
+
+| Manager | Purpose | Tools |
+|---------|---------|-------|
+| **mise** | Everything | CLI tools (via cargo) + language runtimes |
+| **homebrew** | Bootstrap only | stow (then unused) |
+| **apt/dnf/pacman** | System bootstrap | git, curl, build-essential (if needed) |
+
+**Tools via mise (Linux/WSL/macOS only):**
+- Language runtimes: node, python, ruby, go, rust, lua, luajit, bun, uv, yarn, sqlite, vim
+- CLI tools (cargo:*): bat, eza, fd-find, ripgrep, starship
+- Additional: bat-extras, btop, fzf, neovim, direnv, usage, cargo-binstall
+
+**Package files:**
+- `mise/dot-config/mise/config.toml` (all platforms)
+- `mise/dot-config/mise/config.linux.toml` (Linux/macOS auto-loaded)
+
+---
+
+## GNU Stow Operations
+
+All stow packages use the `dot-config` naming convention:
+- `PACKAGE/dot-config/APP/` → `~/.config/APP/`
+- `PACKAGE/dot-zshrc` → `~/.zshrc`
+
+### Common Stow Commands
+
+**Preview changes (dry run):**
 ```bash
-for d in */; do [ -d "$d" ] && ~/.local/bin/stow -R "${d%/}"; done
+stow -nv PACKAGE_NAME
+```
+
+**Stow a single package:**
+```bash
+stow --dotfiles PACKAGE_NAME
+```
+
+**Stow all packages:**
+```bash
+# From dotfiles root
+for d in */; do stow --dotfiles "${d%/}"; done
+```
+
+**Restow (unlink then relink):**
+```bash
+stow -R --dotfiles PACKAGE_NAME
 ```
 
 **Unstow a package:**
 ```bash
-~/.local/bin/stow -D PACKAGE_NAME
+stow -D --dotfiles PACKAGE_NAME
 ```
 
-### mise Version Manager
+**Adopt existing files (conflict resolution):**
+```bash
+# Preview conflicts first
+stow -nv --dotfiles PACKAGE_NAME
 
-**Install mise (if not already installed):**
+# Adopt regular files into repo
+stow --adopt --dotfiles PACKAGE_NAME
+
+# Review changes before committing
+git status && git diff
+```
+
+---
+
+## mise Commands
+
+**Install mise (if not present):**
 ```bash
 curl https://mise.run | sh
 ```
 
-**Activate mise for current shell:**
+**Activate mise in current shell:**
 ```bash
-eval "$(mise activate bash)"  # or zsh
+eval "$(mise activate bash)"  # or zsh, fish
 ```
 
 **Install all tools from config:**
@@ -137,6 +235,7 @@ mise install
 ```bash
 mise use -g node@latest
 mise use -g python@3.12
+mise use -g "cargo:bat@latest"  # Linux/macOS only
 ```
 
 **List installed tools:**
@@ -144,76 +243,398 @@ mise use -g python@3.12
 mise list
 ```
 
-### Utility Scripts
-
-**SSH Key Manager:**
+**Update mise itself:**
 ```bash
-source ~/.local/bin/ssh-key-manager.sh
-setup_ssh_keys        # Generate and configure SSH keys
-rotate_keys           # Rotate existing keys
-display_public_keys   # Show public keys for remote services
+mise self-update
 ```
 
-**Cache Cleaner (Windows only):**
+**Update all tools:**
+```bash
+mise upgrade
+```
+
+**Check mise health:**
+```bash
+mise doctor
+```
+
+---
+
+## Stow Packages in Repository
+
+The repository contains 40+ GNU Stow packages:
+
+**Core configurations:**
+- `git` - Git configuration with Windows conditional includes
+- `nvim` - Neovim (Lua-based kickstart config)
+- `wezterm` - WezTerm terminal emulator
+- `starship` - Cross-shell prompt
+- `zsh` - Zsh shell configuration
+- `bat` - Better cat with syntax highlighting
+- `mise` - Version manager configs (platform-specific)
+
+**Development tools:**
+- `node`, `npm`, `nvm` - Node.js configurations
+- `python` - Python configs
+- `ruby` - Ruby configs
+- `rust` - Rust/Cargo configs
+- `golang` - Go configs
+- `lua` - Lua configs
+- `perl`, `php` - Perl and PHP configs
+
+**CLI utilities:**
+- `ripgrep` - Fast grep alternative
+- `fzf` - Fuzzy finder
+- `eza` - Modern ls replacement
+- `vivid` - LS_COLORS generator
+- `direnv` - Directory-based environment loader
+- `sqlite3` - SQLite configs
+- `wget` - wget configs
+
+**Terminal/Shell:**
+- `ssh` - SSH configs and 1Password integration
+- `fonts` - Nerd Fonts
+- `p10k` - Powerlevel10k theme
+- `thefuck`, `tinted-theming` - Shell enhancements
+
+**Editors/IDEs:**
+- `vim` - Vim configuration
+- `editorconfig` - EditorConfig
+
+**Platform-specific:**
+- `windows` - PowerShell profiles, Windows Terminal settings
+- `utilities` - PowerShell utility scripts (UtilCacheClean.ps1)
+- `bin` - Shell scripts and executables
+- `wsl` - WSL-specific configs
+
+**Other:**
+- `asdf` - asdf version manager (legacy, being replaced by mise)
+- `arduino` - Arduino IDE configs
+- `glow` - Markdown renderer
+- `homebrew` - Homebrew configs (macOS)
+- `iterm2` - iTerm2 configs (macOS)
+- `lde` - Local development environment
+- `vagrant` - Vagrant configs
+- `warp` - Warp terminal launch configurations
+
+---
+
+## Architecture Details
+
+### XDG Base Directory Structure
+
+All configurations follow XDG Base Directory specification:
+
+| Variable | Default Path | Purpose |
+|----------|--------------|---------|  
+| `XDG_CONFIG_HOME` | `~/.config` | Configuration files |
+| `XDG_DATA_HOME` | `~/.local/share` | Data files |
+| `XDG_STATE_HOME` | `~/.local/state` | State files (logs, history) |
+| `XDG_CACHE_HOME` | `~/.cache` | Cache files |
+
+**Key paths:**
+- Dotfiles repo: `$XDG_CONFIG_HOME/dotfiles` (`~/.config/dotfiles`)
+- mise config: `$XDG_CONFIG_HOME/mise` (`~/.config/mise`)
+- mise data: `$XDG_DATA_HOME/mise` (`~/.local/share/mise`)
+- Build logs: `$XDG_STATE_HOME/*/logs` (`~/.local/state/*/logs`)
+- Build cache: `$XDG_CACHE_HOME/*/build` (`~/.cache/*/build`)
+
+### Platform-Specific mise Configuration
+
+mise automatically loads platform-specific configs:
+
+**`mise/dot-config/mise/config.toml` (Base - All Platforms):**
+- Language runtimes: node, python, ruby, go, rust, bun
+- Universal tools: direnv, fzf, usage, uv, yarn
+- Settings and environment variables
+
+**`mise/dot-config/mise/config.linux.toml` (Auto-loaded on Linux/macOS):**
+- Additional runtimes: lua, luajit, sqlite, vim
+- CLI tools via cargo: bat, eza, fd-find, ripgrep
+- Editors: neovim, vim
+- Terminal tools: starship, btop, bat-extras
+- Build tools: cargo-binstall
+
+**`mise/dot-config/mise/config.windows.toml` (Auto-loaded on Windows):**
+- Disables tools that don't work on Windows: lua, luajit, sqlite
+- Use scoop for CLI tools instead
+
+### Neovim Configuration
+
+**Structure:**
+- Entry point: `nvim/dot-config/nvim/init.lua`
+- Modular Lua config:
+  - `lua/options.lua` - Editor options
+  - `lua/keymaps.lua` - Key mappings
+  - `lua/autocommands.lua` - Auto commands
+  - `lua/plugins.lua` - Plugin definitions
+  - `lua/colors.lua` - Color scheme
+  - `lua/custom/plugins/init.lua` - Custom plugins
+  - `lua/kickstart/plugins/` - Kickstart.nvim plugins
+- Plugin manager: lazy.nvim
+- Lockfile: `lazy-lock.json`
+
+### Windows Bootstrap Pipeline
+
+1. **Check prerequisites** - Developer Mode, package managers
+2. **Install packages** - Via scoop and/or winget
+3. **Create symlinks** - Config files to `$env:USERPROFILE\.config`
+4. **Setup PowerShell profile** - Load starship, mise, aliases
+5. **Configure XDG environment** - Set XDG_* variables
+
+**Key Windows paths:**
+- Dotfiles: `$env:USERPROFILE\.config\dotfiles` (`C:\Users\USERNAME\.config\dotfiles`)
+- PowerShell profile: `$PROFILE` (varies by PS version)
+- Windows Terminal settings: `$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_*\LocalState\settings.json`
+
+### WSL Bootstrap Pipeline
+
+1. **System packages** - Install git, build-essential via apt/dnf/pacman
+2. **Homebrew** - Install Homebrew for Linux (user-space)
+3. **GNU Stow** - Install stow 2.4+ via Homebrew or source build
+4. **Stow dotfiles** - Symlink all packages with conflict detection
+5. **mise** - Install mise version manager
+6. **Tools** - Install all CLI tools and runtimes via mise
+7. **1Password SSH** - Configure 1Password SSH agent (if available)
+8. **Zsh permissions** - Fix insecure directory warnings
+
+---
+
+## Platform-Specific Notes
+
+### Windows
+
+**Developer Mode:**
+- Required for symlinks without admin rights
+- Enable: Settings → Update & Security → For developers → Developer mode
+- Or run bootstrap as administrator to enable automatically
+
+**PowerShell Profile:**
+- Bootstrap configures `$PROFILE` for both PowerShell 7+ and 5.1
+- Loads starship prompt, mise activation, custom aliases
+- Location: `$PROFILE` or `$env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`
+
+**Git Credential Manager:**
+- Included with winget's Git.Git package
+- Integrates with Windows authentication
+- Configured automatically
+
+**Path Updates:**
+- `$env:USERPROFILE\bin` added to PATH
+- `$env:USERPROFILE\.local\bin` added to PATH
+- Restart terminal after bootstrap for PATH changes
+
+### WSL2
+
+**Critical: Clone Location**
+- ✅ Clone inside WSL: `~/.config/dotfiles`
+- ❌ Do NOT clone under `/mnt/c` - causes permission/symlink issues
+- Windows filesystem breaks POSIX permissions and symlinks
+
+**GNU Stow Version:**
+- Requires stow >= 2.4.0 for proper XDG support
+- Setup script ensures correct version via Homebrew or source build
+- Check version: `stow --version`
+
+**Zsh Insecure Directories:**
+- Setup script automatically fixes insecure directory warnings
+- Manually fix: `compaudit | xargs chmod go-w`
+
+**1Password SSH Agent:**
+- Optional integration for SSH key management
+- Requires 1Password installed on Windows host
+- Configured automatically if detected
+
+**Fonts:**
+- Install Nerd Fonts on Windows (not in WSL)
+- Configure Windows Terminal to use them
+- Recommended: FiraCode Nerd Font, JetBrainsMono Nerd Font
+
+### Linux (Native)
+
+**Build Tools:**
+- Required for compiling: gcc, make, automake, perl
+- Install via system package manager: `apt install build-essential` (Ubuntu/Debian)
+- Or: `dnf groupinstall "Development Tools"` (Fedora/RHEL)
+- Or: `pacman -S base-devel` (Arch)
+
+**GNU Stow:**
+- Install via Homebrew or system package manager
+- Verify version >= 2.4.0: `stow --version`
+
+### macOS
+
+**Xcode Command Line Tools:**
+- Required for building from source
+- Install: `xcode-select --install`
+
+**Homebrew:**
+- Recommended for managing packages
+- Install: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+
+---
+
+## Common Tasks
+
+### Adding a New Tool
+
+**Windows (CLI tool):**
+1. Add to `windows/packages/scoop.json` in the `apps` array
+2. Run: `scoop install TOOL_NAME`
+
+**Windows (GUI app):**
+1. Add to `windows/packages/winget.json` in the `Packages` array
+2. Run: `winget install --id PACKAGE_ID`
+
+**Windows (Language runtime):**
+1. Add to `mise/dot-config/mise/config.toml` in the `[tools]` section
+2. Run: `mise install TOOL_NAME`
+
+**Linux/WSL/macOS (CLI tool via cargo):**
+1. Add to `mise/dot-config/mise/config.linux.toml` as `"cargo:TOOL_NAME" = "latest"`
+2. Run: `mise install "cargo:TOOL_NAME"`
+
+**Linux/WSL/macOS (Language runtime):**
+1. Add to `mise/dot-config/mise/config.toml` in the `[tools]` section
+2. Run: `mise install TOOL_NAME`
+
+### Creating a New Stow Package
+
+```bash
+# From dotfiles root
+mkdir -p NEW_PACKAGE/dot-config/APP_NAME
+
+# Add config files
+echo "config content" > NEW_PACKAGE/dot-config/APP_NAME/config
+
+# Stow it
+stow --dotfiles NEW_PACKAGE
+
+# Verify
+ls -la ~/.config/APP_NAME
+```
+
+### Updating Tools
+
+**Windows (scoop):**
 ```powershell
-~\.local\utilities\UtilCacheClean.ps1
+scoop update
+scoop update *
 ```
 
-**GCC Symlink Updater (macOS/Linux):**
+**Windows (winget):**
+```powershell
+winget upgrade --all
+```
+
+**Linux/WSL/macOS (mise):**
 ```bash
-~/.local/bin/relink_gcc.sh  # Updates gcc/g++ symlinks to latest Homebrew version
+mise upgrade
 ```
 
-### Architecture Overview
+**Language runtimes (mise on all platforms):**
+```bash
+mise upgrade
+```
 
-**Repository Structure:**
-- Each top-level directory (e.g., `nvim/`, `wezterm/`, `starship/`) is a GNU Stow package
-- Packages use naming convention: `PACKAGE/dot-config/APP/` → `~/.config/APP/`
-- `stow_dotfiles` function loops through packages, previews conflicts, optionally adopts regular files, then restows
+### SSH Configuration with 1Password
 
-**Bootstrap Pipeline:**
-1. `ensure_build_tools`: Verifies/installs build dependencies
-   - macOS: Checks Xcode CLI Tools, installs missing tools via Homebrew
-   - Linux: Validates gcc, cpp, ldd, make, automake, perl, curl; extracts glibc headers via dpkg-deb
-2. `install_stow`: Builds GNU Stow from source into `$HOME/.local` with XDG-aware paths
-3. `clone_dotfiles`: Ensures repo exists at `$XDG_CONFIG_HOME/dotfiles` and pulls latest
-4. `stow_dotfiles`: Symlinks all packages into `$HOME`
+See `docs/SSH.md` and `docs/1PASSWORD-SSH.md` for detailed setup instructions.
 
-**Key Paths:**
-- Repo location: `$XDG_CONFIG_HOME/dotfiles` (typically `~/.config/dotfiles`)
-- Build cache: `$XDG_CACHE_HOME/build/dotfiles` (typically `~/.cache/build/dotfiles`)
-- Logs: `$XDG_STATE_HOME/build/dotfiles/logs` (typically `~/.local/state/build/dotfiles/logs`)
-- Stow binary: `$HOME/.local/bin/stow`
-- mise: `$XDG_DATA_HOME/mise` (typically `~/.local/share/mise`)
-- mise config: `$XDG_CONFIG_HOME/mise` (typically `~/.config/mise`)
+**Quick setup (WSL):**
+```bash
+./ssh/setup-1password-wsl.sh
+```
 
-### Platform-Specific Notes
+---
 
-**macOS:**
-- Requires Xcode Command Line Tools or equivalent
-- Script automatically installs missing build tools via Homebrew
-- Use `relink_gcc.sh` after Homebrew gcc updates to fix symlinks
+## Troubleshooting
 
-**Linux/WSL:**
-- Requires: gcc, cpp, ldd, make, automake, perl, curl (install via distro package manager if missing)
-- `check_glibc_headers` downloads and extracts glibc dev headers using dpkg-deb
-- Update glibc URL in install.sh if your distro version differs from Ubuntu 24.04
+### Symlink Issues (Windows)
 
-**Windows:**
-- Run bootstrap inside WSL2 (Ubuntu) for proper POSIX symlink behavior
-- Use WezTerm or Windows Terminal for best experience
-- If managing dotfiles directly on Windows filesystem, enable Developer Mode for symlink creation without admin rights
-- Windows-specific PowerShell utilities in the `utilities` package stow to `~/.local/utilities/`
+**Symptom:** "Cannot create symbolic link" errors
 
-### Managed Configurations
+**Solution:**
+1. Enable Developer Mode (Settings → For developers)
+2. Or run bootstrap as administrator
+3. Bootstrap falls back to junctions (dirs) and hardlinks (files) if symlinks fail
 
-This repository provides configurations for:
-- **Editors:** neovim
-- **Terminal:** wezterm (with Gruvbox Material theme)
-- **Shell:** starship prompt, bash/zsh integration
-- **Tools:** git, bat, ripgrep, fzf
-- **Languages:** npm/node/typescript, perl, rust (managed via mise)
-- **Fonts:** Nerd Fonts (Hack, Fira Code)
-- **Optional:** Windows Terminal settings, VS Code settings
+### Stow Conflicts
 
-All configurations follow XDG Base Directory specification where supported.
+**Symptom:** "WARNING! stowing X would cause conflicts"
+
+**Solution:**
+```bash
+# Preview conflicts
+stow -nv --dotfiles PACKAGE_NAME
+
+# If conflicts are regular files you want to keep:
+stow --adopt --dotfiles PACKAGE_NAME
+
+# Review what changed
+git diff
+
+# Revert unwanted changes
+git checkout -- .
+
+# If conflicts should be overwritten:
+rm ~/.config/CONFLICTING_FILE
+stow --dotfiles PACKAGE_NAME
+```
+
+### mise Tools Not Found
+
+**Symptom:** Commands installed by mise not available
+
+**Solution:**
+```bash
+# Ensure mise is activated in your shell
+eval "$(mise activate bash)"  # or zsh
+
+# Or add to shell rc file
+echo 'eval "$(mise activate bash)"' >> ~/.bashrc
+
+# Reload shell
+exec bash
+```
+
+### WSL Permission Issues
+
+**Symptom:** "compinit: insecure directories" or permission errors
+
+**Solution:**
+```bash
+# Fix zsh insecure directories
+compaudit | xargs chmod go-w
+
+# Or run setup script (fixes automatically)
+./wsl/setup.sh
+```
+
+### Git Line Endings (Windows)
+
+**Symptom:** CRLF warnings when committing
+
+**Solution:**
+- `.gitattributes` enforces LF in repo, CRLF for .ps1 files
+- Git config uses `core.autocrlf=input` on Windows
+- This is correct behavior - keeps repo clean across platforms
+
+---
+
+## Documentation References
+
+- [README.md](README.md) - Overview and quick start
+- [docs/PACKAGE_MANAGEMENT.md](docs/PACKAGE_MANAGEMENT.md) - Detailed package management strategy
+- [docs/SSH.md](docs/SSH.md) - SSH and Warp launch configurations
+- [docs/1PASSWORD-SSH.md](docs/1PASSWORD-SSH.md) - 1Password SSH agent setup
+- [docs/QUICKSTART-1PASSWORD.md](docs/QUICKSTART-1PASSWORD.md) - 1Password quick setup
+
+**External Resources:**
+- [GNU Stow Manual](https://www.gnu.org/software/stow/manual/stow.html)
+- [mise Documentation](https://mise.jdx.dev)
+- [scoop Documentation](https://scoop.sh)
+- [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html)
+- [Starship Documentation](https://starship.rs)
+- [WezTerm Documentation](https://wezfurlong.org/wezterm)
+- [Neovim Documentation](https://neovim.io/doc)
