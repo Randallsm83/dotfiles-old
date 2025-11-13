@@ -12,12 +12,17 @@ active_window_index: 0
 windows:
   - active_tab_index: 0
     tabs:
-      - title: SSH Remote
+      - title: Yakko
         layout:
-          cwd: /home/rmiller/
           commands:
-            - exec: ssh rmiller@your-server-hostname
+            - exec: ssh yakko
         color: blue
+      
+      - title: Porky
+        layout:
+          commands:
+            - exec: ssh porky
+        color: green
       
       # Additional SSH connection examples:
       # Uncomment and customize as needed
