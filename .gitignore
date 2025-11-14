@@ -1,6 +1,8 @@
 # Ignore all .git directories by default
 **/.git
 
+# 1pass with GH CLI
+**/.op
+
 # No .DS_Store
 .DS_Store
-ssh/dot-ssh/known_hosts

@@ -15,7 +15,7 @@ if [[ -n "$ENV_DIRS" ]]; then
 fi
 
 # ZSH Syntax Theme
-[[ -r "$ZDOTDIR/.config/zsh/colors/gruvbox.zsh-syntax-theme" ]] && source "$ZDOTDIR/.config/zsh/colors/gruvbox.zsh-syntax-theme"
+# [[ -r "$ZDOTDIR/.config/zsh/colors/gruvbox.zsh-syntax-theme" ]] && source "$ZDOTDIR/.config/zsh/colors/gruvbox.zsh-syntax-theme"
 
 # Lazy-load (autoload) Zsh function files from a directory.
 export ZFUNCDIR="$ZDOTDIR/.zfunctions"
