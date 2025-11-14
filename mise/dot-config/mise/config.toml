@@ -36,22 +36,6 @@ op = "latest"      # 1Password CLI
 usage = "latest"
 uv = "latest"     # Python package installer
 yarn = "latest"
-github-cli = "latest"
-neovim = "latest"
-1password = "latest"
-bat-extras = "latest"
-btop = "latest"
-cargo-binstall = "latest"
-"cargo:bat" = "latest"
-"cargo:eza" = "latest"
-"cargo:fd-find" = "latest"
-"cargo:ripgrep" = "latest"
-"cargo:starship" = "latest"
-"cargo:tinty" = "latest"
-"cargo:vivid" = "latest"
-lua = "latest"
-sqlite = "latest"
-vivid = "latest"
 
 [settings]
 # plugins can read the versions files used by other version managers (if enabled by the plugin)
