@@ -32,6 +32,7 @@ rust = "1.79.0"
 # === Universal Tools (Cross-Platform) ===
 direnv = "latest"
 fzf = "latest"
+op = "latest"      # 1Password CLI
 usage = "latest"
 uv = "latest"     # Python package installer
 yarn = "latest"

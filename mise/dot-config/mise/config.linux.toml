@@ -18,6 +18,7 @@ luajit = "2.1.0-beta3"
 "cargo:ripgrep" = "latest"
 bat-extras = "latest"     # Bash-dependent wrapper scripts
 btop = "latest"
+github-cli = "latest"     # GitHub CLI (gh)
 starship = "latest"       # Cross-shell prompt
 sqlite = "latest"
 

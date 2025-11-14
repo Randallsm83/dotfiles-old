@@ -226,6 +226,11 @@ if (Get-Command uvx -ErrorAction SilentlyContinue) {
     } catch {}
 }
 
+# VS Code shell integration
+if ($env:TERM_PROGRAM -eq "vscode") {
+    . "$(code --locate-shell-integration-path pwsh)"
+}
+
 # Visual Studio Build Tools environment
 $vsDevCmdPath = "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat"
 if ((Test-Path $vsDevCmdPath) -and (Get-Command Import-BatchEnvironment -ErrorAction SilentlyContinue)) {
