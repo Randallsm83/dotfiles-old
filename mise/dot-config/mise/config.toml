@@ -17,7 +17,13 @@
 #   - config.linux.toml: Linux/macOS-specific CLI tools (auto-loaded on Linux/macOS)
 #   - config.windows.toml: Windows-specific overrides (auto-loaded on Windows)
 #
-# Mise automatically loads the appropriate platform config based on your OS.
+# Platform-specific configs are automatically loaded by mise based on file naming:
+#   - config.toml (this file) - loaded on all platforms
+#   - config.linux.toml - automatically loaded ONLY on Linux
+#   - config.windows.toml - automatically loaded ONLY on Windows
+#   - config.darwin.toml - automatically loaded ONLY on macOS
+#
+# Mise will merge these configs automatically - no manual includes needed!
 # =============================================================================
 
 [tools]
@@ -30,12 +36,18 @@ ruby = "latest"
 rust = "1.79.0"
 
 # === Universal Tools (Cross-Platform) ===
+# These tools work on all platforms (Windows, Linux, macOS)
 direnv = "latest"
-fzf = "latest"
-op = "latest"      # 1Password CLI
+op = "latest"           # 1Password CLI
 usage = "latest"
-uv = "latest"     # Python package installer
+uv = "latest"           # Python package installer
 yarn = "latest"
+1password = "latest"
+
+# Note: fzf is installed via scoop on Windows, via mise on Linux/macOS (see platform configs)
+
+# Note: CLI tools (bat, eza, fd, ripgrep, starship, neovim, etc.) are defined
+# in platform-specific configs to handle Windows vs Linux/macOS differences
 
 [settings]
 # plugins can read the versions files used by other version managers (if enabled by the plugin)
