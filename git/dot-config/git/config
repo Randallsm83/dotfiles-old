@@ -4,7 +4,7 @@
 [core]
 	editor = nvim
 	pager = diff-so-fancy | less --tabs=4 -RFX
-	; sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
 [init]
 	defaultBranch = main
 [push]
