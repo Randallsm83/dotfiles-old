@@ -46,8 +46,38 @@ yarn = "latest"
 
 # Note: fzf is installed via scoop on Windows, via mise on Linux/macOS (see platform configs)
 
-# Note: CLI tools (bat, eza, fd, ripgrep, starship, neovim, etc.) are defined
-# in platform-specific configs to handle Windows vs Linux/macOS differences
+# === Platform-Specific CLI Tools ===
+# Linux/macOS: Install via mise
+# Windows: Install via scoop (using os restriction)
+
+# Rust CLI tools (Linux/macOS only)
+"cargo:bat" = { version = "latest", os = ["linux", "macos"] }
+"cargo:eza" = { version = "latest", os = ["linux", "macos"] }
+"cargo:fd-find" = { version = "latest", os = ["linux", "macos"] }
+"cargo:ripgrep" = { version = "latest", os = ["linux", "macos"] }
+"cargo:starship" = { version = "latest", os = ["linux", "macos"] }
+"cargo:vivid" = { version = "latest", os = ["linux", "macos"] }
+
+# Build tools (Linux/macOS only)
+cargo-binstall = { version = "latest", os = ["linux", "macos"] }
+bat-extras = { version = "latest", os = ["linux", "macos"] }
+
+# Editors (Linux/macOS only)
+neovim = { version = "latest", os = ["linux", "macos"] }
+vim = { version = "latest", os = ["linux", "macos"] }
+
+# Other CLI tools (Linux/macOS only)
+btop = { version = "latest", os = ["linux", "macos"] }
+fzf = { version = "latest", os = ["linux", "macos"] }
+github-cli = { version = "latest", os = ["linux", "macos"] }
+sqlite = { version = "latest", os = ["linux", "macos"] }
+
+# Languages (Linux/macOS only - Windows doesn't support these well via mise)
+lua = { version = "5.4.7", os = ["linux", "macos"] }
+luajit = { version = "2.1.0-beta3", os = ["linux", "macos"] }
+"cargo:tinty" = "latest"
+
+# Note: On Windows, these tools are installed via scoop instead
 
 [settings]
 # plugins can read the versions files used by other version managers (if enabled by the plugin)
