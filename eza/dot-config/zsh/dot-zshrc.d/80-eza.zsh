@@ -19,20 +19,30 @@ _eza_flags_file() {
   printf '%s' "$base/flags.txt"
 }
 
-_eza_build_flags() {
-  local f="$(_eza_flags_file)"
-  local flags=()
-  [ -f "$f" ] && flags+=("${(f)$(<"$f")}")
-  [ -n "$EZA_DISABLE_GDF" ] && flags=(${flags:#--group-directories-first})
-  [ -n "$EZA_FLAGS_EXTRA" ] && flags+=(${=EZA_FLAGS_EXTRA})
-  echo "${(j: :)flags}"
-}
-
+# Build flags array once at startup
+_eza_flags=()
 if _has eza; then
-  ls() { command eza $(_eza_build_flags) -- "$@"; }
-  ll() { command eza $(_eza_build_flags) -l -- "$@"; }
-  la() { command eza $(_eza_build_flags) -la -- "$@"; }
-  lt() { command eza $(_eza_build_flags) --tree -- "$@"; }
+  local f="$(_eza_flags_file)"
+  # Read flags file, filter comments and empty lines
+  if [ -f "$f" ]; then
+    while IFS= read -r line; do
+      [[ "$line" =~ ^[[:space:]]*# ]] && continue  # Skip comments
+      [[ -z "${line// }" ]] && continue             # Skip empty lines
+      _eza_flags+=("$line")
+    done < "$f"
+  fi
+  
+  # Remove --group-directories-first if disabled
+  [ -n "$EZA_DISABLE_GDF" ] && _eza_flags=(${_eza_flags:#--group-directories-first})
+  
+  # Add extra flags if specified
+  [ -n "$EZA_FLAGS_EXTRA" ] && _eza_flags+=(${=EZA_FLAGS_EXTRA})
+  
+  # Define aliases using the array
+  ls() { command eza $_eza_flags "$@"; }
+  ll() { command eza $_eza_flags -l "$@"; }
+  la() { command eza $_eza_flags -la "$@"; }
+  lt() { command eza $_eza_flags --tree "$@"; }
 else
   print "eza not found. Install with mise: mise use -g cargo:eza" >&2
   return 1
